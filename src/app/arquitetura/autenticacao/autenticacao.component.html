@@ -1,0 +1,29 @@
+<div class="tela-inteira">
+<div class="container">
+              <form
+                [formGroup]="formGroup"
+                (ngSubmit)="onSubmit()"
+                class="form"
+              >
+                <div class="login-content">
+                  <h1>Entrar</h1>
+                  <mat-form-field >
+                    <mat-label >E-mail</mat-label>
+                    <input matInput formControlName="login" autocomplete="off"
+                           placeholder="Email" type="email">
+                  </mat-form-field>
+
+                  <mat-form-field >
+                    <mat-label >Senha</mat-label>
+                    <input matInput formControlName="senha" type="password" title="Senha"
+                           placeholder="Senha">
+
+                  </mat-form-field>
+
+                  <button class="button" type="submit"  title="Entrar">
+                    <span>Entrar</span>
+                  </button>
+                </div>
+              </form>
+</div>
+</div>

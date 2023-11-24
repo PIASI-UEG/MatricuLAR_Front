@@ -1,0 +1,56 @@
+<div fxFlex="100">
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="search()"
+    class="form"
+  >
+    <mat-card>
+      <mat-card-content>
+        <div fxFlex fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5">
+            <div fxFlex="40" fxFlex.lt-sm="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="5">
+              <mat-form-field fxFlex>
+                <mat-label>Campo</mat-label>
+                <mat-select formControlName="searchParameter">
+                  <mat-option *ngFor="let parameter of searchFieldsParamters" [value]="parameter">{{parameter.label}}</mat-option>
+                </mat-select>
+                <mat-error validationMessage></mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <mat-label>Condição</mat-label>
+                <mat-select formControlName="searchConditionKey" >
+                  <mat-option *ngFor="let parameter of searchConditionKeys" [value]="parameter">{{SearchType[parameter]}} </mat-option>
+                </mat-select>
+                <mat-error validationMessage></mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="60" fxFlex.lt-sm="100" fxLayout="row" fxLayout.lt-sm="column">
+              <mat-form-field fxFlex *ngIf="!showFieldSearch">
+                <mat-label>Busca</mat-label>
+                <input matInput placeholder="Informe o valor da busca" title="Busca"
+                       formControlName="searchValue" name="nome"  required maxlength="50"
+                >
+                <mat-error validationMessage ></mat-error>
+              </mat-form-field>
+              <mat-form-field  fxFlex  *ngIf="showFieldSearch">
+                <mat-label>Busca</mat-label>
+                <input type="text"
+                       placeholder="Digite para filtrar"
+                       aria-label="Busca"
+                       matInput
+                       formControlName="searchValue"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSearchValueDescription">
+                  <mat-option *ngFor="let option of searchParameterFiltered | async" [value]="option">{{option.description}}</mat-option>
+                </mat-autocomplete>
+                <mat-error validationMessage></mat-error>
+              </mat-form-field>
+              <mat-card-actions>
+                <button mat-raised-button color="primary" class="button-busca" (click)="search()" type="submit">Buscar</button>
+                <button mat-button mat-raised-button color="primary" class="button-busca" type="button" (click)="searchAll()">Todos</button>
+              </mat-card-actions>
+            </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</div>
