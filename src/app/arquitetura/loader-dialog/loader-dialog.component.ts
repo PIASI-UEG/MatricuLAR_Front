@@ -8,7 +8,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 @Component({
   selector: 'app-loader-dialog',
   templateUrl: './loader-dialog.component.html',
-  styleUrls: ['../../../styles.css']
+  styleUrls: ['../../../styles.scss']
 })
 export class LoaderDialogComponent {
 
