@@ -1,0 +1,72 @@
+
+<h2> Controle de <br>Funcionários</h2>
+<mat-card>
+  <mat-card-actions [fxLayout]="mudarAlinhar()" fxLayoutAlign="center none" >
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button class="button-config" mat-raised-button [routerLink]="['/funcionario','novo']">
+        <span>Cadastrar Funcionário</span>
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div>
+      <app-search-component [controller]="usuarioService" (onSearchResult)="showResult($event)"/>
+    </div>
+  </mat-card-actions>
+  <mat-card-content>
+    <div style="overflow-x:auto">
+      <table mat-table [dataSource]="pageSlice" class="tabela">
+
+
+        <ng-container matColumnDef="pessoaCpf">
+          <th mat-header-cell *matHeaderCellDef> CPF </th>
+          <td mat-cell *matCellDef="let element"> {{element.pessoaCpf}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="pessoaNome">
+          <th mat-header-cell *matHeaderCellDef> Nome </th>
+          <td mat-cell *matCellDef="let element"> {{element.pessoaNome}} </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="cargo">
+          <th mat-header-cell *matHeaderCellDef> Cargo </th>
+          <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="acao">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button [matMenuTriggerFor]="acoes">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #acoes="matMenu">
+              <button mat-menu-item [routerLink]="['/funcionario',element.pessoaCpf]">
+                <mat-icon>edit</mat-icon>Editar
+              </button>
+              <button mat-menu-item (click)="confirmarExcluir(element)">
+                <mat-icon>delete_forever</mat-icon>Excluir
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: colunasMostrar;"></tr>
+      </table>
+    </div>
+    <mat-paginator style="justify-content: center" [length]="this.qtdRegistros"
+                   [pageSize]="5"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   (page)="onPageChange($event)"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>
+
+

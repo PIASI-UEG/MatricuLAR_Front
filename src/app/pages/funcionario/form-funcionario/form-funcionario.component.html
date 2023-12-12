@@ -1,1 +1,59 @@
-<p>form-funcionario works!</p>
+
+<div class="formPadrao" fxLayout="row" fxLayoutAlign="center center">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
+    <h2>{{acao}} <br> Funcionário</h2>
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário">
+      <mat-error *ngIf="handleError('pessoaNome', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+      <mat-form-field>
+        <mat-label>CPF</mat-label>
+        <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
+        <mat-error *ngIf="handleError('pessoaCpf', 'required')">Campo Obrigatório</mat-error>
+        <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Cargo</mat-label>
+        <input matInput formControlName="cargo" placeholder="Digite o cargo do funcionário">
+        <mat-error *ngIf="handleError('cargo', 'required')">Campo Obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="senha" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">Senha é obrigatória</mat-error>
+        <mat-error *ngIf="formGroup.get('senha')?.hasError('minlength')">Senha precisa ter pelo menos 6 caracteres</mat-error>
+        <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaCaracter')">Senha precisa ter um caracter especial</mat-error>
+        <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaMaiuscula')">Senha precisa ter uma letra maiúscula</mat-error>
+        <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaNumeros')">Senha precisa ter pelo menos 3 números</mat-error>
+      </mat-form-field>
+
+      <mat-form-field [ngStyle]="getErrorClass('senha')">
+        <mat-label>Confirmar Senha</mat-label>
+        <input matInput type="password" formControlName="confirmarSenha" placeholder="Confirme a senha" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="formGroup.get('confirmarSenha')?.hasError('required')">Confirmação de senha é obrigatória</mat-error>
+        <mat-error *ngIf="formGroup.get('confirmarSenha')?.hasError('naoConfere')">As senhas não coincidem</mat-error>
+      </mat-form-field>
+
+    </div>
+
+
+
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
+      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+    </div>
+  </form>
+</div>
