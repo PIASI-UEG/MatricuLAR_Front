@@ -1,1 +1,50 @@
-<p>home works!</p>
+<mat-toolbar class="mat-elevation-z8">
+  <button
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <button class="custom-icon" routerLink="/home" >
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <!-- Home casa -->
+    <button title="Home"  mat-button class="menu-button" routerLink="/home">
+      <mat-icon>home</mat-icon>
+    </button>
+    <!-- Matricula -->
+    <button title="Matrícula" mat-button class="menu-button" routerLink="*">
+      <mat-icon>category</mat-icon>
+    </button>
+    <button title="Pré-matrícula" mat-button class="menu-button" routerLink="*">
+      <mat-icon>category</mat-icon>
+    </button>
+    <button title="Validação de matrícula" mat-button class="menu-button" routerLink="*">
+      <mat-icon>category</mat-icon>
+    </button>
+    <!-- Turmas -->
+    <button title="Turmas" mat-button class="menu-button" routerLink="/turma">
+      <mat-icon>category</mat-icon>
+    </button>
+    <!-- Funcionario -->
+    <button title="Funcionários" mat-button class="menu-button" routerLink="/funcionario">
+      <mat-icon>category</mat-icon>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <button title="Sair" mat-button class="menu-button" (click)="sair()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,1 +1,145 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+body, html{
+  margin: 0;
+  padding: 0;
+}
+
+.tabela{
+  background-color: #6050C6;
+  border-color: #6050C6;
+  text-decoration-color: white;
+  width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell{
+  background-color: white;
+  border: 1px solid #6050C6;
+  text-align: center;
+}
+
+
+th{
+  color: white;
+  user-select:none;
+  text-align: center;
+}
+
+.button-config{
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  padding:1px;
+  text-decoration: none;
+  background:#6050C6;
+  color: white;
+  width:220px;
+  height:40px;
+  border: none;
+  border-radius: 50px 50px;
+  cursor: pointer;
+  margin: 6px;
+}
+
+
+.divBusca{
+  background-color:#E8E8E8;
+  border-radius:15px;
+  margin-left: 2%;
+  margin-right: 2%;
+  cursor: text;
+  width:100%;
+}
+
+.txtBusca{
+  float:left;
+  background-color:#E8E8E8;
+  font-family: Roboto, sans-serif;
+  font-size:14px;
+  border-radius:15px;
+  height:32px;
+  width:96%;
+  border-color: transparent;
+}
+
+.icone{
+  font-size: 28px;
+  margin-top: 2px;
+}
+
+.filtro{
+  border-radius:10px;
+  margin-right: 2%;
+  border: transparent;
+  cursor: pointer;
+}
+
+.pesquisa-icon{
+  border: transparent;
+  cursor: pointer;
+  border-radius:15px;
+  background-color: transparent;
+}
+
+h2{
+  user-select:none;
+  font-family: Roboto, sans-serif;
+  text-align: center;
+}
+
+mat-card{
+  border: 3px solid #6050C6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+mat-dialog-container:has(> app-loader-dialog){
+  background-color: rgba(0,0,0,0)!important;
+}
+
+app-loader-dialog{
+  background-color: rgba(0,0,0,0)!important;
+}
+
+.mdc-dialog__container .mdc-dialog__surface:has(> app-loader-dialog){
+  background-color: rgba(0,0,0,0)!important;
+  box-shadow: var(--mdc-dialog-container-elevation, 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0))!important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface{
+  box-shadow: var(--mdc-dialog-container-elevation, 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0))!important;
+}
+
+.mat-mdc-dialog-container{
+  --mdc-dialog-container-elevation-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0), 0px 24px 38px 3px rgba(0, 0, 0, 0), 0px 9px 46px 8px rgba(0, 0, 0, 0)!important;
+}
+
+.mat-mdc-progress-spinner.mat-warn[_ngcontent-ng-c2551497326] {
+  --mdc-circular-progress-active-indicator-color: #6050C6!important;
+}
+
+.cdk-overlay-pane:has(> mat-dialog-containerlo:has(> .mdc-dialog__container:has(> .mat-mdc-dialog-surface mdc-dialog__surface:has(> app-produto-movimentacao-dialog)))){
+  width:600px!important;
+}
+
+.mat-mdc-dialog-surface:has(> app-produto-movimentacao-dialog){
+  width:650px!important;
+  height: 653px!important;
+  border-radius: 30px 30px!important;
+  margin:0;
+  padding: 0;
+}
+.mat-mdc-dialog-surface > app-produto-movimentacao-dialog{
+  margin: 0;
+  height: 100%!important;
+  width: 100%!important;
+}
+
+
+
+
+
+
+
+
+
+
