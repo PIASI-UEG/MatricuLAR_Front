@@ -1,6 +1,6 @@
 @media (min-width: 450px) {
   .tela-inteira {
-    background-image: url("Login.png");
+    background-image: url("/assets/fotos_login/foto_login.png") ;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -11,18 +11,18 @@
 }
 @media (min-width: 765px){
   .tela-inteira{
-  background-image: url("Login.png") ;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  padding-top: 20%;
-  padding-bottom: 15%;
-  display: flex;
+    background-image: url("/assets/fotos_login/foto_login.png") ;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 20%;
+    padding-bottom: 15%;
+    display: flex;
 }
 }
 @media (min-width: 992px){
   .tela-inteira{
-    background-image: url("Login.png") ;
+    background-image: url("/assets/fotos_login/foto_login.png") ;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -33,7 +33,7 @@
 }
 @media (min-width: 1200px){
   .tela-inteira{
-    background-image: url("Login.png") ;
+    background-image: url("/assets/fotos_login/foto_login.png") ;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
