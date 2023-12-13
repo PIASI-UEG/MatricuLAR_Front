@@ -1,19 +1,20 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {MatSidenav} from "@angular/material/sidenav";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {NavigationEnd, Router} from "@angular/router";
-import {SecurityService} from "../../arquitetura/security/security.service";
 import {delay} from "rxjs";
 import {filter} from "rxjs/operators";
-import {untilDestroyed} from "@ngneat/until-destroy";
+import {SecurityService} from "../../arquitetura/security/security.service";
 
+
+@UntilDestroy()
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-
+export class HomeComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   admin!: any;
@@ -24,7 +25,7 @@ export class HomeComponent {
     private securityService: SecurityService) {
   }
 
-  ngOnInit(): void {/*
+  ngOnInit(): void {
     if (this.securityService.credential.accessToken == "") {
       this.router.navigate(['/acesso']);
     } else {
@@ -36,7 +37,7 @@ export class HomeComponent {
       }
       if (!this.securityService.isValid())
         this.router.navigate(['/acesso']);
-    }*/
+    }
   }
 
   ngAfterViewInit() {

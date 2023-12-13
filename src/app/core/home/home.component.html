@@ -13,32 +13,26 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
-    <!-- Home casa -->
-    <button title="Home"  mat-button class="menu-button" routerLink="/home">
+
+    <button title="Home"  mat-button class="menu-button" routerLink="/home"> Home
       <mat-icon>home</mat-icon>
     </button>
-    <!-- Matricula -->
-    <button title="Matrícula" mat-button class="menu-button" routerLink="*">
-      <mat-icon>category</mat-icon>
+    <button title="Categoria" mat-button class="menu-button" routerLink="/categoria"> Validações de <br>Matrículas
+      <mat-icon>check_circle</mat-icon>
     </button>
-    <button title="Pré-matrícula" mat-button class="menu-button" routerLink="*">
-      <mat-icon>category</mat-icon>
+    <button title="Produto"  mat-button class="menu-button" routerLink="/produto">
+      <mat-icon>face</mat-icon> Matrículas
     </button>
-    <button title="Validação de matrícula" mat-button class="menu-button" routerLink="*">
-      <mat-icon>category</mat-icon>
+    <button title="Funcionário"  mat-button class="menu-button" routerLink="/funcionario">
+      <mat-icon>airline_seat_recline_normal</mat-icon> Turmas
     </button>
-    <!-- Turmas -->
-    <button title="Turmas" mat-button class="menu-button" routerLink="/turma">
-      <mat-icon>category</mat-icon>
-    </button>
-    <!-- Funcionario -->
-    <button title="Funcionários" mat-button class="menu-button" routerLink="/funcionario">
-      <mat-icon>category</mat-icon>
+    <button title="Cliente"  mat-button class="menu-button" routerLink="/cliente">
+      <mat-icon>supervisor_account</mat-icon>Funcionários
     </button>
 
     <mat-divider></mat-divider>
 
-    <button title="Sair" mat-button class="menu-button" (click)="sair()">
+    <button title="Sair" mat-button class="menu-button" (click)="sair()"> Sair
       <mat-icon>logout</mat-icon>
     </button>
   </mat-sidenav>
