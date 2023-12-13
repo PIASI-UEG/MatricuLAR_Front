@@ -11,22 +11,28 @@
                     <mat-label >CPF</mat-label>
                     <input matInput formControlName="login" autocomplete="off"
                            placeholder="Digite seu cpf" type="cpf">
+                      <mat-error *ngIf="handleError('login', 'required')">
+                          O login é obrigatório
+                      </mat-error>
                   </mat-form-field>
 
                   <mat-form-field >
                     <mat-label >Senha</mat-label>
                     <input matInput formControlName="senha" type="password" title="Senha"
                            placeholder="Digite sua senha">
-
+                      <mat-error *ngIf="handleError('senha', 'required')">
+                          A senha é obrigatória
+                      </mat-error>
                   </mat-form-field>
 
                   <button class="button" type="submit"  title="Entrar">
                     <span>Entrar</span>
                   </button>
 
-                    <div class="link_esqueceu-senha">
-                        <a href="#">Esqueceu a senha?</a>
+                    <div class="esqueceu-senha">
+                        <a href="#" class="link_esqueceu-senha">Esqueceu a senha?</a>
                     </div>
+
                 </div>
               </form>
 </div>

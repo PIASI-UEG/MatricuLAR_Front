@@ -173,6 +173,16 @@ h1{
   border-radius: 50px 50px;
   cursor: pointer;
 }
-.link_esqueceu-senha{
+.link_esqueceu-senha {
+  color: black;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
 
+.link_esqueceu-senha:hover {
+  color: darkgray;
+}
+
+.link_esqueceu-senha:active {
+  color: black;
 }
