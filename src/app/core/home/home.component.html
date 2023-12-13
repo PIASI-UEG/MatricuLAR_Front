@@ -1,50 +1,59 @@
 <mat-toolbar class="mat-elevation-z8">
-  <button
-    mat-icon-button
-    *ngIf="sidenav.mode === 'over'"
-    (click)="sidenav.toggle()"
-  >
-    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
-    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
-  </button>
-  <button class="custom-icon" routerLink="/home" >
-  </button>
+    <button
+            mat-icon-button
+            *ngIf="sidenav.mode === 'over'"
+            (click)="sidenav.toggle()"
+    >
+        <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+        <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    </button>
+    <button class="custom-icon" routerLink="/home" >
+    </button>
 </mat-toolbar>
 
 <mat-sidenav-container>
-  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
-    <!-- Home casa -->
-    <button title="Home"  mat-button class="menu-button" routerLink="/home">
-      <mat-icon>home</mat-icon>
-    </button>
-    <!-- Matricula -->
-    <button title="Matrícula" mat-button class="menu-button" routerLink="*">
-      <mat-icon>category</mat-icon>
-    </button>
-    <button title="Pré-matrícula" mat-button class="menu-button" routerLink="*">
-      <mat-icon>category</mat-icon>
-    </button>
-    <button title="Validação de matrícula" mat-button class="menu-button" routerLink="*">
-      <mat-icon>category</mat-icon>
-    </button>
-    <!-- Turmas -->
-    <button title="Turmas" mat-button class="menu-button" routerLink="/turma">
-      <mat-icon>category</mat-icon>
-    </button>
-    <!-- Funcionario -->
-    <button title="Funcionários" mat-button class="menu-button" routerLink="/funcionario">
-      <mat-icon>category</mat-icon>
-    </button>
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-    <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
+        <!--        home-->
+        <button mat-button class="menu-button" routerLink="*">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+        </button>
+        <!-- Matricula -->
+        <button title="Matrícula" mat-button class="menu-button" routerLink="*">
+            <mat-icon>category</mat-icon>
+            <span>Matricula</span>
+        </button>
+        <button title="Validação de matrícula" mat-button class="menu-button" routerLink="*">
+            <mat-icon>category</mat-icon>
+            <span>Validação de Matrículas</span>
+        </button>
+        <button title="Pré-matrícula" mat-button class="menu-button" routerLink="*">
+            <mat-icon>category</mat-icon>
+            <span>Pré-matrícula</span>
+        </button>
+        <!-- Turmas -->
+        <button title="Turmas" mat-button class="menu-button" routerLink="/turma">
+            <mat-icon>category</mat-icon>
+            <span>Turmas</span>
+        </button>
+        <!-- Funcionario -->
+        <button title="Funcionários" mat-button class="menu-button" routerLink="/funcionario">
+            <mat-icon>category</mat-icon>
+            <span>Funcionário</span>
+        </button>
 
-    <button title="Sair" mat-button class="menu-button" (click)="sair()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="content mat-elevation-z8">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
+        <mat-divider></mat-divider>
+
+        <button title="Sair" mat-button class="menu-button" (click)="sair()">
+            <mat-icon>logout</mat-icon>
+            <span>Sair</span>
+        </button>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z8">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
 </mat-sidenav-container>
