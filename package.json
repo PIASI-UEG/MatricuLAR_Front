@@ -5,7 +5,7 @@
     "ng": "ng",
     "ng-openapi-gen": "ng-openapi-gen",
     "start": "npm run ng-openapi-gen && npm run ng -- serve -o",
-    "build": "npm run ng-openapi-gen && npm run ng -- build -prod",
+    "build": "npm run ng-openapi-gen && npm run ng -- build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
