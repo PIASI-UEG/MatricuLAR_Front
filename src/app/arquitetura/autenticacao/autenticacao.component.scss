@@ -172,7 +172,13 @@ h1{
   border: none;
   border-radius: 50px 50px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
+
+.button:hover {
+  background: #FFA07A;
+}
+
 .link_esqueceu-senha {
   color: black;
   text-decoration: none;
