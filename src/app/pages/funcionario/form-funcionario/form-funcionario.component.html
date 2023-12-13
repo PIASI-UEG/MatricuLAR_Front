@@ -1,6 +1,10 @@
 
 <div class="formPadrao" fxLayout="row" fxLayoutAlign="center center">
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
+
+  <form [formGroup]="formGroup"
+        (ngSubmit)="onSubmit()" class="form"
+        fxFlex="1 1 auto"
+  >
     <h2>{{acao}} <br> Funcionário</h2>
     <mat-form-field>
       <mat-label>Nome</mat-label>

@@ -35,7 +35,7 @@ export class AutenticacaoComponent implements OnInit {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      login: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      login: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(11)]],
       senha: [null, Validators.required],
     });
   }
