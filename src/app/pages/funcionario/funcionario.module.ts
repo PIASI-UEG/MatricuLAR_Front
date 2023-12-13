@@ -15,7 +15,7 @@ import {MatTableModule} from "@angular/material/table";
 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatMenuModule} from "@angular/material/menu";
-import {MatOptionModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {SearchModule} from "../../arquitetura/search-module/search.module";
@@ -51,6 +51,7 @@ import {BrowserModule} from "@angular/platform-browser";
     FlexModule,
     NgxMaskDirective,
       BrowserModule,
+      MatNativeDateModule,
   ]
 })
 export class FuncionarioModule { }

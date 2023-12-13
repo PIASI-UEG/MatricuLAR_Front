@@ -10,7 +10,8 @@ const routes: Routes = [
     path: "",
     component: HomeComponent,
     children: [
-      ...funcionarioRoutes
+      ...funcionarioRoutes,
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
     //canActivate: [SecurityGuard],
     //data: {security: {roles: ['', '']}}
