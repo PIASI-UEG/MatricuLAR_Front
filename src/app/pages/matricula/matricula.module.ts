@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatriculaRoutingModule } from './matricula-routing.module';
 import { FormMatriculaComponent } from './form-matricula/form-matricula.component';
 import { HomeMatriculaComponent } from './home-matricula/home-matricula.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { HomeMatriculaComponent } from './home-matricula/home-matricula.componen
   ],
   imports: [
     CommonModule,
-    MatriculaRoutingModule
+    MatriculaRoutingModule, MatPaginatorModule
   ]
+
 })
 export class MatriculaModule { }

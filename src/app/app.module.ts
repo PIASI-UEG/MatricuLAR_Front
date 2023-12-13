@@ -11,7 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {LoaderModule} from "./arquitetura/loader/loader.module";
@@ -29,6 +29,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSelectModule} from "@angular/material/select";
 import {FlexModule} from "@angular/flex-layout";
 import {NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask} from "ngx-mask";
+import {FuncionarioModule} from "./pages/funcionario/funcionario.module";
+import {MatriculaModule} from "./pages/matricula/matricula.module";
 
 @NgModule({
   declarations: [
@@ -69,7 +71,10 @@ import {NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask} from "ngx-mask
     FlexModule,
     MatCheckboxModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+      MatFormFieldModule,
+      FuncionarioModule,
+      MatriculaModule
 
   ],
   providers: [

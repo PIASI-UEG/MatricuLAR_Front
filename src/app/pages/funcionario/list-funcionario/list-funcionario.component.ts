@@ -20,7 +20,7 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
 })
 export class ListFuncionarioComponent implements OnInit {
   colunasMostrar = ['pessoaCpf','pessoaNome','cargo','acao'];
-  usuarioListaDataSource: MatTableDataSource<UsuarioDto> = new MatTableDataSource<UsuarioDto>();
+  usuarioListaDataSource: MatTableDataSource<UsuarioDto> = new MatTableDataSource<UsuarioDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "funcionario", this.snackBar)
   admin!: boolean;
   pageSlice!: UsuarioDto[];
