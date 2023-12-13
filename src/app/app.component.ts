@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {LoaderService} from "./arquitetura/loader/loader.service";
@@ -10,12 +10,13 @@ import {User} from "./arquitetura/security/User";
 import {ConfirmDialogComponent} from "./arquitetura/message/confirm-mesage/confirm-dialog.component";
 import {LoaderDialogComponent} from "./arquitetura/loader-dialog/loader-dialog.component";
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'MatricuLAR_Front';
 
     private dialogRef!: MatDialogRef<any>;

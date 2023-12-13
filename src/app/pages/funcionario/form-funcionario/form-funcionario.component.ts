@@ -61,14 +61,16 @@ export class FormFuncionarioComponent implements OnInit{
           pessoaNome: [retorno.pessoaNome, Validators.required],
           pessoaCpf: [retorno.pessoaCpf, Validators.required],
           cargo: [retorno.cargo, Validators.required],
-          senha: [retorno.senha, Validators.required]
+          senha: [retorno.senha, Validators.required],
+          confirmarSenha: [retorno.confirmarSenha, Validators.required]
         }));
     }else{
       this.formGroup = this.formBuilder.group({
           pessoaNome: [null, Validators.required],
           pessoaCpf: [null, Validators.required],
           cargo: [null, Validators.required],
-          senha: [null, Validators.required]
+          senha: [null, Validators.required],
+          confirmarSenha: [null, Validators.required]
       })
     }
   }
