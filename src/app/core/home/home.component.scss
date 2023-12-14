@@ -7,11 +7,16 @@ mat-sidenav {
   margin: 16px;
   width: 200px;
   border-right: none;
-  background: bisque;
-  color: white;
   border-radius: 10px;
   padding: 16px;
-  text-align: center;
+  background: #F28749;
+  color: black;
+
+}
+
+mat-sidenav {
+  background: #FFE3D2;
+  color: black;
 }
 
 .content {
@@ -35,13 +40,14 @@ mat-sidenav-container {
   align-items: center;
   justify-content: flex-start;
   font-size: 1rem;
-  color: white !important;
+  color: black !important;
+  font-family: Roboto, sans-serif;
 
   mat-icon {
     margin-right: 8px;
+    cursor: pointer;
   }
 }
-
 
 .name {
   margin-top: 8px;
@@ -54,6 +60,10 @@ mat-sidenav-container {
   color: lightgrey;
 }
 
+.mat-sidenav :hover {
+  background: #1CA64C;
+}
+
 mat-divider {
   margin-top: 16px;
   margin-bottom: 16px;
@@ -61,15 +71,16 @@ mat-divider {
 }
 
 .custom-icon{
-  background-image: url("/assets/fotos_login/foto_home.png") ;
+  background-image: url("/assets/logos/loga_sagrada_familia_matricular.png") ;
   background-repeat: no-repeat;
+  background-color: #F28749;
   background-position: center;
-  background-size: 100px 50px;
+  background-size: 200px 150px;
   border: none;
   display: flex;
   cursor: pointer;
   height: 50px;
-  width: 100px;
+  width: 190px;
 }
 
 .menu-button span.texto-cor {

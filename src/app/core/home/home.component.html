@@ -12,9 +12,8 @@
 </mat-toolbar>
 
 <mat-sidenav-container>
-    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-        <mat-divider></mat-divider>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
         <!--        home-->
         <button mat-button class="menu-button" routerLink="*">
             <mat-icon class="icon-cor">home</mat-icon>
@@ -43,7 +42,6 @@
             <mat-icon class="icon-cor">business_center</mat-icon>
             <span class="texto-cor">Funcionário</span>
         </button>
-
         <mat-divider></mat-divider>
 
         <button title="Sair" mat-button class="menu-button" (click)="sair()">

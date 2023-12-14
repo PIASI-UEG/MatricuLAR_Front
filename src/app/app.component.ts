@@ -1,15 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {LoaderService} from "./arquitetura/loader/loader.service";
-import {AutenticacaoService} from "./arquitetura/autenticacao/autenticacao.service";
 import {SecurityService} from "./arquitetura/security/security.service";
+import {AutenticacaoService} from "./arquitetura/autenticacao/autenticacao.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MessageItem, MessageService} from "./arquitetura/message/message.service";
 import {User} from "./arquitetura/security/User";
-import {ConfirmDialogComponent} from "./arquitetura/message/confirm-mesage/confirm-dialog.component";
 import {LoaderDialogComponent} from "./arquitetura/loader-dialog/loader-dialog.component";
+import {ConfirmDialogComponent} from "./arquitetura/message/confirm-mesage/confirm-dialog.component";
+import DevExpress from "devextreme";
+import dialog = DevExpress.ui.dialog;
 
+class MessageDialog {
+}
 
 @Component({
   selector: 'app-root',
@@ -18,7 +22,6 @@ import {LoaderDialogComponent} from "./arquitetura/loader-dialog/loader-dialog.c
 })
 export class AppComponent implements OnInit{
   title = 'MatricuLAR_Front';
-
     private dialogRef!: MatDialogRef<any>;
     public constructor(
         private router: Router,

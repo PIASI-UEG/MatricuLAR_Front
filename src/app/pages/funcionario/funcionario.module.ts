@@ -51,7 +51,7 @@ import {BrowserModule} from "@angular/platform-browser";
     FlexModule,
     NgxMaskDirective,
       BrowserModule,
-      MatNativeDateModule,
+      MatNativeDateModule ,
   ]
 })
 export class FuncionarioModule { }
