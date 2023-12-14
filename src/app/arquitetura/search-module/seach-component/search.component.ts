@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {SearchFieldValue} from "../../../api/models/search-field-value";
 import {Observable, startWith} from "rxjs";
 import {SearchField} from "../../../api/models/search-field";
@@ -23,6 +23,8 @@ export class SearchComponent implements AfterViewInit, OnInit{
   @Input() controller: any;
   @Output()
   onSearchResult: EventEmitter<any[]> = new EventEmitter<any[]>();
+  innerWidth: number = window.innerWidth;
+  flexDivAlinhar: string = 'row';
 
 
   searchFieldsActionMethod!: (params: {body: Array<SearchFieldValue>})
@@ -70,11 +72,11 @@ export class SearchComponent implements AfterViewInit, OnInit{
     let fieldSearchValue = this.getFieldSearchValue();
     fieldSearchValue =  typeof fieldSearchValue === 'string' ? fieldSearchValue : fieldSearchValue.id;
     this.searchFieldsActionMethod({body: [
-      { name: this.getFieldSearchParameter().name,
-        searchType:  this.getFieldSearchConditionKey(),
-        type: this.getFieldSearchParameter().type,
-        value: fieldSearchValue}]}).subscribe(value => {
-        this.onSearchResult.emit(value);
+        { name: this.getFieldSearchParameter().name,
+          searchType:  this.getFieldSearchConditionKey(),
+          type: this.getFieldSearchParameter().type,
+          value: fieldSearchValue}]}).subscribe(value => {
+      this.onSearchResult.emit(value);
     },() => this.onSearchResult.emit([]) );
 
   }
@@ -92,6 +94,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
   }
 
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
     this.searchParameterFiltered = this.formGroup.controls['searchValue'].valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -184,4 +187,20 @@ export class SearchComponent implements AfterViewInit, OnInit{
     console.log(option);
     return option ? option.description||'': '';
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.innerWidth = window.innerWidth;
+  }
+
+  mudarAlinhar() {
+
+    if(this.innerWidth < 1000)
+    {
+      return this.flexDivAlinhar = "column";
+    }
+    return this.flexDivAlinhar = "row";
+
+  }
+
 }

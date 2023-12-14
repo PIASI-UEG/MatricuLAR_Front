@@ -13,7 +13,7 @@ h2{
   border-radius: 30px 30px;
   background-color: white;
   padding: 2%;
-  width: 40%;
+  width: 50%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 2%;
@@ -21,14 +21,14 @@ h2{
 
 @media (max-width: 1500px) {
   .formPadrao {
-    width: 60%;
+    width: 70%;
     padding: 3%;
   }
 }
 
 @media (max-width: 900px) {
   .formPadrao {
-    width: 80%;
+    width: 85%;
     padding: 4%;
   }
 }
@@ -68,9 +68,23 @@ h2{
   color: black;
 }
 
+@media (max-width: 999px) {
+  .botao-limpar {
+    width:180px!important;
+    height:50px!important;
+  }
+}
+
 .botao-cancelar{
   background-color: #F2293A;
   color: white;
+}
+
+@media (max-width: 999px) {
+  .botao-cancelar {
+    width:180px!important;
+    height:50px!important;
+  }
 }
 
 mat-form-field{
