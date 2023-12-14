@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {LoaderService} from "./arquitetura/loader/loader.service";
@@ -21,6 +21,7 @@ class MessageDialog {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+
   title = 'MatricuLAR_Front';
     private dialogRef!: MatDialogRef<any>;
     public constructor(
