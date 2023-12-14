@@ -11,6 +11,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {Validacoes} from "../../../../Validacoes";
 
+
 @Component({
   selector: 'app-form-funcionario',
   templateUrl: './form-funcionario.component.html',
