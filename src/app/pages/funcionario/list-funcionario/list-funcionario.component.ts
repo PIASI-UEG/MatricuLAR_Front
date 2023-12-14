@@ -63,7 +63,7 @@ export class ListFuncionarioComponent implements OnInit {
 
   remover(usuarioDto: UsuarioDto) {
     console.log("Removido", usuarioDto.pessoaCpf);
-    this.usuarioService.usuarioControllerRemover({ id: usuarioDto.codigo || -1})
+    this.usuarioService.usuarioControllerRemover({ id: usuarioDto.id || 0})
       .subscribe(
         retorno => {
           this.buscarDados();

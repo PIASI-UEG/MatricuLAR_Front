@@ -48,7 +48,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #acoes="matMenu">
-              <button mat-menu-item [routerLink]="['/funcionario',element.pessoaCpf]">
+              <button mat-menu-item [routerLink]="['/funcionario',element.id]">
                 <mat-icon>edit</mat-icon>Editar
               </button>
               <button mat-menu-item (click)="confirmarExcluir(element)">
