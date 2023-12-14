@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
+import {Validacoes} from "../../../../Validacoes";
 
 @Component({
   selector: 'app-form-funcionario',
@@ -23,7 +24,7 @@ export class FormFuncionarioComponent implements OnInit{
   codigo!: number;
   //cargos: CargoDto[] = [];
   mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "funcionario", this.snackBar)
-  //validacoes: Validacoes = new Validacoes();
+  validacoes: Validacoes = new Validacoes();
   minDate = new Date(1900, 0, 1);
   maxDate = new Date(2008,0,0);
   flexDivAlinhar: string = 'row';
@@ -51,7 +52,21 @@ export class FormFuncionarioComponent implements OnInit{
     this.prepararEdicao();
   }
 
+  validarSenhas() {
+    // Obtém os valores das senhas
+    const senha = this.formGroup.get('senha')?.value;
+    const confirmarSenha = this.formGroup.get('confirmarSenha')?.value;
+    // Verifica se as senhas são iguais
 
+    if (senha !== confirmarSenha && confirmarSenha && confirmarSenha !== '') {
+      // Adiciona um erro personalizado ao formulário
+      this.formGroup.get('confirmarSenha')?.setErrors({ 'naoConfere': true });
+      // Retorna falso
+      return false;
+    }
+    // Retorna verdadeiro
+    return true;
+  }
 
   private createForm() {
     if(this.acao == "Editar"){
@@ -59,17 +74,27 @@ export class FormFuncionarioComponent implements OnInit{
       subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
           pessoaNome: [retorno.pessoaNome, Validators.required],
-          pessoaCpf: [retorno.pessoaCpf, Validators.required],
+          pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf]],
           cargo: [retorno.cargo, Validators.required],
-          senha: [retorno.senha, Validators.required],
-          confirmarSenha: [retorno.confirmarSenha, Validators.required]
+          telefone: [retorno.telefone, [Validators.required, this.validacoes.validarTelefone]],
+          senha: [null,[Validators.required,
+                  Validators.minLength(6),
+                  this.validacoes.validarCaracterEspecial,
+                  this.validacoes.validarLetraMaiuscula,
+                  this.validacoes.validarPeloMenosTresNumeros]],
+          confirmarSenha: [null, Validators.required]
         }));
     }else{
       this.formGroup = this.formBuilder.group({
           pessoaNome: [null, Validators.required],
-          pessoaCpf: [null, Validators.required],
+          pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
           cargo: [null, Validators.required],
-          senha: [null, Validators.required],
+          telefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+          senha: [null, [Validators.required,
+            Validators.minLength(6),
+            this.validacoes.validarCaracterEspecial,
+            this.validacoes.validarLetraMaiuscula,
+            this.validacoes.validarPeloMenosTresNumeros]],
           confirmarSenha: [null, Validators.required]
       })
     }
@@ -80,6 +105,11 @@ export class FormFuncionarioComponent implements OnInit{
   };
 
   onSubmit() {
+    this.submitFormulario = true;
+    if (!this.validarSenhas()) {
+      return;
+    }
+
     if (this.formGroup.valid) {
       if(!this.codigo){
         this.realizarInclusao();

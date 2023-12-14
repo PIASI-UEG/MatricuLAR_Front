@@ -6,4 +6,5 @@ export interface UsuarioDto {
   pessoaCpf?: string;
   pessoaNome?: string;
   senha?: string;
+  telefone?: string;
 }
