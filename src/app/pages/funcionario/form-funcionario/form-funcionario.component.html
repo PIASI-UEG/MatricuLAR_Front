@@ -29,13 +29,13 @@
 
     <mat-form-field>
       <mat-label>Telefone</mat-label>
-      <input matInput mask="(00) 0 0000-0000" formControlName="telefone" placeholder="(00) 0 0000-0000">
-      <mat-error *ngIf="handleError('telefone', 'required')">Campo Obrigatório</mat-error>
-      <mat-error *ngIf="handleError('telefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
+      <input matInput mask="(00) 0 0000-0000" formControlName="pessoaFone" placeholder="(00) 0 0000-0000">
+      <mat-error *ngIf="handleError('pessoaFone', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('pessoaFone', 'telefoneInvalido')">Telefone Inválido</mat-error>
     </mat-form-field>
     </div>
 
-    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+    <div *ngIf="codigo == null" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
 
       <mat-form-field>
         <mat-label>Senha</mat-label>

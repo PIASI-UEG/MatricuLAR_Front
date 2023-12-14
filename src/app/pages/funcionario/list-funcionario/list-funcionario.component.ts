@@ -62,7 +62,7 @@ export class ListFuncionarioComponent implements OnInit {
   }
 
   remover(usuarioDto: UsuarioDto) {
-    console.log("Removido", usuarioDto.pessoaCpf);
+    console.log("Removido", usuarioDto.id);
     this.usuarioService.usuarioControllerRemover({ id: usuarioDto.id || 0})
       .subscribe(
         retorno => {

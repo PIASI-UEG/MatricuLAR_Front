@@ -70,35 +70,18 @@ export class FormFuncionarioComponent implements OnInit{
   }
 
   private createForm() {
-    if(this.acao == "Editar"){
-      this.usuarioService.usuarioControllerObterPorId({id: this.codigo}).
-      subscribe(retorno =>
-        this.formGroup = this.formBuilder.group({
-          pessoaNome: [retorno.pessoaNome, Validators.required],
-          pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf]],
-          cargo: [retorno.cargo, Validators.required],
-          telefone: [retorno.telefone, [Validators.required, this.validacoes.validarTelefone]],
-          senha: [null,[Validators.required,
-                  Validators.minLength(6),
-                  this.validacoes.validarCaracterEspecial,
-                  this.validacoes.validarLetraMaiuscula,
-                  this.validacoes.validarPeloMenosTresNumeros]],
-          confirmarSenha: [null, Validators.required]
-        }));
-    }else{
-      this.formGroup = this.formBuilder.group({
-          pessoaNome: [null, Validators.required],
-          pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
-          cargo: [null, Validators.required],
-          telefone: [null, [Validators.required, this.validacoes.validarTelefone]],
-          senha: [null, [Validators.required,
-            Validators.minLength(6),
-            this.validacoes.validarCaracterEspecial,
-            this.validacoes.validarLetraMaiuscula,
-            this.validacoes.validarPeloMenosTresNumeros]],
-          confirmarSenha: [null, Validators.required]
-      })
-    }
+    this.formGroup = this.formBuilder.group({
+        pessoaNome: [null, Validators.required],
+        pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
+        cargo: [null, Validators.required],
+        pessoaFone: [null, [Validators.required, this.validacoes.validarTelefone]],
+        senha: [null, [Validators.required,
+          Validators.minLength(6),
+          this.validacoes.validarCaracterEspecial,
+          this.validacoes.validarLetraMaiuscula,
+          this.validacoes.validarPeloMenosTresNumeros]],
+        confirmarSenha: [null, Validators.required]
+    })
   }
 
   public handleError = (controlName: string, errorName: string) => {
@@ -107,11 +90,11 @@ export class FormFuncionarioComponent implements OnInit{
 
   onSubmit() {
     this.submitFormulario = true;
-    if (!this.validarSenhas()) {
+    if (this.codigo == null && !this.validarSenhas()) {
       return;
     }
 
-    if (this.formGroup.valid) {
+    if (this.codigo != null || this.formGroup.valid) {
       if(!this.codigo){
         this.realizarInclusao();
       }else{
@@ -205,24 +188,29 @@ export class FormFuncionarioComponent implements OnInit{
 
   getErrorClass(controlName: string): { [key: string]: any } | null {
     const control = this.formGroup.get(controlName);
+    if (this.codigo == null) {
+      if (this.submitFormulario && control && control.errors) {
+        const qdErros = Object.keys(control.errors).length;
 
-    if (this.submitFormulario && control && control.errors){
-      const qdErros = Object.keys(control.errors).length;
+        return {
+          'margin-top': 17 * qdErros + 'px'
+        };
+      }
 
+      if (!this.submitFormulario && control && control.errors && control.touched) {
+        const qdErros = Object.keys(control.errors).length;
+
+        return {
+          'margin-top': 17 * qdErros + 'px'
+        };
+      }
+      this.submitFormulario = false;
+      return {};
+    } else {
       return {
-        'margin-top': 17 * qdErros + 'px'
+        'margin-top': 17 * 1 + 'px'
       };
     }
-
-    if (!this.submitFormulario && control && control.errors && control.touched){
-      const qdErros = Object.keys(control.errors).length;
-
-      return {
-        'margin-top': 17 * qdErros + 'px'
-      };
-    }
-    this.submitFormulario = false;
-    return {};
   }
 
 }
