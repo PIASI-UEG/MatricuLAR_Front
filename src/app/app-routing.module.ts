@@ -4,6 +4,7 @@ import {HomeComponent} from "./core/home/home.component";
 import {AutenticacaoRoutes} from "./arquitetura/autenticacao/autenticacao.routing";
 import {SecurityGuard} from "./arquitetura/security/security.guard";
 import {funcionarioRoutes} from "./pages/funcionario/funcionario-routing.module";
+import {turmaRoutes} from "./pages/turma/turma-routing.module";
 
 const routes: Routes = [
   {
@@ -11,7 +12,8 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       ...funcionarioRoutes,
-        { path: '', redirectTo: 'home', pathMatch: 'full' },
+      ...turmaRoutes,
+       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
     //canActivate: [SecurityGuard],
     //data: {security: {roles: ['', '']}}

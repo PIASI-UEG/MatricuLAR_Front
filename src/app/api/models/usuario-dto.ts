@@ -7,4 +7,5 @@ export interface UsuarioDto {
   pessoaFone?: string;
   pessoaNome?: string;
   senha?: string;
+  telefone?: string;
 }
