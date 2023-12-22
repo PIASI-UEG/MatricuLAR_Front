@@ -10,21 +10,20 @@ import {
   ConfirmationDialog,
   ConfirmationDialogResult
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {Turma} from "../../../custom_models/turma";
-import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
+import {Matricula} from "../../../custom_models/matricula";
 
 @Component({
-  selector: 'app-list-turma',
-  templateUrl: './list-turma.component.html',
-  styleUrls: ['./list-turma.component.scss']
+  selector: 'app-list-matricula',
+  templateUrl: './list-matricula.component.html',
+  styleUrls: ['./list-matricula.component.scss']
 })
-export class ListTurmaComponent implements OnInit{
+export class ListMatriculaComponent implements OnInit{
 
-  colunasMostrar = ['nome','professora','telefoneProfessora','quantidadeAlunos','acao'];
-  turmaListaDataSource: MatTableDataSource<Turma> = new MatTableDataSource<Turma>([]);
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "turma", this.snackBar)
+  colunasMostrar = ['numeroMatricula','nome','turma','nomeResponsaveis','telefone','status','acao'];
+  turmaListaDataSource: MatTableDataSource<Matricula> = new MatTableDataSource<Matricula>([]);
+  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "matricula", this.snackBar)
   admin!: boolean;
-  pageSlice!: Turma[];
+  pageSlice!: Matricula[];
   qtdRegistros!: number;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
@@ -54,22 +53,22 @@ export class ListTurmaComponent implements OnInit{
     this.turmaListaDataSource.data = $event;
   }
 
-  remover(turma: Turma) {
-    console.log("Removido", turma.nome);
+  remover(listaMatricula: Matricula) {
+    console.log("Removido", listaMatricula.nome);
     this.mensagens.showMensagemSimples("Excluído com sucesso!");
   }
 
 
-  confirmarExcluir(turma: Turma) {
+  confirmarExcluir(listaMatricula: Matricula) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Confirmar?',
-        mensagem: `A exclusão de: ${turma.nome} (ID: ${turma.id})?`,
+        mensagem: `A exclusão de: ${listaMatricula.nome} (ID: ${listaMatricula.numeroMatricula})?`,
         textoBotoes: {
           ok: 'Confirmar',
           cancel: 'Cancelar',
         },
-        dado: turma
+        dado: listaMatricula
       },
     });
 
@@ -93,34 +92,6 @@ export class ListTurmaComponent implements OnInit{
     }
     return this.flexDivAlinhar = "row";
 
-  }
-  openDialogCreate(): void {
-    console.log("Novo");
-    const dialogRef = this.dialog.open(FormTurmaDialogComponent,
-      {
-        data:
-          {
-            turma: null
-          }
-      })
-    dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados()
-      }
-    )
-  }
-  openDialog(turma: Turma): void {
-    console.log(turma);
-    const dialogRef = this.dialog.open(FormTurmaDialogComponent,
-      {
-        data:
-          {
-            turma: turma
-          }
-      })
-    dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados()
-      }
-    )
   }
 
 }

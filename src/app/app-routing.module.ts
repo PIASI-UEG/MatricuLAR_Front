@@ -5,6 +5,7 @@ import {AutenticacaoRoutes} from "./arquitetura/autenticacao/autenticacao.routin
 import {SecurityGuard} from "./arquitetura/security/security.guard";
 import {funcionarioRoutes} from "./pages/funcionario/funcionario-routing.module";
 import {turmaRoutes} from "./pages/turma/turma-routing.module";
+import {matriculaRoutes} from "./pages/matricula/matricula-routing.module";
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
     children: [
       ...funcionarioRoutes,
       ...turmaRoutes,
+      ...matriculaRoutes,
        { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
     //canActivate: [SecurityGuard],
