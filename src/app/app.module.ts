@@ -31,6 +31,7 @@ import {FlexModule} from "@angular/flex-layout";
 import {NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask} from "ngx-mask";
 import {FuncionarioModule} from "./pages/funcionario/funcionario.module";
 import {MatriculaModule} from "./pages/matricula/matricula.module";
+import {TurmaModule} from "./pages/turma/turma.module";
 
 @NgModule({
   declarations: [
@@ -72,10 +73,10 @@ import {MatriculaModule} from "./pages/matricula/matricula.module";
     MatCheckboxModule,
     NgxMaskDirective,
     NgxMaskPipe,
-      MatFormFieldModule,
-      FuncionarioModule,
-      MatriculaModule
-
+    MatFormFieldModule,
+    FuncionarioModule,
+    MatriculaModule,
+    TurmaModule,
   ],
   providers: [
     provideEnvironmentNgxMask(),

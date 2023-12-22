@@ -5,7 +5,7 @@ import {ListFuncionarioComponent} from "./list-funcionario/list-funcionario.comp
 import {FormFuncionarioComponent} from "./form-funcionario/form-funcionario.component";
 import {HomeFuncionarioComponent} from "./home-funcionario/home-funcionario.component";
 
-const routes: Routes = [];
+
 
 export const funcionarioRoutes: Routes = [
   {
