@@ -24,7 +24,7 @@ export class FormFuncionarioComponent implements OnInit{
   acao: string = this.ACAO_INCLUIR;
   codigo!: number;
   //cargos: CargoDto[] = [];
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "funcionario", this.snackBar)
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'funcionario'})
   validacoes: Validacoes = new Validacoes();
   minDate = new Date(1900, 0, 1);
   maxDate = new Date(2008,0,0);
@@ -40,7 +40,6 @@ export class FormFuncionarioComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private securityService: SecurityService,
   ) {
     this._adapter.setLocale('pt-br');
@@ -70,18 +69,29 @@ export class FormFuncionarioComponent implements OnInit{
   }
 
   private createForm() {
-    this.formGroup = this.formBuilder.group({
-        pessoaNome: [null, Validators.required],
-        pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
-        cargo: [null, Validators.required],
-        pessoaFone: [null, [Validators.required, this.validacoes.validarTelefone]],
-        senha: [null, [Validators.required,
-          Validators.minLength(6),
-          this.validacoes.validarCaracterEspecial,
-          this.validacoes.validarLetraMaiuscula,
-          this.validacoes.validarPeloMenosTresNumeros]],
-        confirmarSenha: [null, Validators.required]
-    })
+    if(this.acao == "Editar"){
+      this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
+        this.formGroup = this.formBuilder.group({
+          pessoaNome: [retorno.pessoaNome, Validators.required],
+          pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf]],
+          cargo: [retorno.cargo, Validators.required],
+          pessoaFone: [retorno.pessoaFone, [Validators.required, this.validacoes.validarTelefone]],
+        }));
+    }
+    else {
+    }
+      this.formGroup = this.formBuilder.group({
+          pessoaNome: [null, Validators.required],
+          pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
+          cargo: [null, Validators.required],
+          pessoaFone: [null, [Validators.required, this.validacoes.validarTelefone]],
+          senha: [null, [Validators.required,
+            Validators.minLength(6),
+            this.validacoes.validarCaracterEspecial,
+            this.validacoes.validarLetraMaiuscula,
+            this.validacoes.validarPeloMenosTresNumeros]],
+          confirmarSenha: [null, Validators.required]
+      })
   }
 
   public handleError = (controlName: string, errorName: string) => {

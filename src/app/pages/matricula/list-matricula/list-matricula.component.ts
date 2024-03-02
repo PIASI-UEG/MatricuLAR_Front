@@ -21,7 +21,7 @@ export class ListMatriculaComponent implements OnInit{
 
   colunasMostrar = ['numeroMatricula','nome','turma','nomeResponsaveis','telefone','status','acao'];
   turmaListaDataSource: MatTableDataSource<Matricula> = new MatTableDataSource<Matricula>([]);
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "matricula", this.snackBar)
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar:this.snackBar})
   admin!: boolean;
   pageSlice!: Matricula[];
   qtdRegistros!: number;
@@ -30,7 +30,6 @@ export class ListMatriculaComponent implements OnInit{
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router,
     private securityService: SecurityService
   ){
   }

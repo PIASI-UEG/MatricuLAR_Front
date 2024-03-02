@@ -22,7 +22,7 @@ export class ListTurmaComponent implements OnInit{
 
   colunasMostrar = ['nome','professora','telefoneProfessora','quantidadeAlunos','acao'];
   turmaListaDataSource: MatTableDataSource<Turma> = new MatTableDataSource<Turma>([]);
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "turma", this.snackBar)
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
   admin!: boolean;
   pageSlice!: Turma[];
   qtdRegistros!: number;
@@ -31,7 +31,6 @@ export class ListTurmaComponent implements OnInit{
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router,
     private securityService: SecurityService
   ){
   }

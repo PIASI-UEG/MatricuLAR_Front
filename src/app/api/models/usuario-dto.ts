@@ -2,10 +2,10 @@
 /* eslint-disable */
 export interface UsuarioDto {
   cargo?: string;
+  email?: string;
   id?: number;
   pessoaCpf?: string;
-  pessoaFone?: string;
   pessoaNome?: string;
+  pessoaTelefone?: string;
   senha?: string;
-  telefone?: string;
 }

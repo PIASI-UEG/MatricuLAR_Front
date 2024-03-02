@@ -3,11 +3,14 @@
 <mat-card>
   <mat-card-actions [fxLayout]="mudarAlinhar()" fxLayoutAlign="center none" >
     <div fxLayout="row" fxLayoutAlign="center center">
-      <button class="button-config" mat-raised-button color="primary" (click)="openDialogCreate()">
+      <button class="button-config" mat-raised-button [routerLink]="['/turma','novo']">
         <mat-icon>add</mat-icon> <span>Novo lançamento</span>
       </button>
-    </div>
 
+    </div>
+    <div class="serachFlex">
+      <app-search-component [controller]="" (onSearchResult)="showResult($event)"/>
+    </div>
   </mat-card-actions>
   <mat-card-content>
     <div style="overflow-x:auto">

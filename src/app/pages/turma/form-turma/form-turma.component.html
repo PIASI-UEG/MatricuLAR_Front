@@ -1,0 +1,53 @@
+<div class="formPadrao" fxLayout="row" fxLayoutAlign="center center">
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit()"
+    class="form" fxFlex="1 1 auto"
+  >
+    <h1>{{acao}} Turma</h1>
+
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="nome" placeholder="Digite o nome da turma">
+      <mat-error *ngIf="handleError('nome', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Turno</mat-label>
+      <input matInput formControlName="turno" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>ano</mat-label>
+      <input matInput formControlName="ano" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Horário de início da aula</mat-label>
+      <input matInput formControlName="horarioInicio" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Horário de fim da aula</mat-label>
+      <input matInput formControlName="horarioFim" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nome da professora</mat-label>
+      <input matInput formControlName="professora" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Telefone da professora</mat-label>
+      <input matInput formControlName="telefoneProfessora" >
+    </mat-form-field>
+
+
+      <button mat-raised-button class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">
+        Limpar
+      </button>
+      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+  </form>
+</div>
+

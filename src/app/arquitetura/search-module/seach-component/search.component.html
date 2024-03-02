@@ -4,7 +4,7 @@
   (ngSubmit)="search()"
   class="form"
 >
-  <div fxFlex="1 1 auto" [fxLayout]="mudarAlinhar()" >
+  <div fxFlex="1 1 auto" [fxLayout]="mudarAlinhar()" fxLayoutAlign="center center" >
     <mat-form-field >
       <mat-label>Campo</mat-label>
       <mat-select formControlName="searchParameter">
@@ -39,10 +39,8 @@
       </mat-autocomplete>
       <mat-error validationMessage></mat-error>
     </mat-form-field>
-    <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-raised-button class="button-busca" (click)="search()" type="submit">Buscar</button>
       <button mat-button mat-raised-button  class="button-busca" type="button" (click)="searchAll()">Todos</button>
-    </div>
   </div>
 </form>
 

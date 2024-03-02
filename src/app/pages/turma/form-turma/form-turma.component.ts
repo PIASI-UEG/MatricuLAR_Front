@@ -1,19 +1,18 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {Turma} from "../../../custom_models/turma";
+import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Turma} from "../../../custom_models/turma";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: 'app-form-turma-dialog',
-  templateUrl: './form-turma-dialog.component.html',
-  styleUrls: ['./form-turma-dialog.component.scss']
+  selector: 'app-form-turma',
+  templateUrl: './form-turma.component.html',
+  styleUrls: ['./form-turma.component.scss']
 })
-export class FormTurmaDialogComponent implements OnInit {
+export class FormTurmaComponent {
   formGroup!: FormGroup;
   public readonly ACAO_INCLUIR = "Cadastrar";
   public readonly ACAO_EDITAR = "Editar";
@@ -23,7 +22,6 @@ export class FormTurmaDialogComponent implements OnInit {
 
   public constructor(
     private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<FormTurmaDialogComponent>,
     private dialog: MatDialog,
     private router: Router,
     private securityService: SecurityService,
@@ -39,10 +37,6 @@ export class FormTurmaDialogComponent implements OnInit {
     this.prepararEdicao();
   }
 
-  fechar(): void {
-    this.dialogRef.close();
-  }
-
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
   };
@@ -55,7 +49,6 @@ export class FormTurmaDialogComponent implements OnInit {
       }else{
         this.realizarEdicao();
       }
-      this.fechar();
     }
   }
 
@@ -132,9 +125,10 @@ export class FormTurmaDialogComponent implements OnInit {
 
   private prepararEdicao() {
     if (this.turma != null){
-          this.acao = this.ACAO_EDITAR;
+      this.acao = this.ACAO_EDITAR;
     }
   }
 
 }
+
 

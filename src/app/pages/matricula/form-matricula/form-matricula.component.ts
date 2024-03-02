@@ -6,7 +6,6 @@ import {DateAdapter} from "@angular/material/core";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
@@ -24,7 +23,7 @@ export class FormMatriculaComponent implements OnInit{
   public readonly ACAO_EDITAR = "Editar";
   acao: string = this.ACAO_INCLUIR;
   codigo!: number;
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "funcionario", this.snackBar)
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'matricula'})
   validacoes: Validacoes = new Validacoes();
   minDate = new Date(1900, 0, 1);
   maxDate = new Date(2008,0,0);
@@ -41,7 +40,6 @@ export class FormMatriculaComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private securityService: SecurityService,
   ) {
     this._adapter.setLocale('pt-br');

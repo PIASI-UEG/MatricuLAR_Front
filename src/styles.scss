@@ -5,6 +5,10 @@ body, html{
   padding: 0;
 }
 
+.serachFlex{
+  width: 100%;
+}
+
 .tabela{
   background-color: #F28749;
   border-color: #F28749;
@@ -40,7 +44,6 @@ th{
   margin: 6px;
 }
 
-
 .divBusca{
   background-color:#E8E8E8;
   border-radius:15px;
@@ -57,7 +60,7 @@ th{
   font-size:14px;
   border-radius:15px;
   height:32px;
-  width:96%;
+  width:90%;
   border-color: transparent;
 }
 
@@ -134,15 +137,3 @@ app-loader-dialog{
   width: 100%!important;
 }
 
-
-
-
-
-
-
-
-
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

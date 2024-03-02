@@ -16,14 +16,16 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {SearchModule} from "../../arquitetura/search-module/search.module";
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
+import { FormTurmaComponent } from './form-turma/form-turma.component';
 
 
 @NgModule({
   declarations: [
     HomeTurmaComponent,
     ListTurmaComponent,
-    FormTurmaDialogComponent
+    FormTurmaDialogComponent,
+    FormTurmaComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import {RouterOutlet} from "@angular/router";
     MatPaginatorModule,
     MatTableModule,
     SearchModule,
-    RouterOutlet
+    RouterOutlet,
+    RouterLink
   ]
 })
 export class TurmaModule { }

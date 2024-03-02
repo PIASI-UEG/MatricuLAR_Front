@@ -195,7 +195,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
 
   mudarAlinhar() {
 
-    if(this.innerWidth < 1000)
+    if(this.innerWidth < 1100)
     {
       return this.flexDivAlinhar = "column";
     }
