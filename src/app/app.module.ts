@@ -75,8 +75,8 @@ import {TurmaModule} from "./pages/turma/turma.module";
     NgxMaskPipe,
     MatFormFieldModule,
     FuncionarioModule,
-    MatriculaModule,
     TurmaModule,
+    MatriculaModule,
   ],
   providers: [
     provideEnvironmentNgxMask(),

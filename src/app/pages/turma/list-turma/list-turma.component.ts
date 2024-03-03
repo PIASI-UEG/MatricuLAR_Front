@@ -12,6 +12,8 @@ import {
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Turma} from "../../../custom_models/turma";
 import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
+import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
+import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 
 @Component({
   selector: 'app-list-turma',
@@ -29,6 +31,7 @@ export class ListTurmaComponent implements OnInit{
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
   constructor(
+    public turmaService: TurmaControllerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private securityService: SecurityService
@@ -41,12 +44,19 @@ export class ListTurmaComponent implements OnInit{
   }
 
   onPageChange(event: PageEvent){
-
+    this.turmaService.turmaControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["cpf"]}}).subscribe(data => {
+      this.turmaListaDataSource.data = data.content;
+      this.pageSlice = this.turmaListaDataSource.data;
+    })
   }
 
 
   private buscarDados() {
-
+    this.turmaService.turmaControllerListAllPage({page: {page: 0, size: 5, sort:["pessoaCpf"]}}).subscribe(data => {
+      this.turmaListaDataSource.data = data.content;
+      this.pageSlice = this.turmaListaDataSource.data;
+      this.qtdRegistros = data.totalElements;
+    })
   }
 
   showResult($event: any[]) {
@@ -55,7 +65,17 @@ export class ListTurmaComponent implements OnInit{
 
   remover(turma: Turma) {
     console.log("Removido", turma.nome);
-    this.mensagens.showMensagemSimples("Excluído com sucesso!");
+    this.turmaService.turmaControllerRemover({ id: turma.id || 0})
+      .subscribe(
+        retorno => {
+          this.buscarDados();
+          this.mensagens.showMensagemSimples("Excluído com sucesso!");
+          console.log("Exclusão:", retorno);
+        },error => {
+          this.mensagens.confirmarErro("Excluir", error.message)
+        }
+      );
+
   }
 
 
@@ -92,34 +112,6 @@ export class ListTurmaComponent implements OnInit{
     }
     return this.flexDivAlinhar = "row";
 
-  }
-  openDialogCreate(): void {
-    console.log("Novo");
-    const dialogRef = this.dialog.open(FormTurmaDialogComponent,
-      {
-        data:
-          {
-            turma: null
-          }
-      })
-    dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados()
-      }
-    )
-  }
-  openDialog(turma: Turma): void {
-    console.log(turma);
-    const dialogRef = this.dialog.open(FormTurmaDialogComponent,
-      {
-        data:
-          {
-            turma: turma
-          }
-      })
-    dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados()
-      }
-    )
   }
 
 }

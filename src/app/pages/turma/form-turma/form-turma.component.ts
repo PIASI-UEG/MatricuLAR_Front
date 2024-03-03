@@ -1,11 +1,17 @@
-import {Component, Inject} from '@angular/core';
+import {Component, HostListener, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Turma} from "../../../custom_models/turma";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
+import {TurmaControllerService} from "../../../api/services/turma-controller.service";
+import {DateAdapter} from "@angular/material/core";
+import {UsuarioDto} from "../../../api/models/usuario-dto";
+import {TurmaDto} from "../../../api/models/turma-dto";
+import {Validacoes} from "../../../../Validacoes";
 
 @Component({
   selector: 'app-form-turma',
@@ -17,23 +23,31 @@ export class FormTurmaComponent {
   public readonly ACAO_INCLUIR = "Cadastrar";
   public readonly ACAO_EDITAR = "Editar";
   acao: string = this.ACAO_INCLUIR;
-  turma?: Turma;
+  turma?: TurmaDto;
+  codigo!: number;
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'turma'});
+  validacoes: Validacoes = new Validacoes();
+  flexDivAlinhar: string = 'row';
+  innerWidth: number = window.innerWidth;
+  submitFormulario!: boolean;
+
 
   public constructor(
+    private turmaservice: TurmaControllerService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private router: Router,
+    private route: ActivatedRoute,
     private securityService: SecurityService,
-    @Inject(MAT_DIALOG_DATA) data: any
+    private _adapter: DateAdapter<any>,
   ) {
-    this.turma = data.turma;
   }
 
 
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
     this.createForm();
-    console.log(this.turma);
+    this._adapter.setLocale('pt-br');
     this.prepararEdicao();
   }
 
@@ -43,8 +57,9 @@ export class FormTurmaComponent {
 
 
   onSubmit() {
-    if (this.formGroup.valid) {
-      if(!this.turma){
+    this.submitFormulario = true;
+    if (this.codigo != null || this.formGroup.valid) {
+      if(!this.codigo){
         this.realizarInclusao();
       }else{
         this.realizarEdicao();
@@ -54,15 +69,16 @@ export class FormTurmaComponent {
 
   createForm() {
     if(this.acao == "Editar"){
-      this.formGroup = this.formBuilder.group({
-        nome: ["aaaaaa", Validators.required],
-        turno: ["aaaaaa", Validators.required],
-        ano: ["aaaaaa", Validators.required],
-        horarioInicio: ["aaaaaa", Validators.required],
-        horarioFim: ["aaaaaa", Validators.required],
-        professora: ["aaaaaa"],
-        telefoneProfessora: ["aaaaaa" ]
-      })
+      this.turmaservice.turmaControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
+        this.formGroup = this.formBuilder.group({
+          nome: [retorno.nome, Validators.required],
+          turno: [retorno.turno, Validators.required],
+          ano: [retorno.ano, Validators.required],
+          horarioInicio: [retorno.horarioInicio, Validators.required],
+          horarioFim: [retorno.horarioFim, Validators.required],
+          professora: [retorno.professora, Validators.required],
+          telefoneProfessora: [retorno.telefoneProfessora, [Validators.required, this.validacoes.validarTelefone]]
+        }));
     }
     else{
       this.formGroup = this.formBuilder.group({
@@ -71,8 +87,8 @@ export class FormTurmaComponent {
         ano: [null, Validators.required],
         horarioInicio: [null, Validators.required],
         horarioFim: [null, Validators.required],
-        professora: [null],
-        telefoneProfessora: [null]
+        professora: [null, Validators.required],
+        telefoneProfessora: [null, [Validators.required, this.validacoes.validarTelefone]]
       })
     }
 
@@ -80,15 +96,32 @@ export class FormTurmaComponent {
 
 
   private realizarInclusao() {
-    const turma: Turma = this.formGroup.value;
-    console.log(turma);
-    this.confirmarAcao(turma, turma.nome ||"");
+    console.log("Dados:",this.formGroup.value);
+    const turma: TurmaDto = this.formGroup.value;
+    this.turmaservice.turmaControllerIncluir({body: turma})
+      .subscribe( retorno =>{
+        console.log("Retorno:",retorno);
+        this.confirmarAcao(retorno, this.ACAO_INCLUIR);
+        this.router.navigate(["/turma"]);
+      }, erro =>{
+        console.log("Erro:"+erro);
+        this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
+      })
   }
 
   private realizarEdicao(){
-    const turma: Turma = this.formGroup.value;
-    console.log(turma);
-    this.confirmarAcao(turma, this.ACAO_EDITAR);
+    console.log("Dados:", this.formGroup.value);
+    const turma: TurmaDto = this.formGroup.value;
+    this.turmaservice.turmaControllerAlterar( {id: this.codigo, body: turma})
+      .subscribe(retorno => {
+        console.log("Retorno:", retorno);
+        this.confirmarAcao(retorno, this.ACAO_EDITAR);
+        this.router.navigate(["/funcionario"]);
+      }, erro => {
+        console.log("Erro:", erro.error);
+        this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)
+        //this.showError(erro.error, this.ACAO_EDITAR);
+      })
 
   }
 
@@ -111,22 +144,38 @@ export class FormTurmaComponent {
     });
   }
 
-  confirmarErro(acao: String) {
-    const dialogRef = this.dialog.open(ConfirmationDialog, {
-      data: {
-        titulo: 'ERRO!!!',
-        mensagem: `Erro ao ${acao} \n !`,
-        textoBotoes: {
-          ok: 'Ok',
-        },
-      },
-    });
+  private prepararEdicao() {
+    const paramId = this.route.snapshot.paramMap.get('id');
+    if (paramId){
+      const codigo = parseInt(paramId);
+      console.log("codigo turma",paramId);
+      this.turmaservice.turmaControllerObterPorId({id: codigo}).subscribe(
+        retorno => {
+          this.acao = this.ACAO_EDITAR;
+          console.log("retorno", retorno);
+          this.codigo = retorno.id || -1;
+          this.formGroup.patchValue(retorno);
+        },error => {
+          this.mensagens.confirmarErro(this.ACAO_EDITAR, error.message)
+          console.log("erro", error);
+        }
+      )
+    }
   }
 
-  private prepararEdicao() {
-    if (this.turma != null){
-      this.acao = this.ACAO_EDITAR;
+  mudarAlinhar() {
+
+    if(innerWidth < 1000)
+    {
+      return this.flexDivAlinhar = "column";
     }
+    return this.flexDivAlinhar = "row";
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.innerWidth = window.innerWidth;
   }
 
 }

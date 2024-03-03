@@ -41,7 +41,7 @@ export class ListFuncionarioComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent){
-    this.usuarioService.usuarioControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["cpf"]}}).subscribe(data => {
+    this.usuarioService.usuarioControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["pessoaCpf"]}}).subscribe(data => {
       this.usuarioListaDataSource.data = data.content;
       this.pageSlice = this.usuarioListaDataSource.data;
     })

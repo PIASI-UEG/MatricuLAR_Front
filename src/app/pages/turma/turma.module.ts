@@ -18,14 +18,15 @@ import {MatTableModule} from "@angular/material/table";
 import {SearchModule} from "../../arquitetura/search-module/search.module";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import { FormTurmaComponent } from './form-turma/form-turma.component';
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
   declarations: [
     HomeTurmaComponent,
     ListTurmaComponent,
+    FormTurmaComponent,
     FormTurmaDialogComponent,
-    FormTurmaComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +44,8 @@ import { FormTurmaComponent } from './form-turma/form-turma.component';
     MatTableModule,
     SearchModule,
     RouterOutlet,
-    RouterLink
+    RouterLink,
+    MatSelectModule
   ]
 })
 export class TurmaModule { }

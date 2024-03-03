@@ -2,52 +2,65 @@
   <form
     [formGroup]="formGroup"
     (ngSubmit)="onSubmit()"
-    class="form" fxFlex="1 1 auto"
+    class="form"
+    fxFlex="1 1 auto"
   >
-    <h1>{{acao}} Turma</h1>
-
+    <h2>{{acao}}  Turma</h2>
     <mat-form-field>
-      <mat-label>Nome</mat-label>
+      <mat-label>Nome da turma</mat-label>
       <input matInput formControlName="nome" placeholder="Digite o nome da turma">
       <mat-error *ngIf="handleError('nome', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
     <mat-form-field>
       <mat-label>Turno</mat-label>
-      <input matInput formControlName="turno" >
+      <mat-select formControlName="turno" placeholder="Selecione o turno">
+        <mat-option value="MATUTINO">MATUTINO</mat-option>
+        <mat-option value="VESPERTINO">VESPERTINO</mat-option>
+        <mat-option value="NOTURNO">NOTURNO</mat-option>
+      </mat-select>
+      <mat-error *ngIf="handleError('turno', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>ano</mat-label>
-      <input matInput formControlName="ano" >
+      <mat-label>Ano</mat-label>
+      <input matInput formControlName="ano" placeholder="Digite o ano">
+      <mat-error *ngIf="handleError('ano', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
+    </div>
 
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
     <mat-form-field>
       <mat-label>Horário de início da aula</mat-label>
-      <input matInput formControlName="horarioInicio" >
+      <input matInput formControlName="horarioInicio" mask="00:00" placeholder="00:00">
+      <mat-error *ngIf="handleError('horarioInicio', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Horário de fim da aula</mat-label>
-      <input matInput formControlName="horarioFim" >
+      <input matInput formControlName="horarioFim" mask="00:00" placeholder="00:00">
+      <mat-error *ngIf="handleError('horarioFim', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
-
+    </div>
     <mat-form-field>
       <mat-label>Nome da professora</mat-label>
-      <input matInput formControlName="professora" >
+      <input matInput formControlName="professora" placeholder="Digite o nome do professor(a)">
+      <mat-error *ngIf="handleError('professora', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Telefone da professora</mat-label>
-      <input matInput formControlName="telefoneProfessora" >
+      <input matInput mask="(00) 0 0000-0000" formControlName="telefoneProfessora" placeholder="(00) 0 0000-0000">
+      <mat-error *ngIf="handleError('telefoneProfessora', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('telefoneProfessora', 'telefoneInvalido')">Telefone Inválido</mat-error>
     </mat-form-field>
 
-
-      <button mat-raised-button class="button botao-cancelar">Cancelar</button>
-      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">
-        Limpar
-      </button>
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" >
+      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
       <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+    </div>
   </form>
 </div>
 
