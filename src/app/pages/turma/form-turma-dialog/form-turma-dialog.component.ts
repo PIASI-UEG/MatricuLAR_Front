@@ -62,24 +62,24 @@ export class FormTurmaDialogComponent implements OnInit {
   createForm() {
     if(this.acao == "Editar"){
       this.formGroup = this.formBuilder.group({
-        nome: ["aaaaaa", Validators.required],
+        titulo: ["aaaaaa", Validators.required],
         turno: ["aaaaaa", Validators.required],
         ano: ["aaaaaa", Validators.required],
-        horarioInicio: ["aaaaaa", Validators.required],
-        horarioFim: ["aaaaaa", Validators.required],
-        professora: ["aaaaaa"],
-        telefoneProfessora: ["aaaaaa" ]
+        horaInicio: ["aaaaaa", Validators.required],
+        horaFim: ["aaaaaa", Validators.required],
+        nomeProfessor: ["aaaaaa"],
+        telefoneProfessor: ["aaaaaa" ]
       })
     }
     else{
       this.formGroup = this.formBuilder.group({
-        nome: [null, Validators.required],
+        titulo: [null, Validators.required],
         turno: [null, Validators.required],
         ano: [null, Validators.required],
-        horarioInicio: [null, Validators.required],
-        horarioFim: [null, Validators.required],
-        professora: [null],
-        telefoneProfessora: [null]
+        horaInicio: [null, Validators.required],
+        horaFim: [null, Validators.required],
+        nomeProfessor: [null],
+        telefoneProfessor: [null]
       })
     }
 

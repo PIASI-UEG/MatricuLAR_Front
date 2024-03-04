@@ -1,15 +1,12 @@
-import {Component, HostListener, Inject} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Turma} from "../../../custom_models/turma";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {DateAdapter} from "@angular/material/core";
-import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {TurmaDto} from "../../../api/models/turma-dto";
 import {Validacoes} from "../../../../Validacoes";
 
@@ -71,24 +68,24 @@ export class FormTurmaComponent {
     if(this.acao == "Editar"){
       this.turmaservice.turmaControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
-          nome: [retorno.nome, Validators.required],
+          titulo: [retorno.nome, Validators.required],
           turno: [retorno.turno, Validators.required],
           ano: [retorno.ano, Validators.required],
-          horarioInicio: [retorno.horarioInicio, Validators.required],
-          horarioFim: [retorno.horarioFim, Validators.required],
-          professora: [retorno.professora, Validators.required],
-          telefoneProfessora: [retorno.telefoneProfessora, [Validators.required, this.validacoes.validarTelefone]]
+          horaInicio: [retorno.horarioInicio, Validators.required],
+          horaFim: [retorno.horarioFim, Validators.required],
+          nomeProfessor: [retorno.professora, Validators.required],
+          telefoneProfessor: [retorno.telefoneProfessora, [Validators.required, this.validacoes.validarTelefone]]
         }));
     }
     else{
       this.formGroup = this.formBuilder.group({
-        nome: [null, Validators.required],
+        titulo: [null, Validators.required],
         turno: [null, Validators.required],
         ano: [null, Validators.required],
-        horarioInicio: [null, Validators.required],
-        horarioFim: [null, Validators.required],
-        professora: [null, Validators.required],
-        telefoneProfessora: [null, [Validators.required, this.validacoes.validarTelefone]]
+        horaInicio: [null, Validators.required],
+        horaFim: [null, Validators.required],
+        nomeProfessor: [null, Validators.required],
+        telefoneProfessor: [null, [Validators.required, this.validacoes.validarTelefone]]
       })
     }
 
@@ -98,7 +95,7 @@ export class FormTurmaComponent {
   private realizarInclusao() {
     console.log("Dados:",this.formGroup.value);
     const turma: TurmaDto = this.formGroup.value;
-    this.turmaservice.turmaControllerIncluir({body: turma})
+    this.turmaservice.turmaControllerIncluir({modeloDTO: turma})
       .subscribe( retorno =>{
         console.log("Retorno:",retorno);
         this.confirmarAcao(retorno, this.ACAO_INCLUIR);
@@ -125,11 +122,11 @@ export class FormTurmaComponent {
 
   }
 
-  confirmarAcao(turma: Turma, nome: String) {
+  confirmarAcao(turma: TurmaDto, nome: String) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Cadastro!!',
-        mensagem: `Nome turma: ${turma.nome} (ID: ${turma.id}). Cadastro realizada com sucesso!`,
+        mensagem: `Nome turma: ${turma.titulo} (ID: ${turma.id}). Cadastro realizada com sucesso!`,
         textoBotoes: {
           ok: 'Confirmar',
         },

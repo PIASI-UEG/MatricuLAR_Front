@@ -14,6 +14,7 @@ import {Turma} from "../../../custom_models/turma";
 import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
+import {TurmaDto} from "../../../api/models/turma-dto";
 
 @Component({
   selector: 'app-list-turma',
@@ -22,11 +23,11 @@ import {TurmaControllerService} from "../../../api/services/turma-controller.ser
 })
 export class ListTurmaComponent implements OnInit{
 
-  colunasMostrar = ['nome','professora','telefoneProfessora','quantidadeAlunos','acao'];
-  turmaListaDataSource: MatTableDataSource<Turma> = new MatTableDataSource<Turma>([]);
+  colunasMostrar = ['titulo','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
+  turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
   admin!: boolean;
-  pageSlice!: Turma[];
+  pageSlice!: TurmaDto[];
   qtdRegistros!: number;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
@@ -44,20 +45,30 @@ export class ListTurmaComponent implements OnInit{
   }
 
   onPageChange(event: PageEvent){
-    this.turmaService.turmaControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["cpf"]}}).subscribe(data => {
+    this.turmaService.turmaControllerListAll().subscribe(data => {
       this.turmaListaDataSource.data = data.content;
       this.pageSlice = this.turmaListaDataSource.data;
     })
   }
 
-
   private buscarDados() {
-    this.turmaService.turmaControllerListAllPage({page: {page: 0, size: 5, sort:["pessoaCpf"]}}).subscribe(data => {
+    this.turmaService.turmaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
       this.turmaListaDataSource.data = data.content;
       this.pageSlice = this.turmaListaDataSource.data;
       this.qtdRegistros = data.totalElements;
     })
   }
+
+  // private buscarDados() {
+  //   this.turmaService.turmaControllerListAll().subscribe(data => {
+  //     const turmasa : TurmaDto = data;
+  //     console.log("DATA:  " , turmasa)
+  //     this.turmaListaDataSource.data = data.content;
+  //     this.pageSlice = this.turmaListaDataSource.data;
+  //     this.qtdRegistros = data.totalElements;
+  //   })
+  //   console.log("turma: " + this.turmaListaDataSource.data)
+  // }
 
   showResult($event: any[]) {
     this.turmaListaDataSource.data = $event;

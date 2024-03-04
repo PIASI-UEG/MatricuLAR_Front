@@ -8,8 +8,8 @@
     <h2>{{acao}}  Turma</h2>
     <mat-form-field>
       <mat-label>Nome da turma</mat-label>
-      <input matInput formControlName="nome" placeholder="Digite o nome da turma">
-      <mat-error *ngIf="handleError('nome', 'required')">Campo Obrigatório</mat-error>
+      <input matInput formControlName="titulo" placeholder="Digite o nome da turma">
+      <mat-error *ngIf="handleError('titulo', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
@@ -33,27 +33,27 @@
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
     <mat-form-field>
       <mat-label>Horário de início da aula</mat-label>
-      <input matInput formControlName="horarioInicio" mask="00:00" placeholder="00:00">
-      <mat-error *ngIf="handleError('horarioInicio', 'required')">Campo Obrigatório</mat-error>
+      <input matInput formControlName="horaInicio" mask="00:00" placeholder="00:00">
+      <mat-error *ngIf="handleError('horaInicio', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Horário de fim da aula</mat-label>
-      <input matInput formControlName="horarioFim" mask="00:00" placeholder="00:00">
-      <mat-error *ngIf="handleError('horarioFim', 'required')">Campo Obrigatório</mat-error>
+      <input matInput formControlName="horaFim" mask="00:00" placeholder="00:00">
+      <mat-error *ngIf="handleError('horaFim', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
     </div>
     <mat-form-field>
       <mat-label>Nome da professora</mat-label>
-      <input matInput formControlName="professora" placeholder="Digite o nome do professor(a)">
-      <mat-error *ngIf="handleError('professora', 'required')">Campo Obrigatório</mat-error>
+      <input matInput formControlName="nomeProfessor" placeholder="Digite o nome do professor(a)">
+      <mat-error *ngIf="handleError('nomeProfessor', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Telefone da professora</mat-label>
-      <input matInput mask="(00) 0 0000-0000" formControlName="telefoneProfessora" placeholder="(00) 0 0000-0000">
-      <mat-error *ngIf="handleError('telefoneProfessora', 'required')">Campo Obrigatório</mat-error>
-      <mat-error *ngIf="handleError('telefoneProfessora', 'telefoneInvalido')">Telefone Inválido</mat-error>
+      <input matInput mask="(00) 0 0000-0000" formControlName="telefoneProfessor" placeholder="(00) 0 0000-0000">
+      <mat-error *ngIf="handleError('telefoneProfessor', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('telefoneProfessor', 'telefoneInvalido')">Telefone Inválido</mat-error>
     </mat-form-field>
 
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" >

@@ -7,6 +7,8 @@ export interface TurmaDto {
   horaInicio?: string;
   id?: number;
   nomeProfessor?: string;
+  quantidadeAlunos?: number;
+  telefoneProfessor?: string;
   titulo?: string;
   turmaMatriculas?: Array<MatriculaTurmaDto>;
   turno?: 'MATUTINO' | 'VESPERTINO' | 'NOTURNO';
