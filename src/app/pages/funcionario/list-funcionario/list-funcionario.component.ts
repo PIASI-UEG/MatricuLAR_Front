@@ -19,7 +19,7 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
   styleUrls: ['./list-funcionario.component.scss']
 })
 export class ListFuncionarioComponent implements OnInit {
-  colunasMostrar = ['pessoaCpf','pessoaNome','telefone','cargo','acao'];
+  colunasMostrar = ['pessoaCpf','pessoaNome','pessoaTelefone','cargo','acao'];
   usuarioListaDataSource: MatTableDataSource<UsuarioDto> = new MatTableDataSource<UsuarioDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
   admin!: boolean;

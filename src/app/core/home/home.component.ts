@@ -40,6 +40,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  usuarioLogado(): number {
+    return this.securityService.getUserId()
+  }
+
   ngAfterViewInit() {
     this.observer
       .observe(['(max-width: 800px)'])

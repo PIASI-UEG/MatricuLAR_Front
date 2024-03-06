@@ -1,23 +1,21 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {UsuarioDto} from "../../../api/models/usuario-dto";
-import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {Component, HostListener} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
+import {Validacoes} from "../../../../Validacoes";
 import {DateAdapter} from "@angular/material/core";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
-import {Validacoes} from "../../../../Validacoes";
-
+import {UsuarioDto} from "../../../api/models/usuario-dto";
+import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: 'app-form-funcionario',
-  templateUrl: './form-funcionario.component.html',
-  styleUrls: ['./form-funcionario.component.scss']
+  selector: 'app-form-minha-conta',
+  templateUrl: './form-minha-conta.component.html',
+  styleUrls: ['./form-minha-conta.component.scss']
 })
-export class FormFuncionarioComponent implements OnInit{
+export class FormMinhaContaComponent {
   formGroup!: FormGroup;
   public readonly ACAO_INCLUIR = "Cadastrar";
   public readonly ACAO_EDITAR = "Editar";
@@ -68,8 +66,6 @@ export class FormFuncionarioComponent implements OnInit{
     return true;
   }
 
-
-
   private createForm() {
     if(this.acao == "Editar"){
       this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
@@ -84,20 +80,20 @@ export class FormFuncionarioComponent implements OnInit{
     }
     else {
     }
-      this.formGroup = this.formBuilder.group({
-          pessoaNome: [null, Validators.required],
-          pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
-          cargo: [null, Validators.required],
-          email: [null, [Validators.required, this.validacoes.validarEmail]],
-          pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
-          senha: [null, [Validators.required,
-            Validators.minLength(6),
-            this.validacoes.validarCaracterEspecial,
-            this.validacoes.validarLetraMaiuscula,
-            this.validacoes.validarPeloMenosTresNumeros]],
-          confirmarSenha: [null, Validators.required],
-          idUsuarioRequisicao: [this.securityService.getUserId()]
-      })
+    this.formGroup = this.formBuilder.group({
+      pessoaNome: [null, Validators.required],
+      pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
+      cargo: [null, Validators.required],
+      email: [null, [Validators.required, this.validacoes.validarEmail]],
+      pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+      senha: [null, [Validators.required,
+        Validators.minLength(6),
+        this.validacoes.validarCaracterEspecial,
+        this.validacoes.validarLetraMaiuscula,
+        this.validacoes.validarPeloMenosTresNumeros]],
+      confirmarSenha: [null, Validators.required],
+      idUsuarioRequisicao: [this.securityService.getUserId()]
+    })
   }
 
   public handleError = (controlName: string, errorName: string) => {
@@ -236,3 +232,4 @@ export class FormFuncionarioComponent implements OnInit{
   }
 
 }
+

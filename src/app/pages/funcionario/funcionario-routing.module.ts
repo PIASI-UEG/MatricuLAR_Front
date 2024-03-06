@@ -15,8 +15,6 @@ export const funcionarioRoutes: Routes = [
       {
         path: "",
         component: ListFuncionarioComponent,
-        //canActivate: [SecurityGuard],
-        //data: {security: {roles: ['ROLE_PRODUTO_INCLUIR', 'ROLE_PRODUTO_ALTERAR']}}
       },
       {
         path: "novo",

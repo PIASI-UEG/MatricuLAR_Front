@@ -1,4 +1,3 @@
-
 <div class="formPadrao" fxLayout="row" fxLayoutAlign="center center">
 
   <form [formGroup]="formGroup"
@@ -6,19 +5,19 @@
         class="form"
         fxFlex="1 1 auto"
   >
-    <h2>{{acao}}  Funcionário</h2>
+    <h2>Minha Conta</h2>
     <mat-form-field>
       <mat-label>Nome</mat-label>
       <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário">
       <mat-error *ngIf="handleError('pessoaNome', 'required')">Campo Obrigatório</mat-error>
     </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>CPF</mat-label>
-        <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
-        <mat-error *ngIf="handleError('pessoaCpf', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>CPF</mat-label>
+      <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
+      <mat-error *ngIf="handleError('pessoaCpf', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
+    </mat-form-field>
 
     <mat-form-field>
       <mat-label>E-mail</mat-label>
@@ -28,20 +27,14 @@
     </mat-form-field>
 
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-      <mat-form-field>
-        <mat-label>Cargo</mat-label>
-        <mat-select formControlName="cargo" placeholder="Selecione o cargo">
-          <mat-option value="SECRETARIA">SECRETARIA</mat-option>
-        </mat-select>
-        <mat-error *ngIf="handleError('cargo', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Telefone</mat-label>
-      <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone" placeholder="(00) 0 0000-0000">
-      <mat-error *ngIf="handleError('pessoaTelefone', 'required')">Campo Obrigatório</mat-error>
-      <mat-error *ngIf="handleError('pessoaTelefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
-    </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Telefone</mat-label>
+        <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone" placeholder="(00) 0 0000-0000">
+        <mat-error *ngIf="handleError('pessoaTelefone', 'required')">Campo Obrigatório</mat-error>
+        <mat-error *ngIf="handleError('pessoaTelefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
+      </mat-form-field>
     </div>
 
     <div *ngIf="codigo == null" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >

@@ -32,6 +32,14 @@
 
         <mat-divider></mat-divider>
 
+      <button title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta',usuarioLogado()]"> Minha Conta
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+
+      <mat-divider></mat-divider>
+
+
         <button title="Sair" mat-button class="menu-button" (click)="sair()"> Sair
             <mat-icon>logout</mat-icon>
         </button>

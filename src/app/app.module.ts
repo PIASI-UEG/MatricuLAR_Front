@@ -32,13 +32,15 @@ import {NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask} from "ngx-mask
 import {FuncionarioModule} from "./pages/funcionario/funcionario.module";
 import {MatriculaModule} from "./pages/matricula/matricula.module";
 import {TurmaModule} from "./pages/turma/turma.module";
+import {MinhaContaModule} from "./pages/minha-conta/minha-conta.module";
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoaderDialogComponent,
-    ConfirmationDialog
+    ConfirmationDialog,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +79,7 @@ import {TurmaModule} from "./pages/turma/turma.module";
     FuncionarioModule,
     TurmaModule,
     MatriculaModule,
+    MinhaContaModule
   ],
   providers: [
     provideEnvironmentNgxMask(),
