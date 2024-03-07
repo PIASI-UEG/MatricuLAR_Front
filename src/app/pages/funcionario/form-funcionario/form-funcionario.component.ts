@@ -7,7 +7,6 @@ import {DateAdapter} from "@angular/material/core";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {Validacoes} from "../../../../Validacoes";
 
@@ -23,11 +22,10 @@ export class FormFuncionarioComponent implements OnInit{
   public readonly ACAO_EDITAR = "Editar";
   acao: string = this.ACAO_INCLUIR;
   codigo!: number;
+  usuario?:UsuarioDto;
   //cargos: CargoDto[] = [];
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'funcionario'})
   validacoes: Validacoes = new Validacoes();
-  minDate = new Date(1900, 0, 1);
-  maxDate = new Date(2008,0,0);
   flexDivAlinhar: string = 'row';
   admin!: boolean
   innerWidth: number = window.innerWidth;
@@ -78,7 +76,7 @@ export class FormFuncionarioComponent implements OnInit{
           pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf]],
           cargo: [retorno.cargo, Validators.required],
           email: [retorno.email, [Validators.required, this.validacoes.validarEmail]],
-          pessoaTelefone: [retorno.pessoaFone, [Validators.required, this.validacoes.validarTelefone]],
+          pessoaTelefone: [retorno.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone]],
           idUsuarioRequisicao: [this.securityService.getUserId()]
         }));
     }
@@ -123,7 +121,7 @@ export class FormFuncionarioComponent implements OnInit{
     this.atribuirUsuarioForm();
     console.log("Dados:",this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
-    this.usuarioService.usuarioControllerIncluir({usuarioDTO: usuario})
+    this.usuarioService.usuarioControllerIncluir({body: usuario})
       .subscribe( retorno =>{
         console.log("Retorno:",retorno);
         this.confirmarAcao(retorno, this.ACAO_INCLUIR);
@@ -144,7 +142,7 @@ export class FormFuncionarioComponent implements OnInit{
     const paramId = this.route.snapshot.paramMap.get('id');
     if (paramId){
       const codigo = parseInt(paramId);
-      console.log("codigo pessoa",paramId);
+      console.log("codigo usuario",paramId);
       this.usuarioService.usuarioControllerObterPorId({id: codigo}).subscribe(
         retorno => {
           this.acao = this.ACAO_EDITAR;
@@ -175,6 +173,7 @@ export class FormFuncionarioComponent implements OnInit{
     this.atribuirUsuarioForm();
     console.log("Dados:", this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
+    usuario.id = this.codigo;
     this.usuarioService.usuarioControllerAlterar( {id: this.codigo, body: usuario})
       .subscribe(retorno => {
         console.log("Retorno:", retorno);

@@ -10,6 +10,7 @@ import {SecurityService} from "../../../arquitetura/security/security.service";
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Matricula} from "../../../custom_models/matricula";
+import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
 
 @Component({
   selector: 'app-form-matricula',
@@ -65,7 +66,7 @@ export class FormMatriculaComponent implements OnInit{
         cpfCrianca: [null, Validators.required],
         dataNascimento: [null, Validators.required],
         possuiNecessidadeEspecial: false,
-        necessidadesEspeciais: this.formBuilder.array([]),
+        necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
         cep: [null, Validators.required],
         cidade: [null, Validators.required],
         bairro: [null, Validators.required],

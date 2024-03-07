@@ -17,15 +17,10 @@ import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation
 })
 export class FormMinhaContaComponent {
   formGroup!: FormGroup;
-  public readonly ACAO_INCLUIR = "Cadastrar";
-  public readonly ACAO_EDITAR = "Editar";
-  acao: string = this.ACAO_INCLUIR;
   codigo!: number;
   //cargos: CargoDto[] = [];
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'funcionario'})
   validacoes: Validacoes = new Validacoes();
-  minDate = new Date(1900, 0, 1);
-  maxDate = new Date(2008,0,0);
   flexDivAlinhar: string = 'row';
   admin!: boolean
   innerWidth: number = window.innerWidth;
@@ -67,19 +62,6 @@ export class FormMinhaContaComponent {
   }
 
   private createForm() {
-    if(this.acao == "Editar"){
-      this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
-        this.formGroup = this.formBuilder.group({
-          pessoaNome: [retorno.pessoaNome, Validators.required],
-          pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf]],
-          cargo: [retorno.cargo, Validators.required],
-          email: [retorno.email, [Validators.required, this.validacoes.validarEmail]],
-          pessoaTelefone: [retorno.pessoaFone, [Validators.required, this.validacoes.validarTelefone]],
-          idUsuarioRequisicao: [this.securityService.getUserId()]
-        }));
-    }
-    else {
-    }
     this.formGroup = this.formBuilder.group({
       pessoaNome: [null, Validators.required],
       pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
@@ -108,32 +90,11 @@ export class FormMinhaContaComponent {
 
     if (this.codigo != null || this.formGroup.valid) {
       if(!this.codigo){
-        this.realizarInclusao();
+
       }else{
         this.realizarEdicao();
       }
     }
-  }
-
-  private realizarInclusao(){
-    this.atribuirUsuarioForm();
-    console.log("Dados:",this.formGroup.value);
-    const usuario: UsuarioDto = this.formGroup.value;
-    this.usuarioService.usuarioControllerIncluir({usuarioDTO: usuario})
-      .subscribe( retorno =>{
-        console.log("Retorno:",retorno);
-        this.confirmarAcao(retorno, this.ACAO_INCLUIR);
-        this.router.navigate(["/funcionario"]);
-      }, erro =>{
-        console.log("Erro:"+erro);
-        this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
-      })
-  }
-
-
-  limparFormulario() {
-    this.formGroup.reset(); // limpa os campos do formulario.
-    this.atribuirUsuarioForm();
   }
 
   private prepararEdicao() {
@@ -143,12 +104,11 @@ export class FormMinhaContaComponent {
       console.log("codigo pessoa",paramId);
       this.usuarioService.usuarioControllerObterPorId({id: codigo}).subscribe(
         retorno => {
-          this.acao = this.ACAO_EDITAR;
           console.log("retorno", retorno);
           this.codigo = retorno.id || -1;
           this.formGroup.patchValue(retorno);
         },error => {
-          this.mensagens.confirmarErro(this.ACAO_EDITAR, error.message)
+          this.mensagens.confirmarErro("Editar", error.message)
           console.log("erro", error);
         }
       )
@@ -171,15 +131,15 @@ export class FormMinhaContaComponent {
     this.atribuirUsuarioForm();
     console.log("Dados:", this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
+    usuario.id = this.codigo
     this.usuarioService.usuarioControllerAlterar( {id: this.codigo, body: usuario})
       .subscribe(retorno => {
         console.log("Retorno:", retorno);
-        this.confirmarAcao(retorno, this.ACAO_EDITAR);
+        this.confirmarAcao(retorno, "Editar");
         this.router.navigate(["/funcionario"]);
       }, erro => {
         console.log("Erro:", erro.error);
-        this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)
-        //this.showError(erro.error, this.ACAO_EDITAR);
+        this.mensagens.confirmarErro("Editar", erro.message)
       })
   }
 
