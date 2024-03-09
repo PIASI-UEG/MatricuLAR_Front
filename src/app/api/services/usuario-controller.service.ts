@@ -200,59 +200,6 @@ export class UsuarioControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation usuarioControllerEnviaEmail
-   */
-  static readonly UsuarioControllerEnviaEmailPath = '/api/v1/usuario/teste';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `usuarioControllerEnviaEmail()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  usuarioControllerEnviaEmail$Response(params: {
-    body: string
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerEnviaEmailPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `usuarioControllerEnviaEmail$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  usuarioControllerEnviaEmail(params: {
-    body: string
-  },
-  context?: HttpContext
-
-): Observable<string> {
-
-    return this.usuarioControllerEnviaEmail$Response(params,context).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
-    );
-  }
-
-  /**
    * Path part for operation usuarioControllerIncluir
    */
   static readonly UsuarioControllerIncluirPath = '/api/v1/usuario/singup';

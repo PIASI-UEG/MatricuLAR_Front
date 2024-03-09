@@ -11,7 +11,6 @@ import { ResponsavelControllerService } from './services/responsavel-controller.
 import { PessoaControllerService } from './services/pessoa-controller.service';
 import { NecessidadeEspecialControllerService } from './services/necessidade-especial-controller.service';
 import { MatriculaControllerService } from './services/matricula-controller.service';
-
 import { InformacoesMatriculaControllerService } from './services/informacoes-matricula-controller.service';
 import { EnderecoControllerService } from './services/endereco-controller.service';
 import { AuthApiService } from './services/auth-api.service';
@@ -32,6 +31,7 @@ import { AdvertenciaControllerService } from './services/advertencia-controller.
     PessoaControllerService,
     NecessidadeEspecialControllerService,
     MatriculaControllerService,
+    InformacoesMatriculaControllerService,
     EnderecoControllerService,
     AuthApiService,
     AdvertenciaControllerService,
