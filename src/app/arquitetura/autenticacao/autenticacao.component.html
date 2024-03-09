@@ -23,11 +23,6 @@
                     <input matInput formControlName="senha" type="password" title="Senha"
                            placeholder="Digite sua senha">
                     <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">A senha é obrigatória</mat-error>
-                    <mat-error *ngIf="formGroup.get('senha')?.hasError('minlength')">A senha precisa ter pelo menos 6 caracteres</mat-error>
-                    <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaCaracter')">A senha precisa ter um caracter especial</mat-error>
-                    <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaMaiuscula')">A senha precisa ter uma letra maiúscula</mat-error>
-                    <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaNumeros')">A senha precisa ter pelo menos 3 números</mat-error>
-
                 </mat-form-field>
 
                 <button class="button" type="submit"  title="Entrar">
