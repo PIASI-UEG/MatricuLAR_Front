@@ -1,11 +1,11 @@
 .tela-inteira{
-
+    background-image: url("/assets/fotos_login/tela_login_imagem.png") ;
     position: absolute;
     height: 100%;
     width: 100%;
-    //background-repeat: no-repeat;
-    //background-position: center;
-    //background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     align-items: center;
     display: flex;
     justify-content: center
@@ -53,6 +53,17 @@ h1{
     margin-top: 40%;
   }
 }
+
+.imagem-lateral {
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.imagem-lateral.esquerda {
+  background-image: url("/assets/fotos_login/imagem2_crianca2.png");
+}
+
 
 .login-content {
   font-family: DM Roboto, sans-serif;
