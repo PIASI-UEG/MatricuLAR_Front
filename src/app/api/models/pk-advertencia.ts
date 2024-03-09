@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface PkAdvertencia {
-  matricula?: string;
+  matricula?: number;
   numero?: number;
 }

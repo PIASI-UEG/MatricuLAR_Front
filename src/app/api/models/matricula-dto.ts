@@ -2,6 +2,7 @@
 /* eslint-disable */
 import { AdvertenciaDto } from './advertencia-dto';
 import { MatriculaTurmaDto } from './matricula-turma-dto';
+import { InformacoesMatriculaDto } from './informacoes-matricula-dto';
 import { NecessidadeEspecialDto } from './necessidade-especial-dto';
 import { ResponsavelDto } from './responsavel-dto';
 import { TurmaDto } from './turma-dto';
@@ -21,5 +22,14 @@ export interface MatriculaDto {
   status?: 'ATIVO' | 'INATIVO';
   turmaAtual?: TurmaDto;
   turmasHistorico?: Array<MatriculaTurmaDto>;
+  enderecoId?: number;
+  id?: number;
+  informacoesMatricula?: InformacoesMatriculaDto;
+  nascimento?: string;
+  necessidades?: Array<NecessidadeEspecialDto>;
+  nome?: string;
+  responsaveis?: Array<ResponsavelDto>;
+  status?: 'ATIVO' | 'INATIVO';
+  turma?: TurmaDto;
   tutorDTOList?: Array<TutorDto>;
 }
