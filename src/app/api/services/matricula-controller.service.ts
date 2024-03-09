@@ -39,7 +39,7 @@ export class MatriculaControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   matriculaControllerObterPorId$Response(params: {
-    id: number;
+    id: string;
   },
   context?: HttpContext
 
@@ -71,7 +71,7 @@ export class MatriculaControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   matriculaControllerObterPorId(params: {
-    id: number;
+    id: string;
   },
   context?: HttpContext
 
@@ -96,7 +96,7 @@ export class MatriculaControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   matriculaControllerAlterar$Response(params: {
-    id: number;
+    id: string;
     body: MatriculaDto
   },
   context?: HttpContext
@@ -130,7 +130,7 @@ export class MatriculaControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   matriculaControllerAlterar(params: {
-    id: number;
+    id: string;
     body: MatriculaDto
   },
   context?: HttpContext
@@ -156,7 +156,7 @@ export class MatriculaControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   matriculaControllerRemover$Response(params: {
-    id: number;
+    id: string;
   },
   context?: HttpContext
 
@@ -188,7 +188,7 @@ export class MatriculaControllerService extends BaseService {
    * This method doesn't expect any request body.
    */
   matriculaControllerRemover(params: {
-    id: number;
+    id: string;
   },
   context?: HttpContext
 

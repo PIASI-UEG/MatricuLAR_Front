@@ -2,6 +2,7 @@ export { FieldResponse } from './models/field-response';
 export { MessageResponse } from './models/message-response';
 export { UsuarioDto } from './models/usuario-dto';
 export { TutorDto } from './models/tutor-dto';
+export { MatriculaTurmaDto } from './models/matricula-turma-dto';
 export { TurmaDto } from './models/turma-dto';
 export { ResponsavelDto } from './models/responsavel-dto';
 export { PkResponsavel } from './models/pk-responsavel';

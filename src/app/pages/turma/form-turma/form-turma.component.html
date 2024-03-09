@@ -1,0 +1,66 @@
+<div class="formPadrao" fxLayout="row" fxLayoutAlign="center center">
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit()"
+    class="form"
+    fxFlex="1 1 auto"
+  >
+    <h2>{{acao}}  Turma</h2>
+    <mat-form-field>
+      <mat-label>Nome da turma</mat-label>
+      <input matInput formControlName="titulo" placeholder="Digite o nome da turma">
+      <mat-error *ngIf="handleError('titulo', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+    <mat-form-field>
+      <mat-label>Turno</mat-label>
+      <mat-select formControlName="turno" placeholder="Selecione o turno">
+        <mat-option value="MATUTINO">MATUTINO</mat-option>
+        <mat-option value="VESPERTINO">VESPERTINO</mat-option>
+        <mat-option value="NOTURNO">NOTURNO</mat-option>
+      </mat-select>
+      <mat-error *ngIf="handleError('turno', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ano</mat-label>
+      <input matInput formControlName="ano" placeholder="Digite o ano">
+      <mat-error *ngIf="handleError('ano', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+    </div>
+
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+    <mat-form-field>
+      <mat-label>Horário de início da aula</mat-label>
+      <input matInput formControlName="horaInicio" mask="00:00" placeholder="00:00">
+      <mat-error *ngIf="handleError('horaInicio', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Horário de fim da aula</mat-label>
+      <input matInput formControlName="horaFim" mask="00:00" placeholder="00:00">
+      <mat-error *ngIf="handleError('horaFim', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Nome da professora</mat-label>
+      <input matInput formControlName="nomeProfessor" placeholder="Digite o nome do professor(a)">
+      <mat-error *ngIf="handleError('nomeProfessor', 'required')">Campo Obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Telefone da professora</mat-label>
+      <input matInput mask="(00) 0 0000-0000" formControlName="telefoneProfessor" placeholder="(00) 0 0000-0000">
+      <mat-error *ngIf="handleError('telefoneProfessor', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('telefoneProfessor', 'telefoneInvalido')">Telefone Inválido</mat-error>
+    </mat-form-field>
+
+    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" >
+      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
+      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+    </div>
+  </form>
+</div>
+

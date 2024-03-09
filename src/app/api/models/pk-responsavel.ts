@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface PkResponsavel {
-  matricula?: number;
+  matricula?: string;
   pessoa?: string;
 }

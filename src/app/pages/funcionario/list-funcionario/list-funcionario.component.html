@@ -9,8 +9,8 @@
       </button>
     </div>
 
-    <div>
-      <app-search-component [controller]="usuarioService" (onSearchResult)="showResult($event)"/>
+    <div class="searchFlex">
+      <app-search-component [controller]="" (onSearchResult)="showResult($event)"/>
     </div>
   </mat-card-actions>
   <mat-card-content>
@@ -29,7 +29,10 @@
           <td mat-cell *matCellDef="let element"> {{element.pessoaNome}} </td>
         </ng-container>
 
-
+        <ng-container matColumnDef="pessoaTelefone">
+          <th mat-header-cell *matHeaderCellDef> Telefone </th>
+          <td mat-cell *matCellDef="let element"> {{element.pessoaTelefone}} </td>
+        </ng-container>
 
         <ng-container matColumnDef="cargo">
           <th mat-header-cell *matHeaderCellDef> Cargo </th>
@@ -45,7 +48,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #acoes="matMenu">
-              <button mat-menu-item [routerLink]="['/funcionario',element.pessoaCpf]">
+              <button mat-menu-item [routerLink]="['/funcionario',element.id]">
                 <mat-icon>edit</mat-icon>Editar
               </button>
               <button mat-menu-item (click)="confirmarExcluir(element)">

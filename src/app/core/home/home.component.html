@@ -7,30 +7,38 @@
         <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
         <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
     </button>
-    <button class="custom-icon" routerLink="/home" >
+    <button class="custom-icon" routerLink="" >
     </button>
 </mat-toolbar>
 
 <mat-sidenav-container>
     <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-        <button title="Home"  mat-button class="menu-button" routerLink="/home"> Home
+        <button title="Home"  mat-button class="menu-button" routerLink=""> Home
             <mat-icon>home</mat-icon>
         </button>
-        <button title="Categoria" mat-button class="menu-button" routerLink="/categoria"> Validações de <br>Matrículas
+        <button title="Validações de Matrículas" mat-button class="menu-button" routerLink="/categoria"> Validações de <br>Matrículas
             <mat-icon>check_circle</mat-icon>
         </button>
-        <button title="Produto"  mat-button class="menu-button" routerLink="/matricula">
+        <button title="Matrículas"  mat-button class="menu-button" routerLink="/matricula">
             <mat-icon>face</mat-icon> Matrículas
         </button>
-        <button title="Funcionário"  mat-button class="menu-button" routerLink="">
+        <button title="Turmas"  mat-button class="menu-button" routerLink="/turma">
             <mat-icon>airline_seat_recline_normal</mat-icon> Turmas
         </button>
-        <button title="Cliente"  mat-button class="menu-button" routerLink="/funcionario">
+        <button title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario">
             <mat-icon>supervisor_account</mat-icon>Funcionários
         </button>
 
         <mat-divider></mat-divider>
+
+      <button title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta',usuarioLogado()]"> Minha Conta
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+
+      <mat-divider></mat-divider>
+
 
         <button title="Sair" mat-button class="menu-button" (click)="sair()"> Sair
             <mat-icon>logout</mat-icon>

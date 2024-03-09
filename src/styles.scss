@@ -5,16 +5,20 @@ body, html{
   padding: 0;
 }
 
+.searchFlex{
+  width: 100%;
+}
+
 .tabela{
-  background-color: #6050C6;
-  border-color: #6050C6;
+  background-color: #F28749;
+  border-color: #F28749;
   text-decoration-color: white;
   width: 100%;
 }
 
 .mat-mdc-row .mat-mdc-cell{
   background-color: white;
-  border: 1px solid #6050C6;
+  border: 1px solid #F28749;
   text-align: center;
 }
 
@@ -30,7 +34,7 @@ th{
   font-size: 14px;
   padding:1px;
   text-decoration: none;
-  background:#6050C6;
+  background:#F28749;
   color: white;
   width:220px;
   height:40px;
@@ -39,7 +43,6 @@ th{
   cursor: pointer;
   margin: 6px;
 }
-
 
 .divBusca{
   background-color:#E8E8E8;
@@ -57,7 +60,7 @@ th{
   font-size:14px;
   border-radius:15px;
   height:32px;
-  width:96%;
+  width:90%;
   border-color: transparent;
 }
 
@@ -87,7 +90,7 @@ h2{
 }
 
 mat-card{
-  border: 3px solid #6050C6;
+  border: 3px solid #F28749;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -114,7 +117,7 @@ app-loader-dialog{
 }
 
 .mat-mdc-progress-spinner.mat-warn[_ngcontent-ng-c2551497326] {
-  --mdc-circular-progress-active-indicator-color: #6050C6!important;
+  --mdc-circular-progress-active-indicator-color: #F28749!important;
 }
 
 .cdk-overlay-pane:has(> mat-dialog-containerlo:has(> .mdc-dialog__container:has(> .mat-mdc-dialog-surface mdc-dialog__surface:has(> app-produto-movimentacao-dialog)))){
@@ -134,15 +137,3 @@ app-loader-dialog{
   width: 100%!important;
 }
 
-
-
-
-
-
-
-
-
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

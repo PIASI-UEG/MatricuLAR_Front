@@ -1,0 +1,53 @@
+<div class="formMov" fxLayout="row" fxLayoutAlign="center">
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit()"
+    class="form" fxFlex="1 1 auto"
+  >
+    <h1>{{acao}} Turma</h1>
+
+    <mat-form-field>
+      <mat-label>Titulo</mat-label>
+      <input matInput formControlName="titulo" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Turno</mat-label>
+      <input matInput formControlName="turno" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>ano</mat-label>
+      <input matInput formControlName="ano" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Horário de início da aula</mat-label>
+      <input matInput formControlName="horaInicio" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Horário de fim da aula</mat-label>
+      <input matInput formControlName="horaFim" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nome da professora</mat-label>
+      <input matInput formControlName="nomeProfessor" >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Telefone da professora</mat-label>
+      <input matInput formControlName="telefoneProfessor" >
+    </mat-form-field>
+
+
+    <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">
+        Limpar
+      </button>
+      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+    </div>
+  </form>
+</div>
