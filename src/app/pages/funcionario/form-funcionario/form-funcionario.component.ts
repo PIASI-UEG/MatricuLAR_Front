@@ -92,7 +92,7 @@ export class FormFuncionarioComponent implements OnInit{
   private realizarInclusao(){
     console.log("Dados:",this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
-    this.usuarioService.usuarioControllerIncluir({usuarioDTO: usuario)
+    this.usuarioService.usuarioControllerIncluir({body: usuario)
       .subscribe( retorno =>{
         console.log("Retorno:",retorno);
         this.confirmarAcao(retorno, this.ACAO_INCLUIR);
