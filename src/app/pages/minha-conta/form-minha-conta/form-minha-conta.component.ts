@@ -227,13 +227,18 @@ export class FormMinhaContaComponent {
   }
 
   mudarAlinhar() {
-
     if(innerWidth < 1000)
     {
       return this.flexDivAlinhar = "column";
     }
     return this.flexDivAlinhar = "row";
+  }
 
+  verificarAlinhar(){
+    if(this.flexDivAlinhar == "column"){
+      return true;
+    }
+    return false;
   }
 
   @HostListener('window:resize', ['$event'])

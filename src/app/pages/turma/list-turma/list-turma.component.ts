@@ -15,6 +15,7 @@ import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.c
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {TurmaDto} from "../../../api/models/turma-dto";
+import {Mascaras} from "../../../../Mascaras";
 
 @Component({
   selector: 'app-list-turma',
@@ -26,6 +27,7 @@ export class ListTurmaComponent implements OnInit{
   colunasMostrar = ['titulo','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
   turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
+  mascaras: Mascaras = new Mascaras();
   admin!: boolean;
   pageSlice!: TurmaDto[];
   qtdRegistros!: number;

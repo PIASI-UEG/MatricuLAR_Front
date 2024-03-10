@@ -61,7 +61,7 @@
         <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaNumeros')">Senha precisa ter pelo menos 3 números</mat-error>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field [ngStyle]="verificarAlinhar() ? getErrorClass('senha') : {}" >
         <mat-label>Confirmar Senha</mat-label>
         <input matInput type="password" formControlName="confirmarSenha" placeholder="Confirme a senha" [type]="hide ? 'password' : 'text'">
         <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -72,7 +72,7 @@
       </mat-form-field>
     </div>
 
-    <div fxLayoutAlign="center center" [ngStyle]="getErrorClass('senha')" *ngIf="campoVisivelTelefone || campoVisivelEmail || formGroup.get('alterarSenha')?.value">
+    <div fxLayoutAlign="center center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}" *ngIf="campoVisivelTelefone || campoVisivelEmail || formGroup.get('alterarSenha')?.value">
       <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
     </div>
   </form>

@@ -17,14 +17,16 @@ export class ConfirmationDialog {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: ConfirmationDialogData,
-    private dialogRef: MatDialogRef<ConfirmationDialog, ConfirmationDialogResult>) {
+    private dialogRef: MatDialogRef<ConfirmationDialog, ConfirmationDialogResult>){
     if(data){
       this.titulo = data?.titulo;
       this.mensagem = data.mensagem;
       this.textoBotaoOk = data?.textoBotoes?.ok || this.textoBotaoOk;
       this.textoBotaoCancelar = data?.textoBotoes?.cancel || this.textoBotaoCancelar;
       this.reload = data?.reload
+      dialogRef.disableClose = true;
     }
+
   }
   get showCancelButton(): boolean{
     return !!this.data?.textoBotoes?.cancel;
