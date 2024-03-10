@@ -1,30 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 body, html{
   margin: 0;
   padding: 0;
 }
 
+.container {
+  background-color: #E8F0FE;
+}
 .searchFlex{
   width: 100%;
 }
 
 .tabela{
-  background-color: #F28749;
-  border-color: #F28749;
-  text-decoration-color: white;
+  background-color:  #B2DFFF;
+  border-color:#b2e2ff;
+  text-decoration-color: #F5F7FA;
   width: 100%;
 }
 
 .mat-mdc-row .mat-mdc-cell{
-  background-color: white;
-  border: 1px solid #F28749;
+  background-color:  #FFFFFF;
+  border: 1px solid #B2DFFF;
   text-align: center;
 }
 
 
 th{
-  color: white;
+  color: black;
   user-select:none;
   text-align: center;
 }
@@ -34,7 +37,7 @@ th{
   font-size: 14px;
   padding:1px;
   text-decoration: none;
-  background:#F28749;
+  background:#7FBFFF;
   color: white;
   width:220px;
   height:40px;
@@ -45,7 +48,7 @@ th{
 }
 
 .divBusca{
-  background-color:#E8E8E8;
+  background-color:#D6E9FF;
   border-radius:15px;
   margin-left: 2%;
   margin-right: 2%;
@@ -55,7 +58,7 @@ th{
 
 .txtBusca{
   float:left;
-  background-color:#E8E8E8;
+  background-color:#D6E9FF;
   font-family: Roboto, sans-serif;
   font-size:14px;
   border-radius:15px;
@@ -90,7 +93,7 @@ h2{
 }
 
 mat-card{
-  border: 3px solid #F28749;
+  border: 3px solid #7FBFFF;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -117,7 +120,7 @@ app-loader-dialog{
 }
 
 .mat-mdc-progress-spinner.mat-warn[_ngcontent-ng-c2551497326] {
-  --mdc-circular-progress-active-indicator-color: #F28749!important;
+  --mdc-circular-progress-active-indicator-color: #B2DFFF!important;
 }
 
 .cdk-overlay-pane:has(> mat-dialog-containerlo:has(> .mdc-dialog__container:has(> .mat-mdc-dialog-surface mdc-dialog__surface:has(> app-produto-movimentacao-dialog)))){

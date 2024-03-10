@@ -15,7 +15,7 @@ import {AuthDto} from "../../api/models/auth-dto";
 })
 export class AutenticacaoComponent implements OnInit {
   formGroup!: FormGroup;
-  public submitted!: boolean;
+
 
   /**
    * Construtor da classe.
