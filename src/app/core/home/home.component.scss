@@ -1,11 +1,11 @@
 mat-toolbar {
-  background: #F28749;
+  background: #b2e2ff;
   color: black;
 
 }
 
 mat-sidenav {
-  background: #FFE3D2;
+  background: #eefaff;
   color: black;
   text-align: center;
 }
@@ -37,7 +37,7 @@ mat-sidenav-container {
 }
 
 .mat-sidenav :hover {
-  background: #1CA64C;
+  background: #b2e2ff;
 }
 
 mat-divider {
@@ -49,13 +49,13 @@ mat-divider {
 .custom-icon{
   background-image: url("/assets/logos/loga_sagrada_familia_matricular.png") ;
   background-repeat: no-repeat;
-  background-color: #F28749;
+  background-color: #b2e2ff;
   background-position: center;
-  background-size: 200px 150px;
+  background-size: 150px 140px;
   border: none;
   display: flex;
   cursor: pointer;
-  height: 50px;
+  height: 200px;
   width: 200px;
 }
 
