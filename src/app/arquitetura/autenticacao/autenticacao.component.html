@@ -1,39 +1,39 @@
 <div class="tela-inteira">
-<div class="container">
-              <form
+    <div class="container">
+        <form
                 [formGroup]="formGroup"
                 (ngSubmit)="onSubmit()"
                 class="form"
-              >
-                <div class="login-content">
-                  <h1>Entrar</h1>
-                  <mat-form-field >
+        >
+            <div class="login-content">
+                <h1>Entrar</h1>
+                <mat-form-field >
                     <mat-label >CPF</mat-label>
                     <input matInput formControlName="login" autocomplete="off"
                            placeholder="Digite seu cpf" type="cpf">
-                      <mat-error *ngIf="handleError('login', 'required')">
-                          O cpf é obrigatório
-                      </mat-error>
-                  </mat-form-field>
+                    <mat-error *ngIf="handleError('login', 'required')">
+                        O CPF é obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="handleError('login', 'cpfInvalido')">O CPF está inválido</mat-error>
 
-                  <mat-form-field >
+                </mat-form-field>
+
+                <mat-form-field >
                     <mat-label >Senha</mat-label>
                     <input matInput formControlName="senha" type="password" title="Senha"
                            placeholder="Digite sua senha">
-                      <mat-error *ngIf="handleError('senha', 'required')">
-                          A senha é obrigatória
-                      </mat-error>
-                  </mat-form-field>
+                    <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">A senha é obrigatória</mat-error>
+                </mat-form-field>
 
-                  <button class="button" type="submit"  title="Entrar">
+                <button class="button" type="submit"  title="Entrar">
                     <span>Entrar</span>
-                  </button>
+                </button>
 
-                    <div class="esqueceu-senha">
-                        <a href="#" class="link_esqueceu-senha">Esqueceu a senha?</a>
-                    </div>
-
+                <div class="esqueceu-senha">
+                    <a href="#" class="link_esqueceu-senha">Esqueceu a senha?</a>
                 </div>
-              </form>
-</div>
+
+            </div>
+        </form>
+    </div>
 </div>
