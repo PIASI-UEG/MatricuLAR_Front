@@ -23,6 +23,7 @@ import {SearchModule} from "../../arquitetura/search-module/search.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 @NgModule({
@@ -31,30 +32,31 @@ import {MatRadioModule} from "@angular/material/radio";
     HomeMatriculaComponent,
     ListMatriculaComponent
   ],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    RouterOutlet,
-    RouterLink,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatMenuModule,
-    MatTableModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    SearchModule,
-    FlexModule,
-    NgxMaskDirective,
-    BrowserModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatRadioModule
-  ]
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        RouterOutlet,
+        RouterLink,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatMenuModule,
+        MatTableModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        SearchModule,
+        FlexModule,
+        NgxMaskDirective,
+        BrowserModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatTabsModule
+    ]
 })
 export class MatriculaModule { }
