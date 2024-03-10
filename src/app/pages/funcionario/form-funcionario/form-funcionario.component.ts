@@ -66,8 +66,6 @@ export class FormFuncionarioComponent implements OnInit{
     return true;
   }
 
-
-
   private createForm() {
     if(this.acao == "Editar"){
       this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
@@ -142,7 +140,7 @@ export class FormFuncionarioComponent implements OnInit{
     const paramId = this.route.snapshot.paramMap.get('id');
     if (paramId){
       const codigo = parseInt(paramId);
-      console.log("codigo usuario",paramId);
+      console.log("codigo usuario", this.codigo);
       this.usuarioService.usuarioControllerObterPorId({id: codigo}).subscribe(
         retorno => {
           this.acao = this.ACAO_EDITAR;

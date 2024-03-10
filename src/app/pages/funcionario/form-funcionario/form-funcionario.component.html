@@ -45,7 +45,6 @@
     </div>
 
     <div *ngIf="codigo == null" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-
       <mat-form-field>
         <mat-label>Senha</mat-label>
         <input matInput type="password" formControlName="senha" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">
@@ -70,8 +69,6 @@
       </mat-form-field>
 
     </div>
-
-
 
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="getErrorClass('senha')">
       <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>

@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {Mascaras} from "../../../../Mascaras";
 
 @Component({
   selector: 'app-form-minha-conta',
@@ -21,11 +22,22 @@ export class FormMinhaContaComponent {
   //cargos: CargoDto[] = [];
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'funcionario'})
   validacoes: Validacoes = new Validacoes();
+  mascaras: Mascaras = new Mascaras();
   flexDivAlinhar: string = 'row';
   admin!: boolean
   innerWidth: number = window.innerWidth;
   hide = true;
   submitFormulario!: boolean;
+  userAtual !: UsuarioDto;
+  campoVisivelEmail = false;
+  campoVisivelTelefone = false;
+  userCpf!: string;
+  userTelefone!: string;
+  userNome!: string;
+  userCargo!: string;
+  userEmail!: string;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private _adapter: DateAdapter<any>,
@@ -44,6 +56,14 @@ export class FormMinhaContaComponent {
     this._adapter.setLocale('pt-br');
     this.prepararEdicao();
   }
+
+  clickCampoEmail() {
+    this.campoVisivelEmail = !this.campoVisivelEmail;
+  }
+  clickCampoTelefone() {
+    this.campoVisivelTelefone = !this.campoVisivelTelefone;
+  }
+
 
   validarSenhas() {
     // Obtém os valores das senhas
@@ -74,9 +94,11 @@ export class FormMinhaContaComponent {
         this.validacoes.validarLetraMaiuscula,
         this.validacoes.validarPeloMenosTresNumeros]],
       confirmarSenha: [null, Validators.required],
-      idUsuarioRequisicao: [this.securityService.getUserId()]
+      idUsuarioRequisicao: [this.securityService.getUserId()],
+      alterarSenha: false,
     })
   }
+
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
@@ -84,17 +106,58 @@ export class FormMinhaContaComponent {
 
   onSubmit() {
     this.submitFormulario = true;
-    if (this.codigo == null && !this.validarSenhas()) {
+    if (!this.validarSenhas()) {
       return;
     }
 
-    if (this.codigo != null || this.formGroup.valid) {
-      if(!this.codigo){
+    if (this.formGroup.get('email')?.invalid && !this.campoVisivelEmail) {
+      this.formGroup.patchValue({
+        email: this.userAtual.email
+      });
+    }
 
-      }else{
+    if (this.formGroup.get('pessoaTelefone')?.invalid && !this.campoVisivelTelefone) {
+      this.formGroup.patchValue({
+        pessoaTelefone: this.userAtual.pessoaTelefone
+      });
+    }
+
+    if(this.formGroup.get('alterarSenha')?.value && this.campoVisivelTelefone && this.campoVisivelEmail)
+    {
+      if(this.formGroup.get('email')?.valid &&
+        this.formGroup.get('pessoaTelefone')?.valid &&
+        this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+        this.realizarEdicao();
+      }
+    }else if (this.campoVisivelTelefone && this.campoVisivelEmail){
+      if(this.formGroup.get('email')?.valid &&
+        this.formGroup.get('pessoaTelefone')?.valid) {
+        this.realizarEdicao();
+      }
+    }else if (this.formGroup.get('alterarSenha')?.value && this.campoVisivelTelefone){
+      if(this.formGroup.get('pessoaTelefone')?.valid &&
+        this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+        this.realizarEdicao();
+      }
+    }else if (this.formGroup.get('alterarSenha')?.value && this.campoVisivelEmail){
+      if(this.formGroup.get('email')?.valid &&
+        this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+        this.realizarEdicao();
+      }
+    }else if (this.formGroup.get('alterarSenha')?.value){
+      if(this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+        this.realizarEdicao();
+      }
+    }else if (this.campoVisivelTelefone){
+      if(this.formGroup.get('pessoaTelefone')?.valid){
+        this.realizarEdicao();
+      }
+    }else if (this.campoVisivelEmail){
+      if(this.formGroup.get('email')?.valid){
         this.realizarEdicao();
       }
     }
+
   }
 
   private prepararEdicao() {
@@ -107,6 +170,19 @@ export class FormMinhaContaComponent {
           console.log("retorno", retorno);
           this.codigo = retorno.id || -1;
           this.formGroup.patchValue(retorno);
+          this.userAtual = retorno;
+          if(this.userAtual.pessoaCpf &&
+            this.userAtual.pessoaTelefone &&
+            this.userAtual.pessoaNome &&
+            this.userAtual.cargo &&
+            this.userAtual.email){
+
+            this.userCpf = this.mascaras.mascaraCpf(this.userAtual.pessoaCpf);
+            this.userTelefone = this.mascaras.mascaraTelefone(this.userAtual.pessoaTelefone);
+            this.userNome = this.userAtual.pessoaNome;
+            this.userCargo = this.userAtual.cargo;
+            this.userEmail = this.userAtual.email;
+          }
         },error => {
           this.mensagens.confirmarErro("Editar", error.message)
           console.log("erro", error);
@@ -115,16 +191,18 @@ export class FormMinhaContaComponent {
     }
   }
 
-  confirmarAcao(usuarioDto: UsuarioDto, acao: string) {
+  confirmarAcao() {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
-        titulo: 'Cadastro!',
-        mensagem: `Ação de ${acao} dados: ${usuarioDto.pessoaNome} (ID: ${usuarioDto.pessoaCpf}) realizada com sucesso!`,
+        titulo: 'Alterar dados!',
+        mensagem: `Dados alterados com sucesso!`,
         textoBotoes: {
           ok: 'Confirmar',
         },
+        reload: true,
       },
     });
+
   }
 
   private realizarEdicao(){
@@ -135,8 +213,7 @@ export class FormMinhaContaComponent {
     this.usuarioService.usuarioControllerAlterar( {id: this.codigo, body: usuario})
       .subscribe(retorno => {
         console.log("Retorno:", retorno);
-        this.confirmarAcao(retorno, "Editar");
-        this.router.navigate(["/funcionario"]);
+        this.confirmarAcao();
       }, erro => {
         console.log("Erro:", erro.error);
         this.mensagens.confirmarErro("Editar", erro.message)
@@ -166,7 +243,6 @@ export class FormMinhaContaComponent {
 
   getErrorClass(controlName: string): { [key: string]: any } | null {
     const control = this.formGroup.get(controlName);
-    if (this.codigo == null) {
       if (this.submitFormulario && control && control.errors) {
         const qdErros = Object.keys(control.errors).length;
 
@@ -184,11 +260,6 @@ export class FormMinhaContaComponent {
       }
       this.submitFormulario = false;
       return {};
-    } else {
-      return {
-        'margin-top': 17 * 1 + 'px'
-      };
-    }
   }
 
 }

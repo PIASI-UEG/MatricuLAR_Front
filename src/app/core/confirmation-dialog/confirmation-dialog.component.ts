@@ -13,6 +13,7 @@ export class ConfirmationDialog {
   mensagem?: string;
   textoBotaoOk = "Ok"
   textoBotaoCancelar = "Cancelar"
+  reload : boolean = false
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: ConfirmationDialogData,
@@ -22,6 +23,7 @@ export class ConfirmationDialog {
       this.mensagem = data.mensagem;
       this.textoBotaoOk = data?.textoBotoes?.ok || this.textoBotaoOk;
       this.textoBotaoCancelar = data?.textoBotoes?.cancel || this.textoBotaoCancelar;
+      this.reload = data?.reload
     }
   }
   get showCancelButton(): boolean{
@@ -39,6 +41,12 @@ export class ConfirmationDialog {
         resultado: true,
         dado: this.data?.dado
     });
+
+    if(this.reload)
+    {
+      window.location.reload();
+    }
+
   }
 
 }
@@ -50,6 +58,7 @@ export interface ConfirmationDialogData {
     cancel?: string;
     sim?: string;
   }
+  reload: boolean;
   dado?: any
 }
 

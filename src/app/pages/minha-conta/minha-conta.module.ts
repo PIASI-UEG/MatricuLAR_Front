@@ -12,6 +12,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {FlexModule} from "@angular/flex-layout";
 import {NgxMaskDirective} from "ngx-mask";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 
@@ -21,19 +22,20 @@ import {MatButtonModule} from "@angular/material/button";
     HomeMinhaContaComponent,
     FormMinhaContaComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    RouterOutlet,
-    MatIconModule,
-    MatOptionModule,
-    MatSelectModule,
-    FlexModule,
-    NgxMaskDirective,
-    MatButtonModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        RouterOutlet,
+        MatIconModule,
+        MatOptionModule,
+        MatSelectModule,
+        FlexModule,
+        NgxMaskDirective,
+        MatButtonModule,
+        MatCheckboxModule
+    ]
 })
 export class MinhaContaModule { }
