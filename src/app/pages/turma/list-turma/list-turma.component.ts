@@ -47,7 +47,8 @@ export class ListTurmaComponent implements OnInit{
   }
 
   onPageChange(event: PageEvent){
-    this.turmaService.turmaControllerListAll().subscribe(data => {
+    console.log("teste")
+    this.turmaService.turmaControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["id"]}}).subscribe(data => {
       this.turmaListaDataSource.data = data.content;
       this.pageSlice = this.turmaListaDataSource.data;
     })
@@ -74,6 +75,7 @@ export class ListTurmaComponent implements OnInit{
 
   showResult($event: any[]) {
     this.turmaListaDataSource.data = $event;
+    console.log(this.turmaListaDataSource.data)
   }
 
   remover(turma: Turma) {

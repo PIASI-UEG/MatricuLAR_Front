@@ -10,12 +10,12 @@
     </div>
 
     <div class="searchFlex">
-      <app-search-component [controller]="" (onSearchResult)="showResult($event)"/>
+      <app-search-component [controller]="usuarioService" (onSearchResult)="showResult($event)"/>
     </div>
   </mat-card-actions>
   <mat-card-content>
     <div style="overflow-x:auto">
-      <table mat-table [dataSource]="pageSlice" class="tabela">
+      <table mat-table [dataSource]="usuarioListaDataSource" class="tabela">
 
 
         <ng-container matColumnDef="pessoaCpf">

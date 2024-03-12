@@ -5,28 +5,28 @@
   class="form"
 >
   <div fxFlex="1 1 auto" [fxLayout]="mudarAlinhar()" fxLayoutAlign="center center" >
-    <mat-form-field >
+    <mat-form-field class="options">
       <mat-label>Campo</mat-label>
       <mat-select formControlName="searchParameter">
         <mat-option *ngFor="let parameter of searchFieldsParamters" [value]="parameter">{{parameter.label}}</mat-option>
       </mat-select>
       <mat-error validationMessage></mat-error>
     </mat-form-field>
-    <mat-form-field >
-      <mat-label>Condição</mat-label>
-      <mat-select formControlName="searchConditionKey" >
-        <mat-option *ngFor="let parameter of searchConditionKeys" [value]="parameter">{{SearchType[parameter]}} </mat-option>
-      </mat-select>
-      <mat-error validationMessage></mat-error>
-    </mat-form-field>
-    <mat-form-field *ngIf="!showFieldSearch">
+<!--    <mat-form-field >-->
+<!--      <mat-label>Condição</mat-label>-->
+<!--      <mat-select formControlName="searchConditionKey" >-->
+<!--        <mat-option *ngFor="let parameter of searchConditionKeys" [value]="parameter">{{SearchType[parameter]}} </mat-option>-->
+<!--      </mat-select>-->
+<!--      <mat-error validationMessage></mat-error>-->
+<!--    </mat-form-field>-->
+    <mat-form-field *ngIf="!showFieldSearch" class="busca">
       <mat-label>Busca</mat-label>
       <input matInput placeholder="Informe o valor da busca" title="Busca"
              formControlName="searchValue" name="nome"  required maxlength="50"
       >
       <mat-error validationMessage ></mat-error>
     </mat-form-field>
-    <mat-form-field   *ngIf="showFieldSearch">
+    <mat-form-field   *ngIf="showFieldSearch" class="busca">
       <mat-label>Busca</mat-label>
       <input type="text"
              placeholder="Digite para filtrar"

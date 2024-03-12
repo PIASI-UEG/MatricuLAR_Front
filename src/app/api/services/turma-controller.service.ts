@@ -422,6 +422,69 @@ export class TurmaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation turmaControllerSearchFieldsActionPage
+   */
+  static readonly TurmaControllerSearchFieldsActionPagePath = '/api/v1/turma/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `turmaControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  turmaControllerSearchFieldsActionPage$Response(params: {
+    body: {
+'searchFieldValues'?: Array<SearchFieldValue>;
+'page'?: Pageable;
+}
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<any>> {
+
+    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `turmaControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  turmaControllerSearchFieldsActionPage(params: {
+    body: {
+'searchFieldValues'?: Array<SearchFieldValue>;
+'page'?: Pageable;
+}
+  },
+  context?: HttpContext
+
+): Observable<any> {
+
+    return this.turmaControllerSearchFieldsActionPage$Response(params,context).pipe(
+      map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+  /**
    * Path part for operation turmaControllerListAllPage
    */
   static readonly TurmaControllerListAllPagePath = '/api/v1/turma/page';
