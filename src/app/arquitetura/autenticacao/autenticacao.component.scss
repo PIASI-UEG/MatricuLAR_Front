@@ -1,5 +1,7 @@
+
+
 .tela-inteira{
-    background-image: url("/assets/fotos_login/foto_login.png") ;
+    background-image: url("/assets/fotos_login/tela_login_imagem.png") ;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -16,16 +18,16 @@ h1{
 }
 
 .container {
-  width: 300px;
+  width: 350px;
   padding-bottom: 20px;
-  margin-top: 15%;
+  margin-top: 12%;
   margin-right: auto;
   margin-left: auto;
   display: flex;
   flex-direction: row;
   place-content: center;
   align-items: center;
-  border: 5px solid #F28749;
+  border: 5px solid #4AB0D9;
   border-radius: 50px 50px;
   background-color: white;
 }
@@ -54,6 +56,17 @@ h1{
   }
 }
 
+.imagem-lateral {
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.imagem-lateral.esquerda {
+  background-image: url("/assets/fotos_login/imagem2_crianca2.png");
+}
+
+
 .login-content {
   font-family: DM Roboto, sans-serif;
   display: flex;
@@ -68,7 +81,7 @@ h1{
   padding: 0px;
   text-decoration: none;
   text-align: center;
-  background: #F28749;
+  background: #4AB0D9;
   color: white;
   width: 120px;
   height: 30px;
@@ -80,7 +93,7 @@ h1{
 }
 
 .button:hover {
-  background: #FFA07A;
+  background: #b2e2ff;
 }
 
 .link_esqueceu-senha {

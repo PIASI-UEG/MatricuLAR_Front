@@ -12,6 +12,10 @@ import {
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Turma} from "../../../custom_models/turma";
 import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
+import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
+import {TurmaControllerService} from "../../../api/services/turma-controller.service";
+import {TurmaDto} from "../../../api/models/turma-dto";
+import {Mascaras} from "../../../../Mascaras";
 
 @Component({
   selector: 'app-list-turma',
@@ -20,18 +24,19 @@ import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.c
 })
 export class ListTurmaComponent implements OnInit{
 
-  colunasMostrar = ['nome','professora','telefoneProfessora','quantidadeAlunos','acao'];
-  turmaListaDataSource: MatTableDataSource<Turma> = new MatTableDataSource<Turma>([]);
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "turma", this.snackBar)
+  colunasMostrar = ['titulo','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
+  turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]);
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
+  mascaras: Mascaras = new Mascaras();
   admin!: boolean;
-  pageSlice!: Turma[];
+  pageSlice!: TurmaDto[];
   qtdRegistros!: number;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
   constructor(
+    public turmaService: TurmaControllerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router,
     private securityService: SecurityService
   ){
   }
@@ -42,21 +47,50 @@ export class ListTurmaComponent implements OnInit{
   }
 
   onPageChange(event: PageEvent){
-
+    console.log("teste")
+    this.turmaService.turmaControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["id"]}}).subscribe(data => {
+      this.turmaListaDataSource.data = data.content;
+      this.pageSlice = this.turmaListaDataSource.data;
+    })
   }
-
 
   private buscarDados() {
-
+    this.turmaService.turmaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
+      this.turmaListaDataSource.data = data.content;
+      this.pageSlice = this.turmaListaDataSource.data;
+      this.qtdRegistros = data.totalElements;
+    })
   }
+
+  // private buscarDados() {
+  //   this.turmaService.turmaControllerListAll().subscribe(data => {
+  //     const turmasa : TurmaDto = data;
+  //     console.log("DATA:  " , turmasa)
+  //     this.turmaListaDataSource.data = data.content;
+  //     this.pageSlice = this.turmaListaDataSource.data;
+  //     this.qtdRegistros = data.totalElements;
+  //   })
+  //   console.log("turma: " + this.turmaListaDataSource.data)
+  // }
 
   showResult($event: any[]) {
     this.turmaListaDataSource.data = $event;
+    console.log(this.turmaListaDataSource.data)
   }
 
   remover(turma: Turma) {
     console.log("Removido", turma.nome);
-    this.mensagens.showMensagemSimples("Excluído com sucesso!");
+    this.turmaService.turmaControllerRemover({ id: turma.id || 0})
+      .subscribe(
+        retorno => {
+          this.buscarDados();
+          this.mensagens.showMensagemSimples("Excluído com sucesso!");
+          console.log("Exclusão:", retorno);
+        },error => {
+          this.mensagens.confirmarErro("Excluir", error.message)
+        }
+      );
+
   }
 
 
@@ -93,34 +127,6 @@ export class ListTurmaComponent implements OnInit{
     }
     return this.flexDivAlinhar = "row";
 
-  }
-  openDialogCreate(): void {
-    console.log("Novo");
-    const dialogRef = this.dialog.open(FormTurmaDialogComponent,
-      {
-        data:
-          {
-            turma: null
-          }
-      })
-    dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados()
-      }
-    )
-  }
-  openDialog(turma: Turma): void {
-    console.log(turma);
-    const dialogRef = this.dialog.open(FormTurmaDialogComponent,
-      {
-        data:
-          {
-            turma: turma
-          }
-      })
-    dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados()
-      }
-    )
   }
 
 }

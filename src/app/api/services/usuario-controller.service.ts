@@ -210,10 +210,10 @@ export class UsuarioControllerService extends BaseService {
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `usuarioControllerIncluir()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   usuarioControllerIncluir$Response(params: {
-    usuarioDTO: UsuarioDto;
+    body: UsuarioDto
   },
   context?: HttpContext
 
@@ -221,7 +221,7 @@ export class UsuarioControllerService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerIncluirPath, 'post');
     if (params) {
-      rb.query('usuarioDTO', params.usuarioDTO, {});
+      rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
@@ -242,10 +242,10 @@ export class UsuarioControllerService extends BaseService {
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `usuarioControllerIncluir$Response()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   usuarioControllerIncluir(params: {
-    usuarioDTO: UsuarioDto;
+    body: UsuarioDto
   },
   context?: HttpContext
 
@@ -381,10 +381,10 @@ export class UsuarioControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   usuarioControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
+    body: {
+'searchFieldValues'?: Array<SearchFieldValue>;
+'page'?: Pageable;
+}
   },
   context?: HttpContext
 
@@ -392,9 +392,6 @@ export class UsuarioControllerService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerSearchFieldsActionPagePath, 'post');
     if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
       rb.body(params.body, 'application/json');
     }
 
@@ -419,10 +416,10 @@ export class UsuarioControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   usuarioControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
+    body: {
+'searchFieldValues'?: Array<SearchFieldValue>;
+'page'?: Pageable;
+}
   },
   context?: HttpContext
 
@@ -430,6 +427,59 @@ export class UsuarioControllerService extends BaseService {
 
     return this.usuarioControllerSearchFieldsActionPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+  /**
+   * Path part for operation usuarioControllerRedefinirSenha
+   */
+  static readonly UsuarioControllerRedefinirSenhaPath = '/api/v1/usuario/redefinir-senha';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `usuarioControllerRedefinirSenha()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  usuarioControllerRedefinirSenha$Response(params: {
+    body: string
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerRedefinirSenhaPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `usuarioControllerRedefinirSenha$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  usuarioControllerRedefinirSenha(params: {
+    body: string
+  },
+  context?: HttpContext
+
+): Observable<string> {
+
+    return this.usuarioControllerRedefinirSenha$Response(params,context).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
 

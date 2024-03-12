@@ -1,13 +1,17 @@
 
-<h2> Controle de <br>Turmas</h2>
+<h2> Controle de <br>Matrículas</h2>
 <mat-card>
   <mat-card-actions [fxLayout]="mudarAlinhar()" fxLayoutAlign="center none" >
     <div fxLayout="row" fxLayoutAlign="center center">
-      <button class="button-config" mat-raised-button color="primary" [routerLink]="['/matricula','novo']">
-        <mat-icon>add</mat-icon> <span>Nova Matricula</span>
+      <button class="button-config" mat-raised-button [routerLink]="['/matricula','novo']">
+        <span>Nova Matricula</span>
+        <mat-icon>add</mat-icon>
       </button>
     </div>
 
+    <div class="searchFlex">
+      <app-search-component [controller]="" (onSearchResult)="showResult($event)"/>
+    </div>
   </mat-card-actions>
   <mat-card-content>
     <div style="overflow-x:auto">
@@ -53,10 +57,10 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #acoes="matMenu">
-              <button mat-menu-item >
-                <mat-icon>edit</mat-icon>Editar turma
+              <button mat-menu-item [routerLink]="['/matricula',element.id]">
+                <mat-icon>edit</mat-icon>Editar
               </button>
-              <button mat-menu-item >
+              <button mat-menu-item (click)="confirmarExcluir(element)">
                 <mat-icon>delete_forever</mat-icon>Excluir
               </button>
             </mat-menu>

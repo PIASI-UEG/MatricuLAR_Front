@@ -12,6 +12,7 @@ import {
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
+import {Mascaras} from "../../../../Mascaras";
 
 @Component({
   selector: 'app-list-funcionario',
@@ -19,9 +20,10 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
   styleUrls: ['./list-funcionario.component.scss']
 })
 export class ListFuncionarioComponent implements OnInit {
-  colunasMostrar = ['pessoaCpf','pessoaNome','telefone','cargo','acao'];
+  colunasMostrar = ['pessoaCpf','pessoaNome','pessoaTelefone','cargo','acao'];
   usuarioListaDataSource: MatTableDataSource<UsuarioDto> = new MatTableDataSource<UsuarioDto>([]);
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "funcionario", this.snackBar)
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
+  mascaras: Mascaras = new Mascaras();
   admin!: boolean;
   pageSlice!: UsuarioDto[];
   qtdRegistros!: number;
@@ -31,7 +33,6 @@ export class ListFuncionarioComponent implements OnInit {
     public usuarioService: UsuarioControllerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router,
     private securityService: SecurityService
   ){
   }
@@ -42,7 +43,7 @@ export class ListFuncionarioComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent){
-    this.usuarioService.usuarioControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["cpf"]}}).subscribe(data => {
+    this.usuarioService.usuarioControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["pessoaCpf"]}}).subscribe(data => {
       this.usuarioListaDataSource.data = data.content;
       this.pageSlice = this.usuarioListaDataSource.data;
     })

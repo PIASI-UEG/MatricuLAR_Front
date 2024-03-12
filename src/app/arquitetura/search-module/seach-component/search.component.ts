@@ -59,7 +59,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
     this.formGroup = this.formBuilder.group({
       searchValue: [null, [Validators.required]],
       searchParameter: [null, Validators.required],
-      searchConditionKey: ['BEGINS_WITH', Validators.required],
+      searchConditionKey: ['CONTAINS', Validators.required],
     });
     this.formGroup.controls['searchParameter'].valueChanges.subscribe(value => {
       this.cleanSearch();
@@ -118,7 +118,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
   private initSearchFieldsParameters() {
     this.searchFieldsListMethod({}).subscribe(value => {
       this.searchFieldsParamters = value;
-      this.formGroup.patchValue({searchParameter: this.searchFieldsParamters[0], searchConditionKey: "EQUAL"} );
+      this.formGroup.patchValue({searchParameter: this.searchFieldsParamters[0], searchConditionKey: "CONTAINS"} );
       //this.searchConditionKey = "EQUAL";
     });
   }
@@ -175,10 +175,9 @@ export class SearchComponent implements AfterViewInit, OnInit{
   }
 
   cleanSearch() {
-    console.log("change, clean");
     let searchConditionKey:SearchTypeKey = this.getFieldSearchConditionKey();
     if(this.showFieldSearch){
-      searchConditionKey = "BEGINS_WITH";
+      searchConditionKey = "CONTAINS";
     }
     this.formGroup.patchValue({searchValue: '', searchConditionKey: searchConditionKey} );
   }
@@ -195,7 +194,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
 
   mudarAlinhar() {
 
-    if(this.innerWidth < 1000)
+    if(this.innerWidth < 1100)
     {
       return this.flexDivAlinhar = "column";
     }

@@ -19,14 +19,13 @@ export class FormTurmaDialogComponent implements OnInit {
   public readonly ACAO_EDITAR = "Editar";
   acao: string = this.ACAO_INCLUIR;
   turma?: Turma;
-  mensagens: MensagensUniversais = new MensagensUniversais(this.dialog, this.router, "turma", this.snackBar);
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'turma'});
 
   public constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<FormTurmaDialogComponent>,
     private dialog: MatDialog,
     private router: Router,
-    private snackBar: MatSnackBar,
     private securityService: SecurityService,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
@@ -63,24 +62,24 @@ export class FormTurmaDialogComponent implements OnInit {
   createForm() {
     if(this.acao == "Editar"){
       this.formGroup = this.formBuilder.group({
-        nome: ["aaaaaa", Validators.required],
+        titulo: ["aaaaaa", Validators.required],
         turno: ["aaaaaa", Validators.required],
         ano: ["aaaaaa", Validators.required],
-        horarioInicio: ["aaaaaa", Validators.required],
-        horarioFim: ["aaaaaa", Validators.required],
-        professora: ["aaaaaa"],
-        telefoneProfessora: ["aaaaaa" ]
+        horaInicio: ["aaaaaa", Validators.required],
+        horaFim: ["aaaaaa", Validators.required],
+        nomeProfessor: ["aaaaaa"],
+        telefoneProfessor: ["aaaaaa" ]
       })
     }
     else{
       this.formGroup = this.formBuilder.group({
-        nome: [null, Validators.required],
+        titulo: [null, Validators.required],
         turno: [null, Validators.required],
         ano: [null, Validators.required],
-        horarioInicio: [null, Validators.required],
-        horarioFim: [null, Validators.required],
-        professora: [null],
-        telefoneProfessora: [null]
+        horaInicio: [null, Validators.required],
+        horaFim: [null, Validators.required],
+        nomeProfessor: [null],
+        telefoneProfessor: [null]
       })
     }
 

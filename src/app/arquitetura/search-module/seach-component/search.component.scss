@@ -1,33 +1,21 @@
 @import '../../../../StyleForms.css';
 
-mat-card{
-  box-shadow: var(--mdc-dialog-container-elevation, 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px 0px rgba(0, 0, 0, 0))!important;;
-  border-width: 0;
-}
-
 .button-busca{
   font-family: DM Roboto, sans-serif;
   font-size: 13px;
   padding:1px;
   text-decoration: none;
-  background:#F28749;
+  background: #5AB9EA;
   color: white;
-  width:40%;
-  height:40px;
+  height:60%;
   border: none;
   border-radius: 50px 50px;
   cursor: pointer;
   margin: 6px;
+  width: 15%;
+}
+.options{
+  width: 30%;
 }
 
-.mdc-notched-outline ng-tns-c1205077789-2 mdc-notched-outline--upgraded ng-star-inserted mdc-notched-outline--notched{
-  border-radius: 50px!important;
-}
 
-mat-form-field{
-  width: 100%;
-}
-
-.divSearchFlex{
-  width: 100%;
-}

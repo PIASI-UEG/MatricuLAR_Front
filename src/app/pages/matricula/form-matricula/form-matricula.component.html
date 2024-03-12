@@ -1,14 +1,19 @@
 
-<div class="formPadrao" fxLayout="row" fxLayoutAlign="center center">
+<div class="formPadrao"  >
 
   <form [formGroup]="formGroup"
-        (ngSubmit)="onSubmit()" class="form"
+        (ngSubmit)="onSubmit()"
+        class="form"
+        fxLayout="column"
+        fxLayoutAlign="space-between center"
         fxFlex="1 1 auto"
   >
-    <h2>{{acao}}  Criança</h2>
+    <h2>{{this.nomeTitulo}}</h2>
+    <div class="mat-tab-titulos" >
+    <mat-tab-group dynamicHeight (selectedIndexChange)="alterarNomeTitulo($event)">
+      <mat-tab label="Criança">
+        <div class="conteudo-mat-tab">
     <!-- Etapa 1 -->
-    <div *ngIf="currentStep === 1">
-      <h3>Dados da Criança</h3>
       <mat-form-field>
         <mat-label>Nome da criança</mat-label>
         <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
@@ -82,12 +87,12 @@
         <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
       </mat-form-field>
       <!-- Campos da primeira etapa -->
-      <button (click)="goToNextStep()">Próxima Etapa</button>
-    </div>
-
+      <button  type="button" (click)="goToNextStep(1)" >Próxima Etapa</button>
+        </div>
+      </mat-tab>
+      <mat-tab label="Tutor(a)">
+        <div class="conteudo-mat-tab">
     <!-- Etapa 2 -->
-    <div *ngIf="currentStep === 2">
-      <h3>Dados do Tutor(a)</h3>
       <mat-form-field>
         <mat-label>Nome</mat-label>
         <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
@@ -158,13 +163,13 @@
         Mora com seu Cônjuge?
       </mat-checkbox>
 
-      <button (click)="goToPreviousStep()">Etapa Anterior</button>
-      <button (click)="goToNextStep()">Próxima Etapa</button>
-    </div>
-
+      <button type="button" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+      <button type="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+        </div>
+      </mat-tab>
+      <mat-tab label="Perguntas">
+        <div class="conteudo-mat-tab">
     <!-- Etapa 3 -->
-    <div *ngIf="currentStep === 3">
-      <h3>Perguntas Culturais</h3>
       <mat-label>1) A criança já frequentou outra creche ?</mat-label>
       <mat-radio-group formControlName="frequentouOutraCreche">
         <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
@@ -212,28 +217,29 @@
         <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
       </mat-form-field>
 
-      <button (click)="goToPreviousStep()">Etapa Anterior</button>
-      <button (click)="goToNextStep()">Próxima Etapa</button>
-    </div>
-
+      <button type="button" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+      <button type="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+        </div>
+      </mat-tab>
+      <mat-tab label="Documentos">
+        <div class="conteudo-mat-tab">
     <!-- Etapa 4 -->
-    <div *ngIf="currentStep === 4">
-      <h3>Anexar documentos</h3>
       <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
         serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
         de qualidade para facilitar o procedimento.</p>
 
       <!-- Campos da terceira etapa -->
-      <button (click)="goToPreviousStep()">Etapa Anterior</button>
+      <button type="button" (click)="goToPreviousStep(2)">Etapa Anterior</button>
       <button type="submit">Finalizar pré-matrícula</button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
     </div>
 
-
-
-    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="getErrorClass('senha')">
-      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
-      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
-    </div>
+<!--    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="getErrorClass('senha')">-->
+<!--      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>-->
+<!--      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>-->
+<!--      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>-->
+<!--    </div>-->
   </form>
 </div>
