@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
@@ -17,6 +17,7 @@ import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
   selector: 'app-form-matricula',
   templateUrl: './form-matricula.component.html',
   styleUrls: ['./form-matricula.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FormMatriculaComponent implements OnInit{
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
@@ -39,6 +40,7 @@ export class FormMatriculaComponent implements OnInit{
   submitFormulario!: boolean;
   parentescos: string[] = ['Mãe', 'Pai', 'Tio', 'Padrasto', 'Madrasta']; // Lista de opções de parentesco
   nomeTitulo : string = "Dados da Criança";
+  guiaAtiva = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -232,6 +234,10 @@ export class FormMatriculaComponent implements OnInit{
     else{
       this.nomeTitulo = "Anexar documentos"
     }
+  }
+
+  alterarGuiaAtiva(indice: number): void {
+    this.guiaAtiva = indice;
   }
 
   goToStep(step: number) {

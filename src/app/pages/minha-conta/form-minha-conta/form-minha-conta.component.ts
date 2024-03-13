@@ -110,15 +110,22 @@ export class FormMinhaContaComponent {
       return;
     }
 
-    if (this.formGroup.get('email')?.invalid && !this.campoVisivelEmail) {
+    if (!this.campoVisivelEmail) {
       this.formGroup.patchValue({
         email: this.userAtual.email
       });
     }
 
-    if (this.formGroup.get('pessoaTelefone')?.invalid && !this.campoVisivelTelefone) {
+    if (!this.campoVisivelTelefone) {
       this.formGroup.patchValue({
         pessoaTelefone: this.userAtual.pessoaTelefone
+      });
+    }
+
+    if (!this.formGroup.get('alterarSenha')?.value){
+      this.formGroup.patchValue({
+        senha: null,
+        confirmarSenha: null,
       });
     }
 

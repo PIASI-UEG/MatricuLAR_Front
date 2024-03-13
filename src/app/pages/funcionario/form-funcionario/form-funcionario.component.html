@@ -70,10 +70,10 @@
 
     </div>
 
-    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}">
+    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}">
       <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
       <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
-      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+      <button mat-raised-button color="primary" type="submit" class="button botao-cadastro">Confirmar</button>
     </div>
   </form>
 </div>
