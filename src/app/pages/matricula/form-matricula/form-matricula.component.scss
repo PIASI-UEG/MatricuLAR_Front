@@ -1,1 +1,31 @@
 @import '../../../../StyleForms.css';
+
+.conteudo-mat-tab{
+  width: 95%;
+  margin-top: 20px;
+}
+
+.mat-tab-titulos{
+  width: 100%;
+}
+
+.mat-mdc-tab-header {
+  border: none;
+}
+
+.mat-mdc-tab.mdc-tab{
+  background-color: #B2DFFF;
+}
+
+.mdc-tab__text-label{
+  color: black!important;
+}
+
+.botao-voltar{
+  background-color: #fbec5d !important;
+  color: black!important;
+}
+
+
+
+

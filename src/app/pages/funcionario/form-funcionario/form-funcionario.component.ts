@@ -1,4 +1,12 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnChanges,
+  OnInit
+} from '@angular/core';
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -16,7 +24,7 @@ import {Validacoes} from "../../../../Validacoes";
   templateUrl: './form-funcionario.component.html',
   styleUrls: ['./form-funcionario.component.scss']
 })
-export class FormFuncionarioComponent implements OnInit{
+export class FormFuncionarioComponent implements OnInit {
   formGroup!: FormGroup;
   public readonly ACAO_INCLUIR = "Cadastrar";
   public readonly ACAO_EDITAR = "Editar";
@@ -39,6 +47,7 @@ export class FormFuncionarioComponent implements OnInit{
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private securityService: SecurityService,
+    private cdr: ChangeDetectorRef
   ) {
     this._adapter.setLocale('pt-br');
   }
@@ -65,8 +74,6 @@ export class FormFuncionarioComponent implements OnInit{
     // Retorna verdadeiro
     return true;
   }
-
-
 
   private createForm() {
     if(this.acao == "Editar"){
@@ -142,7 +149,7 @@ export class FormFuncionarioComponent implements OnInit{
     const paramId = this.route.snapshot.paramMap.get('id');
     if (paramId){
       const codigo = parseInt(paramId);
-      console.log("codigo usuario",paramId);
+      console.log("codigo usuario", this.codigo);
       this.usuarioService.usuarioControllerObterPorId({id: codigo}).subscribe(
         retorno => {
           this.acao = this.ACAO_EDITAR;
@@ -193,13 +200,18 @@ export class FormFuncionarioComponent implements OnInit{
   }
 
   mudarAlinhar() {
-
     if(innerWidth < 1000)
     {
       return this.flexDivAlinhar = "column";
     }
     return this.flexDivAlinhar = "row";
+  }
 
+  verificarAlinhar(){
+    if(this.flexDivAlinhar == "column"){
+      return true;
+    }
+    return false;
   }
 
   @HostListener('window:resize', ['$event'])

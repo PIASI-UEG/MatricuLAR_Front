@@ -12,6 +12,7 @@ import {
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
+import {Mascaras} from "../../../../Mascaras";
 
 @Component({
   selector: 'app-list-funcionario',
@@ -22,6 +23,7 @@ export class ListFuncionarioComponent implements OnInit {
   colunasMostrar = ['pessoaCpf','pessoaNome','pessoaTelefone','cargo','acao'];
   usuarioListaDataSource: MatTableDataSource<UsuarioDto> = new MatTableDataSource<UsuarioDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
+  mascaras: Mascaras = new Mascaras();
   admin!: boolean;
   pageSlice!: UsuarioDto[];
   qtdRegistros!: number;
