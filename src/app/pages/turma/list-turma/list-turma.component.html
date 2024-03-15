@@ -10,12 +10,12 @@
 
     </div>
     <div class="searchFlex">
-      <app-search-component [controller]="" (onSearchResult)="showResult($event)"/>
+      <app-search-component [controller]="turmaService" (onSearchResult)="showResult($event)"/>
     </div>
   </mat-card-actions>
   <mat-card-content>
     <div style="overflow-x:auto">
-      <table mat-table [dataSource]="pageSlice" class="tabela">
+      <table mat-table [dataSource]="turmaListaDataSource" class="tabela">
 
 
         <ng-container matColumnDef="titulo">
@@ -25,13 +25,13 @@
 
 
         <ng-container matColumnDef="nomeProfessor">
-          <th mat-header-cell *matHeaderCellDef> Professora </th>
+          <th mat-header-cell *matHeaderCellDef> Professor(a) </th>
           <td mat-cell *matCellDef="let element"> {{element.nomeProfessor}} </td>
         </ng-container>
 
         <ng-container matColumnDef="telefoneProfessor">
           <th mat-header-cell *matHeaderCellDef> Telefone da Professora </th>
-          <td mat-cell *matCellDef="let element"> {{element.telefoneProfessor}} </td>
+          <td mat-cell *matCellDef="let element"> {{mascaras.mascaraTelefone(element.telefoneProfessor)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="quantidadeAlunos">

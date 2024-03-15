@@ -6,38 +6,47 @@
         fxFlex="1 1 auto"
   >
     <h2>Minha Conta</h2>
-    <mat-form-field>
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário">
-      <mat-error *ngIf="handleError('pessoaNome', 'required')">Campo Obrigatório</mat-error>
-    </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>CPF</mat-label>
-      <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
-      <mat-error *ngIf="handleError('pessoaCpf', 'required')">Campo Obrigatório</mat-error>
-      <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
-    </mat-form-field>
+    <h3><strong>Nome:</strong> {{this.userNome}} <br></h3>
 
-    <mat-form-field>
+    <h3><strong>CPF:</strong> {{this.userCpf}} <br></h3>
+
+    <h3><strong>Cargo:</strong> {{this.userCargo}} <br></h3>
+
+    <div fxLayout="row" >
+      <h3><strong>E-mail:</strong> {{this.userEmail}} <br></h3>
+
+      <button type="button" class="icone-edit" (click)="clickCampoEmail()" >
+        <mat-icon style="font-size: 20px;">edit</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field *ngIf="campoVisivelEmail">
       <mat-label>E-mail</mat-label>
       <input matInput formControlName="email" placeholder="exemplo@exemplo.com">
       <mat-error *ngIf="handleError('email', 'required')">Campo Obrigatório</mat-error>
       <mat-error *ngIf="handleError('email', 'emailInvalido')">E-mail Inválido</mat-error>
     </mat-form-field>
 
-    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+    <div fxLayout="row" >
+      <h3><strong>Telefone:</strong> {{this.userTelefone}} <br></h3>
+      <button type="button" class="icone-edit" (click)="clickCampoTelefone()">
+        <mat-icon style="font-size: 20px;">edit</mat-icon>
+      </button>
+    </div>
 
-
-      <mat-form-field>
+      <mat-form-field *ngIf="campoVisivelTelefone">
         <mat-label>Telefone</mat-label>
         <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone" placeholder="(00) 0 0000-0000">
         <mat-error *ngIf="handleError('pessoaTelefone', 'required')">Campo Obrigatório</mat-error>
         <mat-error *ngIf="handleError('pessoaTelefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
       </mat-form-field>
-    </div>
 
-    <div *ngIf="codigo == null" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+    <mat-checkbox formControlName="alterarSenha" color="primary">
+      Deseja alterar a senha ?
+    </mat-checkbox>
+
+    <div *ngIf="formGroup.get('alterarSenha')?.value" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
 
       <mat-form-field>
         <mat-label>Senha</mat-label>
@@ -52,7 +61,7 @@
         <mat-error *ngIf="formGroup.get('senha')?.hasError('senhaInvalidaNumeros')">Senha precisa ter pelo menos 3 números</mat-error>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field [ngStyle]="verificarAlinhar() ? getErrorClass('senha') : {}" >
         <mat-label>Confirmar Senha</mat-label>
         <input matInput type="password" formControlName="confirmarSenha" placeholder="Confirme a senha" [type]="hide ? 'password' : 'text'">
         <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -61,13 +70,9 @@
         <mat-error *ngIf="formGroup.get('confirmarSenha')?.hasError('required')">Confirmação de senha é obrigatória</mat-error>
         <mat-error *ngIf="formGroup.get('confirmarSenha')?.hasError('naoConfere')">As senhas não coincidem</mat-error>
       </mat-form-field>
-
     </div>
 
-
-
-    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="getErrorClass('senha')">
-      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+    <div class="divBotoes" fxLayoutAlign="center center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}" *ngIf="campoVisivelTelefone || campoVisivelEmail || formGroup.get('alterarSenha')?.value">
       <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
     </div>
   </form>

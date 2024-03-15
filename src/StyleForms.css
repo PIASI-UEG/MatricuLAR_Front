@@ -45,8 +45,8 @@ h2{
   font-size: 14px;
   text-decoration: none;
   text-align:center;
-  background:#5AB9EA;
-  color: white;
+  background:#5AB9EA !important;
+  color: white !important;
   width:100px !important;
   height:50px !important;
   position: relative;
@@ -58,38 +58,39 @@ h2{
   border:1px solid #A2B6C8;
 }
 
+@media (max-width: 999px) {
+  .button {
+    width:180px!important;
+    height:50px!important;
+  }
+}
+
 .botao-cadastro{
   width:180px!important;
   height:50px!important;
 }
 
 .botao-limpar{
-  background-color: #FFFFFF;
-  color: #404040;
-}
-
-@media (max-width: 999px) {
-  .botao-limpar {
-    width:180px!important;
-    height:50px!important;
-  }
+  background-color: #FFFFFF !important;;
+  color: #404040 !important;;
 }
 
 .botao-cancelar{
-  background-color: #FF7676;
-  color: white;
-}
-
-@media (max-width: 999px) {
-  .botao-cancelar {
-    width:180px!important;
-    height:50px!important;
-  }
+  background-color: #FF7676 !important; ;
+  color: white !important;;
 }
 
 mat-form-field{
   width: 100%;
   margin: 5px;
+}
+
+.form{
+  width: 100%;
+}
+
+.divBotoes{
+  margin-top: 25px;
 }
 
 

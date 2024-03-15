@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
@@ -11,13 +11,18 @@ import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Matricula} from "../../../custom_models/matricula";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
+import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-form-matricula',
   templateUrl: './form-matricula.component.html',
-  styleUrls: ['./form-matricula.component.scss']
+  styleUrls: ['./form-matricula.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FormMatriculaComponent implements OnInit{
+  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
+
+
   formGroup!: FormGroup;
   currentStep: number = 1; // Controla a etapa atual
   public readonly ACAO_INCLUIR = "Cadastrar";
@@ -34,6 +39,8 @@ export class FormMatriculaComponent implements OnInit{
   hide = true;
   submitFormulario!: boolean;
   parentescos: string[] = ['Mãe', 'Pai', 'Tio', 'Padrasto', 'Madrasta']; // Lista de opções de parentesco
+  nomeTitulo : string = "Dados da Criança";
+  guiaAtiva = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,8 +59,6 @@ export class FormMatriculaComponent implements OnInit{
     this._adapter.setLocale('pt-br');
     this.prepararEdicao();
   }
-
-
 
   private createForm() {
     if(this.acao == "Editar"){
@@ -216,19 +221,44 @@ export class FormMatriculaComponent implements OnInit{
     }
   }
 
+  alterarNomeTitulo(indice:number): void{
+    if (indice == 0) {
+      this.nomeTitulo = "Dados da Criança"
+    }
+    else if (indice == 1){
+      this.nomeTitulo = "Dados do Tutor(a)"
+    }
+    else if (indice == 2){
+      this.nomeTitulo = "Perguntas Culturais"
+    }
+    else{
+      this.nomeTitulo = "Anexar documentos"
+    }
+  }
+
+  alterarGuiaAtiva(indice: number): void {
+    this.guiaAtiva = indice;
+  }
+
   goToStep(step: number) {
     // Método para navegar para uma etapa específica
     this.currentStep = step;
   }
 
-  goToNextStep() {
+  goToNextStep(indice: number) {
     // Lógica para avançar para a próxima etapa
-    this.currentStep++;
+    if (indice >= 0 && indice < this.tabGroup._tabs.length) {
+      this.tabGroup.selectedIndex = indice;
+    }
+    this.alterarNomeTitulo(indice)
   }
 
-  goToPreviousStep() {
+  goToPreviousStep(indice: number) {
     // Lógica para voltar para a etapa anterior
-    this.currentStep--;
+    if (indice >= 0 && indice < this.tabGroup._tabs.length) {
+      this.tabGroup.selectedIndex = indice;
+    }
+    this.alterarNomeTitulo(indice)
   }
 
   criarCampoNecessidadeEspecial(): FormGroup {
