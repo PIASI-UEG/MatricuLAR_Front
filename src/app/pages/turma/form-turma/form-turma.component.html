@@ -56,7 +56,7 @@
       <mat-error *ngIf="handleError('telefoneProfessor', 'telefoneInvalido')">Telefone Inválido</mat-error>
     </mat-form-field>
 
-    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" >
+    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" >
       <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
       <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
       <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>

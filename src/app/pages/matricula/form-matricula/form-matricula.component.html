@@ -10,87 +10,90 @@
   >
     <h2>{{this.nomeTitulo}}</h2>
     <div class="mat-tab-titulos" >
-    <mat-tab-group dynamicHeight (selectedIndexChange)="alterarNomeTitulo($event)">
-      <mat-tab label="Criança">
-        <div class="conteudo-mat-tab">
-    <!-- Etapa 1 -->
-      <mat-form-field>
-        <mat-label>Nome da criança</mat-label>
-        <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
-        <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+    <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" >
+      <mat-tab class="mat-tab-color"  label="Criança" [disabled]="guiaAtiva !== 0" >
+          <div class="conteudo-mat-tab">
+      <!-- Etapa 1 -->
+        <mat-form-field>
+          <mat-label>Nome da criança</mat-label>
+          <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
+          <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>CPF da criança</mat-label>
-        <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
-        <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>CPF da criança</mat-label>
+          <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
+          <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
+          <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Data de Nascimento</mat-label>
-        <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data" [matDatepicker]="dp3" >
-        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-        <mat-datepicker #dp3></mat-datepicker>
-        <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Data de Nascimento</mat-label>
+          <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data" [matDatepicker]="dp3" >
+          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+          <mat-datepicker #dp3></mat-datepicker>
+          <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
 
-      <mat-checkbox formControlName="possuiNecessidadeEspecial">
-        Possui necessidades especiais? EX: alergia, medicamentos, alimentação
-      </mat-checkbox>
+        <mat-checkbox formControlName="possuiNecessidadeEspecial">
+          Possui necessidades especiais? EX: alergia, medicamentos, alimentação
+        </mat-checkbox>
 
-      <ng-container *ngIf="formGroup.get('possuiNecessidadeEspecial')?.value">
-        <div formArrayName="necessidadesEspeciais">
-          <div *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
-            <mat-form-field>
-              <mat-label>Necessidade especial</mat-label>
-              <input matInput formControlName="necessidadeEspecial" placeholder="TO DO">
-              <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Campo Obrigatório</mat-error>
-            </mat-form-field>
+        <ng-container *ngIf="formGroup.get('possuiNecessidadeEspecial')?.value">
+          <div formArrayName="necessidadesEspeciais">
+            <div *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+              <mat-form-field>
+                <mat-label>Necessidade especial</mat-label>
+                <input matInput formControlName="necessidadeEspecial" placeholder="TO DO">
+                <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Campo Obrigatório</mat-error>
+              </mat-form-field>
 
-            <button mat-icon-button (click)="removerCampo(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button mat-icon-button (click)="removerCampo(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
-        </div>
-        <button mat-button type="button" (click)="adicionarCampo()">Adicionar campo</button>
-      </ng-container>
+          <button mat-button type="button" (click)="adicionarCampo()">Adicionar campo</button>
+        </ng-container>
 
 
-      <mat-form-field>
-        <mat-label>CEP</mat-label>
-        <input matInput formControlName="cep" placeholder="Digite o CEP">
-        <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>CEP</mat-label>
+          <input matInput formControlName="cep" placeholder="Digite o CEP">
+          <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Cidade</mat-label>
-        <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
-        <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Cidade</mat-label>
+          <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
+          <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Bairro</mat-label>
-        <input matInput formControlName="bairro" placeholder="Digite o nome do bairro">
-        <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bairro</mat-label>
+          <input matInput formControlName="bairro" placeholder="Digite o nome do bairro">
+          <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Logadouro</mat-label>
-        <input matInput formControlName="logadouro" placeholder="Digite a rua">
-        <mat-error *ngIf="handleError('logadouro', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Logadouro</mat-label>
+          <input matInput formControlName="logadouro" placeholder="Digite a rua">
+          <mat-error *ngIf="handleError('logadouro', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Complemento</mat-label>
-        <input matInput formControlName="complemento" placeholder="Casa, lote, apartamento....">
-        <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
-      <!-- Campos da primeira etapa -->
-      <button  type="button" (click)="goToNextStep(1)" >Próxima Etapa</button>
-        </div>
+        <mat-form-field>
+          <mat-label>Complemento</mat-label>
+          <input matInput formControlName="complemento" placeholder="Casa, lote, apartamento....">
+          <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
+        <!-- Campos da primeira etapa -->
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(1)" >Próxima <br> Etapa</button>
+            </div>
+          </div>
       </mat-tab>
-      <mat-tab label="Tutor(a)">
+        <mat-tab label="Tutor(a)" [disabled]="guiaAtiva !== 1">
         <div class="conteudo-mat-tab">
     <!-- Etapa 2 -->
       <mat-form-field>
@@ -163,11 +166,14 @@
         Mora com seu Cônjuge?
       </mat-checkbox>
 
-      <button type="button" (click)="goToPreviousStep(0)">Etapa Anterior</button>
-      <button type="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+            <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+          </div>
         </div>
       </mat-tab>
-      <mat-tab label="Perguntas">
+      <mat-tab label="Perguntas" [disabled]="guiaAtiva !== 2">
         <div class="conteudo-mat-tab">
     <!-- Etapa 3 -->
       <mat-label>1) A criança já frequentou outra creche ?</mat-label>
@@ -217,11 +223,14 @@
         <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
       </mat-form-field>
 
-      <button type="button" (click)="goToPreviousStep(1)">Etapa Anterior</button>
-      <button type="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+            <button mat-raised-button  type="button" class="button"(click)="goToNextStep(3)">Próxima Etapa</button>
+          </div>
         </div>
       </mat-tab>
-      <mat-tab label="Documentos">
+      <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
         <div class="conteudo-mat-tab">
     <!-- Etapa 4 -->
       <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
@@ -229,8 +238,11 @@
         de qualidade para facilitar o procedimento.</p>
 
       <!-- Campos da terceira etapa -->
-      <button type="button" (click)="goToPreviousStep(2)">Etapa Anterior</button>
-      <button type="submit">Finalizar pré-matrícula</button>
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+            <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
+          </div>
         </div>
       </mat-tab>
     </mat-tab-group>

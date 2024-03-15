@@ -72,7 +72,7 @@
       </mat-form-field>
     </div>
 
-    <div fxLayoutAlign="center center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}" *ngIf="campoVisivelTelefone || campoVisivelEmail || formGroup.get('alterarSenha')?.value">
+    <div class="divBotoes" fxLayoutAlign="center center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}" *ngIf="campoVisivelTelefone || campoVisivelEmail || formGroup.get('alterarSenha')?.value">
       <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
     </div>
   </form>
