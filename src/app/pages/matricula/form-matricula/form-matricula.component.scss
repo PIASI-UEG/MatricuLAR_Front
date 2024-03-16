@@ -26,6 +26,56 @@
   color: black!important;
 }
 
+.button-hidden{
+  text-decoration: none;
+  text-align:center;
+  background: none !important;
+  opacity: 1;
+  width:100px !important;
+  height:50px !important;
+  position: relative;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  alignment-baseline: center;
+  margin: 5px;
+  border: none ;
+}
 
+.button-necessidade{
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  text-decoration: none;
+  text-align:center;
+  color: black !important;
+  opacity: 1;
+  width:225px !important;
+  height:50px !important;
+  position: relative;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  alignment-baseline: center;
+  margin-bottom: 15px;
+  border: none;
+}
+
+p {
+  text-indent: 3ch;
+  font-size: 16px;
+}
+
+.linha-horizontal {
+  width: 80%;
+  border: 1px solid #B2DFFF;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alinhar-erro{
+  margin-left: 22px;
+  margin-bottom: 20px;
+}
 
 

@@ -41,6 +41,7 @@ export class FormMatriculaComponent implements OnInit{
   parentescos: string[] = ['Mãe', 'Pai', 'Tio', 'Padrasto', 'Madrasta']; // Lista de opções de parentesco
   nomeTitulo : string = "Dados da Criança";
   guiaAtiva = 0;
+  botaoNecessidadeClicado: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,25 +69,26 @@ export class FormMatriculaComponent implements OnInit{
       //Dados da Criança
       this.formGroup = this.formBuilder.group({
         nomeCrianca: [null, Validators.required],
-        cpfCrianca: [null, Validators.required],
+        cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf]],
         dataNascimento: [null, Validators.required],
         possuiNecessidadeEspecial: false,
         necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
-        cep: [null, Validators.required],
+        cep: [null, [Validators.required, this.validacoes.validarCep]],
         cidade: [null, Validators.required],
         bairro: [null, Validators.required],
-        logadouro: [null, Validators.required],
+        logradouro: [null, Validators.required],
         complemento: [null, Validators.required],
         //Dados Tutor - Etapa2
         nomeTutor: [null, Validators.required],
         dataNascimentoTutor: [null, Validators.required],
-        cpfTutor: [null, Validators.required],
+        cpfTutor: [null, [Validators.required, this.validacoes.validarCpf]],
         vinculo: [null, Validators.required],
-        telefoneCelular: [null, Validators.required],
-        telefoneFixo: [null],
+        telefoneCelular: [null, [Validators.required, this.validacoes.validarTelefone]],
+        telefoneFixo: [null, this.validacoes.validarTelefoneFixo],
         nomeEmpresa: [null, Validators.required],
-        cnpj: [null, Validators.required],
-        telefoneEmpresarial: [null, Validators.required],
+        cnpj: [null, [Validators.required, this.validacoes.validarCnpj]],
+        telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
+        telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
         relacionamento: false,
         moraComConjuge: false,
         //Perguntas culturais - Etapa 3
@@ -118,16 +120,36 @@ export class FormMatriculaComponent implements OnInit{
     }
   }
 
+  validarTelefoneEmpresarial(): boolean {
+    const telefoneCelularEmpresarial = this.formGroup.get('telefoneCelularEmpresarial');
+    const telefoneFixoEmpresarial = this.formGroup.get('telefoneFixoEmpresarial');
 
+    if (!telefoneCelularEmpresarial?.value && !telefoneFixoEmpresarial?.value) {
+      telefoneFixoEmpresarial?.setErrors({ 'informeUm': true });
+      telefoneCelularEmpresarial?.setErrors({ 'informeUm': true });
+      return false;
+    } else {
+      // Remover os erros se pelo menos um dos campos estiver preenchido
+      if (telefoneCelularEmpresarial?.errors && telefoneCelularEmpresarial?.errors['informeUm']) {
+        telefoneCelularEmpresarial.setErrors(null);
+      }
+      if (telefoneFixoEmpresarial?.errors && telefoneFixoEmpresarial?.errors['informeUm']) {
+        telefoneFixoEmpresarial.setErrors(null);
+      }
+      return true;
+    }
+  }
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
   };
 
 
-
-
   onSubmit() {
+    if (!this.validarTelefoneEmpresarial()) {
+      return;
+    }
+
     this.submitFormulario = true;
     if (this.codigo == null) {
       return;
@@ -187,6 +209,13 @@ export class FormMatriculaComponent implements OnInit{
     }
     return this.flexDivAlinhar = "row";
 
+  }
+
+  verificarAlinhar(){
+    if(this.flexDivAlinhar == "column"){
+      return true;
+    }
+    return false;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -265,6 +294,21 @@ export class FormMatriculaComponent implements OnInit{
     return this.formBuilder.group({
       necessidadeEspecial: ''
     });
+  }
+  firstClickNecessidades(): boolean {
+    if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
+      return true;
+    }
+    else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length){
+      this.adicionarCampo();
+      this.botaoNecessidadeClicado = true;
+      return true;
+    }
+    else if (this.formGroup.get('possuiNecessidadeEspecial')?.value){
+      return true
+    }
+    this.botaoNecessidadeClicado = false;
+    return false
   }
 
   adicionarCampo(): void {
