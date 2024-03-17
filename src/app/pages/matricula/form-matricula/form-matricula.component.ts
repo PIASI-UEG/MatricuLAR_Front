@@ -3,15 +3,15 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@a
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
 import {DateAdapter} from "@angular/material/core";
-import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
-import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Matricula} from "../../../custom_models/matricula";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
-import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
+import {MatTabGroup} from "@angular/material/tabs";
+import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 
 @Component({
   selector: 'app-form-matricula',
@@ -43,6 +43,9 @@ export class FormMatriculaComponent implements OnInit{
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
 
+  docs :DocumentoMatriculaDto[] = []
+  enumDoc: String = ''
+
   constructor(
     private formBuilder: FormBuilder,
     private _adapter: DateAdapter<any>,
@@ -50,6 +53,7 @@ export class FormMatriculaComponent implements OnInit{
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private securityService: SecurityService,
+    private matriculaService: MatriculaControllerService
   ) {
     this._adapter.setLocale('pt-br');
   }
@@ -146,22 +150,38 @@ export class FormMatriculaComponent implements OnInit{
 
 
   onSubmit() {
-    if (!this.validarTelefoneEmpresarial()) {
-      return;
-    }
 
-    this.submitFormulario = true;
-    if (this.codigo == null) {
-      return;
-    }
-
-    if (this.codigo != null || this.formGroup.valid) {
-      if(!this.codigo){
-        this.realizarInclusao();
-      }else{
-        this.realizarEdicao();
+    console.log("Submit")
+    if (this.docs.length >= 13){
+      this.docs.forEach(doc =>{
+          if(doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
+            console.log(doc.arquivo)
+            this.matriculaService.matriculaControllerUploadDocumentos(
+              {idMatricula: doc.idMatricula, tipoDocumento:doc.tipoDocumento, body:{multipartFile:doc.arquivo}})
+              .subscribe(retorno =>{
+                console.log(retorno)
+              })
+          }
       }
+      )
+
     }
+    // if (!this.validarTelefoneEmpresarial()) {
+    //   return;
+    // }
+    //
+    // this.submitFormulario = true;
+    // if (this.codigo == null) {
+    //   return;
+    // }
+    //
+    // if (this.codigo != null || this.formGroup.valid) {
+    //   if(!this.codigo){
+    //     this.realizarInclusao();
+    //   }else{
+    //     this.realizarEdicao();
+    //   }
+    // }
   }
 
   private realizarInclusao(){
@@ -331,5 +351,25 @@ export class FormMatriculaComponent implements OnInit{
     return formArray.at(index)?.get('necessidadeEspecial') as AbstractControl;
   }
 
+  onFilechange(event: any, enumDoc: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2' | 'CERTIDAO_ESTADO_CIVIL2') {
+    const file = event.target.files[0]
+    const fileName = file.name
+    console.log(file)
+    let blob: Blob
+    blob = file
+
+    let doc: DocumentoMatriculaDto = {
+      aceito: false,
+      idMatricula:1,
+      tipoDocumento: enumDoc,
+      caminhoDocumento: file.name,
+      arquivo:blob
+    }
+    if (doc && this.docs){
+      this.docs.push(doc)
+      console.log("docs: ", this.docs)
+    }
+
+  }
 
 }
