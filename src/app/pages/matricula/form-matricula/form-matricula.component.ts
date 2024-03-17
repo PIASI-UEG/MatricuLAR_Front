@@ -153,11 +153,11 @@ export class FormMatriculaComponent implements OnInit{
 
     //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
     console.log("Submit")
-    if (this.docs.length >= 13){
+    if (this.docs.length >= 0){
       this.docs.forEach(doc =>{
           if(doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
             console.log(doc.arquivo)
-            this.matriculaService.matriculaControllerUploadDocumentos(
+            this.matriculaService.matriculaControllerUploadDocumento(
               {idMatricula: doc.idMatricula, tipoDocumento:doc.tipoDocumento, body:{multipartFile:doc.arquivo}})
               .subscribe(retorno =>{
                 console.log(retorno)
