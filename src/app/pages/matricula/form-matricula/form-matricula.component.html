@@ -11,9 +11,9 @@
     <h2>{{this.nomeTitulo}}</h2>
     <div class="mat-tab-titulos" >
     <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" >
+      <!-- Etapa 1 -->
       <mat-tab class="mat-tab-color"  label="Criança" [disabled]="guiaAtiva !== 0" >
           <div class="conteudo-mat-tab">
-      <!-- Etapa 1 -->
         <mat-form-field>
           <mat-label>Nome da criança</mat-label>
           <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
@@ -50,12 +50,12 @@
                 <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Campo Obrigatório</mat-error>
               </mat-form-field>
 
-              <button mat-icon-button  (click)="removerCampo(i)" >
+              <button mat-icon-button  (click)="removerCampoNecessidade(i)" >
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
           </div>
-          <button mat-button type="button" class="button-necessidade" (click)="adicionarCampo()"><mat-icon>add</mat-icon> Adicionar necessidade</button>
+          <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade()"><mat-icon>add</mat-icon> Adicionar necessidade</button>
         </ng-container>
 
             <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
@@ -108,102 +108,122 @@
 
       <!-- Etapa 2 -->
         <mat-tab label="Tutor(a)" [disabled]="guiaAtiva !== 1">
-        <div class="conteudo-mat-tab">
-      <mat-form-field>
-        <mat-label>Nome</mat-label>
-        <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
-        <mat-error *ngIf="handleError('nomeTutor', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <div class="conteudo-mat-tab">
+              <div formArrayName="tutor" >
+                <div *ngFor="let tutor of getTutoresControls(); let i = index;"  [formGroupName]="i">
+                  <ng-container *ngIf="i !== 0">
+                    <div fxLayout="center" class="linha-horizontal" ></div>
+                    <h2 > Dados do Cônjuge </h2>
+                  </ng-container>
+                  <mat-form-field>
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
+                    <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
+                  </mat-form-field>
 
-          <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-              <mat-form-field>
-                <mat-label>CPF</mat-label>
-                <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
-                <mat-error *ngIf="handleError('cpfTutor', 'required')">Campo Obrigatório</mat-error>
-                <mat-error *ngIf="handleError('cpfTutor', 'cpfInvalido')">CPF Inválido</mat-error>
-              </mat-form-field>
+                  <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                    <mat-form-field>
+                      <mat-label>CPF</mat-label>
+                      <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
+                      <mat-error *ngIf="handleErrorTutor('cpfTutor', 'required', i)">Campo Obrigatório</mat-error>
+                      <mat-error *ngIf="handleErrorTutor('cpfTutor', 'cpfInvalido', i)">CPF Inválido</mat-error>
+                    </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>Data de Nascimento</mat-label>
-              <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data" [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
-              <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-              <mat-datepicker #dp3></mat-datepicker>
-              <mat-error *ngIf="handleError('dataNascimentoTutor', 'required')">Campo Obrigatório</mat-error>
-            </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Data de Nascimento</mat-label>
+                        <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data" [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
+                        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                        <mat-datepicker #dp3></mat-datepicker>
+                        <mat-error *ngIf="handleErrorTutor('dataNascimentoTutor', 'required', i)">Campo Obrigatório</mat-error>
+                      </mat-form-field>
+                    </div>
+
+                <mat-form-field>
+                  <mat-label>Vínculo</mat-label>
+                  <mat-select formControlName="vinculo" placeholder="Selecione o vínculo com a criança">
+                    <mat-option *ngFor="let parentesco of parentescos" [value]="parentesco">{{ parentesco }}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="handleErrorTutor('vinculo', 'required', i)">Campo Obrigatório</mat-error>
+                </mat-form-field>
+
+                    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                        <mat-form-field>
+                          <mat-label>Telefone Celular</mat-label>
+                          <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular" placeholder="(00) 0 0000-0000">
+                          <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'required', i)">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                          <mat-label>Telefone Fixo</mat-label>
+                          <input matInput mask="(00) 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0000-0000">
+                          <mat-error *ngIf="handleErrorTutor('telefoneFixo', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="center" class="linha-horizontal"></div>
+                    <h2> Dados da empresa </h2>
+                    <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na creche.</p>
+
+                <mat-form-field>
+                  <mat-label>Nome da empresa</mat-label>
+                  <input matInput formControlName="nomeEmpresa" placeholder="Digite o nome da empresa">
+                  <mat-error *ngIf="handleErrorTutor('nomeEmpresa', 'required', i)">Campo Obrigatório</mat-error>
+                </mat-form-field>
+
+
+                        <mat-form-field>
+                          <mat-label>CNPJ da empresa</mat-label>
+                          <input matInput formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
+                          <mat-error *ngIf="handleErrorTutor('cnpj', 'required', i)">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleErrorTutor('cnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
+                        </mat-form-field>
+
+                    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                        <mat-form-field>
+                          <mat-label>Telefone celular da empresa</mat-label>
+                          <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelularEmpresarial" placeholder="(00) 0 0000-0000">
+                          <mat-error *ngIf="handleErrorTutor('telefoneCelularEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                        </mat-form-field>
+
+                      <mat-form-field>
+                        <mat-label>Telefone fixo da empresa</mat-label>
+                        <input matInput mask="(00) 0000-0000" formControlName="telefoneFixoEmpresarial" placeholder="(00) 0000-0000">
+                        <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                      </mat-form-field>
+                    </div>
+                  <mat-error class="alinhar-erro" *ngIf="exibirErroTelefoneEmpresarial(i)">
+                    Informe pelo menos um telefone empresarial.
+                  </mat-error>
+
+                  <div fxLayout="column" fxLayoutAlign="center start"  *ngIf="i !== 1">
+                    <mat-checkbox color="primary" formControlName="relacionamento" (change)="onCheckboxChange(i)">
+                      É casado(a), amasiado(a) ou união estável ?
+                    </mat-checkbox>
+
+                    <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="onCheckboxChange(i)">
+                      Mora com seu Cônjuge?
+                    </mat-checkbox>
+                  </div>
+
+            </div>
           </div>
 
-      <mat-form-field>
-        <mat-label>Vínculo</mat-label>
-        <mat-select formControlName="vinculo" placeholder="Selecione o vínculo com a criança">
-          <mat-option *ngFor="let parentesco of parentescos" [value]="parentesco">{{ parentesco }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="handleError('vinculo', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
-
-          <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-              <mat-form-field>
-                <mat-label>Telefone Celular</mat-label>
-                <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular" placeholder="(00) 0 0000-0000">
-                <mat-error *ngIf="handleError('telefoneCelular', 'required')">Campo Obrigatório</mat-error>
-                <mat-error *ngIf="handleError('telefoneCelular', 'telefoneInvalido')">Telefone Inválido</mat-error>
-              </mat-form-field>
-
-              <mat-form-field>
-                <mat-label>Telefone Fixo</mat-label>
-                <input matInput mask="(00) 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0000-0000">
-                <mat-error *ngIf="handleError('telefoneFixo', 'telefoneInvalido')">Telefone Inválido</mat-error>
-              </mat-form-field>
-          </div>
-
-          <div fxLayout="center" class="linha-horizontal"></div>
-          <h2> Dados da empresa </h2>
-          <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na creche.</p>
-
-      <mat-form-field>
-        <mat-label>Nome da empresa</mat-label>
-        <input matInput formControlName="nomeEmpresa" placeholder="Digite o nome da empresa">
-        <mat-error *ngIf="handleError('nomeEmpresa', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
-
-
-              <mat-form-field>
-                <mat-label>CNPJ da empresa</mat-label>
-                <input matInput formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
-                <mat-error *ngIf="handleError('cnpj', 'required')">Campo Obrigatório</mat-error>
-                <mat-error *ngIf="handleError('cnpj', 'cnpjInvalido')">CNPJ Inválido</mat-error>
-              </mat-form-field>
-
-          <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-              <mat-form-field>
-                <mat-label>Telefone celular da empresa</mat-label>
-                <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelularEmpresarial" placeholder="(00) 0 0000-0000">
-                <mat-error *ngIf="handleError('telefoneCelularEmpresarial', 'telefoneInvalido')">Telefone Inválido</mat-error>
-              </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Telefone fixo da empresa</mat-label>
-              <input matInput mask="(00) 0000-0000" formControlName="telefoneFixoEmpresarial" placeholder="(00) 0000-0000">
-              <mat-error *ngIf="handleError('telefoneFixoEmpresarial', 'telefoneInvalido')">Telefone Inválido</mat-error>
-            </mat-form-field>
-          </div>
-          <mat-error class="alinhar-erro" *ngIf="formGroup.get('telefoneFixoEmpresarial')?.hasError('informeUm') && formGroup.get('telefoneCelularEmpresarial')?.hasError('informeUm')">Informe pelo menos um telefone empresarial.</mat-error>
-
-          <div fxLayout="column" fxLayoutAlign="center start" >
-            <mat-checkbox color="primary" formControlName="relacionamento">
-              É casado(a), amasiado ou união estável ?
-            </mat-checkbox>
-
-            <mat-checkbox color="primary" formControlName="moraComConjuge">
-              Mora com seu Cônjuge?
-            </mat-checkbox>
-          </div>
-
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
             <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
           </div>
-        </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+              <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+            </div>
+
+
+
+    </div>
       </mat-tab>
 
       <!-- Etapa 3 -->

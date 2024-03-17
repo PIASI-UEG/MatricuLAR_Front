@@ -1,14 +1,18 @@
-import {Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
 import {DateAdapter} from "@angular/material/core";
+import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
+import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Matricula} from "../../../custom_models/matricula";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
+import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
+import {TutorDto} from "../../../api/models/tutor-dto";
 import {MatTabGroup} from "@angular/material/tabs";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
@@ -61,8 +65,10 @@ export class FormMatriculaComponent implements OnInit{
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.createForm();
+    this.adicionarCampoTutor();
     this._adapter.setLocale('pt-br');
     this.prepararEdicao();
+
   }
 
   private createForm() {
@@ -83,18 +89,7 @@ export class FormMatriculaComponent implements OnInit{
         logradouro: [null, Validators.required],
         complemento: [null, Validators.required],
         //Dados Tutor - Etapa2
-        nomeTutor: [null, Validators.required],
-        dataNascimentoTutor: [null, Validators.required],
-        cpfTutor: [null, [Validators.required, this.validacoes.validarCpf]],
-        vinculo: [null, Validators.required],
-        telefoneCelular: [null, [Validators.required, this.validacoes.validarTelefone]],
-        telefoneFixo: [null, this.validacoes.validarTelefoneFixo],
-        nomeEmpresa: [null, Validators.required],
-        cnpj: [null, [Validators.required, this.validacoes.validarCnpj]],
-        telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
-        telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
-        relacionamento: false,
-        moraComConjuge: false,
+        tutor: this.formBuilder.array<TutorDto>([]),
         //Perguntas culturais - Etapa 3
         frequentouOutraCreche: [null, Validators.required],
         razaoSaida: [null],
@@ -120,37 +115,83 @@ export class FormMatriculaComponent implements OnInit{
         encaminhamentoConselhoTutelar: [null, Validators.required],
         declaracaoEscolar: [null, Validators.required]
       })
-
     }
   }
 
-  validarTelefoneEmpresarial(): boolean {
-    const telefoneCelularEmpresarial = this.formGroup.get('telefoneCelularEmpresarial');
-    const telefoneFixoEmpresarial = this.formGroup.get('telefoneFixoEmpresarial');
+  private createTutorFormGroup(): FormGroup {
+    return this.formBuilder.group({
+      nomeTutor: [null, Validators.required],
+      dataNascimentoTutor: [null, Validators.required],
+      cpfTutor: [null, [Validators.required, this.validacoes.validarCpf]],
+      vinculo: [null, Validators.required],
+      telefoneCelular: [null, [Validators.required, this.validacoes.validarTelefone]],
+      telefoneFixo: [null, this.validacoes.validarTelefoneFixo],
+      nomeEmpresa: [null, Validators.required],
+      cnpj: [null, [Validators.required, this.validacoes.validarCnpj]],
+      telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
+      telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
+      relacionamento: false,
+      moraComConjuge: false,
+    });
+  }
 
-    if (!telefoneCelularEmpresarial?.value && !telefoneFixoEmpresarial?.value) {
-      telefoneFixoEmpresarial?.setErrors({ 'informeUm': true });
-      telefoneCelularEmpresarial?.setErrors({ 'informeUm': true });
-      return false;
-    } else {
-      // Remover os erros se pelo menos um dos campos estiver preenchido
-      if (telefoneCelularEmpresarial?.errors && telefoneCelularEmpresarial?.errors['informeUm']) {
-        telefoneCelularEmpresarial.setErrors(null);
+  validarTelefoneEmpresarial(): boolean {
+    let isValid = true;
+    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
+
+    tutorFormArray.controls.forEach((control) => {
+      const tutorGroup = control as FormGroup;
+      const telefoneCelularEmpresarial = tutorGroup.get('telefoneCelularEmpresarial');
+      const telefoneFixoEmpresarial = tutorGroup.get('telefoneFixoEmpresarial');
+
+      if (!telefoneCelularEmpresarial?.value && !telefoneFixoEmpresarial?.value) {
+        telefoneFixoEmpresarial?.setErrors({ 'informeUm': true });
+        telefoneCelularEmpresarial?.setErrors({ 'informeUm': true });
+        isValid = false;
+      } else {
+
+        if (telefoneCelularEmpresarial?.errors && telefoneCelularEmpresarial?.errors['informeUm']) {
+          telefoneCelularEmpresarial.setErrors(null);
+        }
+        if (telefoneFixoEmpresarial?.errors && telefoneFixoEmpresarial?.errors['informeUm']) {
+          telefoneFixoEmpresarial.setErrors(null);
+        }
       }
-      if (telefoneFixoEmpresarial?.errors && telefoneFixoEmpresarial?.errors['informeUm']) {
-        telefoneFixoEmpresarial.setErrors(null);
-      }
-      return true;
-    }
+    });
+
+    return isValid;
   }
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
   };
 
+  public handleErrorTutor = (controlName: string, errorName: string, index: number) => {
+    const formGroupTutor =this.getTutorForm(index)
+    return formGroupTutor.controls[controlName].hasError(errorName);
+  };
+
+  exibirErroTelefoneEmpresarial(index: number): boolean {
+    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
+    const tutorGroup = tutorFormArray.at(index) as FormGroup;
+    const telefoneCelularEmpresarial = tutorGroup.get('telefoneCelularEmpresarial');
+    const telefoneFixoEmpresarial = tutorGroup.get('telefoneFixoEmpresarial');
+
+    const erroTelefoneFixo = telefoneFixoEmpresarial?.hasError('informeUm') || false;
+    const erroTelefoneCelular = telefoneCelularEmpresarial?.hasError('informeUm') || false;
+
+    return erroTelefoneCelular || erroTelefoneFixo;
+  }
 
   onSubmit() {
+    if (!this.validarTelefoneEmpresarial()) {
+      return;
+    }
 
+    this.submitFormulario = true;
+    if (this.codigo == null) {
+      return;
+    }
     //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
     console.log("Submit")
     if (this.docs.length >= 0){
@@ -163,39 +204,25 @@ export class FormMatriculaComponent implements OnInit{
                 console.log(retorno)
               })
           }
-      }
+        }
       )
 
     }
-    // if (!this.validarTelefoneEmpresarial()) {
-    //   return;
-    // }
-    //
-    // this.submitFormulario = true;
-    // if (this.codigo == null) {
-    //   return;
-    // }
-    //
-    // if (this.codigo != null || this.formGroup.valid) {
-    //   if(!this.codigo){
-    //     this.realizarInclusao();
-    //   }else{
-    //     this.realizarEdicao();
-    //   }
-    // }
+
+    if (this.codigo != null || this.formGroup.valid) {
+      if(!this.codigo){
+        this.atribuirConjugueRelacionamento();
+        this.realizarInclusao();
+      }else{
+        this.realizarEdicao();
+      }
+    }
   }
 
   private realizarInclusao(){
     console.log("Dados:",this.formGroup.value);
   }
 
-
-  limparFormulario() {
-    this.formGroup.reset(); // limpa os campos do formulario.
-    this.formGroup.patchValue({
-      usuarioId: this.securityService.getUserId()
-    });
-  }
 
   private prepararEdicao() {
     const paramId = this.route.snapshot.paramMap.get('id');
@@ -242,33 +269,6 @@ export class FormMatriculaComponent implements OnInit{
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.innerWidth = window.innerWidth;
-  }
-
-  getErrorClass(controlName: string): { [key: string]: any } | null {
-    const control = this.formGroup.get(controlName);
-    if (this.codigo == null) {
-      if (this.submitFormulario && control && control.errors) {
-        const qdErros = Object.keys(control.errors).length;
-
-        return {
-          'margin-top': 17 * qdErros + 'px'
-        };
-      }
-
-      if (!this.submitFormulario && control && control.errors && control.touched) {
-        const qdErros = Object.keys(control.errors).length;
-
-        return {
-          'margin-top': 17 * qdErros + 'px'
-        };
-      }
-      this.submitFormulario = false;
-      return {};
-    } else {
-      return {
-        'margin-top': 17 * 1 + 'px'
-      };
-    }
   }
 
   alterarNomeTitulo(indice:number): void{
@@ -321,7 +321,7 @@ export class FormMatriculaComponent implements OnInit{
       return true;
     }
     else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length){
-      this.adicionarCampo();
+      this.adicionarCampoNecessidade();
       this.botaoNecessidadeClicado = true;
       return true;
     }
@@ -332,12 +332,12 @@ export class FormMatriculaComponent implements OnInit{
     return false
   }
 
-  adicionarCampo(): void {
+  adicionarCampoNecessidade(): void {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     formArray.push(this.criarCampoNecessidadeEspecial());
   }
 
-  removerCampo(index: number): void {
+  removerCampoNecessidade(index: number): void {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     formArray.removeAt(index);
   }
@@ -351,6 +351,61 @@ export class FormMatriculaComponent implements OnInit{
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     return formArray.at(index)?.get('necessidadeEspecial') as AbstractControl;
   }
+
+  adicionarCampoTutor(): void {
+    const formArray = this.formGroup.get('tutor') as FormArray;
+    formArray.push(this.createTutorFormGroup());
+  }
+
+  removerCampoTutor(index: number): void {
+    const formArray = this.formGroup.get('tutor') as FormArray;
+    formArray.removeAt(index);
+  }
+
+  getTutoresControls(): AbstractControl[] {
+    const formArray = this.formGroup.get('tutor') as FormArray;
+    return formArray.controls;
+  }
+
+  getTutorForm(index: number): FormGroup {
+    const formArray = this.formGroup.get('tutor') as FormArray;
+    return formArray.at(index) as FormGroup;
+  }
+
+  onCheckboxChange(index: number) {
+    const formGroupTutor: FormGroup = this.getTutorForm(index);
+    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
+    const tutorFormArrayLength = tutorFormArray.length;
+
+    if (formGroupTutor.get('relacionamento')?.value || formGroupTutor.get('moraComConjuge')?.value){
+      if(tutorFormArrayLength == 1){
+        this.adicionarCampoTutor();
+
+      }
+    }
+    else {
+
+        this.removerCampoTutor(1);
+      }
+  }
+
+  atribuirConjugueRelacionamento(){
+    const formGroupTutor: FormGroup = this.getTutorForm(0);
+    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
+    const tutorFormArrayLength = tutorFormArray.length;
+    if(tutorFormArrayLength > 1){
+      const formGroupConjugue: FormGroup = this.getTutorForm(1);
+      formGroupConjugue.patchValue({
+        relacionamento: formGroupTutor.get('relacionamento')?.value,
+        moraComConjuge: formGroupTutor.get('moraComConjuge')?.value,
+      });
+      // console.log(formGroupConjugue.value)
+      // console.log(formGroupTutor.value)
+      // console.log("tutor quantidade",tutorFormArrayLength)
+    }
+  }
+
+
 
 
   // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
