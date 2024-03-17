@@ -227,54 +227,59 @@
       </mat-tab>
 
       <!-- Etapa 3 -->
+
       <mat-tab label="Perguntas" [disabled]="guiaAtiva !== 2">
         <div class="conteudo-mat-tab">
-      <mat-label>1) A criança já frequentou outra creche ?</mat-label>
-      <mat-radio-group formControlName="frequentouOutraCreche">
-        <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-        <mat-radio-button [value]="'nao'">Não</mat-radio-button>
-      </mat-radio-group>
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <p>A criança já frequentou outra creche ?</p>
+            <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
+              <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
+              <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+            </mat-radio-group>
 
-      <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
-        <mat-label>Por qual razão saiu? </mat-label>
-        <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
-        <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+            <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
+              <mat-label>Por qual razão saiu? </mat-label>
+              <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
+              <mat-error *ngIf="formGroup.get('razaoSaida')?.hasError('informeRazaoSaida')">Informe a razão da saída </mat-error>
+            </mat-form-field>
+          </div>
 
-      <mat-form-field>
-        <mat-label>2) A residencia da criança é :</mat-label>
-        <mat-select formControlName="tipoResidencia">
-          <mat-option value="alugado">Alugado</mat-option>
-          <mat-option value="proprio">Próprio</mat-option>
-        </mat-select>
-        <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <p>A residência da criança é :</p>
+          <mat-form-field>
+            <mat-label>Selecione o tipo da residência </mat-label>
+            <mat-select formControlName="tipoResidencia" placeholder="Selecione o tipo da residência">
+              <mat-option value="alugado">Alugado</mat-option>
+              <mat-option value="proprio">Próprio</mat-option>
+            </mat-select>
+            <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
+          </mat-form-field>
 
-      <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
-        <mat-label>Valor do aluguel</mat-label>
-        <input matInput formControlName="valorAluguel" placeholder="Informe o valor do aluguel">
-        <mat-error *ngIf="handleError('valorAluguel', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
+            <mat-label>Valor do aluguel</mat-label>
+            <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
+            <mat-error *ngIf="handleError('valorAluguel', 'required')">Campo Obrigatório</mat-error>
+          </mat-form-field>
 
-      <mat-label>3) A criança é beneficiada com algum tipo de
-        ajuda do governo?
-      </mat-label>
-      <mat-radio-group formControlName="possuiBeneficiosDoGoverno">
-        <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-        <mat-radio-button [value]="'nao'">Não</mat-radio-button>
-      </mat-radio-group>
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <p>A criança é beneficiada com algum tipo de ajuda do governo?</p>
+                <mat-radio-group color="primary" formControlName="possuiBeneficiosDoGoverno">
+                  <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
+                  <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+                </mat-radio-group>
 
-      <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
-        <mat-label>Valor do benefício </mat-label>
-        <input matInput formControlName="valorBeneficio" placeholder="Digite o valor do benefício">
-        <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+                <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
+                  <mat-label>Valor do benefício </mat-label>
+                  <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator="," placeholder="0,00">
+                  <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
+                </mat-form-field>
+          </div>
 
-      <mat-form-field>
-        <mat-label>4) Qual a renda familiar?</mat-label>
-        <input matInput formControlName="rendaFamiliar" placeholder="Digite a renda familiar">
-        <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <p>Qual a renda familiar?</p>
+          <mat-form-field>
+            <mat-label>Renda familiar</mat-label>
+            <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator="," placeholder="0,00">
+            <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
+          </mat-form-field>
 
           <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
