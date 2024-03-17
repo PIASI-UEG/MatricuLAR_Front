@@ -151,6 +151,7 @@ export class FormMatriculaComponent implements OnInit{
 
   onSubmit() {
 
+    //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
     console.log("Submit")
     if (this.docs.length >= 13){
       this.docs.forEach(doc =>{
@@ -351,6 +352,9 @@ export class FormMatriculaComponent implements OnInit{
     return formArray.at(index)?.get('necessidadeEspecial') as AbstractControl;
   }
 
+
+  // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
+  // esse idMatricula é so pra testes ele vai ser vazio
   onFilechange(event: any, enumDoc: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2' | 'CERTIDAO_ESTADO_CIVIL2') {
     const file = event.target.files[0]
     const fileName = file.name
