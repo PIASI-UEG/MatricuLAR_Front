@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nome da Escola</title>
+
+  <link href="https://unpkg.com/@angular/material/prebuilt-themes/indigo-pink.css" rel="stylesheet">
+
+  <style>
+    /* Importe seus estilos CSS aqui */
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Associação Sagrada Família</h1>
+
+
+  <ngb-carousel>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[0]" alt="Random first slide" />
+            </div>
+            <div class="carousel-caption">
+                <h3>10 seconds between slides...</h3>
+                <p>This carousel uses customized default values.</p>
+            </div>
+        </ng-template>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[1]" alt="Random second slide" />
+            </div>
+            <div class="carousel-caption">
+                <h3>No mouse events...</h3>
+                <p>This carousel doesn't pause or resume on mouse events</p>
+            </div>
+        </ng-template>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[2]" alt="Random third slide" />
+            </div>
+            <div class="carousel-caption">
+                <h3>No keyboard...</h3>
+                <p>This carousel uses customized default values.</p>
+            </div>
+        </ng-template>
+        <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+                <img [src]="images[3]" alt="Random fourth slide" />
+            </div>
+            <div class="carousel-caption">
+                <h3>And no wrap after last slide.</h3>
+                <p>This carousel uses customized default values.</p>
+            </div>
+        </ng-template>
+    </ngb-carousel>
+
+  <h2>Sobre Nós</h2>
+  <p>
+    A Nome da Escola é uma instituição de ensino que se dedica a ... (insira a descrição da escola).
+    Oferecemos ... (insira os serviços oferecidos).
+  </p>
+
+  <h2>Contato</h2>
+  <ul>
+    <li>Endereço: ... (insira o endereço)</li>
+    <li>Telefone: ... (insira o telefone)</li>
+    <li>Email: ... (insira o email)</li>
+    <li>Website: ... (insira o website)</li>
+  </ul>
+
+</div>
+
+</body>
+</html>
