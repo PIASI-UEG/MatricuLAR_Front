@@ -11,63 +11,67 @@
     <h2>{{this.nomeTitulo}}</h2>
     <div class="mat-tab-titulos" >
     <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" >
+      <!-- Etapa 1 -->
       <mat-tab class="mat-tab-color"  label="Criança" [disabled]="guiaAtiva !== 0" >
           <div class="conteudo-mat-tab">
-      <!-- Etapa 1 -->
         <mat-form-field>
           <mat-label>Nome da criança</mat-label>
           <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
           <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>CPF da criança</mat-label>
-          <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
-          <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
-          <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
-        </mat-form-field>
+            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                <mat-form-field>
+                  <mat-label>CPF da criança</mat-label>
+                  <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
+                  <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
+                  <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
+                </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Data de Nascimento</mat-label>
-          <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data" [matDatepicker]="dp3" >
-          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-          <mat-datepicker #dp3></mat-datepicker>
-          <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Data de Nascimento</mat-label>
+                  <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data" [matDatepicker]="dp3" >
+                  <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                  <mat-datepicker #dp3></mat-datepicker>
+                  <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
+                </mat-form-field>
+            </div>
 
-        <mat-checkbox formControlName="possuiNecessidadeEspecial">
-          Possui necessidades especiais? EX: alergia, medicamentos, alimentação
+        <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
+          Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
         </mat-checkbox>
 
-        <ng-container *ngIf="formGroup.get('possuiNecessidadeEspecial')?.value">
+        <ng-container *ngIf="this.firstClickNecessidades()">
           <div formArrayName="necessidadesEspeciais">
-            <div *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+            <div fxLayout="row"  fxLayoutAlign="center" *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
               <mat-form-field>
                 <mat-label>Necessidade especial</mat-label>
-                <input matInput formControlName="necessidadeEspecial" placeholder="TO DO">
+                <input matInput formControlName="necessidadeEspecial" placeholder="EX: alergia, medicamentos, alimentação">
                 <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Campo Obrigatório</mat-error>
               </mat-form-field>
 
-              <button mat-icon-button (click)="removerCampo(i)">
+              <button mat-icon-button  (click)="removerCampoNecessidade(i)" >
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
           </div>
-          <button mat-button type="button" (click)="adicionarCampo()">Adicionar campo</button>
+          <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade()"><mat-icon>add</mat-icon> Adicionar necessidade</button>
         </ng-container>
 
+            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                <mat-form-field>
+                  <mat-label>CEP</mat-label>
+                  <input matInput formControlName="cep" mask="00.000-000"  placeholder="00.000-000">
+                  <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
+                  <mat-error *ngIf="handleError('cep', 'cepInvalido')">CEP Inválido</mat-error>
+                </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>CEP</mat-label>
-          <input matInput formControlName="cep" placeholder="Digite o CEP">
-          <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Cidade</mat-label>
-          <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
-          <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Cidade</mat-label>
+                  <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
+                  <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
+                </mat-form-field>
+            </div>
 
         <mat-form-field>
           <mat-label>Bairro</mat-label>
@@ -76,152 +80,206 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Logadouro</mat-label>
-          <input matInput formControlName="logadouro" placeholder="Digite a rua">
-          <mat-error *ngIf="handleError('logadouro', 'required')">Campo Obrigatório</mat-error>
+          <mat-label>Logradouro</mat-label>
+          <input matInput formControlName="logradouro" placeholder="Digite o nome da rua">
+          <mat-error *ngIf="handleError('logradouro', 'required')">Campo Obrigatório</mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Complemento</mat-label>
-          <input matInput formControlName="complemento" placeholder="Casa, lote, apartamento....">
+          <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento....">
           <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
         </mat-form-field>
         <!-- Campos da primeira etapa -->
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+              <button  type="button" class="button-hidden" ></button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
               <button mat-raised-button  type="button" class="button" (click)="goToNextStep(1)" >Próxima <br> Etapa</button>
             </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(1)" >Próxima <br> Etapa</button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+            </div>
           </div>
+
       </mat-tab>
+
+      <!-- Etapa 2 -->
         <mat-tab label="Tutor(a)" [disabled]="guiaAtiva !== 1">
-        <div class="conteudo-mat-tab">
-    <!-- Etapa 2 -->
-      <mat-form-field>
-        <mat-label>Nome</mat-label>
-        <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
-        <mat-error *ngIf="handleError('nomeTutor', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <div class="conteudo-mat-tab">
+              <div formArrayName="tutor" >
+                <div *ngFor="let tutor of getTutoresControls(); let i = index;"  [formGroupName]="i">
+                  <ng-container *ngIf="i !== 0">
+                    <div fxLayout="center" class="linha-horizontal" ></div>
+                    <h2 > Dados do Cônjuge </h2>
+                  </ng-container>
+                  <mat-form-field>
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
+                    <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
+                  </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Data de Nascimento</mat-label>
-        <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data" [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
-        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-        <mat-datepicker #dp3></mat-datepicker>
-        <mat-error *ngIf="handleError('dataNascimentoTutor', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+                  <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                    <mat-form-field>
+                      <mat-label>CPF</mat-label>
+                      <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
+                      <mat-error *ngIf="handleErrorTutor('cpfTutor', 'required', i)">Campo Obrigatório</mat-error>
+                      <mat-error *ngIf="handleErrorTutor('cpfTutor', 'cpfInvalido', i)">CPF Inválido</mat-error>
+                    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>CPF</mat-label>
-        <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
-        <mat-error *ngIf="handleError('cpfTutor', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('cpfTutor', 'cpfInvalido')">CPF Inválido</mat-error>
-      </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Data de Nascimento</mat-label>
+                        <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data" [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
+                        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                        <mat-datepicker #dp3></mat-datepicker>
+                        <mat-error *ngIf="handleErrorTutor('dataNascimentoTutor', 'required', i)">Campo Obrigatório</mat-error>
+                      </mat-form-field>
+                    </div>
 
-      <mat-form-field>
-        <mat-label>Vínculo</mat-label>
-        <mat-select formControlName="vinculo" placeholder="Selecione o vínculo com a criança">
-          <mat-option *ngFor="let parentesco of parentescos" [value]="parentesco">{{ parentesco }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="handleError('vinculo', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Vínculo</mat-label>
+                  <mat-select formControlName="vinculo" placeholder="Selecione o vínculo com a criança">
+                    <mat-option *ngFor="let parentesco of parentescos" [value]="parentesco">{{ parentesco }}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="handleErrorTutor('vinculo', 'required', i)">Campo Obrigatório</mat-error>
+                </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Telefone Celular</mat-label>
-        <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular" placeholder="(00) 0 0000-0000">
-        <mat-error *ngIf="handleError('telefoneCelular', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('telefoneCelular', 'telefoneInvalido')">Telefone Inválido</mat-error>
-      </mat-form-field>
+                    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                        <mat-form-field>
+                          <mat-label>Telefone Celular</mat-label>
+                          <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular" placeholder="(00) 0 0000-0000">
+                          <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'required', i)">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Telefone Fixo</mat-label>
-        <input matInput mask="(00) 0 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0 0000-0000">
-        <mat-error *ngIf="handleError('telefoneFixo', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('telefoneFixo', 'telefoneInvalido')">Telefone Inválido</mat-error>
-      </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>Telefone Fixo</mat-label>
+                          <input matInput mask="(00) 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0000-0000">
+                          <mat-error *ngIf="handleErrorTutor('telefoneFixo', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                        </mat-form-field>
+                    </div>
 
-      <mat-form-field>
-        <mat-label>Nome da Empresa em que trabalha</mat-label>
-        <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
-        <mat-error *ngIf="handleError('nomeTutor', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+                    <div fxLayout="center" class="linha-horizontal"></div>
+                    <h2> Dados da empresa </h2>
+                    <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na creche.</p>
 
-      <mat-form-field>
-        <mat-label>CNPJ da empresa</mat-label>
-        <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
-        <mat-error *ngIf="handleError('nomeTutor', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Nome da empresa</mat-label>
+                  <input matInput formControlName="nomeEmpresa" placeholder="Digite o nome da empresa">
+                  <mat-error *ngIf="handleErrorTutor('nomeEmpresa', 'required', i)">Campo Obrigatório</mat-error>
+                </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Telefone do Serviço</mat-label>
-        <input matInput mask="(00) 0 0000-0000" formControlName="telefoneEmpresarial" placeholder="(00) 0 0000-0000">
-        <mat-error *ngIf="handleError('telefoneEmpresarial', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('telefoneEmpresarial', 'telefoneInvalido')">Telefone Inválido</mat-error>
-      </mat-form-field>
 
-      <mat-checkbox formControlName="relacionamento">
-        É casado(a), amasiado ou união estável ?
-      </mat-checkbox>
+                        <mat-form-field>
+                          <mat-label>CNPJ da empresa</mat-label>
+                          <input matInput formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
+                          <mat-error *ngIf="handleErrorTutor('cnpj', 'required', i)">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleErrorTutor('cnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
+                        </mat-form-field>
 
-      <mat-checkbox formControlName="moraComConjuge">
-        Mora com seu Cônjuge?
-      </mat-checkbox>
+                    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
+                        <mat-form-field>
+                          <mat-label>Telefone celular da empresa</mat-label>
+                          <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelularEmpresarial" placeholder="(00) 0 0000-0000">
+                          <mat-error *ngIf="handleErrorTutor('telefoneCelularEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                        </mat-form-field>
 
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+                      <mat-form-field>
+                        <mat-label>Telefone fixo da empresa</mat-label>
+                        <input matInput mask="(00) 0000-0000" formControlName="telefoneFixoEmpresarial" placeholder="(00) 0000-0000">
+                        <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
+                      </mat-form-field>
+                    </div>
+                  <mat-error class="alinhar-erro" *ngIf="exibirErroTelefoneEmpresarial(i)">
+                    Informe pelo menos um telefone empresarial.
+                  </mat-error>
+
+                  <div fxLayout="column" fxLayoutAlign="center start"  *ngIf="i !== 1">
+                    <mat-checkbox color="primary" formControlName="relacionamento" (change)="onCheckboxChange(i)">
+                      É casado(a), amasiado(a) ou união estável ?
+                    </mat-checkbox>
+
+                    <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="onCheckboxChange(i)">
+                      Mora com seu Cônjuge?
+                    </mat-checkbox>
+                  </div>
+
+            </div>
+          </div>
+
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
             <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
           </div>
-        </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+              <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+            </div>
+
+
+
+    </div>
       </mat-tab>
+
+      <!-- Etapa 3 -->
+
       <mat-tab label="Perguntas" [disabled]="guiaAtiva !== 2">
         <div class="conteudo-mat-tab">
-    <!-- Etapa 3 -->
-      <mat-label>1) A criança já frequentou outra creche ?</mat-label>
-      <mat-radio-group formControlName="frequentouOutraCreche">
-        <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-        <mat-radio-button [value]="'nao'">Não</mat-radio-button>
-      </mat-radio-group>
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <p>A criança já frequentou outra creche ?</p>
+            <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
+              <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
+              <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+            </mat-radio-group>
 
-      <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
-        <mat-label>Por qual razão saiu? </mat-label>
-        <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
-        <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+            <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
+              <mat-label>Por qual razão saiu? </mat-label>
+              <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
+              <mat-error *ngIf="formGroup.get('razaoSaida')?.hasError('informeRazaoSaida')">Informe a razão da saída </mat-error>
+            </mat-form-field>
+          </div>
 
-      <mat-form-field>
-        <mat-label>2) A residencia da criança é :</mat-label>
-        <mat-select formControlName="tipoResidencia">
-          <mat-option value="alugado">Alugado</mat-option>
-          <mat-option value="proprio">Próprio</mat-option>
-        </mat-select>
-        <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <p>A residência da criança é :</p>
+          <mat-form-field>
+            <mat-label>Selecione o tipo da residência </mat-label>
+            <mat-select formControlName="tipoResidencia" placeholder="Selecione o tipo da residência">
+              <mat-option value="alugado">Alugado</mat-option>
+              <mat-option value="proprio">Próprio</mat-option>
+            </mat-select>
+            <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
+          </mat-form-field>
 
-      <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
-        <mat-label>Valor do aluguel</mat-label>
-        <input matInput formControlName="valorAluguel" placeholder="Informe o valor do aluguel">
-        <mat-error *ngIf="handleError('valorAluguel', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
+            <mat-label>Valor do aluguel</mat-label>
+            <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
+            <mat-error *ngIf="handleError('valorAluguel', 'required')">Campo Obrigatório</mat-error>
+          </mat-form-field>
 
-      <mat-label>3) A criança é beneficiada com algum tipo de
-        ajuda do governo?
-      </mat-label>
-      <mat-radio-group formControlName="possuiBeneficiosDoGoverno">
-        <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-        <mat-radio-button [value]="'nao'">Não</mat-radio-button>
-      </mat-radio-group>
+          <div fxLayout="column" fxLayoutAlign="center start">
+            <p>A criança é beneficiada com algum tipo de ajuda do governo?</p>
+                <mat-radio-group color="primary" formControlName="possuiBeneficiosDoGoverno">
+                  <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
+                  <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+                </mat-radio-group>
 
-      <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
-        <mat-label>Valor do benefício </mat-label>
-        <input matInput formControlName="valorBeneficio" placeholder="Digite o valor do benefício">
-        <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+                <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
+                  <mat-label>Valor do benefício </mat-label>
+                  <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator="," placeholder="0,00">
+                  <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
+                </mat-form-field>
+          </div>
 
-      <mat-form-field>
-        <mat-label>4) Qual a renda familiar?</mat-label>
-        <input matInput formControlName="rendaFamiliar" placeholder="Digite a renda familiar">
-        <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
-      </mat-form-field>
+          <p>Qual a renda familiar?</p>
+          <mat-form-field>
+            <mat-label>Renda familiar</mat-label>
+            <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator="," placeholder="0,00">
+            <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
+          </mat-form-field>
 
           <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>

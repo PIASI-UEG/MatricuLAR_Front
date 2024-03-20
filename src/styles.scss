@@ -19,8 +19,12 @@ body, html{
   width: 100%;
 }
 
+mat-paginator{
+  background-color: #F5F7FA;
+}
+
 .mat-mdc-row .mat-mdc-cell{
-  background-color:  #FFFFFF;
+  background-color:  #F5F7FA;
   border: 1px solid #B2DFFF;
   text-align: center;
 }
@@ -42,7 +46,7 @@ th{
   width:220px;
   height:40px;
   border: none;
-  border-radius: 50px 50px;
+  border-radius: 10px 10px;
   cursor: pointer;
   margin: 6px;
 }
@@ -93,7 +97,8 @@ h2{
 }
 
 mat-card{
-  border: 3px solid #7FBFFF;
+  background-color: #F5F7FA;
+  border: 3px solid #B2DFFF;
   padding-top: 10px;
   padding-bottom: 10px;
 }
