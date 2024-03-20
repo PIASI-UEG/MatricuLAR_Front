@@ -13,7 +13,6 @@ import {Matricula} from "../../../custom_models/matricula";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
 import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
-import {MatTabGroup} from "@angular/material/tabs";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 
@@ -431,4 +430,16 @@ export class FormMatriculaComponent implements OnInit{
 
   }
 
+  pegaDoc(){
+
+    this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:"FC1.pdf"})
+      .subscribe(response =>{
+        let blob:Blob = response
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = 'FC1.pdf';
+        downloadLink.click()
+      })
+
+  }
 }
