@@ -182,8 +182,21 @@ export class FormMatriculaComponent implements OnInit{
     return erroTelefoneCelular || erroTelefoneFixo;
   }
 
+  erroRazaoSaida(): boolean {
+    if (this.formGroup.get('frequentouOutraCreche')?.value === "sim" && !this.formGroup.get('razaoSaida')?.value) {
+      this.formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
+      return true; // Indicate that an error was set
+    } else {
+      return false; // No error set
+    }
+  }
+
   onSubmit() {
     if (!this.validarTelefoneEmpresarial()) {
+      return;
+    }
+
+    if (!this.erroRazaoSaida()){
       return;
     }
 
