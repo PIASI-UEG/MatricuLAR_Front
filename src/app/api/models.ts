@@ -8,6 +8,7 @@ export { PkResponsavel } from './models/pk-responsavel';
 export { PessoaDto } from './models/pessoa-dto';
 export { NecessidadeEspecialDto } from './models/necessidade-especial-dto';
 export { AdvertenciaDto } from './models/advertencia-dto';
+export { DocumentoMatriculaDto } from './models/documento-matricula-dto';
 export { InformacoesMatriculaDto } from './models/informacoes-matricula-dto';
 export { MatriculaDto } from './models/matricula-dto';
 export { EnderecoDto } from './models/endereco-dto';

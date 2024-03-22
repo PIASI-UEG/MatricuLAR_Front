@@ -436,10 +436,10 @@ export class ResponsavelControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   responsavelControllerSearchFieldsActionPage$Response(params: {
-    body: {
-'searchFieldValues'?: Array<SearchFieldValue>;
-'page'?: Pageable;
-}
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
   },
   context?: HttpContext
 
@@ -447,6 +447,9 @@ export class ResponsavelControllerService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsActionPagePath, 'post');
     if (params) {
+      rb.query('page', params.page, {});
+      rb.query('size', params.size, {});
+      rb.query('sort', params.sort, {});
       rb.body(params.body, 'application/json');
     }
 
@@ -471,10 +474,10 @@ export class ResponsavelControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   responsavelControllerSearchFieldsActionPage(params: {
-    body: {
-'searchFieldValues'?: Array<SearchFieldValue>;
-'page'?: Pageable;
-}
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
   },
   context?: HttpContext
 

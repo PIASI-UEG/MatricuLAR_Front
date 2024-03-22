@@ -22,22 +22,24 @@ export class HomeComponent implements OnInit {
   constructor(
     private observer: BreakpointObserver,
     private router: Router,
-    private securityService: SecurityService) {
+    protected securityService: SecurityService) {
   }
 
   ngOnInit(): void {
-    if (this.securityService.credential.accessToken == "") {
+    if(this.router.url == '/') {
+      this.router.navigate(['/home']);
+    }
+    /*if (this.securityService.credential.accessToken == "") {
       this.router.navigate(['/acesso']);
-    } else {
+    } else {*/
       if (this.securityService.isValid()) {
-        if(this.router.url == '/'){
-          this.router.navigate(['/home']);
-        }
+       /*
+        }*/
         this.admin = !this.securityService.hasRoles(['ROLE_ADMIN'])
       }
-      if (!this.securityService.isValid())
+      /*if (!this.securityService.isValid())
         this.router.navigate(['/acesso']);
-    }
+    }*/
   }
 
   usuarioLogado(): number {
