@@ -423,6 +423,69 @@ export class ResponsavelControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation responsavelControllerSearchFieldsActionPage
+   */
+  static readonly ResponsavelControllerSearchFieldsActionPagePath = '/api/v1/responsavel/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `responsavelControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  responsavelControllerSearchFieldsActionPage$Response(params: {
+    body: {
+'searchFieldValues'?: Array<SearchFieldValue>;
+'page'?: Pageable;
+}
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<any>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `responsavelControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  responsavelControllerSearchFieldsActionPage(params: {
+    body: {
+'searchFieldValues'?: Array<SearchFieldValue>;
+'page'?: Pageable;
+}
+  },
+  context?: HttpContext
+
+): Observable<any> {
+
+    return this.responsavelControllerSearchFieldsActionPage$Response(params,context).pipe(
+      map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+  /**
    * Path part for operation responsavelControllerListAllPage
    */
   static readonly ResponsavelControllerListAllPagePath = '/api/v1/responsavel/page';

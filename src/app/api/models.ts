@@ -15,7 +15,7 @@ export { CredencialDto } from './models/credencial-dto';
 export { UsuarioSenhaDto } from './models/usuario-senha-dto';
 export { PkAdvertencia } from './models/pk-advertencia';
 export { SearchFieldValue } from './models/search-field-value';
+export { Pageable } from './models/pageable';
 export { AuthDto } from './models/auth-dto';
 export { ISearchFieldDataObject } from './models/i-search-field-data-object';
 export { SearchField } from './models/search-field';
-export { Pageable } from './models/pageable';

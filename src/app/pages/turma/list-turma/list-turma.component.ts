@@ -24,7 +24,7 @@ import {Mascaras} from "../../../../Mascaras";
 })
 export class ListTurmaComponent implements OnInit{
 
-  colunasMostrar = ['titulo','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
+  colunasMostrar = ['titulo','turno','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
   turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
   mascaras: Mascaras = new Mascaras();
