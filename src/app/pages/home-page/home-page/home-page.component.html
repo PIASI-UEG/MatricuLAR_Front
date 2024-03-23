@@ -8,7 +8,12 @@
     <link href="https://unpkg.com/@angular/material/prebuilt-themes/indigo-pink.css" rel="stylesheet">
 
     <style>
-        /* Importe seus estilos CSS aqui */
+        .imagem-home1 img {
+            max-width: 100%;
+            max-height: 450px;
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -20,15 +25,22 @@
 
     <ngb-carousel>
         <ng-template ngbSlide>
-            <div class="imagem-home1"> <img src="imagem[0]"/>
-          </div>
+            <div class="imagem-home1">
+                <img [src]="images[0]" alt="Imagem Home" />
+            </div>
+        </ng-template>
+
+        <ng-template ngbSlide>
+            <div class="imagem-home1">
+                <img [src]="images[1]" alt="Imagem Home" />
+            </div>
         </ng-template>
     </ngb-carousel>
 
     <h2>Sobre Nós</h2>
     <p>
         A Nome da Escola é uma instituição de ensino que se dedica a ... (insira a descrição da escola).
-        Oferecemos ... (insira os servços oferecidos).
+        Oferecemos ... (insira os serviços oferecidos).
     </p>
 
     <h2>Contato</h2>
@@ -43,6 +55,3 @@
 
 </body>
 </html>
-
-
-
