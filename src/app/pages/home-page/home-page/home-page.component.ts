@@ -5,13 +5,12 @@ import { NgbCarouselConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap
   selector: 'app-home',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
-  providers: [NgbCarouselConfig], // add NgbCarouselConfig to the component providers
+  providers: [NgbCarouselConfig],
 })
 export class HomePageComponent {
-  images = [700, 533, 807, 124].map((n) => `https://picsum.photos/id/${n}/900/500`);
+  images = [700, 533, 807, 124].map((n) => 'assets/fotos_home/imagem-home.jpeg');
 
   constructor(config: NgbCarouselConfig) {
-    // customize default values of carousels used by this component tree
     config.interval = 3000;
     config.wrap = true;
     config.keyboard = false;
