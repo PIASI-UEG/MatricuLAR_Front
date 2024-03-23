@@ -37,6 +37,8 @@ import {HomePageModule} from "./pages/home-page/home-page.module";
 import {NgbCarouselModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HomePainelComponent } from './pages/painel/home-painel/home-painel.component';
 import {PainelModule} from "./pages/painel/painel.module";
+import { EsqueceuSenhaComponent } from './pages/esqueceu-senha/esqueceu-senha/esqueceu-senha.component';
+import { ImprimirTermoComponent } from './pages/imprimir-termo/imprimir-termo.component';
 
 
 @NgModule({
@@ -45,6 +47,8 @@ import {PainelModule} from "./pages/painel/painel.module";
     HomeComponent,
     LoaderDialogComponent,
     ConfirmationDialog,
+    EsqueceuSenhaComponent,
+    ImprimirTermoComponent,
   ],
   imports: [
     BrowserModule,
