@@ -10,14 +10,15 @@
                     <mat-error *ngIf="handleError('login', 'cpfInvalido')">O CPF está Inválido</mat-error>
                 </mat-form-field>
 
-                <mat-form-field>
-                    <mat-label>Senha</mat-label>
-                    <input matInput type="password" formControlName="senha" placeholder="Digite a senha">
-                    <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                    <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">A Senha é obrigatória</mat-error>
-                </mat-form-field>
+<!--                <div *ngIf="codigo == null" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >-->
+                    <mat-form-field>
+                        <mat-label>Senha</mat-label>
+                        <input matInput type="password" formControlName="senha" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">
+                        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">A Senha é obrigatória</mat-error>
+                    </mat-form-field>
 
                 <button class="button" type="submit" title="Entrar">
                     <span>Entrar</span>

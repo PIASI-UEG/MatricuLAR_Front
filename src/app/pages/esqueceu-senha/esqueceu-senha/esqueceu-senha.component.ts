@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioControllerService } from '../../../api/services/usuario-controller.service';
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
+import {cpf} from "cpf-cnpj-validator";
 
 @Component({
     selector: 'app-esqueceu-senha',
@@ -44,8 +45,8 @@ export class EsqueceuSenhaComponent implements OnInit {
         return this.formGroup.controls[controlName].hasError(errorName);
     };
 
-    private recuperarSenha(email: string, cpf: string): void {
-        const verifica = { body: cpf };
+    private recuperarSenha(email: string, pessoaCpf: string): void {
+        const verifica = { body: pessoaCpf};
         this.usuarioController.usuarioControllerRedefinirSenha(verifica).subscribe(() => {
             console.log('Solicitação de redefinição de senha enviada com sucesso.');
             this.mostrarMensagemSucesso('A senha foi enviada para o seu e-mail.');
