@@ -15,6 +15,7 @@ import {AuthDto} from "../../api/models/auth-dto";
 })
 export class AutenticacaoComponent implements OnInit {
   formGroup!: FormGroup;
+    hide = true;
 
 
   /**
