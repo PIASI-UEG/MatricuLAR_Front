@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UsuarioDto } from '../../../api/models/usuario-dto';
-import { Validacoes } from '../../../../Validacoes';
 import { UsuarioControllerService } from '../../../api/services/usuario-controller.service';
-import {Router} from "@angular/router";
-import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: 'app-esqueceu-senha',
@@ -15,8 +12,6 @@ import {MatDialog} from "@angular/material/dialog";
 export class EsqueceuSenhaComponent implements OnInit {
 
     formGroup!: FormGroup;
-    validacoes: Validacoes = new Validacoes();
-    usuarioDTO: UsuarioDto[] = [];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -31,33 +26,42 @@ export class EsqueceuSenhaComponent implements OnInit {
 
     private createForm() {
         this.formGroup = this.formBuilder.group({
-            pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
-            email: [null, [Validators.required, this.validacoes.validarEmail]],
+            pessoaCpf: [null, [Validators.required]], // Removed custom CPF validation
+            email: [null, [Validators.required, Validators.email]],
         });
     }
 
     public onSubmit() {
         if (this.formGroup.valid) {
-            const { email, cpf } = this.formGroup.value;
-            this.recuperarSenha(email, cpf);
-            this.router.navigate(['/acesso/login']);
+            const { email, pessoaCpf } = this.formGroup.value;
+            this.recuperarSenha(email, pessoaCpf);
         } else {
             console.error('Por favor, preencha todos os campos corretamente.');
         }
     }
-
 
     public handleError = (controlName: string, errorName: string) => {
         return this.formGroup.controls[controlName].hasError(errorName);
     };
 
     private recuperarSenha(email: string, cpf: string): void {
-        const solicitar = { body: cpf };
-        this.usuarioController.usuarioControllerRedefinirSenha(solicitar).subscribe(() => {
+        const verifica = { body: cpf };
+        this.usuarioController.usuarioControllerRedefinirSenha(verifica).subscribe(() => {
             console.log('Solicitação de redefinição de senha enviada com sucesso.');
+            this.mostrarMensagemSucesso('A senha foi enviada para o seu e-mail.');
+            this.router.navigate(["/acesso/login"]);
         }, error => {
             console.error('Erro ao enviar solicitação de redefinição de senha:', error);
+            this.mostrarMensagemErro('CPF não cadastrado no sistema. Por favor, verifique o CPF informado.');
         });
+    }
+
+    mostrarMensagemSucesso(mensagem: string): void {
+        alert(mensagem);
+    }
+
+    mostrarMensagemErro(mensagem: string): void {
+        alert(mensagem);
     }
 
     private gerarSenhaAleatoria(): string {
@@ -109,5 +113,4 @@ export class EsqueceuSenhaComponent implements OnInit {
 
         return senha;
     }
-
 }
