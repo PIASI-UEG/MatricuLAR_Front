@@ -26,7 +26,7 @@ export class EsqueceuSenhaComponent implements OnInit {
 
     private createForm() {
         this.formGroup = this.formBuilder.group({
-            pessoaCpf: [null, [Validators.required]], // Removed custom CPF validation
+            pessoaCpf: [null, [Validators.required]],
             email: [null, [Validators.required, Validators.email]],
         });
     }
@@ -36,7 +36,7 @@ export class EsqueceuSenhaComponent implements OnInit {
             const { email, pessoaCpf } = this.formGroup.value;
             this.recuperarSenha(email, pessoaCpf);
         } else {
-            console.error('Por favor, preencha todos os campos corretamente.');
+            console.error('Preencha todos os campos corretamente.');
         }
     }
 
@@ -52,7 +52,7 @@ export class EsqueceuSenhaComponent implements OnInit {
             this.router.navigate(["/acesso/login"]);
         }, error => {
             console.error('Erro ao enviar solicitação de redefinição de senha:', error);
-            this.mostrarMensagemErro('CPF não cadastrado no sistema. Por favor, verifique o CPF informado.');
+            this.mostrarMensagemErro('CPF não cadastrado no sistema. Por favor, verifique o CPF e informe novamente');
         });
     }
 
@@ -87,7 +87,6 @@ export class EsqueceuSenhaComponent implements OnInit {
             }
         }
 
-        // Verifica se atende aos critérios
         if (!caracterEspecial) {
             // Se não tiver caracter especial, adiciona um
             const caracterEspecialAleatorio = caracteresEspeciais[Math.floor(Math.random() * caracteresEspeciais.length)];

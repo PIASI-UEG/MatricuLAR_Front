@@ -4,8 +4,9 @@
             <h2>Esqueceu sua senha?</h2>
             <mat-form-field>
                 <mat-label>CPF</mat-label>
-                <input matInput formControlName="pessoaCpf" placeholder="000.000.000-00">
+                <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
                 <mat-error *ngIf="handleError('pessoaCpf', 'required')">O CPF é Obrigatório</mat-error>
+                <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>E-mail</mat-label>
