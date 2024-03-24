@@ -4,7 +4,7 @@ import {EsqueceuSenhaComponent} from "./esqueceu-senha/esqueceu-senha.component"
 
 export const EsqueceuSenhaRoutingModule: Routes = [
     {
-        path: "esqueceusenha",
+        path: "esqueceu-senha",
         component: EsqueceuSenhaComponent
     }
 ]

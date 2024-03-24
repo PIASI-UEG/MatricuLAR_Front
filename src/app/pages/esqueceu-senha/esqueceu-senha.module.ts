@@ -5,7 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {RouterLink, RouterOutlet} from "@angular/router";
-import {NgbCarouselModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -20,7 +20,6 @@ import {NgbCarouselModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
         RouterOutlet,
         RouterLink,
         NgbModule,
-        NgbCarouselModule
     ]
 })
 

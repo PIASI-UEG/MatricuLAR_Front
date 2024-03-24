@@ -37,6 +37,7 @@ import {HomePageModule} from "./pages/home-page/home-page.module";
 import {NgbCarouselModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HomePainelComponent } from './pages/painel/home-painel/home-painel.component';
 import {PainelModule} from "./pages/painel/painel.module";
+import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module";
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import {PainelModule} from "./pages/painel/painel.module";
     HomePageModule,
     NgbModule,
     NgbCarouselModule,
-    PainelModule
+    PainelModule,
+      EsqueceuSenhaModule
   ],
   providers: [
     provideEnvironmentNgxMask(),
