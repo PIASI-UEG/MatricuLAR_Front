@@ -4,6 +4,8 @@ import { UsuarioDto } from '../../../api/models/usuario-dto';
 import { Validacoes } from '../../../../Validacoes';
 import { UsuarioControllerService } from '../../../api/services/usuario-controller.service';
 import {Router} from "@angular/router";
+import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-esqueceu-senha',
@@ -20,6 +22,7 @@ export class EsqueceuSenhaComponent implements OnInit {
         private formBuilder: FormBuilder,
         private usuarioController: UsuarioControllerService,
         private router: Router,
+        private dialog: MatDialog,
     ) { }
 
     ngOnInit() {
@@ -34,10 +37,15 @@ export class EsqueceuSenhaComponent implements OnInit {
     }
 
     public onSubmit() {
-        const { email, cpf } = this.formGroup.value;
-        this.recuperarSenha(email, cpf);
-        this.router.navigate(['/acesso/login']);
+        if (this.formGroup.valid) {
+            const { email, cpf } = this.formGroup.value;
+            this.recuperarSenha(email, cpf);
+            this.router.navigate(['/acesso/login']);
+        } else {
+            console.error('Por favor, preencha todos os campos corretamente.');
+        }
     }
+
 
     public handleError = (controlName: string, errorName: string) => {
         return this.formGroup.controls[controlName].hasError(errorName);

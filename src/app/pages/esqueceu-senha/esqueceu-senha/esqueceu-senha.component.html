@@ -1,32 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<div class="tela_esqueceu_senha">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esqueceu sua senha ?</title>
-</head>
-<body>
 
-<div class="container">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxLayout="column" fxLayoutAlign="space-between center" fxFlex="1 1 auto">
-        <h2>Esqueceu sua senha?</h2>
-        <mat-form-field>
-            <mat-label>CPF</mat-label>
-            <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
-            <mat-error *ngIf="handleError('pessoaCpf', 'required')">Campo Obrigatório</mat-error>
-            <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>E-mail</mat-label>
-            <input matInput formControlName="email" placeholder="exemplo@exemplo.com">
-            <mat-error *ngIf="handleError('email', 'required')">Campo Obrigatório</mat-error>
-            <mat-error *ngIf="handleError('email', 'emailInvalido')">E-mail Inválido</mat-error>
-        </mat-form-field>
-        <button type="submit">Recuperar Senha</button>
-    </form>
-</div>
-
-</body>
-</div>
-</html>
+  <div class="tela_esqueceu_senha">
+    <div class="container">
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxLayout="column" fxLayoutAlign="space-between center" fxFlex="1 1 auto">
+            <h2>Esqueceu sua senha?</h2>
+            <mat-form-field>
+                <mat-label>CPF</mat-label>
+                <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
+                <mat-error *ngIf="handleError('pessoaCpf', 'required')">O CPF é Obrigatório</mat-error>
+                <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>E-mail</mat-label>
+                <input matInput formControlName="email" placeholder="exemplo@exemplo.com">
+                <mat-error *ngIf="handleError('email', 'required')">O Email é Obrigatório</mat-error>
+                <mat-error *ngIf="handleError('email', 'emailInvalido')">E-mail Inválido</mat-error>
+            </mat-form-field>
+            <button type="submit">Recuperar Senha</button>
+        </form>
+    </div>
+  </div>
