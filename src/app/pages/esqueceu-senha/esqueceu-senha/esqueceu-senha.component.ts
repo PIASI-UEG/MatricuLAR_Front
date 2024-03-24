@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioDto } from '../../../api/models/usuario-dto';
 import { Validacoes } from '../../../../Validacoes';
 import { UsuarioControllerService } from '../../../api/services/usuario-controller.service';
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-esqueceu-senha',
@@ -18,6 +19,7 @@ export class EsqueceuSenhaComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private usuarioController: UsuarioControllerService,
+        private router: Router,
     ) { }
 
     ngOnInit() {
@@ -26,26 +28,31 @@ export class EsqueceuSenhaComponent implements OnInit {
 
     private createForm() {
         this.formGroup = this.formBuilder.group({
-            cpf: [null, [Validators.required, this.validacoes.validarCpf]],
+            pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
             email: [null, [Validators.required, this.validacoes.validarEmail]],
         });
     }
 
-    onSubmit() {
+    public onSubmit() {
         const { email, cpf } = this.formGroup.value;
         this.recuperarSenha(email, cpf);
+        this.router.navigate(['/acesso/login']);
     }
 
-    recuperarSenha(email: string, cpf: string): void {
-        const requestBody = { body: cpf };
-        this.usuarioController.usuarioControllerRedefinirSenha(requestBody).subscribe(() => {
+    public handleError = (controlName: string, errorName: string) => {
+        return this.formGroup.controls[controlName].hasError(errorName);
+    };
+
+    private recuperarSenha(email: string, cpf: string): void {
+        const solicitar = { body: cpf };
+        this.usuarioController.usuarioControllerRedefinirSenha(solicitar).subscribe(() => {
             console.log('Solicitação de redefinição de senha enviada com sucesso.');
         }, error => {
             console.error('Erro ao enviar solicitação de redefinição de senha:', error);
         });
     }
 
-    gerarSenhaAleatoria(): string {
+    private gerarSenhaAleatoria(): string {
         const tamanho = 6;
         const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
         const caracteresEspeciais = '!@#$%^&*()_+-=[]{}|;:,.<>?';

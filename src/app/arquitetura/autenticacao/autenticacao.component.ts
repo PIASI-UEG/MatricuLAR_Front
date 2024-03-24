@@ -73,7 +73,6 @@ export class AutenticacaoComponent implements OnInit {
       }, error => {
         console.log('erro', error);
         alert(error);
-        // }
       });
     }
   }
