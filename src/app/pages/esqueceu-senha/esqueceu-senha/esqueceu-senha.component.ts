@@ -4,6 +4,7 @@ import { UsuarioControllerService } from '../../../api/services/usuario-controll
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 import {cpf} from "cpf-cnpj-validator";
+import {RedefinirSenhaDto} from "../../../api/models/redefinir-senha-dto";
 
 @Component({
     selector: 'app-esqueceu-senha',
@@ -46,16 +47,21 @@ export class EsqueceuSenhaComponent implements OnInit {
     };
 
     private recuperarSenha(email: string, pessoaCpf: string): void {
-        const verifica = { body: pessoaCpf};
-        this.usuarioController.usuarioControllerRedefinirSenha(verifica).subscribe(() => {
+        const verifica: RedefinirSenhaDto = {
+            cpf: pessoaCpf,
+            email: email
+        };
+        this.usuarioController.usuarioControllerRedefinirSenha({ body: verifica }).subscribe(() => {
             console.log('Solicitação de redefinição de senha enviada com sucesso.');
             this.mostrarMensagemSucesso('A senha foi enviada para o seu e-mail.');
             this.router.navigate(["/acesso/login"]);
         }, error => {
             console.error('Erro ao enviar solicitação de redefinição de senha:', error);
-            this.mostrarMensagemErro('CPF não cadastrado no sistema. Por favor, verifique o CPF e informe novamente');
+            this.mostrarMensagemErro('CPF ou E-mail não cadastrado no sistema. Por favor, verifique o CPF e E-mail  e informe novamente');
         });
     }
+
+
 
     mostrarMensagemSucesso(mensagem: string): void {
         alert(mensagem);

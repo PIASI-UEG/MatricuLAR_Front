@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { Pageable } from '../models/pageable';
+import { RedefinirSenhaDto } from '../models/redefinir-senha-dto';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
 import { UsuarioDto } from '../models/usuario-dto';
@@ -379,7 +380,7 @@ export class UsuarioControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   usuarioControllerRedefinirSenha$Response(params: {
-    body: string
+    body: RedefinirSenhaDto
   },
   context?: HttpContext
 
@@ -409,7 +410,7 @@ export class UsuarioControllerService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   usuarioControllerRedefinirSenha(params: {
-    body: string
+    body: RedefinirSenhaDto
   },
   context?: HttpContext
 
