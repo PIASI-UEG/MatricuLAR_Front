@@ -27,19 +27,19 @@ const routes: Routes = [
     //canActivate: [SecurityGuard],
     //data: {security: {roles: ['', '']}}
   },
+    {
+        path: "",
+        children: [
+            ...EsqueceuSenhaRoutingModule,
+        ]
+    },
   {
     path: "acesso",
     children: [
       ...AutenticacaoRoutes,
     ]
 
-  },
-    {
-        path: "",
-        children: [
-            ...EsqueceuSenhaRoutingModule,
-        ]
-    }
+  }
 ];
 
 @NgModule({

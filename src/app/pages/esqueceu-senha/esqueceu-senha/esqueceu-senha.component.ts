@@ -37,7 +37,7 @@ export class EsqueceuSenhaComponent implements OnInit {
     }
 
     recuperarSenha(email: string, cpf: string): void {
-        const requestBody = { body: cpf }; // Construindo o corpo da requisição
+        const requestBody = { body: cpf };
         this.usuarioController.usuarioControllerRedefinirSenha(requestBody).subscribe(() => {
             console.log('Solicitação de redefinição de senha enviada com sucesso.');
         }, error => {
@@ -46,13 +46,53 @@ export class EsqueceuSenhaComponent implements OnInit {
     }
 
     gerarSenhaAleatoria(): string {
-        const length = 8;
-        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const tamanho = 6;
+        const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+        const caracteresEspeciais = '!@#$%^&*()_+-=[]{}|;:,.<>?';
         let senha = '';
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * charset.length);
-            senha += charset[randomIndex];
+        let caracterEspecial = false;
+        let hasUppercase = false;
+        let numCount = 0;
+
+        for (let i = 0; i < tamanho; i++) {
+            const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+            const caractere = caracteres[indiceAleatorio];
+            senha += caractere;
+
+            if (caracteresEspeciais.includes(caractere)) {
+                caracterEspecial = true;
+            } else if (caractere === caractere.toUpperCase()) {
+                hasUppercase = true;
+            } else if (!isNaN(parseInt(caractere))) {
+                numCount++;
+            }
         }
+
+        // Verifica se atende aos critérios
+        if (!caracterEspecial) {
+            // Se não tiver caracter especial, adiciona um
+            const caracterEspecialAleatorio = caracteresEspeciais[Math.floor(Math.random() * caracteresEspeciais.length)];
+            const indiceAleatorio = Math.floor(Math.random() * senha.length);
+            senha = senha.substr(0, indiceAleatorio) + caracterEspecialAleatorio + senha.substr(indiceAleatorio + 1);
+        }
+
+        if (!hasUppercase) {
+            // Se não tiver letra maiúscula, transforma um caractere em maiúsculo
+            const indiceAleatorio = Math.floor(Math.random() * senha.length);
+            senha = senha.substr(0, indiceAleatorio) + senha[indiceAleatorio].toUpperCase() + senha.substr(indiceAleatorio + 1);
+        }
+
+        if (numCount < 3) {
+            // Se não tiver pelo menos 3 números, adiciona mais números aleatórios
+            const numbersToAdd = 3 - numCount;
+            for (let i = 0; i < numbersToAdd; i++) {
+                const indiceAleatorio = Math.floor(Math.random() * senha.length);
+                const numeroAleatorio = Math.floor(Math.random() * 10);
+                senha = senha.substr(0, indiceAleatorio) + numeroAleatorio.toString() + senha.substr(indiceAleatorio + 1);
+            }
+        }
+
         return senha;
     }
+
 }
