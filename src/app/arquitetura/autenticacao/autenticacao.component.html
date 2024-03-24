@@ -10,7 +10,7 @@
                 <mat-form-field >
                     <mat-label >CPF</mat-label>
                     <input matInput formControlName="login" autocomplete="off"
-                           placeholder="Digite seu cpf" type="cpf">
+                           type="text" placeholder="Digite seu cpf" type="cpf" mask="000.000.000-00" >
                     <mat-error *ngIf="handleError('login', 'required')">
                         O CPF é obrigatório
                     </mat-error>

@@ -6,6 +6,10 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
+import {NgxMaskDirective} from "ngx-mask";
+import {FlexModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -20,6 +24,11 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
         RouterOutlet,
         RouterLink,
         NgbModule,
+        FormsModule,
+        MatInputModule,
+        NgxMaskDirective,
+        ReactiveFormsModule,
+        FlexModule,
     ]
 })
 
