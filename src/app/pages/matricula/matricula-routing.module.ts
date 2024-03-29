@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeMatriculaComponent} from "./home-matricula/home-matricula.component";
 import {ListMatriculaComponent} from "./list-matricula/list-matricula.component";
 import {FormMatriculaComponent} from "./form-matricula/form-matricula.component";
+import {ImprimirTermoComponent} from "../imprimir-termo/imprimir-matricula/imprimir-termo.component";
 
 
 export const matriculaRoutes: Routes = [

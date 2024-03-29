@@ -67,3 +67,10 @@ mat-divider {
 .menu-button mat-icon.icon-cor{
   color: black;
 }
+
+@media print {
+  .menu-button {
+    display: none;
+  }
+}
+

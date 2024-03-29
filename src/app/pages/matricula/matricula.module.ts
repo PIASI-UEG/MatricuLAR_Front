@@ -24,15 +24,14 @@ import {BrowserModule} from "@angular/platform-browser";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatTabsModule} from "@angular/material/tabs";
-import {ImprimirTermoComponent} from "./imprimir-termo/imprimir-termo.component";
+import {ImprimirTermoComponent} from "../imprimir-termo/imprimir-matricula/imprimir-termo.component";
 
 
 @NgModule({
   declarations: [
     FormMatriculaComponent,
     HomeMatriculaComponent,
-    ListMatriculaComponent,
-      ImprimirTermoComponent
+    ListMatriculaComponent
   ],
     imports: [
         CommonModule,

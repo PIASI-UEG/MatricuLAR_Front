@@ -10,7 +10,6 @@
     <button class="custom-icon" routerLink="" >
     </button>
 </mat-toolbar>
-
 <mat-sidenav-container>
     <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
@@ -35,7 +34,9 @@
         <button *ngIf="securityService.isValid()"title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario">
             <mat-icon>supervisor_account</mat-icon>Funcionários
         </button>
-
+        <button *ngIf="securityService.isValid()"title="imprirTermo"  mat-button class="menu-button" routerLink="/imprimir-termo">
+            <mat-icon>print</mat-icon>Imprimir
+        </button>
         <mat-divider></mat-divider>
 
       <button *ngIf="securityService.isValid()"title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta', usuarioLogado()]"> Minha Conta
@@ -58,3 +59,4 @@
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
+

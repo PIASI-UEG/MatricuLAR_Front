@@ -10,6 +10,7 @@ import {minhaContaRoutes} from "./pages/minha-conta/minha-conta-routing.module";
 import {homePageRoutes} from "./pages/home-page/home-page-routing.module";
 import {painelRoutes} from "./pages/painel/painel-routing.module";
 import {EsqueceuSenhaRoutingModule} from "./pages/esqueceu-senha/esqueceu-senha-routing.module";
+import {imprimirTermoRoutes} from "./pages/imprimir-termo/imprimir-termo.routes";
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
       ...turmaRoutes,
       ...matriculaRoutes,
       ...minhaContaRoutes,
+        ...imprimirTermoRoutes,
        { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
     //canActivate: [SecurityGuard],
