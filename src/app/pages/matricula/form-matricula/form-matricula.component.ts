@@ -43,7 +43,7 @@ export class FormMatriculaComponent implements OnInit{
   nomeTitulo : string = "Dados da Criança";
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
-
+  enviado: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -126,35 +126,9 @@ export class FormMatriculaComponent implements OnInit{
       telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
       relacionamento: false,
       moraComConjuge: false,
-    });
+    }, { validator: this.validacoes.validarTelefonesEmpresariais });
   }
 
-  validarTelefoneEmpresarial(): boolean {
-    let isValid = true;
-    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
-
-    tutorFormArray.controls.forEach((control) => {
-      const tutorGroup = control as FormGroup;
-      const telefoneCelularEmpresarial = tutorGroup.get('telefoneCelularEmpresarial');
-      const telefoneFixoEmpresarial = tutorGroup.get('telefoneFixoEmpresarial');
-
-      if (!telefoneCelularEmpresarial?.value && !telefoneFixoEmpresarial?.value) {
-        telefoneFixoEmpresarial?.setErrors({ 'informeUm': true });
-        telefoneCelularEmpresarial?.setErrors({ 'informeUm': true });
-        isValid = false;
-      } else {
-
-        if (telefoneCelularEmpresarial?.errors && telefoneCelularEmpresarial?.errors['informeUm']) {
-          telefoneCelularEmpresarial.setErrors(null);
-        }
-        if (telefoneFixoEmpresarial?.errors && telefoneFixoEmpresarial?.errors['informeUm']) {
-          telefoneFixoEmpresarial.setErrors(null);
-        }
-      }
-    });
-
-    return isValid;
-  }
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
@@ -165,17 +139,10 @@ export class FormMatriculaComponent implements OnInit{
     return formGroupTutor.controls[controlName].hasError(errorName);
   };
 
-  exibirErroTelefoneEmpresarial(index: number): boolean {
-    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
-    const tutorGroup = tutorFormArray.at(index) as FormGroup;
-    const telefoneCelularEmpresarial = tutorGroup.get('telefoneCelularEmpresarial');
-    const telefoneFixoEmpresarial = tutorGroup.get('telefoneFixoEmpresarial');
-
-    const erroTelefoneFixo = telefoneFixoEmpresarial?.hasError('informeUm') || false;
-    const erroTelefoneCelular = telefoneCelularEmpresarial?.hasError('informeUm') || false;
-
-    return erroTelefoneCelular || erroTelefoneFixo;
-  }
+  public handleErrorFormTutor = (errorName: string, index: number) => {
+     const formGroupTutor =this.getTutorForm(index);
+     return formGroupTutor.hasError(errorName);
+  };
 
   erroRazaoSaida(): boolean {
     if (this.formGroup.get('frequentouOutraCreche')?.value === "sim" && !this.formGroup.get('razaoSaida')?.value) {
@@ -187,10 +154,7 @@ export class FormMatriculaComponent implements OnInit{
   }
 
   onSubmit() {
-    if (!this.validarTelefoneEmpresarial()) {
-      return;
-    }
-
+    this.enviado = true;
     if (!this.erroRazaoSaida()){
       return;
     }

@@ -1,4 +1,4 @@
-import {AbstractControl} from "@angular/forms";
+import {AbstractControl, FormGroup} from "@angular/forms";
 import {isEmail} from "class-validator";
 import {cpf} from "cpf-cnpj-validator";
 
@@ -135,6 +135,21 @@ export class Validacoes{
 
     // Retorna um objeto se o telefone não for válido
     return { 'senhaInvalidaNumeros': true };
+  }
+
+  //form de tutor validação de telefones
+  validarTelefonesEmpresariais(formGroup: FormGroup): { [key: string]: any } | null {
+       const campo1: string = formGroup.get('telefoneCelularEmpresarial')?.value;
+       const campo2: string = formGroup.get('telefoneFixoEmpresarial')?.value;
+
+       if((campo1 == '' && campo2 == '') ||
+          (campo1 == null && campo2 == null) ||
+          (campo1 == null && campo2 == '') ||
+          (campo1 == '' && campo2 == null)){
+         formGroup.setErrors({ 'informeUmTelefoneEmpresarial': true });
+         return { 'informeUmTelefoneEmpresarial': true };
+       }
+       return null;
   }
 
 }

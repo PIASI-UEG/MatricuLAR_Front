@@ -192,7 +192,7 @@
                         <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
                       </mat-form-field>
                     </div>
-                  <mat-error class="alinhar-erro" *ngIf="exibirErroTelefoneEmpresarial(i)">
+                  <mat-error class="alinhar-erro" *ngIf="handleErrorFormTutor('informeUmTelefoneEmpresarial', i) && this.enviado">
                     Informe pelo menos um telefone empresarial.
                   </mat-error>
 
