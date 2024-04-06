@@ -295,6 +295,12 @@
         serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
         de qualidade para facilitar o procedimento.</p>
 
+          <input type="file" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+
+          <div>
+            <button mat-raised-button  type="button" class="button botao-voltar" (click)="pegaDoc()">Etapa Anterior</button>
+          </div>
       <!-- Campos da terceira etapa -->
           <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>

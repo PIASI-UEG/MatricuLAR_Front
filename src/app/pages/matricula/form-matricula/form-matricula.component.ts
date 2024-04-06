@@ -13,6 +13,8 @@ import {Matricula} from "../../../custom_models/matricula";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
 import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
+import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 
 @Component({
   selector: 'app-form-matricula',
@@ -44,6 +46,8 @@ export class FormMatriculaComponent implements OnInit{
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
 
+  docs :DocumentoMatriculaDto[] = []
+  enumDoc: String = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,6 +56,7 @@ export class FormMatriculaComponent implements OnInit{
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private securityService: SecurityService,
+    private matriculaService: MatriculaControllerService
   ) {
     this._adapter.setLocale('pt-br');
   }
@@ -198,6 +203,22 @@ export class FormMatriculaComponent implements OnInit{
     this.submitFormulario = true;
     if (this.codigo == null) {
       return;
+    }
+    //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
+    console.log("Submit")
+    if (this.docs.length >= 0){
+      this.docs.forEach(doc =>{
+          if(doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
+            console.log(doc.arquivo)
+            this.matriculaService.matriculaControllerUploadDocumento(
+              {idMatricula: doc.idMatricula, tipoDocumento:doc.tipoDocumento, body:{multipartFile:doc.arquivo}})
+              .subscribe(retorno =>{
+                console.log(retorno)
+              })
+          }
+        }
+      )
+
     }
 
     if (this.codigo != null || this.formGroup.valid) {
@@ -399,4 +420,39 @@ export class FormMatriculaComponent implements OnInit{
 
 
 
+  // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
+  // esse idMatricula é so pra testes ele vai ser vazio
+  onFilechange(event: any, enumDoc: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2' | 'CERTIDAO_ESTADO_CIVIL2') {
+    const file = event.target.files[0]
+    const fileName = file.name
+    console.log(file)
+    let blob: Blob
+    blob = file
+
+    let doc: DocumentoMatriculaDto = {
+      aceito: false,
+      idMatricula:1,
+      tipoDocumento: enumDoc,
+      caminhoDocumento: file.name,
+      arquivo:blob
+    }
+    if (doc && this.docs){
+      this.docs.push(doc)
+      console.log("docs: ", this.docs)
+    }
+
+  }
+
+  pegaDoc(){
+
+    this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:"FC1.pdf"})
+      .subscribe(response =>{
+        let blob:Blob = response
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = 'FC1.pdf';
+        downloadLink.click()
+      })
+
+  }
 }
