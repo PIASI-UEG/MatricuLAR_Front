@@ -30,7 +30,8 @@ export class ListMatriculaComponent implements OnInit{
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private router: Router,
   ){
   }
 
@@ -78,6 +79,7 @@ export class ListMatriculaComponent implements OnInit{
     });
   }
 
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.innerWidth = window.innerWidth;
@@ -92,5 +94,9 @@ export class ListMatriculaComponent implements OnInit{
     return this.flexDivAlinhar = "row";
 
   }
+
+    imprimirTermodaMatricula(element: any){
+
+    }
 
 }

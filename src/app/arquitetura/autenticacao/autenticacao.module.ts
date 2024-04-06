@@ -12,6 +12,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {FlexModule} from "@angular/flex-layout";
+import {NgxMaskDirective} from "ngx-mask";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {FlexModule} from "@angular/flex-layout";
         MatInputModule,
         MatCardModule,
         MatIconModule,
-        FlexModule
+        FlexModule,
+        NgxMaskDirective
     ],
   providers: [
     AutenticacaoGuard,
