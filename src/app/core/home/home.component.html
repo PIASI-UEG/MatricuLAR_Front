@@ -10,37 +10,46 @@
     <button class="custom-icon" routerLink="" >
     </button>
 </mat-toolbar>
-
 <mat-sidenav-container>
     <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-        <button title="Home"  mat-button class="menu-button" routerLink=""> Home
+        <button *ngIf="!securityService.isValid()" title="Home"  mat-button class="menu-button" routerLink=""> Pagina Inicial
             <mat-icon>home</mat-icon>
         </button>
-        <button title="Validações de Matrículas" mat-button class="menu-button" routerLink="/categoria"> Validações de <br>Matrículas
+        <button *ngIf="!securityService.isValid()" title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']"> Pré-Matrícula
+          <mat-icon>assignment</mat-icon>
+        </button>
+        <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel"> Painel
+          <mat-icon>home</mat-icon>
+        </button>
+        <button *ngIf="securityService.isValid()"title="Validações de Matrículas" mat-button class="menu-button" routerLink="/validar_matriculas"> Validações de <br>Matrículas
             <mat-icon>check_circle</mat-icon>
         </button>
-        <button title="Matrículas"  mat-button class="menu-button" routerLink="/matricula">
+        <button *ngIf="securityService.isValid()"title="Matrículas"  mat-button class="menu-button" routerLink="/matricula">
             <mat-icon>face</mat-icon> Matrículas
         </button>
-        <button title="Turmas"  mat-button class="menu-button" routerLink="/turma">
+        <button *ngIf="securityService.isValid()"title="Turmas"  mat-button class="menu-button" routerLink="/turma">
             <mat-icon>airline_seat_recline_normal</mat-icon> Turmas
         </button>
-        <button title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario">
+        <button *ngIf="securityService.isValid()"title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario">
             <mat-icon>supervisor_account</mat-icon>Funcionários
         </button>
-
+        <button *ngIf="securityService.isValid()"title="imprirTermo"  mat-button class="menu-button" routerLink="/imprimir-termo">
+            <mat-icon>print</mat-icon>Imprimir
+        </button>
         <mat-divider></mat-divider>
 
-      <button title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta', usuarioLogado()]"> Minha Conta
+      <button *ngIf="securityService.isValid()"title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta', usuarioLogado()]"> Minha Conta
         <mat-icon>account_circle</mat-icon>
       </button>
 
 
       <mat-divider></mat-divider>
 
-
-        <button title="Sair" mat-button class="menu-button" (click)="sair()"> Sair
+      <button *ngIf="!securityService.isValid()"title="Acesso" mat-button class="menu-button" routerLink="/acesso"> Acesso
+        <mat-icon>login</mat-icon>
+      </button>
+        <button *ngIf="securityService.isValid()"title="Sair" mat-button class="menu-button" (click)="sair()"> Sair
             <mat-icon>logout</mat-icon>
         </button>
     </mat-sidenav>
@@ -50,3 +59,4 @@
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
+

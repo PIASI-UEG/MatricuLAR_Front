@@ -1,0 +1,15 @@
+.ocultar {
+  display: none !important;
+}
+
+@media print {
+  body {
+    visibility: hidden;
+  }
+  .container, .container * {
+    visibility: visible;
+  }
+  .no-print {
+    display: none;
+  }
+}

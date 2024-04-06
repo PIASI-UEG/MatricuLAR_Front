@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo de Matrícula</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+        }
+        .assinatura {
+            text-align: center;
+            margin-top: 50px;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            .print-only {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" [class.ocultar]="imprimir">
+    <h1>Termo de Matrícula</h1>
+    <p>Eu, [Nome do Tutor respnsável}, portador(a) do CPF nº [Número do CPF], residente na [Endereço Completo],
+        declaro estar ciente e de acordo com as condições estabelecidas para a matrícula oferecido pela Associação Sagrada Familia.
+        Comprometo-me a cumprir todas as normas e regulamentos da instituição durante o período da matrícula
+        do [Nome do aluno], portador(a) do CPF nº [Número do CPF].</p>
+    <p>Declaro ainda que todas as informações fornecidas neste formulário preenchido são verdadeiras
+        e estou ciente de que qualquer falsidade poderá implicar na perda do direito à matrícula.</p>
+    <div class="assinatura">
+        <p>Assinatura do Aluno: _________________________________________________</p>
+        <p>Local e Data: ______________________________</p>
+    </div>
+
+    <button mat-raised-button type="button" (click)="imprimirTermo()" class="no-print">Imprimir Termo</button>
+</div>
+
+
+</body>
+</html>

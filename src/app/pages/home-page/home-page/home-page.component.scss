@@ -1,0 +1,40 @@
+@import '../../../../StyleForms.css';
+
+/* Adicione seus estilos CSS aqui */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+
+  border-radius:20px;/*Compativel com Chrome*/
+  -moz-border-radius:20px;/* Compativel com Firefox*/
+  -webkit-border-radius:20px;/*Compativel com IE8/9/10/EDGE*/
+
+  box-shadow:5px 5px 8px rgba(9, 9, 9, 0.7);/*Sobreamento da DIV*/
+  -moz-box-shadow:5px 5px 8px rgba(9, 9, 9, 0.7);
+  -webkit-box-shadow:5px 5px 8px rgba(9, 9, 9, 0.7);
+}
+
+h1, h2 {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+mat-carousel {
+  margin-bottom: 20px;
+}
+
+mat-slide img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+p {
+  text-align: justify;
+}
+
+a {
+  color: black;
+}
