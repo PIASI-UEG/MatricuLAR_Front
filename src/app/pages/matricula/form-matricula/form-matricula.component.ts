@@ -108,7 +108,9 @@ export class FormMatriculaComponent implements OnInit{
         encaminhamentoCras: [null, Validators.required],
         encaminhamentoConselhoTutelar: [null, Validators.required],
         declaracaoEscolar: [null, Validators.required]
-      })
+      }, { validator: [this.validacoes.validarRazaoSaida,
+                              this.validacoes.validarAluguel,
+                              this.validacoes.validarBeneficio] })
     }
   }
 
@@ -126,12 +128,16 @@ export class FormMatriculaComponent implements OnInit{
       telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
       relacionamento: false,
       moraComConjuge: false,
-    }, { validator: this.validacoes.validarTelefonesEmpresariais });
+    }, { validator: this.validacoes.validarTelefonesEmpresariais })
   }
 
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
+  };
+  public handleErrorForm = (errorName: string) => {
+    const formGroup = this.formGroup;
+    return formGroup.hasError(errorName);
   };
 
   public handleErrorTutor = (controlName: string, errorName: string, index: number) => {
@@ -140,24 +146,13 @@ export class FormMatriculaComponent implements OnInit{
   };
 
   public handleErrorFormTutor = (errorName: string, index: number) => {
-     const formGroupTutor =this.getTutorForm(index);
-     return formGroupTutor.hasError(errorName);
+    const formGroupTutor =this.getTutorForm(index);
+    return formGroupTutor.hasError(errorName);
   };
 
-  erroRazaoSaida(): boolean {
-    if (this.formGroup.get('frequentouOutraCreche')?.value === "sim" && !this.formGroup.get('razaoSaida')?.value) {
-      this.formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
-      return true; // Indicate that an error was set
-    } else {
-      return false; // No error set
-    }
-  }
 
   onSubmit() {
     this.enviado = true;
-    if (!this.erroRazaoSaida()){
-      return;
-    }
 
     this.submitFormulario = true;
     if (this.codigo == null) {
@@ -268,7 +263,7 @@ export class FormMatriculaComponent implements OnInit{
 
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
-      necessidadeEspecial: ''
+      necessidadeEspecial: [null, Validators.required]
     });
   }
   firstClickNecessidades(): boolean {

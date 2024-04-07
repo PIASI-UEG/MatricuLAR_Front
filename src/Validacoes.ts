@@ -152,4 +152,32 @@ export class Validacoes{
        return null;
   }
 
+  validarRazaoSaida(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('frequentouOutraCreche')?.value === "sim" && !formGroup.get('razaoSaida')?.value) {
+      formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
+      return { 'informeRazaoSaida': true }; // Indicate that an error was set
+    } else {
+      return null; // No error set
+    }
+  }
+
+  validarAluguel(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('tipoResidencia')?.value === "alugado" && !formGroup.get('valorAluguel')?.value) {
+      formGroup.get('valorAluguel')?.setErrors({ 'informeValorAluguel': true });
+      return { 'informeValorAluguel': true }; // Indicate that an error was set
+    } else {
+      return null; // No error set
+    }
+  }
+
+  validarBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('possuiBeneficiosDoGoverno')?.value === "sim" && !formGroup.get('valorBeneficio')?.value) {
+      formGroup.get('valorBeneficio')?.setErrors({ 'informeValorBeneficio': true });
+      return { 'informeValorBeneficio': true }; // Indicate that an error was set
+    } else {
+      return null; // No error set
+    }
+  }
+
+
 }
