@@ -152,6 +152,7 @@ export class Validacoes{
        return null;
   }
 
+  // form de pereguntas validacao de razao saida
   validarRazaoSaida(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('frequentouOutraCreche')?.value === "sim" && !formGroup.get('razaoSaida')?.value) {
       formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
@@ -161,6 +162,7 @@ export class Validacoes{
     }
   }
 
+  // form de perguntas validacao de preco aluguel
   validarAluguel(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('tipoResidencia')?.value === "alugado" && !formGroup.get('valorAluguel')?.value) {
       formGroup.get('valorAluguel')?.setErrors({ 'informeValorAluguel': true });
@@ -170,6 +172,7 @@ export class Validacoes{
     }
   }
 
+  // form de perguntas validacao de beneficio
   validarBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('possuiBeneficiosDoGoverno')?.value === "sim" && !formGroup.get('valorBeneficio')?.value) {
       formGroup.get('valorBeneficio')?.setErrors({ 'informeValorBeneficio': true });

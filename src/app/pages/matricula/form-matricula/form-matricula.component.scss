@@ -78,5 +78,37 @@ p {
   margin-bottom: 20px;
 }
 
+.file-button {
+  text-align:center;
+  align-items: center;
+  width: 200px ;
+  line-height: 35px;
+  height: 35px ;
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  background:#5AB9EA ;
+  color: white ;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  margin: 5px;
+  border:1px solid #A2B6C8;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.file-button:hover {
+  background-color: #4b9fcf;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  white-space: nowrap;
+  color: #999999;
+}
+
 
 

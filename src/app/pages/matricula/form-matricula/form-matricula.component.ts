@@ -46,6 +46,7 @@ export class FormMatriculaComponent implements OnInit{
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
   enviado: boolean = false;
+  docCertidaoNascNome: string = 'Escolha um arquivo';
   docs :DocumentoMatriculaDto[] = []
   enumDoc: String = ''
 
@@ -389,6 +390,18 @@ export class FormMatriculaComponent implements OnInit{
     let blob: Blob
     blob = file
 
+    function diminuirTamanhoNomeArquivo() {
+      if (fileName.length > 20) {
+        const docCertidaoNascNome = fileName.substring(0, 20 - 3) + '...';
+      }
+    }
+
+    diminuirTamanhoNomeArquivo();
+    if(enumDoc ===  'CERTIDAO_NASCIMENTO'){
+      this.docCertidaoNascNome = file.name;
+    }
+
+
     let doc: DocumentoMatriculaDto = {
       aceito: false,
       idMatricula:1,
@@ -415,4 +428,6 @@ export class FormMatriculaComponent implements OnInit{
       })
 
   }
+
+
 }

@@ -295,20 +295,21 @@
 
         </div>
       </mat-tab>
+
+      <!-- Etapa 4 -->
       <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
         <div class="conteudo-mat-tab">
-    <!-- Etapa 4 -->
-      <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
-        serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
-        de qualidade para facilitar o procedimento.</p>
+          <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
+            serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
+            de qualidade para facilitar o procedimento.</p>
 
-          <input type="file" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
 
-          <div>
-            <button mat-raised-button  type="button" class="button botao-voltar" (click)="pegaDoc()">Etapa Anterior</button>
-          </div>
-      <!-- Campos da terceira etapa -->
+            <mat-label> <strong>Certidão de nascimento da criança </strong> <br></mat-label>
+            <input type="file" style="display: none" id="inputFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+            <label for="inputFile" class="file-button">Certidão de nascimento*</label>
+            <mat-label class="file-name"> {{docCertidaoNascNome}} <br></mat-label>
+          <input type="file" class="button" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+
           <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
