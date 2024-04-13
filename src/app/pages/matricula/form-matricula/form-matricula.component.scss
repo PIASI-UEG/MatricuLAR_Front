@@ -78,7 +78,9 @@ p {
   margin-bottom: 20px;
 }
 
-.file-button {
+.file-button-document {
+  background:#5AB9EA ;
+  color: white ;
   text-align:center;
   align-items: center;
   width: 200px ;
@@ -86,18 +88,35 @@ p {
   height: 35px ;
   font-family: DM Roboto, sans-serif;
   font-size: 14px;
-  background:#5AB9EA ;
-  color: white ;
+  border:1px solid #A2B6C8;
   border-radius: 10px 10px;
   cursor: pointer;
   margin: 5px;
-  border:1px solid #A2B6C8;
   transition: background-color 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   user-select: none;
 }
 
-.file-button:hover {
+.file-button {
+  background-image: url("/assets/fotos_documentos/envio_documento.png") ;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 230px 200px;
+  text-align:center;
+  align-items: center;
+  width: 230px;
+  line-height: 35px;
+  height: 200px;
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.file-button, file-button-document :hover {
   background-color: #4b9fcf;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

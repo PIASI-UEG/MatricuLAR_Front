@@ -390,17 +390,12 @@ export class FormMatriculaComponent implements OnInit{
     let blob: Blob
     blob = file
 
-    function diminuirTamanhoNomeArquivo() {
+
+    if(enumDoc ===  'CERTIDAO_NASCIMENTO'){
       if (fileName.length > 20) {
-        const docCertidaoNascNome = fileName.substring(0, 20 - 3) + '...';
+        this.docCertidaoNascNome = this.diminuirTamanhoNomeArquivo(fileName)
       }
     }
-
-    diminuirTamanhoNomeArquivo();
-    if(enumDoc ===  'CERTIDAO_NASCIMENTO'){
-      this.docCertidaoNascNome = file.name;
-    }
-
 
     let doc: DocumentoMatriculaDto = {
       aceito: false,
@@ -427,6 +422,10 @@ export class FormMatriculaComponent implements OnInit{
         downloadLink.click()
       })
 
+  }
+
+  diminuirTamanhoNomeArquivo(fileName : string) {
+    return fileName.substring(0, 20 - 3) + '...';
   }
 
 
