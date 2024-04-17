@@ -304,16 +304,75 @@
             de qualidade para facilitar o procedimento.</p>
 
           <div fxLayout="column" fxLayoutAlign="space-evenly center">
-            <mat-label> <strong>Certidão de nascimento da criança </strong> <br></mat-label>
+            <mat-label class="titulo-doc"> <strong>Certidão de nascimento da criança </strong> <br></mat-label>
+            <mat-label class="ampliar-doc" *ngIf="this.isFileDocumentCertidao || this.isFileImageCertidao">Clique na imagem do arquivo para ampliar <br></mat-label>
             <input type="file" style="display: none" id="inputCertidao" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-            <label for="inputCertidao" class="file-button"></label>
-            <label for="inputCertidao" class="file-button-document "> Inserir Certidão</label>
+            <label for="inputCertidao" class="file-button" *ngIf="!this.isFileImageCertidao && !this.isFileDocumentCertidao"></label>
+
+            <input type="button" style="display: none" id="inputPreviewCertidao" routerLink="/imprimir-termo">
+            <label for="inputPreviewCertidao" class="file-button-dialog-pdf"  *ngIf="this.isFileDocumentCertidao || this.isFileImageCertidao">
+              <img *ngIf="this.isFileImageCertidao" [src]="this.selectedFileCertidao" class="viewer" >
+              <pdf-viewer
+              *ngIf="this.isFileDocumentCertidao"
+              [src]="selectedFileCertidao"
+              [original-size]="false"
+              [render-text]="false"
+              [rotation]="0"
+              [show-all]="true"
+              [fit-to-page]="false"
+              [zoom]="1"
+              [zoom-scale]="'page-width'"
+              [stick-to-page]="false"
+              [external-link-target]="'blank'"
+              [autoresize]="true"
+              [show-borders]="true"
+              class="viewer"
+            ></pdf-viewer>
+            </label>
+
             <mat-label class="file-name"> {{docCertidaoNascNome}} </mat-label>
 
-            <mat-label> <strong>Foto da Criança </strong> <br></mat-label>
-          <input type="file" style="display: none" id="inputFoto" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-            <label for="inputFoto" class="file-button"></label>
+            <label for="inputCertidao" class="file-button-document " *ngIf="this.isFileImageCertidao || this.isFileDocumentCertidao">Trocar arquivo</label>
+
+<!--            <div *ngIf="this.formGroup.get('possuiversoCertidao')?.value">-->
+<!--            <mat-label> <strong>Certidão de nascimento da criança verso</strong> <br></mat-label>-->
+<!--            <mat-label *ngIf="this.isFileDocumentCertidaoVerso || this.isFileImageCertidaoVerso">Clique na imagem do arquivo para ampliar <br></mat-label>-->
+<!--            <input type="file" style="display: none" id="inputCertidaoVerso" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO_VERSO')" #fileUpload>-->
+<!--            <label for="inputCertidaoVerso" class="file-button" *ngIf="!this.isFileImageCertidaoVerso && !this.isFileDocumentCertidaoVerso"></label>-->
+
+<!--            <input type="button" style="display: none" id="inputPreviewCertidaoVerso" routerLink="/imprimir-termo">-->
+<!--            <label for="inputPreviewCertidaoVerso" class="file-button-dialog-pdf"  *ngIf="this.isFileDocumentCertidaoVerso || this.isFileImageCertidaoVerso">-->
+<!--              <img *ngIf="this.isFileImageCertidaoVerso" [src]="this.selectedFileCertidaoVerso" class="viewer" >-->
+<!--              <pdf-viewer-->
+<!--                *ngIf="this.isFileDocumentCertidaoVerso"-->
+<!--                [src]="selectedFileCertidao"-->
+<!--                [original-size]="false"-->
+<!--                [render-text]="false"-->
+<!--                [rotation]="0"-->
+<!--                [show-all]="true"-->
+<!--                [fit-to-page]="false"-->
+<!--                [zoom]="1"-->
+<!--                [zoom-scale]="'page-width'"-->
+<!--                [stick-to-page]="false"-->
+<!--                [external-link-target]="'blank'"-->
+<!--                [autoresize]="true"-->
+<!--                [show-borders]="true"-->
+<!--                class="viewer"-->
+<!--              ></pdf-viewer>-->
+<!--            </label>-->
+
+<!--            <mat-label class="file-name"> {{docCertidaoNascNomeVerso}} </mat-label>-->
+
+<!--            <label for="inputCertidao" class="file-button-document " *ngIf="this.isFileImageCertidaoVerso || this.isFileDocumentCertidaoVerso">Trocar arquivo</label>-->
+<!--            </div>-->
           </div>
+          <mat-checkbox color="primary" formControlName="possuiversoCertidao">
+            O documento possui verso ?
+          </mat-checkbox>
+
+          <!--            <mat-label> <strong>Foto da Criança </strong> <br></mat-label>-->
+          <!--          <input type="file" style="display: none" id="inputFoto" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>-->
+          <!--            <label for="inputFoto" class="file-button"></label>-->
 
           <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>

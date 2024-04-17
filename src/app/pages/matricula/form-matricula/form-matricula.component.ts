@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
@@ -15,6 +15,8 @@ import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {NgxExtendedPdfViewerService, pdfDefaultOptions} from "ngx-extended-pdf-viewer";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-form-matricula',
@@ -46,10 +48,8 @@ export class FormMatriculaComponent implements OnInit{
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
   enviado: boolean = false;
-  docCertidaoNascNome: string = 'Escolha um arquivo';
   docs :DocumentoMatriculaDto[] = []
   enumDoc: String = ''
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,7 +58,8 @@ export class FormMatriculaComponent implements OnInit{
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private securityService: SecurityService,
-    private matriculaService: MatriculaControllerService
+    private matriculaService: MatriculaControllerService,
+    private sanitizer: DomSanitizer
   ) {
     this._adapter.setLocale('pt-br');
   }
@@ -114,7 +115,8 @@ export class FormMatriculaComponent implements OnInit{
         comprovanteDeEstadoCivil: [null, Validators.required],
         encaminhamentoCras: [null, Validators.required],
         encaminhamentoConselhoTutelar: [null, Validators.required],
-        declaracaoEscolar: [null, Validators.required]
+        declaracaoEscolar: [null, Validators.required],
+        possuiversoCertidao: null,
       }, { validator: [this.validacoes.validarRazaoSaida,
                               this.validacoes.validarAluguel,
                               this.validacoes.validarBeneficio] })
@@ -378,37 +380,89 @@ export class FormMatriculaComponent implements OnInit{
     }
   }
 
+  //variaveis certidao
+  docCertidaoNascNome: string = 'Escolha um arquivo';
+  selectedFileCertidao:string  = '';
+  isFileImageCertidao = false;
+  isFileDocumentCertidao =false;
 
-
+  docCertidaoNascNomeVerso: string = 'Escolha um arquivo';
+  selectedFileCertidaoVerso:string  = '';
+  isFileImageCertidaoVerso = false;
+  isFileDocumentCertidaoVerso =false;
 
   // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
   // esse idMatricula é so pra testes ele vai ser vazio
   onFilechange(event: any, enumDoc: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2' | 'CERTIDAO_ESTADO_CIVIL2') {
-    const file = event.target.files[0]
-    const fileName = file.name
-    console.log(file)
-    let blob: Blob
-    blob = file
+    const file = event.target.files[0];
+    const fileName = file.name;
+    console.log(file);
+    let blob: Blob;
+    blob = file;
 
+    if (file) {
 
-    if(enumDoc ===  'CERTIDAO_NASCIMENTO'){
-      if (fileName.length > 20) {
-        this.docCertidaoNascNome = this.diminuirTamanhoNomeArquivo(fileName)
+      switch (enumDoc) {
+        case 'CERTIDAO_NASCIMENTO':
+          this.selectedFileCertidao = this.makeURLFile(file);
+          if (this.verificarTipoArquivo(file)) {
+            this.isFileImageCertidao = true;
+            this.isFileDocumentCertidao = false;
+          } else {
+            this.isFileImageCertidao = false;
+            this.isFileDocumentCertidao = true;
+          }
+          if (fileName.length > 20) {
+            this.docCertidaoNascNome = this.diminuirTamanhoNomeArquivo(fileName);
+          }
+          break;
+        // case 'CERTIDAO_NASCIMENTO_VERSO':
+        //   this.selectedFileCertidaoVerso = this.makeURLFile(file);
+        //   if (this.verificarTipoArquivo(file)) {
+        //     this.isFileImageCertidaoVerso = true;
+        //     this.isFileDocumentCertidaoVerso = false;
+        //   } else {
+        //     this.isFileImageCertidaoVerso = false;
+        //     this.isFileDocumentCertidaoVerso = true;
+        //   }
+        //   if (fileName.length > 20) {
+        //     this.docCertidaoNascNomeVerso = this.diminuirTamanhoNomeArquivo(fileName);
+        //   }
+        //   break;
+
+        default:
+          break;
       }
     }
 
     let doc: DocumentoMatriculaDto = {
       aceito: false,
-      idMatricula:1,
+      idMatricula: 1,
       tipoDocumento: enumDoc,
       caminhoDocumento: file.name,
-      arquivo:blob
-    }
-    if (doc && this.docs){
-      this.docs.push(doc)
-      console.log("docs: ", this.docs)
-    }
+      arquivo: blob
+    };
 
+    if (doc && this.docs) {
+      this.docs.push(doc);
+      console.log("docs: ", this.docs);
+    }
+  }
+  private makeURLFile(file: any) {
+      const fileUrl = URL.createObjectURL(file); // Obter o URL do arquivo
+      return fileUrl as string;
+  }
+
+  private verificarTipoArquivo(file: any) {
+    if (file.type.includes("image")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private diminuirTamanhoNomeArquivo(fileName : string) {
+    return fileName.substring(0, 20 - 3) + '...';
   }
 
   pegaDoc(){
@@ -424,9 +478,7 @@ export class FormMatriculaComponent implements OnInit{
 
   }
 
-  diminuirTamanhoNomeArquivo(fileName : string) {
-    return fileName.substring(0, 20 - 3) + '...';
-  }
+
 
 
 }

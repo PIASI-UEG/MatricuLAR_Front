@@ -24,39 +24,47 @@ import {BrowserModule} from "@angular/platform-browser";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatTabsModule} from "@angular/material/tabs";
+import {HttpClientModule} from "@angular/common/http";
+import {NgxDocViewerModule} from "ngx-doc-viewer";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
+import {PdfViewerModule} from "ng2-pdf-viewer";
 
 
 @NgModule({
   declarations: [
     FormMatriculaComponent,
     HomeMatriculaComponent,
-    ListMatriculaComponent
+    ListMatriculaComponent,
   ],
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        RouterOutlet,
-        RouterLink,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatMenuModule,
-        MatTableModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        SearchModule,
-        FlexModule,
-        NgxMaskDirective,
-        BrowserModule,
-        MatNativeDateModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatTabsModule
-    ]
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterOutlet,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatMenuModule,
+    MatTableModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    SearchModule,
+    FlexModule,
+    NgxMaskDirective,
+    BrowserModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatTabsModule,
+    HttpClientModule,
+    NgxDocViewerModule,
+    NgxExtendedPdfViewerModule,
+    PdfViewerModule,
+  ]
 })
 export class MatriculaModule { }
