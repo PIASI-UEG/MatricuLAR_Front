@@ -1,0 +1,38 @@
+<div class="formPadrao" fxLayout="column" fxLayoutAlign="center center">
+    <h1>Assine abaixo:</h1>
+    <div>
+    <canvas #canvas width="300" height="100"></canvas>
+    </div>
+
+    <div  class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinharDiv">
+      <button mat-raised-button class="button botao-cancelar" type="button"  (click)="this.mensagens.acaoCancelarDialog()">
+        <span>Cancelar</span>
+      </button>
+
+
+      <button mat-raised-button class="button botao-limpar" type="button"  (click)="this.clearCanvas()">
+        <span>Limpar</span>
+      </button>
+
+      <button mat-raised-button class="button" type="button" (click)="this.salvarImagemAssinatura()">
+        <span>Assinar</span>
+      </button>
+    </div>
+
+  <div  class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinharDiv">
+    <button mat-raised-button class="button" type="button" (click)="this.salvarImagemAssinatura()">
+      <span>Assinar</span>
+    </button>
+
+    <button mat-raised-button class="button botao-limpar" type="button"  (click)="this.clearCanvas()">
+      <span>Limpar</span>
+    </button>
+
+    <button mat-raised-button class="button botao-cancelar" type="button"  (click)="this.mensagens.acaoCancelarDialog()">
+      <span>Cancelar</span>
+    </button>
+  </div>
+
+</div>
+
+

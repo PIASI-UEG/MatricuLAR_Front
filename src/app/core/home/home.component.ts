@@ -6,8 +6,8 @@ import {NavigationEnd, Router} from "@angular/router";
 import {delay} from "rxjs";
 import {filter} from "rxjs/operators";
 import {SecurityService} from "../../arquitetura/security/security.service";
-import {AssinaturaDialogComponent} from "../../pages/assinatura/assinatura-dialog/assinatura-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {VerificaCPFDialogComponent} from "../../pages/assinatura/verifica-cpf-dialog/verifica-c-p-f-dialog.component";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 
 
 @UntilDestroy()
@@ -30,7 +30,12 @@ export class HomeComponent implements OnInit {
   }
 
   openDialogAssinatura(): void {
-    this.dialog.open(AssinaturaDialogComponent);
+    const config: MatDialogConfig = {
+      data: {
+        CPFValido: false
+      }
+    };
+    this.dialog.open(VerificaCPFDialogComponent, config);
   }
 
   ngOnInit(): void {
@@ -85,5 +90,5 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/acesso']);
   }
 
-  protected readonly AssinaturaDialogComponent = AssinaturaDialogComponent;
+  protected readonly AssinaturaDialogComponent = VerificaCPFDialogComponent;
 }

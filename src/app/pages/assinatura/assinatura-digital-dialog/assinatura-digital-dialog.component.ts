@@ -1,48 +1,40 @@
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {Router} from "@angular/router";
-import {SecurityService} from "../../../arquitetura/security/security.service";
 import {Validacoes} from "../../../../Validacoes";
-import {User} from "../../../arquitetura/security/User";
-import {ConfirmationDialogResult} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import SignaturePad from "signature_pad";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-assinatura-dialog',
-  templateUrl: './assinatura-dialog.component.html',
-  styleUrls: ['./assinatura-dialog.component.scss']
+  selector: 'app-assinatura-digital-dialog',
+  templateUrl: './assinatura-digital-dialog.component.html',
+  styleUrls: ['./assinatura-digital-dialog.component.scss']
 })
-export class AssinaturaDialogComponent implements OnInit{
-  formGroup!: FormGroup;
-  private validacoes = new Validacoes();
+export class AssinaturaDigitalDialogComponent implements AfterViewInit{
   mensagens = new MensagensUniversais({dialog: this.dialog, dialogRefParameter: this.dialogRef, dialogConfirmation: this.dialogConfirmation});
   flexDivAlinhar: string = 'row';
   @ViewChild("canvas", { static: true }) canvas?: ElementRef;
   sig?: SignaturePad;
-  CPFValido: boolean = false;
+  verificarAlinharDiv :boolean = false;
   public constructor(
-    private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<AssinaturaDialogComponent>,
+    private dialogRef: MatDialogRef<AssinaturaDigitalDialogComponent>,
     private dialog: MatDialog,
     private dialogConfirmation: MatDialog,
-    private router: Router,
-    private securityService: SecurityService,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
     dialogRef.disableClose = true;
-
   }
 
-  ngOnInit(): void {
-    this.createForm();
+  ngAfterViewInit() {
+      this.ativarCanva();
   }
 
   ativarCanva(){
     if (this.canvas && this.canvas.nativeElement) {
       this.sig = new SignaturePad(this.canvas.nativeElement);
+      console.log("CHEGOU AQUI")
     }
+    console.log("NAO FUNCIONA" + this.canvas, this.canvas?.nativeElement)
   }
 
   clearCanvas() {
@@ -79,36 +71,15 @@ export class AssinaturaDialogComponent implements OnInit{
   }
 
 
-  createForm() {
-    this.formGroup = this.formBuilder.group({
-      cpf: [null, [Validators.required, this.validacoes.validarCpf]],
-    });
-  }
-
-  public onSubmit(): void {
-    if (this.formGroup.valid) {
-      this.CPFValido = true;
-      this.ativarCanva();
-    }
-  }
-
-  public handleError = (controlName: string, errorName: string) => {
-    return this.formGroup.controls[controlName].hasError(errorName);
-  };
-
   mudarAlinhar() {
     if(innerWidth < 1000)
     {
+      this.verificarAlinharDiv = true;
       return this.flexDivAlinhar = "column";
     }
+    this.verificarAlinharDiv = false;
     return this.flexDivAlinhar = "row";
   }
 
-  verificarAlinhar(){
-    if(this.flexDivAlinhar == "column"){
-      return true;
-    }
-    return false;
-  }
-
 }
+

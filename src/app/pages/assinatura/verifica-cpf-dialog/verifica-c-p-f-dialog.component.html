@@ -1,26 +1,5 @@
 <div class="formPadrao" fxLayout="column" fxLayoutAlign="center center">
 
-  <div *ngIf="this.CPFValido" >
-    <canvas #canvas id="quadro" width="300" height="100" >
-    </canvas>
-
-    <div  class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-      <button mat-raised-button class="button botao-cancelar" type="button"  (click)="this.mensagens.acaoCancelarDialog()">
-        <span>Cancelar</span>
-      </button>
-
-
-      <button mat-raised-button class="button botao-limpar" type="button"  (click)="this.clearCanvas()">
-        <span>Limpar</span>
-      </button>
-
-      <button mat-raised-button class="button" type="button" (click)="this.salvarImagemAssinatura()">
-        <span>Assinar</span>
-      </button>
-    </div>
-    </div>
-
-  <div *ngIf="!this.CPFValido">
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" >
     <h1>Digite seu CPF para continuar</h1>
     <mat-form-field >
@@ -31,7 +10,7 @@
     </mat-form-field>
 
 
-  <div  class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+  <div  class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinharDiv">
       <button mat-raised-button class="button botao-cancelar" type="button" title="Cancelar" (click)="this.mensagens.acaoCancelarDialog()">
         <span>Cancelar</span>
       </button>
@@ -41,7 +20,7 @@
       </button>
   </div>
 
-  <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+  <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinharDiv">
     <button mat-raised-button class="button" type="submit" >
       <span>Próximo</span>
     </button>
@@ -55,4 +34,4 @@
   </form>
 </div>
 
-</div>
+
