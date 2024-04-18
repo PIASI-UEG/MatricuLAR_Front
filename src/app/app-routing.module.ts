@@ -23,7 +23,7 @@ const routes: Routes = [
       ...turmaRoutes,
       ...matriculaRoutes,
       ...minhaContaRoutes,
-        ...imprimirTermoRoutes,
+      ...imprimirTermoRoutes,
        { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
     //canActivate: [SecurityGuard],

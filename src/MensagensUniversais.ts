@@ -2,24 +2,31 @@ import {
   ConfirmationDialog,
   ConfirmationDialogResult
 } from "./app/core/confirmation-dialog/confirmation-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Component} from "@angular/core";
 
 export class MensagensUniversais {
   private dialog?: MatDialog;
   private router?: Router;
+  private dialogRefParameter?: MatDialogRef<any>;
   private telaAtual?: string;
   private snackBar?: MatSnackBar;
+  private dialogConfirmation ?: MatDialog;
 
   constructor(config: {
     dialog?: MatDialog,
+    dialogRefParameter?: MatDialogRef<any>,
+    dialogConfirmation ?: MatDialog,
     router?: Router,
     telaAtual?: string,
     snackBar?: MatSnackBar
   }) {
     this.dialog = config.dialog;
     this.router = config.router;
+    this.dialogRefParameter = config.dialogRefParameter;
+    this.dialogConfirmation = config.dialogConfirmation;
     this.telaAtual = config.telaAtual;
     this.snackBar = config.snackBar;
   }
@@ -52,6 +59,26 @@ export class MensagensUniversais {
       dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
         if (confirmed?.resultado && this.router) {
           this.router.navigate(["/" + this.telaAtual]);
+        }
+      });
+    }
+  }
+
+  acaoCancelarDialog(){
+    if (this.dialogConfirmation) {
+      const dialogRef = this.dialogConfirmation.open(ConfirmationDialog, {
+        data: {
+          titulo: 'TEM CERTEZA QUE DESEJA CANCELAR ?',
+          textoBotoes: {
+            ok: 'Sim',
+            cancel: 'Não',
+          },
+        },
+      });
+
+      dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
+        if (confirmed?.resultado && this.dialogRefParameter) {
+            this.dialogRefParameter.close();
         }
       });
     }

@@ -6,6 +6,8 @@ import {NavigationEnd, Router} from "@angular/router";
 import {delay} from "rxjs";
 import {filter} from "rxjs/operators";
 import {SecurityService} from "../../arquitetura/security/security.service";
+import {AssinaturaDialogComponent} from "../../pages/assinatura/assinatura-dialog/assinatura-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @UntilDestroy()
@@ -19,10 +21,16 @@ export class HomeComponent implements OnInit {
   sidenav!: MatSidenav;
   admin!: any;
 
+
   constructor(
+    private dialog : MatDialog,
     private observer: BreakpointObserver,
     private router: Router,
     protected securityService: SecurityService) {
+  }
+
+  openDialogAssinatura(): void {
+    this.dialog.open(AssinaturaDialogComponent);
   }
 
   ngOnInit(): void {
@@ -76,4 +84,6 @@ export class HomeComponent implements OnInit {
     this.securityService.invalidate();
     this.router.navigate(['/acesso']);
   }
+
+  protected readonly AssinaturaDialogComponent = AssinaturaDialogComponent;
 }

@@ -39,6 +39,7 @@ import { HomePainelComponent } from './pages/painel/home-painel/home-painel.comp
 import {PainelModule} from "./pages/painel/painel.module";
 import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module";
 import {ImprimirTermoModule} from "./pages/imprimir-termo/imprimir-termo.module";
+import {AssinaturaModule} from "./pages/assinatura/assinatura.module";
 
 
 @NgModule({
@@ -91,7 +92,8 @@ import {ImprimirTermoModule} from "./pages/imprimir-termo/imprimir-termo.module"
     PainelModule,
       EsqueceuSenhaModule,
       MatriculaModule,
-      ImprimirTermoModule
+      ImprimirTermoModule,
+      AssinaturaModule
   ],
   providers: [
     provideEnvironmentNgxMask(),

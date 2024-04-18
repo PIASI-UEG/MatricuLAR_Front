@@ -9,14 +9,18 @@
     </button>
     <button class="custom-icon" routerLink="" >
     </button>
+     <span class="example-spacer"></span>
+      <button  title="Assinar Documento"  mat-button class="example-icon" (click)="openDialogAssinatura()"> Assinar Documento
+        <mat-icon>assignment</mat-icon>
+      </button>
 </mat-toolbar>
 <mat-sidenav-container>
     <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-        <button *ngIf="!securityService.isValid()" title="Home"  mat-button class="menu-button" routerLink=""> Pagina Inicial
+        <button  title="Home"  mat-button class="menu-button" routerLink=""> Pagina Inicial
             <mat-icon>home</mat-icon>
         </button>
-        <button *ngIf="!securityService.isValid()" title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']"> Pré-Matrícula
+        <button  title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']"> Pré-Matrícula
           <mat-icon>assignment</mat-icon>
         </button>
         <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel"> Painel
