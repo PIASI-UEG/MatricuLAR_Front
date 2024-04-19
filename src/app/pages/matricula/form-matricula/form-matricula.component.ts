@@ -9,15 +9,13 @@ import {MatDialog} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {Matricula} from "../../../custom_models/matricula";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
 import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
-import {NgxExtendedPdfViewerService, pdfDefaultOptions} from "ngx-extended-pdf-viewer";
 import {DomSanitizer} from "@angular/platform-browser";
-
+import {MatriculaDto} from "../../../api/models/matricula-dto";
 @Component({
   selector: 'app-form-matricula',
   templateUrl: './form-matricula.component.html',
@@ -162,7 +160,6 @@ export class FormMatriculaComponent implements OnInit{
 
   onSubmit() {
     this.enviado = true;
-
     this.submitFormulario = true;
     if (this.codigo == null) {
       return;
@@ -196,6 +193,8 @@ export class FormMatriculaComponent implements OnInit{
 
   private realizarInclusao(){
     console.log("Dados:",this.formGroup.value);
+    const matricula : MatriculaDto = this.formGroup.value;
+    console.log("Matricula:",matricula);
   }
 
 
@@ -207,11 +206,11 @@ export class FormMatriculaComponent implements OnInit{
     }
   }
 
-  confirmarAcao(matricula: Matricula, acao: string) {
+  confirmarAcao(matricula: MatriculaDto, acao: string) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Cadastro!',
-        mensagem: `Ação de ${acao} Nome: ${matricula.nome} (ID: ${matricula.numeroMatricula}) realizada com sucesso!`,
+        mensagem: `Ação de ${acao} Nome: ${matricula.nome} (ID: ${matricula.id}) realizada com sucesso!`,
         textoBotoes: {
           ok: 'Confirmar',
         },

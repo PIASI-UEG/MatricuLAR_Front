@@ -29,12 +29,14 @@ import {NgxDocViewerModule} from "ngx-doc-viewer";
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 
+import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
 
 @NgModule({
   declarations: [
     FormMatriculaComponent,
     HomeMatriculaComponent,
     ListMatriculaComponent,
+    InfoMatriculaDialogComponent
   ],
   imports: [
     CommonModule,

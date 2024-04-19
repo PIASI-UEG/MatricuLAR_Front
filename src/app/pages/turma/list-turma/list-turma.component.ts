@@ -10,12 +10,13 @@ import {
   ConfirmationDialog,
   ConfirmationDialogResult
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {Turma} from "../../../custom_models/turma";
 import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {TurmaDto} from "../../../api/models/turma-dto";
 import {Mascaras} from "../../../../Mascaras";
+import {MatriculaDto} from "../../../api/models/matricula-dto";
+import {InfoMatriculaDialogComponent} from "../../matricula/info-matricula-dialog/info-matricula-dialog.component";
 
 @Component({
   selector: 'app-list-turma',
@@ -78,8 +79,8 @@ export class ListTurmaComponent implements OnInit{
     console.log(this.turmaListaDataSource.data)
   }
 
-  remover(turma: Turma) {
-    console.log("Removido", turma.nome);
+  remover(turma: TurmaDto) {
+    console.log("Removido", turma.titulo);
     this.turmaService.turmaControllerRemover({ id: turma.id || 0})
       .subscribe(
         retorno => {
@@ -94,11 +95,11 @@ export class ListTurmaComponent implements OnInit{
   }
 
 
-  confirmarExcluir(turma: Turma) {
+  confirmarExcluir(turma: TurmaDto) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Confirmar?',
-        mensagem: `A exclusão de: ${turma.nome} (ID: ${turma.id})?`,
+        mensagem: `A exclusão de: ${turma.titulo} (ID: ${turma.id})?`,
         textoBotoes: {
           ok: 'Confirmar',
           cancel: 'Cancelar',
@@ -128,5 +129,6 @@ export class ListTurmaComponent implements OnInit{
     return this.flexDivAlinhar = "row";
 
   }
+
 
 }

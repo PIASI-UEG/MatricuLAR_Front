@@ -4,6 +4,7 @@ import {HomeMatriculaComponent} from "./home-matricula/home-matricula.component"
 import {ListMatriculaComponent} from "./list-matricula/list-matricula.component";
 import {FormMatriculaComponent} from "./form-matricula/form-matricula.component";
 import {ImprimirTermoComponent} from "../imprimir-termo/imprimir-matricula/imprimir-termo.component";
+import {SecurityGuard} from "../../arquitetura/security/security.guard";
 
 
 export const matriculaRoutes: Routes = [
@@ -14,8 +15,8 @@ export const matriculaRoutes: Routes = [
       {
         path: "",
         component: ListMatriculaComponent,
-        //canActivate: [SecurityGuard],
-        //data: {security: {roles: ['ROLE_PRODUTO_INCLUIR', 'ROLE_PRODUTO_ALTERAR']}}
+        canActivate: [SecurityGuard],
+        data: {security: {roles: ['A', 'C','S']}}
       },
       {
         path: "novo",
@@ -23,7 +24,9 @@ export const matriculaRoutes: Routes = [
       },
       {
         path: ":id",
-        component: FormMatriculaComponent
+        component: FormMatriculaComponent,
+        canActivate: [SecurityGuard],
+        data: {security: {roles: ['A', 'C','S']}}
       }
     ]
   }

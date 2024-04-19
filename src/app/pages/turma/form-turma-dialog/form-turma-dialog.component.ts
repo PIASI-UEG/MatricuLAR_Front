@@ -1,5 +1,4 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Turma} from "../../../custom_models/turma";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
@@ -7,6 +6,7 @@ import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {TurmaDto} from "../../../api/models/turma-dto";
 
 @Component({
   selector: 'app-form-turma-dialog',
@@ -18,7 +18,7 @@ export class FormTurmaDialogComponent implements OnInit {
   public readonly ACAO_INCLUIR = "Cadastrar";
   public readonly ACAO_EDITAR = "Editar";
   acao: string = this.ACAO_INCLUIR;
-  turma?: Turma;
+  turma?: TurmaDto;
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'turma'});
 
   public constructor(
@@ -87,23 +87,23 @@ export class FormTurmaDialogComponent implements OnInit {
 
 
   private realizarInclusao() {
-    const turma: Turma = this.formGroup.value;
+    const turma: TurmaDto = this.formGroup.value;
     console.log(turma);
-    this.confirmarAcao(turma, turma.nome ||"");
+    this.confirmarAcao(turma, turma.titulo ||"");
   }
 
   private realizarEdicao(){
-    const turma: Turma = this.formGroup.value;
+    const turma: TurmaDto = this.formGroup.value;
     console.log(turma);
     this.confirmarAcao(turma, this.ACAO_EDITAR);
 
   }
 
-  confirmarAcao(turma: Turma, nome: String) {
+  confirmarAcao(turma: TurmaDto, nome: String) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Cadastro!!',
-        mensagem: `Nome turma: ${turma.nome} (ID: ${turma.id}). Cadastro realizada com sucesso!`,
+        mensagem: `Nome turma: ${turma.titulo} (ID: ${turma.id}). Cadastro realizada com sucesso!`,
         textoBotoes: {
           ok: 'Confirmar',
         },

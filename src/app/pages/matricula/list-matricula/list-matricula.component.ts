@@ -10,7 +10,9 @@ import {
   ConfirmationDialog,
   ConfirmationDialogResult
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {Matricula} from "../../../custom_models/matricula";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {MatriculaDto} from "../../../api/models/matricula-dto";
+import {InfoMatriculaDialogComponent} from "../info-matricula-dialog/info-matricula-dialog.component";
 
 @Component({
   selector: 'app-list-matricula',
@@ -19,15 +21,16 @@ import {Matricula} from "../../../custom_models/matricula";
 })
 export class ListMatriculaComponent implements OnInit{
 
-  colunasMostrar = ['numeroMatricula','nome','turma','nomeResponsaveis','telefone','status','acao'];
-  turmaListaDataSource: MatTableDataSource<Matricula> = new MatTableDataSource<Matricula>([]);
+  colunasMostrar = ['id','nome','turma','responsaveis','telefone','status','acao'];
+  matriculaListaDataSource: MatTableDataSource<MatriculaDto> = new MatTableDataSource<MatriculaDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar:this.snackBar})
   admin!: boolean;
-  pageSlice!: Matricula[];
+  pageSlice!: MatriculaDto[];
   qtdRegistros!: number;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
   constructor(
+    public matriculaService: MatriculaControllerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private securityService: SecurityService,
@@ -46,24 +49,28 @@ export class ListMatriculaComponent implements OnInit{
 
 
   private buscarDados() {
-
+    this.matriculaService.matriculaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
+      this.matriculaListaDataSource.data = data.content;
+      this.pageSlice = this.matriculaListaDataSource.data;
+      this.qtdRegistros = data.totalElements;
+    })
   }
 
   showResult($event: any[]) {
-    this.turmaListaDataSource.data = $event;
+    this.matriculaListaDataSource.data = $event;
   }
 
-  remover(listaMatricula: Matricula) {
+  remover(listaMatricula: MatriculaDto) {
     console.log("Removido", listaMatricula.nome);
     this.mensagens.showMensagemSimples("Excluído com sucesso!");
   }
 
 
-  confirmarExcluir(listaMatricula: Matricula) {
+  confirmarExcluir(listaMatricula: MatriculaDto) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Confirmar?',
-        mensagem: `A exclusão de: ${listaMatricula.nome} (ID: ${listaMatricula.numeroMatricula})?`,
+        mensagem: `A exclusão de: ${listaMatricula.nome} (ID: ${listaMatricula.id})?`,
         textoBotoes: {
           ok: 'Confirmar',
           cancel: 'Cancelar',
@@ -98,5 +105,20 @@ export class ListMatriculaComponent implements OnInit{
     imprimirTermodaMatricula(element: any){
 
     }
+
+  openDialog(matriculaDto: MatriculaDto) {
+    console.log(matriculaDto);
+    const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
+      {
+        data:
+          {
+            matricula: matriculaDto
+          }
+      })
+    dialogRef.afterClosed().subscribe(() => {
+        this.buscarDados()
+      }
+    )
+  }
 
 }

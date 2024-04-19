@@ -24,6 +24,8 @@ export const funcionarioRoutes: Routes = [
         path: ":id",
         component: FormFuncionarioComponent
       }
-    ]
+    ],
+    canActivate: [SecurityGuard],
+    data: {security: {roles: ['A', 'C']}}
   }
 ];

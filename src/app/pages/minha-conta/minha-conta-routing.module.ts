@@ -5,6 +5,7 @@ import {FormMinhaContaComponent} from "./form-minha-conta/form-minha-conta.compo
 import {HomeFuncionarioComponent} from "../funcionario/home-funcionario/home-funcionario.component";
 import {ListFuncionarioComponent} from "../funcionario/list-funcionario/list-funcionario.component";
 import {FormFuncionarioComponent} from "../funcionario/form-funcionario/form-funcionario.component";
+import {SecurityGuard} from "../../arquitetura/security/security.guard";
 
 
 export const minhaContaRoutes: Routes = [
@@ -16,6 +17,8 @@ export const minhaContaRoutes: Routes = [
         path: ":id",
         component: FormMinhaContaComponent
       }
-    ]
+    ],
+    canActivate: [SecurityGuard],
+    data: {security: {roles: ['A', 'C','S']}}
   }
 ];

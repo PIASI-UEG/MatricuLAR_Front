@@ -8,6 +8,12 @@ import {SecurityService} from "../security/security.service";
 import {User} from "../security/User";
 import {AuthDto} from "../../api/models/auth-dto";
 
+import {MatDialog} from "@angular/material/dialog";
+import {EsqueceuSenhaComponent} from "../../pages/esqueceu-senha/esqueceu-senha/esqueceu-senha.component";
+import {
+  EsqueceuSenhaDialogComponent
+} from "../../pages/esqueceu-senha/esqueceu-senha-dialog/esqueceu-senha-dialog.component";
+
 @Component({
   selector: 'app-autentication',
   templateUrl: './autenticacao.component.html',
@@ -23,13 +29,15 @@ export class AutenticacaoComponent implements OnInit {
    *
    * @param securityService
    * @param autenticationService
-   * @param messageService
    * @param router
+   * @param dialog
+   * @param formBuilder
    */
   constructor(
     private securityService: SecurityService,
     private autenticationService: AutenticacaoService,
     private router: Router,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder,) {
     this.createForm();
   }
@@ -82,4 +90,17 @@ export class AutenticacaoComponent implements OnInit {
         return this.formGroup.controls[controlName].hasError(errorName);
     };
 
+  openDialog(): void {
+    console.log("ok");
+    const dialogRef = this.dialog.open(EsqueceuSenhaDialogComponent,
+      {
+        data:
+          {
+            num: 1
+          }
+      })
+    dialogRef.afterClosed().subscribe(() => {
+      }
+    )
+  }
 }

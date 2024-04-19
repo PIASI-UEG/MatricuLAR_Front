@@ -7,6 +7,8 @@ import {delay} from "rxjs";
 import {filter} from "rxjs/operators";
 import {SecurityService} from "../../arquitetura/security/security.service";
 
+import {MatDialog} from "@angular/material/dialog";
+
 
 @UntilDestroy()
 @Component({
@@ -76,4 +78,6 @@ export class HomeComponent implements OnInit {
     this.securityService.invalidate();
     this.router.navigate(['/acesso']);
   }
+
+
 }

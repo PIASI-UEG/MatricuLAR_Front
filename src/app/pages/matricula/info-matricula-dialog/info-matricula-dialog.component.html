@@ -1,0 +1,22 @@
+<div class="formMov" fxLayout="row" fxLayoutAlign="center">
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit()"
+    class="form" fxFlex="1 1 auto"
+  >
+    <h1>Dados de: {{nomeCrianca}}</h1>
+
+    <mat-form-field>
+      <mat-label>Quantidade</mat-label>
+      <input matInput formControlName="quantidade" min="1" type="number">
+      <mat-error *ngIf="formGroup.controls['quantidade'].value < 1">Não pode ser menor que 1</mat-error>
+    </mat-form-field>
+
+
+
+    <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+    </div>
+  </form>
+</div>

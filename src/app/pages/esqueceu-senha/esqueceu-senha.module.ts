@@ -10,11 +10,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {NgxMaskDirective} from "ngx-mask";
 import {FlexModule} from "@angular/flex-layout";
+import { EsqueceuSenhaDialogComponent } from './esqueceu-senha-dialog/esqueceu-senha-dialog.component';
 
 
 @NgModule({
     declarations: [
-        EsqueceuSenhaComponent
+        EsqueceuSenhaComponent,
+        EsqueceuSenhaDialogComponent
     ],
     imports: [
         CommonModule,
