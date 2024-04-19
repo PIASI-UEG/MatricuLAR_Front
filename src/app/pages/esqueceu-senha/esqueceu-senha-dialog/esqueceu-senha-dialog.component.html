@@ -14,8 +14,16 @@
         <mat-error *ngIf="handleError('email', 'required')">O Email é Obrigatório</mat-error>
         <mat-error *ngIf="handleError('email', 'email')">E-mail Inválido</mat-error>
       </mat-form-field>
-      <button type="submit">Recuperar Senha</button>
-      <button (click)="fechar()">Cancelar</button>
+
+      <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+        <button mat-raised-button color="warn" type="button" class="button botao-cancelar" (click)="fechar()">Cancelar</button>
+        <button  mat-raised-button type="submit" class="button" >Recuperar Senha</button>
+      </div>
+
+      <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+        <button  mat-raised-button type="submit" class="button" >Recuperar Senha</button>
+        <button mat-raised-button color="warn" type="button" class="button botao-cancelar">Cancelar</button>
+      </div>
     </form>
   </div>
 </div>
