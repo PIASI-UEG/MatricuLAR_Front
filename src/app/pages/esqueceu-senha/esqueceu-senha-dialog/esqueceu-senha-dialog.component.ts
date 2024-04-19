@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, HostListener, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {Router} from "@angular/router";
@@ -14,6 +14,8 @@ import {RedefinirSenhaDto} from "../../../api/models/redefinir-senha-dto";
 })
 export class EsqueceuSenhaDialogComponent implements OnInit{
   formGroup!: FormGroup;
+  innerWidth: number = window.innerWidth;
+  flexDivAlinhar: string = 'row';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,6 +30,29 @@ export class EsqueceuSenhaDialogComponent implements OnInit{
 
   ngOnInit() {
     this.createForm();
+    this.innerWidth = window.innerWidth;
+  }
+
+  mudarAlinhar() {
+
+    if(innerWidth < 1000)
+    {
+      return this.flexDivAlinhar = "column";
+    }
+    return this.flexDivAlinhar = "row";
+
+  }
+
+  verificarAlinhar(){
+    if(this.flexDivAlinhar == "column"){
+      return true;
+    }
+    return false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.innerWidth = window.innerWidth;
   }
 
   private createForm() {
