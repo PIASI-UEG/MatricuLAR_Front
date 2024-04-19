@@ -9,8 +9,8 @@ import {matriculaRoutes} from "./pages/matricula/matricula-routing.module";
 import {minhaContaRoutes} from "./pages/minha-conta/minha-conta-routing.module";
 import {homePageRoutes} from "./pages/home-page/home-page-routing.module";
 import {painelRoutes} from "./pages/painel/painel-routing.module";
-import {EsqueceuSenhaRoutingModule} from "./pages/esqueceu-senha/esqueceu-senha-routing.module";
 import {imprimirTermoRoutes} from "./pages/imprimir-termo/imprimir-termo.routes";
+import {EsqueceuSenhaRoutingModule} from "./pages/esqueceu-senha/esqueceu-senha-routing.module";
 
 const routes: Routes = [
   {

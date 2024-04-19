@@ -288,15 +288,32 @@
           </div>
         </div>
       </mat-tab>
+
+      <!-- Etapa 4 -->
       <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
         <div class="conteudo-mat-tab">
-    <!-- Etapa 4 -->
-      <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
-        serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
-        de qualidade para facilitar o procedimento.</p>
 
-          <input type="file" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="fotoCrianca" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="certidaoNascimento" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="cpfCriancaImage" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="documentoVeiculo" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="comprovanteEndereco" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="comprovanteMoradia" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="comprovanteBolsaFamilia" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="comprovanteTrabalho" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="comprovanteContracheque" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="rgTutorImage" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="cpfTutorImage" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="comprovanteDeEstadoCivil" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+          <input type="file" formControlName="encaminhamentoCras" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="encaminhamentoConselhoTutelar" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+          <input type="file" formControlName="declaracaoEscolar" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
+
+          <p>
+            É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
+            serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
+            de qualidade para facilitar o procedimento.
+          </p>
 
           <div>
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="pegaDoc()">Etapa Anterior</button>

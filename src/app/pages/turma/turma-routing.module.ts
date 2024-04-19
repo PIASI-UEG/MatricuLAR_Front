@@ -27,6 +27,8 @@ export const turmaRoutes:  Routes = [
         path: ":id",
         component: FormTurmaComponent
       }
-    ]
+    ],
+    canActivate: [SecurityGuard],
+    data: {security: {roles: ['A', 'C','S']}}
   }
 ];

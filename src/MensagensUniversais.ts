@@ -5,17 +5,20 @@ import {
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {SecurityService} from "./app/arquitetura/security/security.service";
 
 export class MensagensUniversais {
   private dialog?: MatDialog;
   private router?: Router;
   private telaAtual?: string;
   private snackBar?: MatSnackBar;
+  protected securityService?: SecurityService;
 
   constructor(config: {
     dialog?: MatDialog,
     router?: Router,
     telaAtual?: string,
+    securityService?: SecurityService,
     snackBar?: MatSnackBar
   }) {
     this.dialog = config.dialog;
@@ -50,8 +53,13 @@ export class MensagensUniversais {
       });
 
       dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
-        if (confirmed?.resultado && this.router) {
+        if (confirmed?.resultado && this.router && this.securityService?.isValid()) {
           this.router.navigate(["/" + this.telaAtual]);
+        }
+        else{
+          if (this.router instanceof Router) {
+            this.router.navigate(["/home"]);
+          }
         }
       });
     }

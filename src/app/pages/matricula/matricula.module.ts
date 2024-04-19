@@ -24,13 +24,15 @@ import {BrowserModule} from "@angular/platform-browser";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatTabsModule} from "@angular/material/tabs";
+import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
 
 
 @NgModule({
   declarations: [
     FormMatriculaComponent,
     HomeMatriculaComponent,
-    ListMatriculaComponent
+    ListMatriculaComponent,
+    InfoMatriculaDialogComponent
   ],
     imports: [
         CommonModule,
