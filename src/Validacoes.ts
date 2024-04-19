@@ -1,4 +1,4 @@
-import {AbstractControl} from "@angular/forms";
+import {AbstractControl, FormGroup} from "@angular/forms";
 import {isEmail} from "class-validator";
 import {cpf} from "cpf-cnpj-validator";
 
@@ -136,5 +136,51 @@ export class Validacoes{
     // Retorna um objeto se o telefone não for válido
     return { 'senhaInvalidaNumeros': true };
   }
+
+  //form de tutor validação de telefones
+  validarTelefonesEmpresariais(formGroup: FormGroup): { [key: string]: any } | null {
+       const campo1: string = formGroup.get('telefoneCelularEmpresarial')?.value;
+       const campo2: string = formGroup.get('telefoneFixoEmpresarial')?.value;
+
+       if((campo1 == '' && campo2 == '') ||
+          (campo1 == null && campo2 == null) ||
+          (campo1 == null && campo2 == '') ||
+          (campo1 == '' && campo2 == null)){
+         formGroup.setErrors({ 'informeUmTelefoneEmpresarial': true });
+         return { 'informeUmTelefoneEmpresarial': true };
+       }
+       return null;
+  }
+
+  // form de pereguntas validacao de razao saida
+  validarRazaoSaida(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('frequentouOutraCreche')?.value === "sim" && !formGroup.get('razaoSaida')?.value) {
+      formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
+      return { 'informeRazaoSaida': true }; // Indicate that an error was set
+    } else {
+      return null; // No error set
+    }
+  }
+
+  // form de perguntas validacao de preco aluguel
+  validarAluguel(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('tipoResidencia')?.value === "alugado" && !formGroup.get('valorAluguel')?.value) {
+      formGroup.get('valorAluguel')?.setErrors({ 'informeValorAluguel': true });
+      return { 'informeValorAluguel': true }; // Indicate that an error was set
+    } else {
+      return null; // No error set
+    }
+  }
+
+  // form de perguntas validacao de beneficio
+  validarBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('possuiBeneficiosDoGoverno')?.value === "sim" && !formGroup.get('valorBeneficio')?.value) {
+      formGroup.get('valorBeneficio')?.setErrors({ 'informeValorBeneficio': true });
+      return { 'informeValorBeneficio': true }; // Indicate that an error was set
+    } else {
+      return null; // No error set
+    }
+  }
+
 
 }

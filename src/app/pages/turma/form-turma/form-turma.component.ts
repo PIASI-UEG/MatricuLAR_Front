@@ -113,7 +113,7 @@ export class FormTurmaComponent {
       .subscribe(retorno => {
         console.log("Retorno:", retorno);
         this.confirmarAcao(retorno, this.ACAO_EDITAR);
-        this.router.navigate(["/funcionario"]);
+        this.router.navigate(["/turma"]);
       }, erro => {
         console.log("Erro:", erro.error);
         this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)

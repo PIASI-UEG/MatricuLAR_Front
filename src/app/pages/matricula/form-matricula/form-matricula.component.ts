@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
@@ -14,8 +14,8 @@ import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
-
 @Component({
   selector: 'app-form-matricula',
   templateUrl: './form-matricula.component.html',
@@ -45,7 +45,7 @@ export class FormMatriculaComponent implements OnInit{
   nomeTitulo : string = "Dados da Criança";
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
-
+  enviado: boolean = false;
   docs :DocumentoMatriculaDto[] = []
   enumDoc: String = ''
 
@@ -56,7 +56,8 @@ export class FormMatriculaComponent implements OnInit{
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private securityService: SecurityService,
-    private matriculaService: MatriculaControllerService
+    private matriculaService: MatriculaControllerService,
+    private sanitizer: DomSanitizer
   ) {
     this._adapter.setLocale('pt-br');
   }
@@ -112,8 +113,11 @@ export class FormMatriculaComponent implements OnInit{
         comprovanteDeEstadoCivil: [null, Validators.required],
         encaminhamentoCras: [null, Validators.required],
         encaminhamentoConselhoTutelar: [null, Validators.required],
-        declaracaoEscolar: [null, Validators.required]
-      })
+        declaracaoEscolar: [null, Validators.required],
+        possuiversoCertidao: null,
+      }, { validator: [this.validacoes.validarRazaoSaida,
+                              this.validacoes.validarAluguel,
+                              this.validacoes.validarBeneficio] })
     }
   }
 
@@ -131,38 +135,16 @@ export class FormMatriculaComponent implements OnInit{
       telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
       relacionamento: false,
       moraComConjuge: false,
-    });
+    }, { validator: this.validacoes.validarTelefonesEmpresariais })
   }
 
-  validarTelefoneEmpresarial(): boolean {
-    let isValid = true;
-    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
-
-    tutorFormArray.controls.forEach((control) => {
-      const tutorGroup = control as FormGroup;
-      const telefoneCelularEmpresarial = tutorGroup.get('telefoneCelularEmpresarial');
-      const telefoneFixoEmpresarial = tutorGroup.get('telefoneFixoEmpresarial');
-
-      if (!telefoneCelularEmpresarial?.value && !telefoneFixoEmpresarial?.value) {
-        telefoneFixoEmpresarial?.setErrors({ 'informeUm': true });
-        telefoneCelularEmpresarial?.setErrors({ 'informeUm': true });
-        isValid = false;
-      } else {
-
-        if (telefoneCelularEmpresarial?.errors && telefoneCelularEmpresarial?.errors['informeUm']) {
-          telefoneCelularEmpresarial.setErrors(null);
-        }
-        if (telefoneFixoEmpresarial?.errors && telefoneFixoEmpresarial?.errors['informeUm']) {
-          telefoneFixoEmpresarial.setErrors(null);
-        }
-      }
-    });
-
-    return isValid;
-  }
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
+  };
+  public handleErrorForm = (errorName: string) => {
+    const formGroup = this.formGroup;
+    return formGroup.hasError(errorName);
   };
 
   public handleErrorTutor = (controlName: string, errorName: string, index: number) => {
@@ -170,37 +152,14 @@ export class FormMatriculaComponent implements OnInit{
     return formGroupTutor.controls[controlName].hasError(errorName);
   };
 
-  exibirErroTelefoneEmpresarial(index: number): boolean {
-    const tutorFormArray = this.formGroup.get('tutor') as FormArray;
-    const tutorGroup = tutorFormArray.at(index) as FormGroup;
-    const telefoneCelularEmpresarial = tutorGroup.get('telefoneCelularEmpresarial');
-    const telefoneFixoEmpresarial = tutorGroup.get('telefoneFixoEmpresarial');
+  public handleErrorFormTutor = (errorName: string, index: number) => {
+    const formGroupTutor =this.getTutorForm(index);
+    return formGroupTutor.hasError(errorName);
+  };
 
-    const erroTelefoneFixo = telefoneFixoEmpresarial?.hasError('informeUm') || false;
-    const erroTelefoneCelular = telefoneCelularEmpresarial?.hasError('informeUm') || false;
-
-    return erroTelefoneCelular || erroTelefoneFixo;
-  }
-
-  erroRazaoSaida(): boolean {
-    if (this.formGroup.get('frequentouOutraCreche')?.value === "sim" && !this.formGroup.get('razaoSaida')?.value) {
-      this.formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
-      return true; // Indicate that an error was set
-    } else {
-      return false; // No error set
-    }
-  }
 
   onSubmit() {
-    /*
-    if (!this.validarTelefoneEmpresarial()) {
-      return;
-    }
-
-    if (!this.erroRazaoSaida()){
-      return;
-    }
-
+    this.enviado = true;
     this.submitFormulario = true;
     if (this.codigo == null) {
       return;
@@ -220,7 +179,7 @@ export class FormMatriculaComponent implements OnInit{
         }
       )
 
-    }*/
+    }
 
     if (this.codigo != null || this.formGroup.valid) {
       if(!this.codigo){
@@ -328,7 +287,7 @@ export class FormMatriculaComponent implements OnInit{
 
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
-      necessidadeEspecial: ''
+      necessidadeEspecial: [null, Validators.required]
     });
   }
   firstClickNecessidades(): boolean {
@@ -420,30 +379,89 @@ export class FormMatriculaComponent implements OnInit{
     }
   }
 
+  //variaveis certidao
+  docCertidaoNascNome: string = 'Escolha um arquivo';
+  selectedFileCertidao:string  = '';
+  isFileImageCertidao = false;
+  isFileDocumentCertidao =false;
 
-
+  docCertidaoNascNomeVerso: string = 'Escolha um arquivo';
+  selectedFileCertidaoVerso:string  = '';
+  isFileImageCertidaoVerso = false;
+  isFileDocumentCertidaoVerso =false;
 
   // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
   // esse idMatricula é so pra testes ele vai ser vazio
   onFilechange(event: any, enumDoc: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2' | 'CERTIDAO_ESTADO_CIVIL2') {
-    const file = event.target.files[0]
-    const fileName = file.name
-    console.log(file)
-    let blob: Blob
-    blob = file
+    const file = event.target.files[0];
+    const fileName = file.name;
+    console.log(file);
+    let blob: Blob;
+    blob = file;
+
+    if (file) {
+
+      switch (enumDoc) {
+        case 'CERTIDAO_NASCIMENTO':
+          this.selectedFileCertidao = this.makeURLFile(file);
+          if (this.verificarTipoArquivo(file)) {
+            this.isFileImageCertidao = true;
+            this.isFileDocumentCertidao = false;
+          } else {
+            this.isFileImageCertidao = false;
+            this.isFileDocumentCertidao = true;
+          }
+          if (fileName.length > 20) {
+            this.docCertidaoNascNome = this.diminuirTamanhoNomeArquivo(fileName);
+          }
+          break;
+        // case 'CERTIDAO_NASCIMENTO_VERSO':
+        //   this.selectedFileCertidaoVerso = this.makeURLFile(file);
+        //   if (this.verificarTipoArquivo(file)) {
+        //     this.isFileImageCertidaoVerso = true;
+        //     this.isFileDocumentCertidaoVerso = false;
+        //   } else {
+        //     this.isFileImageCertidaoVerso = false;
+        //     this.isFileDocumentCertidaoVerso = true;
+        //   }
+        //   if (fileName.length > 20) {
+        //     this.docCertidaoNascNomeVerso = this.diminuirTamanhoNomeArquivo(fileName);
+        //   }
+        //   break;
+
+        default:
+          break;
+      }
+    }
 
     let doc: DocumentoMatriculaDto = {
       aceito: false,
-      idMatricula:1,
+      idMatricula: 1,
       tipoDocumento: enumDoc,
       caminhoDocumento: file.name,
-      arquivo:blob
-    }
-    if (doc && this.docs){
-      this.docs.push(doc)
-      console.log("docs: ", this.docs)
-    }
+      arquivo: blob
+    };
 
+    if (doc && this.docs) {
+      this.docs.push(doc);
+      console.log("docs: ", this.docs);
+    }
+  }
+  private makeURLFile(file: any) {
+      const fileUrl = URL.createObjectURL(file); // Obter o URL do arquivo
+      return fileUrl as string;
+  }
+
+  private verificarTipoArquivo(file: any) {
+    if (file.type.includes("image")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private diminuirTamanhoNomeArquivo(fileName : string) {
+    return fileName.substring(0, 20 - 3) + '...';
   }
 
   pegaDoc(){
@@ -458,4 +476,8 @@ export class FormMatriculaComponent implements OnInit{
       })
 
   }
+
+
+
+
 }

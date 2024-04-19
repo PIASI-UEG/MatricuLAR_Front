@@ -47,7 +47,7 @@
               <mat-form-field>
                 <mat-label>Necessidade especial</mat-label>
                 <input matInput formControlName="necessidadeEspecial" placeholder="EX: alergia, medicamentos, alimentação">
-                <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Campo Obrigatório</mat-error>
+                <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Desmarque ou preencha para continuar</mat-error>
               </mat-form-field>
 
               <button mat-icon-button  (click)="removerCampoNecessidade(i)" >
@@ -192,7 +192,7 @@
                         <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
                       </mat-form-field>
                     </div>
-                  <mat-error class="alinhar-erro" *ngIf="exibirErroTelefoneEmpresarial(i)">
+                  <mat-error class="alinhar-erro" *ngIf="handleErrorFormTutor('informeUmTelefoneEmpresarial', i) && this.enviado">
                     Informe pelo menos um telefone empresarial.
                   </mat-error>
 
@@ -240,7 +240,7 @@
             <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
               <mat-label>Por qual razão saiu? </mat-label>
               <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
-              <mat-error *ngIf="formGroup.get('razaoSaida')?.hasError('informeRazaoSaida')">Informe a razão da saída </mat-error>
+              <mat-error *ngIf="handleErrorForm('informeRazaoSaida')">Informe a razão da saída </mat-error>
             </mat-form-field>
           </div>
 
@@ -257,7 +257,7 @@
           <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
             <mat-label>Valor do aluguel</mat-label>
             <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
-            <mat-error *ngIf="handleError('valorAluguel', 'required')">Campo Obrigatório</mat-error>
+            <mat-error *ngIf="handleErrorForm('informeValorAluguel')">Informe o valor do Aluguel</mat-error>
           </mat-form-field>
 
           <div fxLayout="column" fxLayoutAlign="center start">
@@ -270,7 +270,7 @@
                 <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
                   <mat-label>Valor do benefício </mat-label>
                   <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator="," placeholder="0,00">
-                  <mat-error *ngIf="handleError('razaoSaida', 'required')">Campo Obrigatório</mat-error>
+                  <mat-error *ngIf="handleErrorForm('informeValorBeneficio')">Informe o valor do Benefício</mat-error>
                 </mat-form-field>
           </div>
 
@@ -281,44 +281,64 @@
             <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
           </mat-form-field>
 
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
             <button mat-raised-button  type="button" class="button"(click)="goToNextStep(3)">Próxima Etapa</button>
           </div>
+
+          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+            <button mat-raised-button  type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+          </div>
+
         </div>
       </mat-tab>
 
       <!-- Etapa 4 -->
       <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
         <div class="conteudo-mat-tab">
-
-          <input type="file" formControlName="fotoCrianca" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="certidaoNascimento" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="cpfCriancaImage" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="documentoVeiculo" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="comprovanteEndereco" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="comprovanteMoradia" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="comprovanteBolsaFamilia" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="comprovanteTrabalho" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="comprovanteContracheque" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="rgTutorImage" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="cpfTutorImage" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="comprovanteDeEstadoCivil" class="selecionaFile" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-          <input type="file" formControlName="encaminhamentoCras" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="encaminhamentoConselhoTutelar" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-          <input type="file" formControlName="declaracaoEscolar" class="selecionaFile" (change)="onFilechange($event, 'FOTO_CRIANCA')" #fileUpload>
-
-          <p>
-            É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
+          <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
             serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
-            de qualidade para facilitar o procedimento.
-          </p>
+            de qualidade para facilitar o procedimento.</p>
 
-          <div>
-            <button mat-raised-button  type="button" class="button botao-voltar" (click)="pegaDoc()">Etapa Anterior</button>
+          <div fxLayout="column" fxLayoutAlign="space-evenly center">
+            <mat-label class="titulo-doc"> <strong>Certidão de nascimento da criança </strong> <br></mat-label>
+            <mat-label class="ampliar-doc" *ngIf="this.isFileDocumentCertidao || this.isFileImageCertidao">Clique na imagem do arquivo para ampliar <br></mat-label>
+            <input type="file" style="display: none" id="inputCertidao" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
+            <label for="inputCertidao" class="file-button" *ngIf="!this.isFileImageCertidao && !this.isFileDocumentCertidao"></label>
+
+            <input type="button" style="display: none" id="inputPreviewCertidao" routerLink="/imprimir-termo">
+            <label for="inputPreviewCertidao" class="file-button-dialog-pdf"  *ngIf="this.isFileDocumentCertidao || this.isFileImageCertidao">
+              <img *ngIf="this.isFileImageCertidao" [src]="this.selectedFileCertidao" class="viewer" >
+              <pdf-viewer
+              *ngIf="this.isFileDocumentCertidao"
+              [src]="selectedFileCertidao"
+              [original-size]="false"
+              [render-text]="false"
+              [rotation]="0"
+              [show-all]="true"
+              [fit-to-page]="false"
+              [zoom]="1"
+              [zoom-scale]="'page-width'"
+              [stick-to-page]="false"
+              [external-link-target]="'blank'"
+              [autoresize]="true"
+              [show-borders]="true"
+              class="viewer"
+            ></pdf-viewer>
+            </label>
+
+            <mat-label class="file-name"> {{docCertidaoNascNome}} </mat-label>
+
+            <label for="inputCertidao" class="file-button-document " *ngIf="this.isFileImageCertidao || this.isFileDocumentCertidao">Trocar arquivo</label>
+
           </div>
-      <!-- Campos da terceira etapa -->
+          <mat-checkbox color="primary" formControlName="possuiversoCertidao">
+            O documento possui verso ?
+          </mat-checkbox>
+
           <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
             <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
@@ -329,10 +349,5 @@
     </mat-tab-group>
     </div>
 
-<!--    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="getErrorClass('senha')">-->
-<!--      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>-->
-<!--      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>-->
-<!--      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>-->
-<!--    </div>-->
   </form>
 </div>

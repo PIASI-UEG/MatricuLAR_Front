@@ -24,8 +24,12 @@ import {BrowserModule} from "@angular/platform-browser";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatTabsModule} from "@angular/material/tabs";
-import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
+import {HttpClientModule} from "@angular/common/http";
+import {NgxDocViewerModule} from "ngx-doc-viewer";
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
+import {PdfViewerModule} from "ng2-pdf-viewer";
 
+import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,31 +38,35 @@ import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matri
     ListMatriculaComponent,
     InfoMatriculaDialogComponent
   ],
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        RouterOutlet,
-        RouterLink,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatMenuModule,
-        MatTableModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        SearchModule,
-        FlexModule,
-        NgxMaskDirective,
-        BrowserModule,
-        MatNativeDateModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatTabsModule
-    ]
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterOutlet,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatMenuModule,
+    MatTableModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    SearchModule,
+    FlexModule,
+    NgxMaskDirective,
+    BrowserModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatTabsModule,
+    HttpClientModule,
+    NgxDocViewerModule,
+    NgxExtendedPdfViewerModule,
+    PdfViewerModule,
+  ]
 })
 export class MatriculaModule { }

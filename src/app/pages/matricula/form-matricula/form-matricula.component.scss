@@ -74,9 +74,95 @@ p {
 }
 
 .alinhar-erro{
-  margin-left: 22px;
+  margin-left: 20px;
   margin-bottom: 20px;
 }
 
+.file-button-document {
+  background:#5AB9EA ;
+  color: white ;
+  text-align:center;
+  align-items: center;
+  width: 200px ;
+  line-height: 35px;
+  height: 35px ;
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  border:1px solid #A2B6C8;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  margin: 20px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.file-button {
+  background-image: url("/assets/fotos_documentos/envio_documento.png") ;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 230px 200px;
+  text-align:center;
+  align-items: center;
+  width: 230px;
+  line-height: 35px;
+  height: 200px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.file-button-document :hover {
+  background-color: #4b9fcf;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  white-space: nowrap;
+  color: #999999;
+  user-select: none;
+}
+
+.viewer {
+  height: 200px;
+  width: 200px;
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.file-button-dialog-pdf {
+  background: none;
+  background-size: 230px 200px;
+  text-align:center;
+  align-items: center;
+  width: 230px;
+  height: 200px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 5px;
+  user-select: none;
+  z-index: 1;
+  border: none ;
+}
+
+.titulo-doc {
+  font-family: DM Roboto, sans-serif;
+  font-size: 18px;
+  margin: 5px;
+  user-select: none;
+}
+
+.ampliar-doc {
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  margin: 5px;
+  user-select: none;
+}
 
 

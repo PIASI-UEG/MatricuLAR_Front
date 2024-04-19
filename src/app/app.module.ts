@@ -38,6 +38,8 @@ import {NgbCarouselModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HomePainelComponent } from './pages/painel/home-painel/home-painel.component';
 import {PainelModule} from "./pages/painel/painel.module";
 import {ImprimirTermoModule} from "./pages/imprimir-termo/imprimir-termo.module";
+import { ExamplePdfViewerComponent } from './example-pdf-viewer/example-pdf-viewer.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module";
 
 
@@ -47,6 +49,7 @@ import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module"
     HomeComponent,
     LoaderDialogComponent,
     ConfirmationDialog,
+    ExamplePdfViewerComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,7 +94,8 @@ import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module"
     PainelModule,
       EsqueceuSenhaModule,
       MatriculaModule,
-      ImprimirTermoModule
+      ImprimirTermoModule,
+      NgxExtendedPdfViewerModule
   ],
   providers: [
     provideEnvironmentNgxMask(),
