@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { AssinaturaDto } from '../models/assinatura-dto';
 import { MatriculaDto } from '../models/matricula-dto';
 import { Pageable } from '../models/pageable';
 import { SearchField } from '../models/search-field';
@@ -360,6 +361,59 @@ export class MatriculaControllerService extends BaseService {
 
     return this.matriculaControllerValidaMatricula$Response(params,context).pipe(
       map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
+    );
+  }
+
+  /**
+   * Path part for operation matriculaControllerGerarTermoBack
+   */
+  static readonly MatriculaControllerGerarTermoBackPath = '/api/v1/matricula/termo';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerGerarTermoBack()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  matriculaControllerGerarTermoBack$Response(params: {
+    body: Array<AssinaturaDto>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<Array<AssinaturaDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerGerarTermoBackPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<AssinaturaDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerGerarTermoBack$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  matriculaControllerGerarTermoBack(params: {
+    body: Array<AssinaturaDto>
+  },
+  context?: HttpContext
+
+): Observable<Array<AssinaturaDto>> {
+
+    return this.matriculaControllerGerarTermoBack$Response(params,context).pipe(
+      map((r: StrictHttpResponse<Array<AssinaturaDto>>) => r.body as Array<AssinaturaDto>)
     );
   }
 
