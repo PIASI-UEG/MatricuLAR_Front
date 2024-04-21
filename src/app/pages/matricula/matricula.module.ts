@@ -31,6 +31,7 @@ import {PdfViewerModule} from "ng2-pdf-viewer";
 
 import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
 import {ArquivoViwerModule} from "../../arquitetura/arquivo-viwer/arquivo-viwer.module";
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import {ArquivoViwerModule} from "../../arquitetura/arquivo-viwer/arquivo-viwer.
         NgxExtendedPdfViewerModule,
         PdfViewerModule,
         ArquivoViwerModule,
+        MatListModule,
     ]
 })
 export class MatriculaModule { }

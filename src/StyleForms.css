@@ -16,6 +16,8 @@ h2{
   margin-top: 2%;
 }
 
+
+
 @media (max-width: 1500px) {
   .formPadrao {
     width: 70%;
@@ -86,10 +88,6 @@ mat-form-field{
   margin: 5px;
 }
 
-.form{
-  width: 100%;
-}
-
 .divBotoes{
   margin-top: 25px;
 }
@@ -118,4 +116,3 @@ h2 {
     font-size: 14px;
     color: #FF0000;
 }
-
