@@ -1,1 +1,16 @@
 @import '../../../../StyleForms.css';
+
+.container-esqueceu-senha {
+  width: 350px;
+  padding-bottom: 20px;
+  margin-top: 12%;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  align-items: center;
+  border-radius: 50px 50px;
+  border: red;
+  max-width: 90%;
+}

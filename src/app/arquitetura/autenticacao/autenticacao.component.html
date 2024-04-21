@@ -4,10 +4,10 @@
     <img src="/assets/fotos_login/imagem2_crianca2.png" class="imagem-lateral lado-direito">
     <img src="/assets/fotos_login/imagem1_crianca1.png" class="imagem-lateral lado-esquerdo">
     <img src="/assets/fotos_login/imagem4_logo.png" class="logo">
-    <div class="container">
+    <div class="container-login">
         <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
             <div class="login-content">
-                <h1>Entrar</h1>
+                <h1><strong>Entrar</strong></h1>
                 <mat-form-field>
                     <mat-label>CPF</mat-label>
                     <input matInput formControlName="login" mask="000.000.000-00" placeholder="000.000.000-00">

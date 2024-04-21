@@ -9,7 +9,6 @@ import {User} from "../security/User";
 import {AuthDto} from "../../api/models/auth-dto";
 
 import {MatDialog} from "@angular/material/dialog";
-import {EsqueceuSenhaComponent} from "../../pages/esqueceu-senha/esqueceu-senha/esqueceu-senha.component";
 import {
   EsqueceuSenhaDialogComponent
 } from "../../pages/esqueceu-senha/esqueceu-senha-dialog/esqueceu-senha-dialog.component";

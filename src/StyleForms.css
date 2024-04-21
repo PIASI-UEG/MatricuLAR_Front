@@ -54,6 +54,9 @@ h2{
   margin: 5px;
   border:1px solid #A2B6C8;
 }
+.button:hover {
+    background-color: #388fb5;
+}
 
 @media (max-width: 999px) {
   .button {
@@ -100,4 +103,19 @@ mat-form-field{
 }
 
 
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+.mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.mat-error {
+    font-size: 14px;
+    color: #FF0000;
+}
 
