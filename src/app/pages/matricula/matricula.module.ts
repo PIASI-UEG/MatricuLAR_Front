@@ -30,6 +30,7 @@ import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 
 import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
+import {ArquivoViwerModule} from "../../arquitetura/arquivo-viwer/arquivo-viwer.module";
 
 @NgModule({
   declarations: [
@@ -38,35 +39,36 @@ import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matri
     ListMatriculaComponent,
     InfoMatriculaDialogComponent
   ],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    RouterOutlet,
-    RouterLink,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatMenuModule,
-    MatTableModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    SearchModule,
-    FlexModule,
-    NgxMaskDirective,
-    BrowserModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatTabsModule,
-    HttpClientModule,
-    NgxDocViewerModule,
-    NgxExtendedPdfViewerModule,
-    PdfViewerModule,
-  ]
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        RouterOutlet,
+        RouterLink,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatMenuModule,
+        MatTableModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        SearchModule,
+        FlexModule,
+        NgxMaskDirective,
+        BrowserModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatTabsModule,
+        HttpClientModule,
+        NgxDocViewerModule,
+        NgxExtendedPdfViewerModule,
+        PdfViewerModule,
+        ArquivoViwerModule,
+    ]
 })
 export class MatriculaModule { }

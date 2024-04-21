@@ -16,12 +16,14 @@ import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
+import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
 @Component({
   selector: 'app-form-matricula',
   templateUrl: './form-matricula.component.html',
   styleUrls: ['./form-matricula.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class FormMatriculaComponent implements OnInit{
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
@@ -37,6 +39,7 @@ export class FormMatriculaComponent implements OnInit{
   minDate = new Date(1900, 0, 1);
   maxDate = new Date(2008,0,0);
   flexDivAlinhar: string = 'row';
+  flexDivAlinharElementosGrandes: string = 'row';
   admin!: boolean
   innerWidth: number = window.innerWidth;
   hide = true;
@@ -47,7 +50,7 @@ export class FormMatriculaComponent implements OnInit{
   botaoNecessidadeClicado: boolean = false;
   enviado: boolean = false;
   docs :DocumentoMatriculaDto[] = []
-  enumDoc: String = ''
+  temConjugue: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,7 +71,6 @@ export class FormMatriculaComponent implements OnInit{
     this.adicionarCampoTutor();
     this._adapter.setLocale('pt-br');
     this.prepararEdicao();
-
   }
 
   private createForm() {
@@ -229,10 +231,23 @@ export class FormMatriculaComponent implements OnInit{
     {
       return this.flexDivAlinhar = "column";
     }
+    if(innerWidth < 1400){
+      this.flexDivAlinharElementosGrandes = "column";
+    }
+    this.flexDivAlinharElementosGrandes = "row";
     return this.flexDivAlinhar = "row";
 
   }
 
+  mudarAlinharElementosGrandes() {
+
+    if(innerWidth < 1400)
+    {
+      return this.flexDivAlinharElementosGrandes = "column";
+    }
+    return this.flexDivAlinharElementosGrandes = "row";
+
+  }
   verificarAlinhar(){
     if(this.flexDivAlinhar == "column"){
       return true;
@@ -346,7 +361,7 @@ export class FormMatriculaComponent implements OnInit{
     return formArray.at(index) as FormGroup;
   }
 
-  onCheckboxChange(index: number) {
+  adicionarConjugue(index: number) {
     const formGroupTutor: FormGroup = this.getTutorForm(index);
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
     const tutorFormArrayLength = tutorFormArray.length;
@@ -354,12 +369,13 @@ export class FormMatriculaComponent implements OnInit{
     if (formGroupTutor.get('relacionamento')?.value || formGroupTutor.get('moraComConjuge')?.value){
       if(tutorFormArrayLength == 1){
         this.adicionarCampoTutor();
-
+        this.temConjugue = true;
       }
+
     }
     else {
-
         this.removerCampoTutor(1);
+        this.temConjugue = false;
       }
   }
 
@@ -392,80 +408,16 @@ export class FormMatriculaComponent implements OnInit{
 
   // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
   // esse idMatricula é so pra testes ele vai ser vazio
-  onFilechange(event: any, enumDoc: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2' | 'CERTIDAO_ESTADO_CIVIL2') {
-    const file = event.target.files[0];
-    const fileName = file.name;
-    console.log(file);
-    let blob: Blob;
-    blob = file;
 
-    if (file) {
-
-      switch (enumDoc) {
-        case 'CERTIDAO_NASCIMENTO':
-          this.selectedFileCertidao = this.makeURLFile(file);
-          if (this.verificarTipoArquivo(file)) {
-            this.isFileImageCertidao = true;
-            this.isFileDocumentCertidao = false;
-          } else {
-            this.isFileImageCertidao = false;
-            this.isFileDocumentCertidao = true;
-          }
-          if (fileName.length > 20) {
-            this.docCertidaoNascNome = this.diminuirTamanhoNomeArquivo(fileName);
-          }
-          break;
-        // case 'CERTIDAO_NASCIMENTO_VERSO':
-        //   this.selectedFileCertidaoVerso = this.makeURLFile(file);
-        //   if (this.verificarTipoArquivo(file)) {
-        //     this.isFileImageCertidaoVerso = true;
-        //     this.isFileDocumentCertidaoVerso = false;
-        //   } else {
-        //     this.isFileImageCertidaoVerso = false;
-        //     this.isFileDocumentCertidaoVerso = true;
-        //   }
-        //   if (fileName.length > 20) {
-        //     this.docCertidaoNascNomeVerso = this.diminuirTamanhoNomeArquivo(fileName);
-        //   }
-        //   break;
-
-        default:
-          break;
-      }
+  receberDadosDoFilho(dados: { doc: DocumentoMatriculaDto }) {
+    if (dados.doc && this.docs) {
+      this.docs.push(dados.doc);
+      console.log("doc Filho: ", dados.doc);
+      console.log("docs Lista: ", this.docs);
     }
-
-    let doc: DocumentoMatriculaDto = {
-      aceito: false,
-      idMatricula: 1,
-      tipoDocumento: enumDoc,
-      caminhoDocumento: file.name,
-      arquivo: blob
-    };
-
-    if (doc && this.docs) {
-      this.docs.push(doc);
-      console.log("docs: ", this.docs);
-    }
-  }
-  private makeURLFile(file: any) {
-      const fileUrl = URL.createObjectURL(file); // Obter o URL do arquivo
-      return fileUrl as string;
-  }
-
-  private verificarTipoArquivo(file: any) {
-    if (file.type.includes("image")) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  private diminuirTamanhoNomeArquivo(fileName : string) {
-    return fileName.substring(0, 20 - 3) + '...';
   }
 
   pegaDoc(){
-
     this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:"FC1.pdf"})
       .subscribe(response =>{
         let blob:Blob = response
@@ -475,9 +427,8 @@ export class FormMatriculaComponent implements OnInit{
         downloadLink.click()
       })
 
-  }
+  };
 
-
-
-
+  protected readonly EnumDoc = EnumDoc;
 }
+

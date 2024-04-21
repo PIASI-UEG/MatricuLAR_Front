@@ -1,5 +1,4 @@
-
-<div class="formPadrao"  >
+<div class="formPadrao">
 
   <form [formGroup]="formGroup"
         (ngSubmit)="onSubmit()"
@@ -9,161 +8,183 @@
         fxFlex="1 1 auto"
   >
     <h2>{{this.nomeTitulo}}</h2>
-    <div class="mat-tab-titulos" >
-    <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" >
-      <!-- Etapa 1 -->
-      <mat-tab class="mat-tab-color"  label="Criança" [disabled]="guiaAtiva !== 0" >
+    <div class="mat-tab-titulos">
+      <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
+        <!-- Etapa 1 -->
+        <mat-tab class="mat-tab-color" label="Criança" [disabled]="guiaAtiva !== 0">
           <div class="conteudo-mat-tab">
-        <mat-form-field>
-          <mat-label>Nome da criança</mat-label>
-          <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
-          <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
+            <mat-form-field>
+              <mat-label>Nome da criança</mat-label>
+              <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
+              <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
+            </mat-form-field>
 
-            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-                <mat-form-field>
-                  <mat-label>CPF da criança</mat-label>
-                  <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
-                  <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
-                  <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>Data de Nascimento</mat-label>
-                  <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data" [matDatepicker]="dp3" >
-                  <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-                  <mat-datepicker #dp3></mat-datepicker>
-                  <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
-                </mat-form-field>
-            </div>
-
-        <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
-          Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
-        </mat-checkbox>
-
-        <ng-container *ngIf="this.firstClickNecessidades()">
-          <div formArrayName="necessidadesEspeciais">
-            <div fxLayout="row"  fxLayoutAlign="center" *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
               <mat-form-field>
-                <mat-label>Necessidade especial</mat-label>
-                <input matInput formControlName="necessidadeEspecial" placeholder="EX: alergia, medicamentos, alimentação">
-                <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Desmarque ou preencha para continuar</mat-error>
+                <mat-label>CPF da criança</mat-label>
+                <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
+                <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
+                <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
               </mat-form-field>
 
-              <button mat-icon-button  (click)="removerCampoNecessidade(i)" >
-                <mat-icon>delete</mat-icon>
+              <mat-form-field>
+                <mat-label>Data de Nascimento</mat-label>
+                <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
+                       [matDatepicker]="dp3">
+                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                <mat-datepicker #dp3></mat-datepicker>
+                <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
+              Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
+            </mat-checkbox>
+
+            <ng-container *ngIf="this.firstClickNecessidades()">
+              <div formArrayName="necessidadesEspeciais">
+                <div fxLayout="row" fxLayoutAlign="center"
+                     *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+                  <mat-form-field>
+                    <mat-label>Necessidade especial</mat-label>
+                    <input matInput formControlName="necessidadeEspecial"
+                           placeholder="EX: alergia, medicamentos, alimentação">
+                    <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Desmarque ou preencha para
+                      continuar
+                    </mat-error>
+                  </mat-form-field>
+
+                  <button mat-icon-button (click)="removerCampoNecessidade(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade()">
+                <mat-icon>add</mat-icon>
+                Adicionar necessidade
+              </button>
+            </ng-container>
+
+            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+              <mat-form-field>
+                <mat-label>CEP</mat-label>
+                <input matInput formControlName="cep" mask="00.000-000" placeholder="00.000-000">
+                <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
+                <mat-error *ngIf="handleError('cep', 'cepInvalido')">CEP Inválido</mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Cidade</mat-label>
+                <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
+                <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field>
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="bairro" placeholder="Digite o nome do bairro">
+              <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Logradouro</mat-label>
+              <input matInput formControlName="logradouro" placeholder="Digite o nome da rua">
+              <mat-error *ngIf="handleError('logradouro', 'required')">Campo Obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Complemento</mat-label>
+              <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento....">
+              <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
+            </mat-form-field>
+            <!-- Campos da primeira etapa -->
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="!this.verificarAlinhar()">
+              <button type="button" class="button-hidden"></button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
+              </button>
+            </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
               </button>
             </div>
           </div>
-          <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade()"><mat-icon>add</mat-icon> Adicionar necessidade</button>
-        </ng-container>
 
-            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-                <mat-form-field>
-                  <mat-label>CEP</mat-label>
-                  <input matInput formControlName="cep" mask="00.000-000"  placeholder="00.000-000">
-                  <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
-                  <mat-error *ngIf="handleError('cep', 'cepInvalido')">CEP Inválido</mat-error>
-                </mat-form-field>
+        </mat-tab>
 
-                <mat-form-field>
-                  <mat-label>Cidade</mat-label>
-                  <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
-                  <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
-                </mat-form-field>
-            </div>
-
-        <mat-form-field>
-          <mat-label>Bairro</mat-label>
-          <input matInput formControlName="bairro" placeholder="Digite o nome do bairro">
-          <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Logradouro</mat-label>
-          <input matInput formControlName="logradouro" placeholder="Digite o nome da rua">
-          <mat-error *ngIf="handleError('logradouro', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Complemento</mat-label>
-          <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento....">
-          <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
-        <!-- Campos da primeira etapa -->
-
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-              <button  type="button" class="button-hidden" ></button>
-              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(1)" >Próxima <br> Etapa</button>
-            </div>
-
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(1)" >Próxima <br> Etapa</button>
-              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-            </div>
-          </div>
-
-      </mat-tab>
-
-      <!-- Etapa 2 -->
+        <!-- Etapa 2 -->
         <mat-tab label="Tutor(a)" [disabled]="guiaAtiva !== 1">
           <div class="conteudo-mat-tab">
-              <div formArrayName="tutor" >
-                <div *ngFor="let tutor of getTutoresControls(); let i = index;"  [formGroupName]="i">
-                  <ng-container *ngIf="i !== 0">
-                    <div fxLayout="center" class="linha-horizontal" ></div>
-                    <h2 > Dados do Cônjuge </h2>
-                  </ng-container>
+            <div formArrayName="tutor">
+              <div *ngFor="let tutor of getTutoresControls(); let i = index;" [formGroupName]="i">
+                <ng-container *ngIf="i !== 0">
+                  <div fxLayout="center" class="linha-horizontal"></div>
+                  <h2> Dados do Cônjuge </h2>
+                </ng-container>
+                <mat-form-field>
+                  <mat-label>Nome</mat-label>
+                  <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
+                  <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
+                </mat-form-field>
+
+                <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                   <mat-form-field>
-                    <mat-label>Nome</mat-label>
-                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
-                    <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
+                    <mat-label>CPF</mat-label>
+                    <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
+                    <mat-error *ngIf="handleErrorTutor('cpfTutor', 'required', i)">Campo Obrigatório</mat-error>
+                    <mat-error *ngIf="handleErrorTutor('cpfTutor', 'cpfInvalido', i)">CPF Inválido</mat-error>
                   </mat-form-field>
 
-                  <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-                    <mat-form-field>
-                      <mat-label>CPF</mat-label>
-                      <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
-                      <mat-error *ngIf="handleErrorTutor('cpfTutor', 'required', i)">Campo Obrigatório</mat-error>
-                      <mat-error *ngIf="handleErrorTutor('cpfTutor', 'cpfInvalido', i)">CPF Inválido</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <mat-label>Data de Nascimento</mat-label>
-                        <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data" [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
-                        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-                        <mat-datepicker #dp3></mat-datepicker>
-                        <mat-error *ngIf="handleErrorTutor('dataNascimentoTutor', 'required', i)">Campo Obrigatório</mat-error>
-                      </mat-form-field>
-                    </div>
+                  <mat-form-field>
+                    <mat-label>Data de Nascimento</mat-label>
+                    <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data"
+                           [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                    <mat-datepicker #dp3></mat-datepicker>
+                    <mat-error *ngIf="handleErrorTutor('dataNascimentoTutor', 'required', i)">Campo Obrigatório
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
                 <mat-form-field>
                   <mat-label>Vínculo</mat-label>
                   <mat-select formControlName="vinculo" placeholder="Selecione o vínculo com a criança">
-                    <mat-option *ngFor="let parentesco of parentescos" [value]="parentesco">{{ parentesco }}</mat-option>
+                    <mat-option *ngFor="let parentesco of parentescos"
+                                [value]="parentesco">{{ parentesco }}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="handleErrorTutor('vinculo', 'required', i)">Campo Obrigatório</mat-error>
                 </mat-form-field>
 
-                    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-                        <mat-form-field>
-                          <mat-label>Telefone Celular</mat-label>
-                          <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular" placeholder="(00) 0 0000-0000">
-                          <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'required', i)">Campo Obrigatório</mat-error>
-                          <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
-                        </mat-form-field>
+                <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                  <mat-form-field>
+                    <mat-label>Telefone Celular</mat-label>
+                    <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular"
+                           placeholder="(00) 0 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'required', i)">Campo Obrigatório</mat-error>
+                    <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'telefoneInvalido', i)">Telefone Inválido
+                    </mat-error>
+                  </mat-form-field>
 
-                        <mat-form-field>
-                          <mat-label>Telefone Fixo</mat-label>
-                          <input matInput mask="(00) 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0000-0000">
-                          <mat-error *ngIf="handleErrorTutor('telefoneFixo', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
-                        </mat-form-field>
-                    </div>
+                  <mat-form-field>
+                    <mat-label>Telefone Fixo</mat-label>
+                    <input matInput mask="(00) 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('telefoneFixo', 'telefoneInvalido', i)">Telefone Inválido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
-                    <div fxLayout="center" class="linha-horizontal"></div>
-                    <h2> Dados da empresa </h2>
-                    <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na creche.</p>
+                <div fxLayout="center" class="linha-horizontal"></div>
+                <h2> Dados da empresa </h2>
+                <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na creche.</p>
 
                 <mat-form-field>
                   <mat-label>Nome da empresa</mat-label>
@@ -172,181 +193,399 @@
                 </mat-form-field>
 
 
-                        <mat-form-field>
-                          <mat-label>CNPJ da empresa</mat-label>
-                          <input matInput formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
-                          <mat-error *ngIf="handleErrorTutor('cnpj', 'required', i)">Campo Obrigatório</mat-error>
-                          <mat-error *ngIf="handleErrorTutor('cnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
-                        </mat-form-field>
-
-                    <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-                        <mat-form-field>
-                          <mat-label>Telefone celular da empresa</mat-label>
-                          <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelularEmpresarial" placeholder="(00) 0 0000-0000">
-                          <mat-error *ngIf="handleErrorTutor('telefoneCelularEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
-                        </mat-form-field>
-
-                      <mat-form-field>
-                        <mat-label>Telefone fixo da empresa</mat-label>
-                        <input matInput mask="(00) 0000-0000" formControlName="telefoneFixoEmpresarial" placeholder="(00) 0000-0000">
-                        <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone Inválido</mat-error>
-                      </mat-form-field>
-                    </div>
-                  <mat-error class="alinhar-erro" *ngIf="handleErrorFormTutor('informeUmTelefoneEmpresarial', i) && this.enviado">
-                    Informe pelo menos um telefone empresarial.
-                  </mat-error>
-
-                  <div fxLayout="column" fxLayoutAlign="center start"  *ngIf="i !== 1">
-                    <mat-checkbox color="primary" formControlName="relacionamento" (change)="onCheckboxChange(i)">
-                      É casado(a), amasiado(a) ou união estável ?
-                    </mat-checkbox>
-
-                    <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="onCheckboxChange(i)">
-                      Mora com seu Cônjuge?
-                    </mat-checkbox>
-                  </div>
-
-            </div>
-          </div>
-
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
-            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-            <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
-          </div>
-
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button  type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
-              <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
-              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-            </div>
-
-
-
-    </div>
-      </mat-tab>
-
-      <!-- Etapa 3 -->
-
-      <mat-tab label="Perguntas" [disabled]="guiaAtiva !== 2">
-        <div class="conteudo-mat-tab">
-          <div fxLayout="column" fxLayoutAlign="center start">
-            <p>A criança já frequentou outra creche ?</p>
-            <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
-              <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-              <mat-radio-button [value]="'nao'">Não</mat-radio-button>
-            </mat-radio-group>
-
-            <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
-              <mat-label>Por qual razão saiu? </mat-label>
-              <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
-              <mat-error *ngIf="handleErrorForm('informeRazaoSaida')">Informe a razão da saída </mat-error>
-            </mat-form-field>
-          </div>
-
-          <p>A residência da criança é :</p>
-          <mat-form-field>
-            <mat-label>Selecione o tipo da residência </mat-label>
-            <mat-select formControlName="tipoResidencia" placeholder="Selecione o tipo da residência">
-              <mat-option value="alugado">Alugado</mat-option>
-              <mat-option value="proprio">Próprio</mat-option>
-            </mat-select>
-            <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
-          </mat-form-field>
-
-          <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
-            <mat-label>Valor do aluguel</mat-label>
-            <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
-            <mat-error *ngIf="handleErrorForm('informeValorAluguel')">Informe o valor do Aluguel</mat-error>
-          </mat-form-field>
-
-          <div fxLayout="column" fxLayoutAlign="center start">
-            <p>A criança é beneficiada com algum tipo de ajuda do governo?</p>
-                <mat-radio-group color="primary" formControlName="possuiBeneficiosDoGoverno">
-                  <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-                  <mat-radio-button [value]="'nao'">Não</mat-radio-button>
-                </mat-radio-group>
-
-                <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
-                  <mat-label>Valor do benefício </mat-label>
-                  <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator="," placeholder="0,00">
-                  <mat-error *ngIf="handleErrorForm('informeValorBeneficio')">Informe o valor do Benefício</mat-error>
+                <mat-form-field>
+                  <mat-label>CNPJ da empresa</mat-label>
+                  <input matInput formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
+                  <mat-error *ngIf="handleErrorTutor('cnpj', 'required', i)">Campo Obrigatório</mat-error>
+                  <mat-error *ngIf="handleErrorTutor('cnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
                 </mat-form-field>
+
+                <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                  <mat-form-field>
+                    <mat-label>Telefone celular da empresa</mat-label>
+                    <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelularEmpresarial"
+                           placeholder="(00) 0 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('telefoneCelularEmpresarial', 'telefoneInvalido', i)">Telefone
+                      Inválido
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Telefone fixo da empresa</mat-label>
+                    <input matInput mask="(00) 0000-0000" formControlName="telefoneFixoEmpresarial"
+                           placeholder="(00) 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone
+                      Inválido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <mat-error class="alinhar-erro"
+                           *ngIf="handleErrorFormTutor('informeUmTelefoneEmpresarial', i) && this.enviado">
+                  Informe pelo menos um telefone empresarial.
+                </mat-error>
+
+                <div fxLayout="column" fxLayoutAlign="center start" *ngIf="i !== 1">
+                  <mat-checkbox color="primary" formControlName="relacionamento" (change)="adicionarConjugue(i)">
+                    É casado(a), amasiado(a) ou união estável ?
+                  </mat-checkbox>
+
+                  <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="adicionarConjugue(i)">
+                    Mora com seu Cônjuge?
+                  </mat-checkbox>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="!this.verificarAlinhar()">
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
+                Anterior
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+            </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
+                Anterior
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+            </div>
+
+
           </div>
+        </mat-tab>
 
-          <p>Qual a renda familiar?</p>
-          <mat-form-field>
-            <mat-label>Renda familiar</mat-label>
-            <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator="," placeholder="0,00">
-            <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
-          </mat-form-field>
+        <!-- Etapa 3 -->
 
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
-            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-            <button mat-raised-button  type="button" class="button"(click)="goToNextStep(3)">Próxima Etapa</button>
+        <mat-tab label="Perguntas" [disabled]="guiaAtiva !== 2">
+          <div class="conteudo-mat-tab">
+            <div fxLayout="column" fxLayoutAlign="center start">
+              <p>A criança já frequentou outra creche ?</p>
+              <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
+                <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
+                <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+              </mat-radio-group>
+
+              <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
+                <mat-label>Por qual razão saiu?</mat-label>
+                <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
+                <mat-error *ngIf="handleErrorForm('informeRazaoSaida')">Informe a razão da saída</mat-error>
+              </mat-form-field>
+            </div>
+
+            <p>A residência da criança é :</p>
+            <mat-form-field>
+              <mat-label>Selecione o tipo da residência</mat-label>
+              <mat-select formControlName="tipoResidencia" placeholder="Selecione o tipo da residência">
+                <mat-option value="alugado">Alugado</mat-option>
+                <mat-option value="proprio">Próprio</mat-option>
+              </mat-select>
+              <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
+              <mat-label>Valor do aluguel</mat-label>
+              <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
+              <mat-error *ngIf="handleErrorForm('informeValorAluguel')">Informe o valor do Aluguel</mat-error>
+            </mat-form-field>
+
+            <div fxLayout="column" fxLayoutAlign="center start">
+              <p>A criança é beneficiada com algum tipo de ajuda do governo?</p>
+              <mat-radio-group color="primary" formControlName="possuiBeneficiosDoGoverno">
+                <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
+                <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+              </mat-radio-group>
+
+              <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
+                <mat-label>Valor do benefício</mat-label>
+                <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator=","
+                       placeholder="0,00">
+                <mat-error *ngIf="handleErrorForm('informeValorBeneficio')">Informe o valor do Benefício</mat-error>
+              </mat-form-field>
+            </div>
+
+            <p>Qual a renda familiar?</p>
+            <mat-form-field>
+              <mat-label>Renda familiar</mat-label>
+              <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator=","
+                     placeholder="0,00">
+              <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
+            </mat-form-field>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="!this.verificarAlinhar()">
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
+                Anterior
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+            </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
+                Anterior
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+            </div>
+
           </div>
+        </mat-tab>
 
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-            <button mat-raised-button  type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
-            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
-            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+        <!-- Etapa 4 -->
+        <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
+          <div class="conteudo-mat-tab">
+            <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
+              serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
+              e
+              de qualidade para facilitar o procedimento.</p>
+
+            <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+            <div fxLayout="column" fxLayoutAlign="space-evenly center">
+              <mat-label class="titulo-doc"><strong>Certidão de nascimento da criança </strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'certidaoID'"
+                                  [idBotaoInputImagemPreview]="'certidaoIDPreview'"
+                                  [enumDocPai]="EnumDoc.CERTIDAO_NASCIMENTO"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+              <mat-checkbox color="primary" formControlName="possuiversoCertidao">
+                O documento possui verso ?
+              </mat-checkbox>
+
+              <mat-label class="titulo-doc"><strong>Foto da criança: </strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'fotoCriancaID'"
+                                  [idBotaoInputImagemPreview]="'fotoCriancaIDPreview'"
+                                  [enumDocPai]="EnumDoc.FOTO_CRIANCA"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>CPF da criança:</strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'cpfCriancaID'"
+                                  [idBotaoInputImagemPreview]="'cpfCriancaIDPreview'"
+                                  [enumDocPai]="EnumDoc.CPF_CRIANCA"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
+                não informar nenhum documento:</strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'docVeiculoID'"
+                                  [idBotaoInputImagemPreview]="'docVeiculoIDPreview'"
+                                  [enumDocPai]="EnumDoc.DOCUMENTO_VEICULO"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Documento que evidencia a moradia da criança (conta de água,
+                energia, etc):</strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'docMoradiaID'"
+                                  [idBotaoInputImagemPreview]="'docMoradiaIDPreview'"
+                                  [enumDocPai]="EnumDoc.COMPROVANTE_ENDERECO"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Comprovante de acordo com a resposta informada na tela anterior
+                (alugada, própria, cedida, outra), caso seja
+                alugada o comprovante do aluguel, caso seja própria e esteja pagando, o comprovante de prestação do
+                imóvel, caso seja própria e quitada, a escritura, caso seja cedida, a declaração de imóvel cedido e caso
+                seja
+                outra informar o comprovante correspondente.</strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'docEstadoMoradiaID'"
+                                  [idBotaoInputImagemPreview]="'docEstadoMoradiaIDPreview'"
+                                  [enumDocPai]="EnumDoc.COMPROVANTE_MORADIA"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Comprovante de que recebe o auxílo do governo (Caso não receba, não
+                informar nada):</strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'docAuxilioID'"
+                                  [idBotaoInputImagemPreview]="'docAuxilioIDPreview'"
+                                  [enumDocPai]="EnumDoc.COMPROVANTE_BOLSA_FAMILIA"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>CPF de todos os responsáveis legais cadastrados
+                anteriormente:</strong><br></mat-label>
+              <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Tutor</strong> <br></mat-label>
+                  <app-upload-arquivo [idBotaoInputImagem]="'docCPFTutorID'"
+                                      [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
+                                      [enumDocPai]="EnumDoc.CPF_TUTOR1"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                </div>
+                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
+                  <app-upload-arquivo [idBotaoInputImagem]="'docCPFConjugueID'"
+                                      [idBotaoInputImagemPreview]="'docCPFConjugueIDPreview'"
+                                      [enumDocPai]="EnumDoc.CPF_TUTOR2"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                </div>
+              </div>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Carteira de trabalho ou declaração de trabalho de todos os
+                responsáveis legais cadastrados anteriormente:</strong><br></mat-label>
+              <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Tutor</strong>
+                    <br></mat-label>
+                  <app-upload-arquivo [idBotaoInputImagem]="'docCarteiraTutorID'"
+                                      [idBotaoInputImagemPreview]="'docCarteiraTutorIDPreview'"
+                                      [enumDocPai]="EnumDoc.COMPROVANTE_TRABALHO_T1"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                </div>
+
+                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Cônjuge</strong>
+                    <br></mat-label>
+                  <app-upload-arquivo [idBotaoInputImagem]="'docCarteiraConjugueID'"
+                                      [idBotaoInputImagemPreview]="'docCarteiraTConjugueIDPreview'"
+                                      [enumDocPai]="EnumDoc.COMPROVANTE_TRABALHO_T2"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                </div>
+              </div>
+
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Três últimos contracheques de todos os responsáveis legais
+                cadastrados anteriormente:</strong> <br></mat-label>
+              <div fxLayout="column" fxLayoutAlign="space-evenly center">
+                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Tutor</strong><br></mat-label>
+                  <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
+                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque1TID'"
+                                        [idBotaoInputImagemPreview]="'docContraChueque1TIDPreview'"
+                                        [enumDocPai]="EnumDoc.CONTRA_CHEQUE1T1"
+                                        (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque2TID'"
+                                        [idBotaoInputImagemPreview]="'docContraChueque2TIDPreview'"
+                                        [enumDocPai]="EnumDoc.CONTRA_CHEQUE2T1"
+                                        (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque3TID'"
+                                        [idBotaoInputImagemPreview]="'docContraChueque3TIDPreview'"
+                                        [enumDocPai]="EnumDoc.CONTRA_CHEQUE3T1"
+                                        (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  </div>
+                </div>
+                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Cônjuge</strong><br></mat-label>
+                  <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
+                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque1CID'"
+                                        [idBotaoInputImagemPreview]="'docContraChueque1CIDPreview'"
+                                        [enumDocPai]="EnumDoc.CONTRA_CHEQUE1T2"
+                                        (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque2CID'"
+                                        [idBotaoInputImagemPreview]="'docContraChueque2CIDPreview'"
+                                        [enumDocPai]="EnumDoc.CONTRA_CHEQUE2T2"
+                                        (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque3CID'"
+                                        [idBotaoInputImagemPreview]="'docContraChueque3CIDPreview'"
+                                        [enumDocPai]="EnumDoc.CONTRA_CHEQUE3T2"
+                                        (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Certidão de casamento, de união estável ou a de divórcio (Para
+                responsaveis legais que não
+                possuem estado civel em conjunto informar uma declaração de que é solteiro)</strong> <br>
+              </mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'docEstadoCivilID'"
+                                  [idBotaoInputImagemPreview]="'docEstadoCivilIDPreview'"
+                                  [enumDocPai]="EnumDoc.CERTIDAO_ESTADO_CIVIL"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o
+                documento não informar)</strong> <br></mat-label>
+              <app-upload-arquivo [idBotaoInputImagem]="'docCRASID'"
+                                  [idBotaoInputImagemPreview]="'docCRASIDPreview'"
+                                  [enumDocPai]="EnumDoc.ENCAMINHAMENTO_CRAS"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Declaração Escolar de todos os responsáveis legais
+                cadastrados anteriormente:</strong> <br></mat-label>
+              <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Tutor</strong> <br></mat-label>
+                  <app-upload-arquivo [idBotaoInputImagem]="'docEscolarTutorID'"
+                                      [idBotaoInputImagemPreview]="'docEscolarTutorIDPreview'"
+                                      [enumDocPai]="EnumDoc.DECLARACAO_ESCOLART1"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                </div>
+                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
+                  <app-upload-arquivo [idBotaoInputImagem]="'docEscolarConjugueID'"
+                                      [idBotaoInputImagemPreview]="'docEscolarConjugueIDPreview'"
+                                      [enumDocPai]="EnumDoc.DECLARACAO_ESCOLART2"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                </div>
+              </div>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+              <!--              // colocar aqui uma validacao se possui conjugue e aparecer outro campo&ndash;&gt;-->
+
+              <mat-label class="titulo-doc"><strong>Ratifico serem verdadeiras as informações prestadas, e afirmo
+                estar
+                ciente de que, qualquer omissão de
+                informação ou apresentação de declaração, dados ou documentos falsos e/ou divergentes a fim de
+                prejudicar
+                ou alterar a verdade sobre os fatos por mim alegados constitui crime de falsidade ideológica,
+                previsto
+                no art.
+                299 do Código Penal Brasileiro (Decreto-lei 2848/40) e desde já autorizo a verificação e/ou
+                confirmação
+                dos
+                dados apresentados.</strong> <br></mat-label>
+            </div>
+
+            <mat-checkbox color="primary" formControlName="possuiversoCertidao">
+              Decalro que li e concordo
+            </mat-checkbox>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
+                Etapa
+                Anterior
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+              <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula
+              </button>
+            </div>
           </div>
-
-        </div>
-      </mat-tab>
-
-      <!-- Etapa 4 -->
-      <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
-        <div class="conteudo-mat-tab">
-          <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
-            serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas e
-            de qualidade para facilitar o procedimento.</p>
-
-          <div fxLayout="column" fxLayoutAlign="space-evenly center">
-            <mat-label class="titulo-doc"> <strong>Certidão de nascimento da criança </strong> <br></mat-label>
-            <mat-label class="ampliar-doc" *ngIf="this.isFileDocumentCertidao || this.isFileImageCertidao">Clique na imagem do arquivo para ampliar <br></mat-label>
-            <input type="file" style="display: none" id="inputCertidao" (change)="onFilechange($event,'CERTIDAO_NASCIMENTO')" #fileUpload>
-            <label for="inputCertidao" class="file-button" *ngIf="!this.isFileImageCertidao && !this.isFileDocumentCertidao"></label>
-
-            <input type="button" style="display: none" id="inputPreviewCertidao" routerLink="/imprimir-termo">
-            <label for="inputPreviewCertidao" class="file-button-dialog-pdf"  *ngIf="this.isFileDocumentCertidao || this.isFileImageCertidao">
-              <img *ngIf="this.isFileImageCertidao" [src]="this.selectedFileCertidao" class="viewer" >
-              <pdf-viewer
-              *ngIf="this.isFileDocumentCertidao"
-              [src]="selectedFileCertidao"
-              [original-size]="false"
-              [render-text]="false"
-              [rotation]="0"
-              [show-all]="true"
-              [fit-to-page]="false"
-              [zoom]="1"
-              [zoom-scale]="'page-width'"
-              [stick-to-page]="false"
-              [external-link-target]="'blank'"
-              [autoresize]="true"
-              [show-borders]="true"
-              class="viewer"
-            ></pdf-viewer>
-            </label>
-
-            <mat-label class="file-name"> {{docCertidaoNascNome}} </mat-label>
-
-            <label for="inputCertidao" class="file-button-document " *ngIf="this.isFileImageCertidao || this.isFileDocumentCertidao">Trocar arquivo</label>
-
-          </div>
-          <mat-checkbox color="primary" formControlName="possuiversoCertidao">
-            O documento possui verso ?
-          </mat-checkbox>
-
-          <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
-            <button mat-raised-button  type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
-            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-            <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+        </mat-tab>
+      </mat-tab-group>
     </div>
 
   </form>

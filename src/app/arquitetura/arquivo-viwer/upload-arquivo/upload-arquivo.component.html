@@ -1,0 +1,30 @@
+<div fxLayout="column" fxLayoutAlign="space-evenly center">
+<mat-label class="ampliar-doc" *ngIf="this.isFileDocument || this.isFileImage">Clique na imagem do arquivo para ampliar <br></mat-label>
+<input type="file" style="display: none" id="{{idBotaoInputImagem}}" (change)="onFilechange($event)" #fileUpload>
+<label for="{{idBotaoInputImagem}}" class="file-button" *ngIf="!this.isFileImage && !this.isFileDocument"></label>
+
+<input type="button" style="display: none" id="{{idBotaoInputImagemPreview}}" routerLink="/imprimir-termo">
+<label for="{{idBotaoInputImagemPreview}}" class="file-button-dialog-pdf"  *ngIf="this.isFileDocument || this.isFileImage">
+  <img *ngIf="this.isFileImage" [src]="this.selectedFile" class="viewer" >
+  <pdf-viewer
+    *ngIf="this.isFileDocument"
+    [src]="this.selectedFile"
+    [original-size]="false"
+    [render-text]="false"
+    [rotation]="0"
+    [show-all]="true"
+    [fit-to-page]="false"
+    [zoom]="1"
+    [zoom-scale]="'page-width'"
+    [stick-to-page]="false"
+    [external-link-target]="'blank'"
+    [autoresize]="true"
+    [show-borders]="true"
+    class="viewer"
+  ></pdf-viewer>
+</label>
+
+<mat-label class="file-name"> {{arqNome}} </mat-label>
+
+<label for="{{idBotaoInputImagem}}" class="file-button-document " *ngIf="this.isFileImage || this.isFileDocument">Trocar arquivo</label>
+</div>
