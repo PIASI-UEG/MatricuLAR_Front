@@ -1,16 +1,49 @@
 
 
 .tela-inteira{
-    background-image: url("/assets/fotos_login/tela_login_imagem.png") ;
     position: absolute;
     height: 100%;
     width: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
     align-items: center;
     display: flex;
     justify-content: center
+}
+
+.imagem-lateral {
+  position: absolute;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.canto-superior-direito{
+  top: 0;
+  right: 0;
+}
+
+.canto-superior-esquerdo {
+  top: 0;
+  left: 0;
+}
+
+.lado-direito {
+  top: 60%;
+  right: 350px;
+  transform: translateY(-50%);
+}
+
+.lado-esquerdo {
+  top: 60%;
+  left: 350px;
+  transform: translateY(-50%);
+}
+
+.logo {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: auto;
 }
 
 h1{
