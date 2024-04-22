@@ -6,6 +6,7 @@ import SignaturePad, {PointGroup} from "signature_pad";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {AssinaturaDto} from "../../../api/models/assinatura-dto";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-assinatura-digital-dialog',
@@ -21,6 +22,7 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit{
   image!: string;
   assinatura!: AssinaturaDto;
   public constructor(
+    private sanitizer: DomSanitizer,
     private dialogRef: MatDialogRef<AssinaturaDigitalDialogComponent>,
     private dialog: MatDialog,
     private dialogConfirmation: MatDialog,
@@ -49,12 +51,12 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit{
   gerarImagemAssinatura(): void {
     if (this.sig && !this.sig.isEmpty()) {
       const image = this.sig.toDataURL();
-      const base64Image = this.convertToBase64(image);
-      this.assinatura.imagemAss = base64Image;
-      this.assinatura.cpfass = "12345678900";
+      console.log("imagem antes de converter: ",image);
+
+     const base64Img = image.split(',')[1];
       const listAss: AssinaturaDto[] = [];
       listAss.push(this.assinatura);
-      this.matriculaContrller.matriculaControllerGerarTermoBack({body:listAss})
+      this.matriculaContrller.matriculaControllerGerarTermoBack({body:[{imagemAss: base64Img, cpfass: "12345678900"}]}).subscribe()
     } else {
     }
   }
