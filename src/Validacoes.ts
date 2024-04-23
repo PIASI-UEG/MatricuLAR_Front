@@ -156,9 +156,9 @@ export class Validacoes{
   validarRazaoSaida(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('frequentouOutraCreche')?.value === "sim" && !formGroup.get('razaoSaida')?.value) {
       formGroup.get('razaoSaida')?.setErrors({ 'informeRazaoSaida': true });
-      return { 'informeRazaoSaida': true }; // Indicate that an error was set
+      return { 'informeRazaoSaida': true };
     } else {
-      return null; // No error set
+      return null;
     }
   }
 
@@ -166,9 +166,9 @@ export class Validacoes{
   validarAluguel(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('tipoResidencia')?.value === "alugado" && !formGroup.get('valorAluguel')?.value) {
       formGroup.get('valorAluguel')?.setErrors({ 'informeValorAluguel': true });
-      return { 'informeValorAluguel': true }; // Indicate that an error was set
+      return { 'informeValorAluguel': true };
     } else {
-      return null; // No error set
+      return null;
     }
   }
 
@@ -176,11 +176,29 @@ export class Validacoes{
   validarBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('possuiBeneficiosDoGoverno')?.value === "sim" && !formGroup.get('valorBeneficio')?.value) {
       formGroup.get('valorBeneficio')?.setErrors({ 'informeValorBeneficio': true });
-      return { 'informeValorBeneficio': true }; // Indicate that an error was set
+      return { 'informeValorBeneficio': true };
     } else {
-      return null; // No error set
+      return null;
     }
   }
 
+  // form de perguntas validacao se marcou frequentou outra creche
+  validarFrequentou(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('frequentouOutraCreche')?.value === null) {
+      formGroup.get('frequentouOutraCreche')?.setErrors({ 'informeValorFrequentou': true });
+      return { 'informeValorFrequentou': true };
+    } else {
+      return null;
+    }
+  }
 
+  // form de perguntas validacao se marcou beneficio governo
+  validarBeneficioMarcado(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('possuiBeneficiosDoGoverno')?.value === null) {
+      formGroup.get('possuiBeneficiosDoGoverno')?.setErrors({ 'informeValorBeneficioGoverno': true });
+      return { 'informeValorBeneficioGoverno': true };
+    } else {
+      return null;
+    }
+  }
 }

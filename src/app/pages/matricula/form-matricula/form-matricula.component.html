@@ -270,9 +270,11 @@
             <div fxLayout="column" fxLayoutAlign="center start">
               <p>A criança já frequentou outra creche ?</p>
               <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
+                <mat-error *ngIf="handleErrorForm('informeValorFrequentou') && this.enviado">Marque uma opção</mat-error>
                 <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
                 <mat-radio-button [value]="'nao'">Não</mat-radio-button>
               </mat-radio-group>
+
 
               <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
                 <mat-label>Por qual razão saiu?</mat-label>
@@ -300,6 +302,7 @@
             <div fxLayout="column" fxLayoutAlign="center start">
               <p>A criança é beneficiada com algum tipo de ajuda do governo?</p>
               <mat-radio-group color="primary" formControlName="possuiBeneficiosDoGoverno">
+                <mat-error *ngIf="handleErrorForm('informeValorBeneficioGoverno') && this.enviado">Marque uma opção</mat-error>
                 <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
                 <mat-radio-button [value]="'nao'">Não</mat-radio-button>
               </mat-radio-group>
@@ -357,7 +360,8 @@
 
             <div fxLayout="column" fxLayoutAlign="space-evenly center">
               <mat-label class="titulo-doc"><strong>Certidão de nascimento da criança </strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'certidaoID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'certidaoID'"
                                   [idBotaoInputImagemPreview]="'certidaoIDPreview'"
                                   [enumDocPai]="EnumDoc.CERTIDAO_NASCIMENTO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -365,8 +369,11 @@
                 O documento possui verso ?
               </mat-checkbox>
 
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
               <mat-label class="titulo-doc"><strong>Foto da criança: </strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'fotoCriancaID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'fotoCriancaID'"
                                   [idBotaoInputImagemPreview]="'fotoCriancaIDPreview'"
                                   [enumDocPai]="EnumDoc.FOTO_CRIANCA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -374,7 +381,8 @@
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>CPF da criança:</strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'cpfCriancaID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'cpfCriancaID'"
                                   [idBotaoInputImagemPreview]="'cpfCriancaIDPreview'"
                                   [enumDocPai]="EnumDoc.CPF_CRIANCA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -383,7 +391,8 @@
 
               <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
                 não informar nenhum documento:</strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'docVeiculoID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docVeiculoID'"
                                   [idBotaoInputImagemPreview]="'docVeiculoIDPreview'"
                                   [enumDocPai]="EnumDoc.DOCUMENTO_VEICULO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -392,7 +401,8 @@
 
               <mat-label class="titulo-doc"><strong>Documento que evidencia a moradia da criança (conta de água,
                 energia, etc):</strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'docMoradiaID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docMoradiaID'"
                                   [idBotaoInputImagemPreview]="'docMoradiaIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_ENDERECO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -405,7 +415,8 @@
                 imóvel, caso seja própria e quitada, a escritura, caso seja cedida, a declaração de imóvel cedido e caso
                 seja
                 outra informar o comprovante correspondente.</strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'docEstadoMoradiaID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docEstadoMoradiaID'"
                                   [idBotaoInputImagemPreview]="'docEstadoMoradiaIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_MORADIA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -414,7 +425,8 @@
 
               <mat-label class="titulo-doc"><strong>Comprovante de que recebe o auxílo do governo (Caso não receba, não
                 informar nada):</strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'docAuxilioID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docAuxilioID'"
                                   [idBotaoInputImagemPreview]="'docAuxilioIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_BOLSA_FAMILIA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -423,15 +435,15 @@
 
               <mat-label class="titulo-doc"><strong>CPF de todos os responsáveis legais cadastrados
                 anteriormente:</strong><br></mat-label>
-              <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
-                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+              <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
+                <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Tutor</strong> <br></mat-label>
                   <app-upload-arquivo [idBotaoInputImagem]="'docCPFTutorID'"
                                       [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
                                       [enumDocPai]="EnumDoc.CPF_TUTOR1"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
                 </div>
-                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
                   <app-upload-arquivo [idBotaoInputImagem]="'docCPFConjugueID'"
                                       [idBotaoInputImagemPreview]="'docCPFConjugueIDPreview'"
@@ -444,8 +456,8 @@
 
               <mat-label class="titulo-doc"><strong>Carteira de trabalho ou declaração de trabalho de todos os
                 responsáveis legais cadastrados anteriormente:</strong><br></mat-label>
-              <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
-                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+              <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
+                <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Tutor</strong>
                     <br></mat-label>
                   <app-upload-arquivo [idBotaoInputImagem]="'docCarteiraTutorID'"
@@ -454,7 +466,7 @@
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
                 </div>
 
-                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong>
                     <br></mat-label>
                   <app-upload-arquivo [idBotaoInputImagem]="'docCarteiraConjugueID'"
@@ -473,17 +485,20 @@
                 <div fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Tutor</strong><br></mat-label>
                   <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
-                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque1TID'"
+                    <app-upload-arquivo class="espaco-docs"
+                                        [idBotaoInputImagem]="'docContraChueque1TID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque1TIDPreview'"
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE1T1"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
-                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque2TID'"
+                    <app-upload-arquivo class="espaco-docs"
+                                        [idBotaoInputImagem]="'docContraChueque2TID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque2TIDPreview'"
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE2T1"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
-                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque3TID'"
+                    <app-upload-arquivo class="espaco-docs"
+                                        [idBotaoInputImagem]="'docContraChueque3TID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque3TIDPreview'"
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE3T1"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -492,17 +507,20 @@
                 <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong><br></mat-label>
                   <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
-                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque1CID'"
+                    <app-upload-arquivo class="espaco-docs"
+                                        [idBotaoInputImagem]="'docContraChueque1CID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque1CIDPreview'"
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE1T2"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
-                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque2CID'"
+                    <app-upload-arquivo class="espaco-docs"
+                                        [idBotaoInputImagem]="'docContraChueque2CID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque2CIDPreview'"
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE2T2"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
-                    <app-upload-arquivo [idBotaoInputImagem]="'docContraChueque3CID'"
+                    <app-upload-arquivo class="espaco-docs"
+                                        [idBotaoInputImagem]="'docContraChueque3CID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque3CIDPreview'"
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE3T2"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -516,7 +534,8 @@
                 responsaveis legais que não
                 possuem estado civel em conjunto informar uma declaração de que é solteiro)</strong> <br>
               </mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'docEstadoCivilID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docEstadoCivilID'"
                                   [idBotaoInputImagemPreview]="'docEstadoCivilIDPreview'"
                                   [enumDocPai]="EnumDoc.CERTIDAO_ESTADO_CIVIL"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -525,7 +544,8 @@
 
               <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o
                 documento não informar)</strong> <br></mat-label>
-              <app-upload-arquivo [idBotaoInputImagem]="'docCRASID'"
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docCRASID'"
                                   [idBotaoInputImagemPreview]="'docCRASIDPreview'"
                                   [enumDocPai]="EnumDoc.ENCAMINHAMENTO_CRAS"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
@@ -534,15 +554,15 @@
 
               <mat-label class="titulo-doc"><strong>Declaração Escolar de todos os responsáveis legais
                 cadastrados anteriormente:</strong> <br></mat-label>
-              <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
-                <div fxLayout="column" fxLayoutAlign="space-evenly center">
+              <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
+                <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Tutor</strong> <br></mat-label>
                   <app-upload-arquivo [idBotaoInputImagem]="'docEscolarTutorID'"
                                       [idBotaoInputImagemPreview]="'docEscolarTutorIDPreview'"
                                       [enumDocPai]="EnumDoc.DECLARACAO_ESCOLART1"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
                 </div>
-                <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
+                <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
                   <app-upload-arquivo [idBotaoInputImagem]="'docEscolarConjugueID'"
                                       [idBotaoInputImagemPreview]="'docEscolarConjugueIDPreview'"

@@ -11,6 +11,7 @@ export class UploadArquivoComponent {
   @Input() enumDocPai!: EnumDoc;
   @Input() idBotaoInputImagem !: string;
   @Input() idBotaoInputImagemPreview !: string;
+  @Input() validar: boolean = false;
   @Output() enviarDados = new EventEmitter<{ doc: DocumentoMatriculaDto }>();
 
   arqNome: string = 'Escolha um arquivo';
@@ -36,9 +37,7 @@ export class UploadArquivoComponent {
         this.isFileImage = false;
         this.isFileDocument = true;
       }
-      if (fileName.length > 20) {
         this.arqNome = this.diminuirTamanhoNomeArquivo(fileName);
-      }
     }
 
     let doc: DocumentoMatriculaDto = {

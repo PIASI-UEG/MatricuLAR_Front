@@ -76,7 +76,7 @@ p {
 
 .linha-horizontal-docs {
   width: 80%;
-  border: 1px solid #F5F7FA;
+  border: 2px solid #B2DFFF;
   margin-right: auto;
   margin-left: auto;
   margin-top: 3%;
@@ -103,6 +103,14 @@ p {
   margin: 5px;
   user-select: none;
   text-align: justify
+}
+
+.espaco-docs{
+  margin: 15px;
+}
+
+mat-radio-group{
+  margin-bottom: 0px;
 }
 
 

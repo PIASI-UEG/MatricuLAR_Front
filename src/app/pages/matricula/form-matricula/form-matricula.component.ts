@@ -17,6 +17,7 @@ import {MatriculaControllerService} from "../../../api/services/matricula-contro
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
 import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
+
 @Component({
   selector: 'app-form-matricula',
   templateUrl: './form-matricula.component.html',
@@ -24,7 +25,7 @@ import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
   encapsulation: ViewEncapsulation.None
 })
 
-export class FormMatriculaComponent implements OnInit{
+export class FormMatriculaComponent implements OnInit {
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
 
@@ -34,10 +35,14 @@ export class FormMatriculaComponent implements OnInit{
   public readonly ACAO_EDITAR = "Editar";
   acao: string = this.ACAO_INCLUIR;
   codigo!: number;
-  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'matricula'})
+  mensagens: MensagensUniversais = new MensagensUniversais({
+    dialog: this.dialog,
+    router: this.router,
+    telaAtual: 'matricula'
+  })
   validacoes: Validacoes = new Validacoes();
   minDate = new Date(1900, 0, 1);
-  maxDate = new Date(2008,0,0);
+  maxDate = new Date(2008, 0, 0);
   flexDivAlinhar: string = 'row';
   flexDivAlinharElementosGrandes: string = 'row';
   admin!: boolean
@@ -45,11 +50,11 @@ export class FormMatriculaComponent implements OnInit{
   hide = true;
   submitFormulario!: boolean;
   parentescos: string[] = ['Mãe', 'Pai', 'Tio', 'Padrasto', 'Madrasta']; // Lista de opções de parentesco
-  nomeTitulo : string = "Dados da Criança";
+  nomeTitulo: string = "Dados da Criança";
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
   enviado: boolean = false;
-  docs :DocumentoMatriculaDto[] = []
+  docs: DocumentoMatriculaDto[] = []
   temConjugue: boolean = false;
 
   constructor(
@@ -74,10 +79,9 @@ export class FormMatriculaComponent implements OnInit{
   }
 
   private createForm() {
-    if(this.acao == "Editar"){
+    if (this.acao == "Editar") {
 
-    }
-    else{
+    } else {
       //Dados da Criança
       this.formGroup = this.formBuilder.group({
         nomeCrianca: [null, Validators.required],
@@ -101,25 +105,16 @@ export class FormMatriculaComponent implements OnInit{
         valorBeneficio: [null],
         rendaFamiliar: [null, Validators.required],
         //Documentos - Etapa 4
-        fotoCrianca: [null, Validators.required],
-        certidaoNascimento: [null, Validators.required],
-        cpfCriancaImage: [null, Validators.required],
-        documentoVeiculo: [null],
-        comprovanteEndereco: [null, Validators.required],
-        comprovanteMoradia: [null, Validators.required],
-        comprovanteBolsaFamilia: [null, Validators.required],
-        comprovanteTrabalho: [null, Validators.required],
-        comprovanteContracheque: [null, Validators.required],
-        rgTutorImage: [null, Validators.required],
-        cpfTutorImage: [null, Validators.required],
-        comprovanteDeEstadoCivil: [null, Validators.required],
-        encaminhamentoCras: [null, Validators.required],
-        encaminhamentoConselhoTutelar: [null, Validators.required],
-        declaracaoEscolar: [null, Validators.required],
-        possuiversoCertidao: null,
-      }, { validator: [this.validacoes.validarRazaoSaida,
-                              this.validacoes.validarAluguel,
-                              this.validacoes.validarBeneficio] })
+        // implementar anexar documentos no form
+        documentoMatricula: this.docs,
+      }, {
+        validator: [this.validacoes.validarRazaoSaida,
+          this.validacoes.validarAluguel,
+          this.validacoes.validarBeneficio,
+          this.validacoes.validarFrequentou,
+          this.validacoes.validarBeneficioMarcado
+        ]
+      })
     }
   }
 
@@ -137,7 +132,7 @@ export class FormMatriculaComponent implements OnInit{
       telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
       relacionamento: false,
       moraComConjuge: false,
-    }, { validator: this.validacoes.validarTelefonesEmpresariais })
+    }, {validator: this.validacoes.validarTelefonesEmpresariais})
   }
 
 
@@ -150,12 +145,12 @@ export class FormMatriculaComponent implements OnInit{
   };
 
   public handleErrorTutor = (controlName: string, errorName: string, index: number) => {
-    const formGroupTutor =this.getTutorForm(index)
+    const formGroupTutor = this.getTutorForm(index)
     return formGroupTutor.controls[controlName].hasError(errorName);
   };
 
   public handleErrorFormTutor = (errorName: string, index: number) => {
-    const formGroupTutor =this.getTutorForm(index);
+    const formGroupTutor = this.getTutorForm(index);
     return formGroupTutor.hasError(errorName);
   };
 
@@ -168,13 +163,13 @@ export class FormMatriculaComponent implements OnInit{
     }
     //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
     console.log("Submit")
-    if (this.docs.length >= 0){
-      this.docs.forEach(doc =>{
-          if(doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
+    if (this.docs.length >= 0) {
+      this.docs.forEach(doc => {
+          if (doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
             console.log(doc.arquivo)
             this.matriculaService.matriculaControllerUploadDocumento(
-              {idMatricula: doc.idMatricula, tipoDocumento:doc.tipoDocumento, body:{multipartFile:doc.arquivo}})
-              .subscribe(retorno =>{
+              {idMatricula: doc.idMatricula, tipoDocumento: doc.tipoDocumento, body: {multipartFile: doc.arquivo}})
+              .subscribe(retorno => {
                 console.log(retorno)
               })
           }
@@ -184,27 +179,27 @@ export class FormMatriculaComponent implements OnInit{
     }
 
     if (this.codigo != null || this.formGroup.valid) {
-      if(!this.codigo){
+      if (!this.codigo) {
         this.atribuirConjugueRelacionamento();
         this.realizarInclusao();
-      }else{
+      } else {
         this.realizarEdicao();
       }
     }
   }
 
-  private realizarInclusao(){
-    console.log("Dados:",this.formGroup.value);
-    const matricula : MatriculaDto = this.formGroup.value;
-    console.log("Matricula:",matricula);
+  private realizarInclusao() {
+    console.log("Dados:", this.formGroup.value);
+    const matricula: MatriculaDto = this.formGroup.value;
+    console.log("Matricula:", matricula);
   }
 
 
   private prepararEdicao() {
     const paramId = this.route.snapshot.paramMap.get('id');
-    if (paramId){
+    if (paramId) {
       const codigo = parseInt(paramId);
-      console.log("codigo pessoa",paramId);
+      console.log("codigo pessoa", paramId);
     }
   }
 
@@ -220,18 +215,17 @@ export class FormMatriculaComponent implements OnInit{
     });
   }
 
-  private realizarEdicao(){
+  private realizarEdicao() {
     console.log("Dados:", this.formGroup.value);
     this.router.navigate(["/matricula"]);
   }
 
   mudarAlinhar() {
 
-    if(innerWidth < 1000)
-    {
+    if (innerWidth < 1000) {
       return this.flexDivAlinhar = "column";
     }
-    if(innerWidth < 1400){
+    if (innerWidth < 1400) {
       this.flexDivAlinharElementosGrandes = "column";
     }
     this.flexDivAlinharElementosGrandes = "row";
@@ -241,15 +235,15 @@ export class FormMatriculaComponent implements OnInit{
 
   mudarAlinharElementosGrandes() {
 
-    if(innerWidth < 1400)
-    {
+    if (innerWidth < 1400) {
       return this.flexDivAlinharElementosGrandes = "column";
     }
     return this.flexDivAlinharElementosGrandes = "row";
 
   }
-  verificarAlinhar(){
-    if(this.flexDivAlinhar == "column"){
+
+  verificarAlinhar() {
+    if (this.flexDivAlinhar == "column") {
       return true;
     }
     return false;
@@ -260,17 +254,14 @@ export class FormMatriculaComponent implements OnInit{
     this.innerWidth = window.innerWidth;
   }
 
-  alterarNomeTitulo(indice:number): void{
+  alterarNomeTitulo(indice: number): void {
     if (indice == 0) {
       this.nomeTitulo = "Dados da Criança"
-    }
-    else if (indice == 1){
+    } else if (indice == 1) {
       this.nomeTitulo = "Dados do Tutor(a)"
-    }
-    else if (indice == 2){
+    } else if (indice == 2) {
       this.nomeTitulo = "Perguntas Culturais"
-    }
-    else{
+    } else {
       this.nomeTitulo = "Anexar documentos"
     }
   }
@@ -305,16 +296,15 @@ export class FormMatriculaComponent implements OnInit{
       necessidadeEspecial: [null, Validators.required]
     });
   }
+
   firstClickNecessidades(): boolean {
     if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
       return true;
-    }
-    else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length){
+    } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
       this.adicionarCampoNecessidade();
       this.botaoNecessidadeClicado = true;
       return true;
-    }
-    else if (this.formGroup.get('possuiNecessidadeEspecial')?.value){
+    } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
       return true
     }
     this.botaoNecessidadeClicado = false;
@@ -366,24 +356,23 @@ export class FormMatriculaComponent implements OnInit{
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
     const tutorFormArrayLength = tutorFormArray.length;
 
-    if (formGroupTutor.get('relacionamento')?.value || formGroupTutor.get('moraComConjuge')?.value){
-      if(tutorFormArrayLength == 1){
+    if (formGroupTutor.get('relacionamento')?.value || formGroupTutor.get('moraComConjuge')?.value) {
+      if (tutorFormArrayLength == 1) {
         this.adicionarCampoTutor();
         this.temConjugue = true;
       }
 
+    } else {
+      this.removerCampoTutor(1);
+      this.temConjugue = false;
     }
-    else {
-        this.removerCampoTutor(1);
-        this.temConjugue = false;
-      }
   }
 
-  atribuirConjugueRelacionamento(){
+  atribuirConjugueRelacionamento() {
     const formGroupTutor: FormGroup = this.getTutorForm(0);
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
     const tutorFormArrayLength = tutorFormArray.length;
-    if(tutorFormArrayLength > 1){
+    if (tutorFormArrayLength > 1) {
       const formGroupConjugue: FormGroup = this.getTutorForm(1);
       formGroupConjugue.patchValue({
         relacionamento: formGroupTutor.get('relacionamento')?.value,
@@ -395,32 +384,89 @@ export class FormMatriculaComponent implements OnInit{
     }
   }
 
-  //variaveis certidao
-  docCertidaoNascNome: string = 'Escolha um arquivo';
-  selectedFileCertidao:string  = '';
-  isFileImageCertidao = false;
-  isFileDocumentCertidao =false;
-
-  docCertidaoNascNomeVerso: string = 'Escolha um arquivo';
-  selectedFileCertidaoVerso:string  = '';
-  isFileImageCertidaoVerso = false;
-  isFileDocumentCertidaoVerso =false;
-
-  // sempre que alguem adicionar um novo documento ele vai ser adicionado ao array de docs
-  // esse idMatricula é so pra testes ele vai ser vazio
-
   receberDadosDoFilho(dados: { doc: DocumentoMatriculaDto }) {
     if (dados.doc && this.docs) {
-      this.docs.push(dados.doc);
-      console.log("doc Filho: ", dados.doc);
-      console.log("docs Lista: ", this.docs);
+      switch (dados.doc.tipoDocumento) {
+        case EnumDoc.FOTO_CRIANCA:
+          this.docs[0] = dados.doc;
+          console.log("doc Filho: ", dados.doc);
+          console.log("docs Lista: ", this.docs);
+          break;
+        case EnumDoc.CERTIDAO_NASCIMENTO:
+          this.docs[1] = dados.doc;
+          console.log("doc Filho: ", dados.doc);
+          console.log("docs Lista: ", this.docs);
+          break;
+        case EnumDoc.CPF_CRIANCA:
+          this.docs[2] = dados.doc;
+          break;
+        case EnumDoc.DOCUMENTO_VEICULO:
+          this.docs[3] = dados.doc;
+          break;
+        case EnumDoc.COMPROVANTE_ENDERECO:
+          this.docs[4] = dados.doc;
+          break;
+        case EnumDoc.COMPROVANTE_MORADIA:
+          this.docs[5] = dados.doc;
+          break;
+        case EnumDoc.COMPROVANTE_BOLSA_FAMILIA:
+          this.docs[6] = dados.doc;
+          break;
+        case EnumDoc.ENCAMINHAMENTO_CRAS:
+          this.docs[7] = dados.doc;
+          break;
+        case EnumDoc.CPF_TUTOR1:
+          this.docs[8] = dados.doc;
+          break;
+        case EnumDoc.CPF_TUTOR2:
+          this.docs[9] = dados.doc;
+          break;
+        case EnumDoc.CERTIDAO_ESTADO_CIVIL:
+          this.docs[10] = dados.doc;
+          break;
+        case EnumDoc.COMPROVANTE_TRABALHO_T1:
+          this.docs[11] = dados.doc;
+          break;
+        case EnumDoc.CONTRA_CHEQUE1T1:
+          this.docs[12] = dados.doc;
+          break;
+        case EnumDoc.CONTRA_CHEQUE2T1:
+          this.docs[13] = dados.doc;
+          break;
+        case EnumDoc.CONTRA_CHEQUE3T1:
+          this.docs[14] = dados.doc;
+          break;
+        case EnumDoc.CONTRA_CHEQUE1T2:
+          this.docs[15] = dados.doc;
+          break;
+        case EnumDoc.CONTRA_CHEQUE2T2:
+          this.docs[16] = dados.doc;
+          break;
+        case EnumDoc.CONTRA_CHEQUE3T2:
+          this.docs[17] = dados.doc;
+          break;
+        case EnumDoc.COMPROVANTE_TRABALHO_T2:
+          this.docs[18] = dados.doc;
+          break;
+        case EnumDoc.DECLARACAO_ESCOLART1:
+          this.docs[19] = dados.doc;
+          break;
+        case EnumDoc.DECLARACAO_ESCOLART2:
+          this.docs[20] = dados.doc;
+          break;
+        case EnumDoc.CERTIDAO_ESTADO_CIVIL2:
+          this.docs[21] = dados.doc;
+          break;
+        default:
+
+      }
     }
   }
 
-  pegaDoc(){
-    this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:"FC1.pdf"})
-      .subscribe(response =>{
-        let blob:Blob = response
+  pegaDoc() {
+    this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc: "FC1.pdf"})
+      .subscribe(response => {
+        let blob: Blob = response
         let downloadLink = document.createElement('a');
         downloadLink.href = window.URL.createObjectURL(blob);
         downloadLink.download = 'FC1.pdf';
