@@ -1,13 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {EnumDoc} from "../EnumDoc";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {async} from "@angular/core/testing";
 
 @Component({
   selector: 'app-upload-arquivo',
   templateUrl: './upload-arquivo.component.html',
   styleUrls: ['./upload-arquivo.component.scss']
 })
-export class UploadArquivoComponent {
+export class UploadArquivoComponent{
   @Input() enumDocPai!: EnumDoc;
   @Input() idBotaoInputImagem !: string;
   @Input() idBotaoInputImagemPreview !: string;
@@ -18,6 +20,9 @@ export class UploadArquivoComponent {
   selectedFile: string = '';
   isFileImage = false;
   isFileDocument = false;
+
+  constructor(private matriculaService: MatriculaControllerService) {
+  }
 
   onFilechange(event: any){
     const file = event.target.files[0];
@@ -53,6 +58,10 @@ export class UploadArquivoComponent {
 
   }
 
+  // ngAfterViewInit() {
+  //   this.pegaDoc()
+  // }
+
   private makeURLFile(file: any) {
     const fileUrl = URL.createObjectURL(file); // Obter o URL do arquivo
     return fileUrl as string;
@@ -69,5 +78,22 @@ export class UploadArquivoComponent {
   private diminuirTamanhoNomeArquivo(fileName: string) {
     return fileName.substring(0, 20 - 3) + '...';
   }
+
+  // pegaDoc() {
+  //
+  //   this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc: "Amostra.pdf"})
+  //     .subscribe((response: Blob) => {
+  //       this.isFileDocument = true;
+  //       const fileName = "Amostra.pdf";
+  //       const file = new File([response], fileName, { type: response.type });
+  //
+  //       // Agora você tem o arquivo, você pode fazer o que precisar com ele
+  //       this.selectedFile = this.makeURLFile(file); // Se selectedFile for um atributo da sua classe
+  //
+  //
+  //       console.log("Arquivo:", file);
+  //     });
+  //
+  // };
 }
 

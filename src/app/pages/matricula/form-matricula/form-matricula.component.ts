@@ -157,13 +157,12 @@ export class FormMatriculaComponent implements OnInit {
 
   onSubmit() {
     this.enviado = true;
-    this.submitFormulario = true;
     if (this.codigo == null) {
       return;
     }
     //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
     console.log("Submit")
-    if (this.docs.length >= 0) {
+
       this.docs.forEach(doc => {
           if (doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
             console.log(doc.arquivo)
@@ -176,7 +175,6 @@ export class FormMatriculaComponent implements OnInit {
         }
       )
 
-    }
 
     if (this.codigo != null || this.formGroup.valid) {
       if (!this.codigo) {
@@ -463,18 +461,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  pegaDoc() {
-    this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc: "FC1.pdf"})
-      .subscribe(response => {
-        let blob: Blob = response
-        let downloadLink = document.createElement('a');
-        downloadLink.href = window.URL.createObjectURL(blob);
-        downloadLink.download = 'FC1.pdf';
-        downloadLink.click()
-      })
 
-  };
 
   protected readonly EnumDoc = EnumDoc;
 }
-
