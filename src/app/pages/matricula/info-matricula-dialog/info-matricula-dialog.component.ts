@@ -27,23 +27,16 @@ import { EnderecoDto } from "../../../api/models/endereco-dto";
 })
 export class InfoMatriculaDialogComponent implements OnInit {
     matricula: MatriculaDto[] = [];
-    informacoesMatricula: InformacoesMatriculaDto[] = [];
-    advertencia: AdvertenciaDto[] = [];
     necessidadeEspecial: NecessidadeEspecialDto[] = [];
     responsavel: ResponsavelDto[] = [];
     tutor: TutorDto[] = [];
-    endereco: EnderecoDto[] = [];
     formGroup!: FormGroup;
 
     constructor(
         private formBuilder: FormBuilder,
         public matriculaService: MatriculaControllerService,
-        public informacoesService: InformacoesMatriculaControllerService,
-        public advertenciaService: AdvertenciaControllerService,
-        public necessidadeEspecialService: NecessidadeEspecialControllerService,
         public responsavelService: ResponsavelControllerService,
         public tutorService: TutorControllerService,
-        public enderecoService: EnderecoControllerService,
         private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
         private dialog: MatDialog,
         private router: Router,
@@ -61,21 +54,13 @@ export class InfoMatriculaDialogComponent implements OnInit {
     private listarMatricula() {
         forkJoin([
             this.matriculaService.matriculaControllerListAll(),
-            this.informacoesService.informacoesMatriculaControllerListAll(),
-            this.advertenciaService.advertenciaControllerListAll(),
-            this.necessidadeEspecialService.necessidadeEspecialControllerListAll(),
-            this.responsavelService.responsavelControllerListAll(),
             this.tutorService.tutorControllerListAll(),
-            this.enderecoService.enderecoControllerListAll()
+            this.responsavelService.responsavelControllerListAll()
         ]).subscribe(
-            ([matriculas, informacoes, advertencias, necessidades, responsaveis, tutores, enderecos]) => {
+            ([matriculas, responsaveis, tutores]) => {
                 this.matricula = matriculas as MatriculaDto[];
-                this.informacoesMatricula = informacoes as InformacoesMatriculaDto[];
-                this.advertencia = advertencias as AdvertenciaDto[];
-                this.necessidadeEspecial = necessidades as NecessidadeEspecialDto[];
-                this.responsavel = responsaveis as ResponsavelDto[];
                 this.tutor = tutores as TutorDto[];
-                this.endereco = enderecos as EnderecoDto[];
+                this.responsavel = responsaveis as ResponsavelDto[];
             },
             error => {
                 console.error('Ocorreu um erro ao obter os dados:', error);
@@ -88,6 +73,5 @@ export class InfoMatriculaDialogComponent implements OnInit {
     }
 
     onSubmit() {
-        // Lógica de envio do formulário, se necessário
     }
 }
