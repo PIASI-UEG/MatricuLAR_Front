@@ -1,5 +1,5 @@
 <div class="tela_esqueceu_senha">
-  <div class="container">
+  <div class="container-esqueceu-senha">
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxLayout="column" fxLayoutAlign="space-between center" fxFlex="1 1 auto">
       <h2>Esqueceu sua senha?</h2>
       <mat-form-field>
@@ -20,10 +20,6 @@
         <button  mat-raised-button type="submit" class="button" >Recuperar Senha</button>
       </div>
 
-      <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-        <button  mat-raised-button type="submit" class="button" >Recuperar Senha</button>
-        <button mat-raised-button color="warn" type="button" class="button botao-cancelar">Cancelar</button>
-      </div>
     </form>
   </div>
 </div>

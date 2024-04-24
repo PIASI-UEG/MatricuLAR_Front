@@ -10,11 +10,13 @@ h2{
   border-radius: 5px;
   background-color:  #F5F7FA;
   padding: 2%;
-  width: 80%;
+  width: 98%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 2%;
 }
+
+
 
 @media (max-width: 1500px) {
   .formPadrao {
@@ -54,6 +56,9 @@ h2{
   margin: 5px;
   border:1px solid #A2B6C8;
 }
+.button:hover {
+    background-color: #388fb5;
+}
 
 @media (max-width: 999px) {
   .button {
@@ -83,10 +88,6 @@ mat-form-field{
   margin: 5px;
 }
 
-.form{
-  width: 100%;
-}
-
 .divBotoes{
   margin-top: 25px;
 }
@@ -100,4 +101,18 @@ mat-form-field{
 }
 
 
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
+}
 
+.mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.mat-error {
+    font-size: 14px;
+    color: #FF0000;
+}

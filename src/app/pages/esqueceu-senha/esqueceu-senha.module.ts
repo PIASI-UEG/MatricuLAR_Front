@@ -1,5 +1,4 @@
 import {NgModule} from "@angular/core";
-import {EsqueceuSenhaComponent} from "./esqueceu-senha/esqueceu-senha.component";
 import {CommonModule} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
@@ -15,7 +14,6 @@ import { EsqueceuSenhaDialogComponent } from './esqueceu-senha-dialog/esqueceu-s
 
 @NgModule({
     declarations: [
-        EsqueceuSenhaComponent,
         EsqueceuSenhaDialogComponent
     ],
     imports: [

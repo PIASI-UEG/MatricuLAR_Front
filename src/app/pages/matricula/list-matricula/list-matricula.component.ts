@@ -21,7 +21,7 @@ import {InfoMatriculaDialogComponent} from "../info-matricula-dialog/info-matric
 })
 export class ListMatriculaComponent implements OnInit{
 
-  colunasMostrar = ['id','nome','turma','responsaveis','telefone','status','acao'];
+  colunasMostrar = ['id','nome','turma','responsaveis','telefoneWhatsapp','status','acao'];
   matriculaListaDataSource: MatTableDataSource<MatriculaDto> = new MatTableDataSource<MatriculaDto>([]);
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar:this.snackBar})
   admin!: boolean;
