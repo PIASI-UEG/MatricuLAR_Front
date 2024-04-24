@@ -19,6 +19,12 @@ export const matriculaRoutes: Routes = [
         data: {security: {roles: ['A', 'C','S']}}
       },
       {
+        path: "validar",
+        component: ListMatriculaComponent,
+        canActivate: [SecurityGuard],
+        data: {security: {roles: ['A', 'C','S']}}
+      },
+      {
         path: "novo",
         component: FormMatriculaComponent
       },
@@ -27,7 +33,7 @@ export const matriculaRoutes: Routes = [
         component: FormMatriculaComponent,
         canActivate: [SecurityGuard],
         data: {security: {roles: ['A', 'C','S']}}
-      }
+      },
     ]
   }
 ];
