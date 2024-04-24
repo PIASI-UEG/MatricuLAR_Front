@@ -201,4 +201,14 @@ export class Validacoes{
       return null;
     }
   }
+
+  // form de perguntas validacao se marcou beneficio governo
+  validarDeclaroLiConcordo(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('declaroLieConcordo')?.value === false) {
+      formGroup.get('declaroLieConcordo')?.setErrors({ 'marqueLieConcordo': true });
+      return { 'marqueLieConcordo': true };
+    } else {
+      return null;
+    }
+  }
 }

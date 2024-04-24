@@ -107,12 +107,15 @@ export class FormMatriculaComponent implements OnInit {
         //Documentos - Etapa 4
         // implementar anexar documentos no form
         documentoMatricula: this.docs,
+        // declaro que li e concordo
+        declaroLieConcordo: false
       }, {
         validator: [this.validacoes.validarRazaoSaida,
           this.validacoes.validarAluguel,
           this.validacoes.validarBeneficio,
           this.validacoes.validarFrequentou,
-          this.validacoes.validarBeneficioMarcado
+          this.validacoes.validarBeneficioMarcado,
+          this.validacoes.validarDeclaroLiConcordo
         ]
       })
     }

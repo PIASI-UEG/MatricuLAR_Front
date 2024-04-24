@@ -365,9 +365,6 @@
                                   [idBotaoInputImagemPreview]="'certidaoIDPreview'"
                                   [enumDocPai]="EnumDoc.CERTIDAO_NASCIMENTO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-              <mat-checkbox color="primary" formControlName="possuiversoCertidao">
-                O documento possui verso ?
-              </mat-checkbox>
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
@@ -588,6 +585,7 @@
                 dados apresentados.</strong> <br></mat-label>
             </div>
 
+            <mat-error *ngIf="handleErrorForm('marqueLieConcordo') && this.enviado">Leia e marque para continuar</mat-error>
             <mat-checkbox color="primary" formControlName="possuiversoCertidao">
               Decalro que li e concordo
             </mat-checkbox>
