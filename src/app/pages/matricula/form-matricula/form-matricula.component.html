@@ -359,22 +359,26 @@
             <div fxLayout="center" class="linha-horizontal-docs"></div>
 
             <div fxLayout="column" fxLayoutAlign="space-evenly center">
-              <mat-label class="titulo-doc"><strong>Certidão de nascimento da criança </strong> <br></mat-label>
-              <app-upload-arquivo class="espaco-docs"
-                                  [idBotaoInputImagem]="'certidaoID'"
-                                  [idBotaoInputImagemPreview]="'certidaoIDPreview'"
-                                  [enumDocPai]="EnumDoc.CERTIDAO_NASCIMENTO"
-                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
-
               <mat-label class="titulo-doc"><strong>Foto da criança: </strong> <br></mat-label>
               <app-upload-arquivo class="espaco-docs"
                                   [idBotaoInputImagem]="'fotoCriancaID'"
                                   [idBotaoInputImagemPreview]="'fotoCriancaIDPreview'"
                                   [enumDocPai]="EnumDoc.FOTO_CRIANCA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocFoto') && this.enviado">Documento obrigatótio</mat-error>
+            </div>
 
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+
+            <div fxLayout="column" fxLayoutAlign="space-evenly center">
+              <mat-label class="titulo-doc"><strong>Certidão de nascimento da criança </strong> <br></mat-label>
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'certidaoID'"
+                                  [idBotaoInputImagemPreview]="'certidaoIDPreview'"
+                                  [enumDocPai]="EnumDoc.CERTIDAO_NASCIMENTO"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCertidao') && this.enviado">Documento obrigatótio</mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>CPF da criança:</strong> <br></mat-label>
@@ -383,7 +387,7 @@
                                   [idBotaoInputImagemPreview]="'cpfCriancaIDPreview'"
                                   [enumDocPai]="EnumDoc.CPF_CRIANCA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFCrianca') && this.enviado">Documento obrigatótio</mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
@@ -396,14 +400,14 @@
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
-              <mat-label class="titulo-doc"><strong>Documento que evidencia a moradia da criança (conta de água,
+              <mat-label class="titulo-doc"><strong>Comprovante de endereço (conta de água,
                 energia, etc):</strong> <br></mat-label>
               <app-upload-arquivo class="espaco-docs"
                                   [idBotaoInputImagem]="'docMoradiaID'"
                                   [idBotaoInputImagemPreview]="'docMoradiaIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_ENDERECO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCompEnd') && this.enviado">Documento obrigatótio</mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Comprovante de acordo com a resposta informada na tela anterior
@@ -417,7 +421,7 @@
                                   [idBotaoInputImagemPreview]="'docEstadoMoradiaIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_MORADIA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCompMora') && this.enviado">Documento obrigatótio</mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Comprovante de que recebe o auxílo do governo (Caso não receba, não
@@ -439,6 +443,7 @@
                                       [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
                                       [enumDocPai]="EnumDoc.CPF_TUTOR1"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFTutor') && this.enviado">Documento obrigatótio</mat-error>
                 </div>
                 <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
@@ -446,6 +451,7 @@
                                       [idBotaoInputImagemPreview]="'docCPFConjugueIDPreview'"
                                       [enumDocPai]="EnumDoc.CPF_TUTOR2"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFConjugue') && this.enviado">Documento obrigatótio</mat-error>
                 </div>
               </div>
 
@@ -536,7 +542,7 @@
                                   [idBotaoInputImagemPreview]="'docEstadoCivilIDPreview'"
                                   [enumDocPai]="EnumDoc.CERTIDAO_ESTADO_CIVIL"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocEstadoCivil') && this.enviado">Documento obrigatótio</mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o

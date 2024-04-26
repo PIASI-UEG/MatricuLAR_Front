@@ -13,16 +13,12 @@ export class UploadArquivoComponent{
   @Input() enumDocPai!: EnumDoc;
   @Input() idBotaoInputImagem !: string;
   @Input() idBotaoInputImagemPreview !: string;
-  @Input() validar: boolean = false;
-  @Output() enviarDados = new EventEmitter<{ doc: DocumentoMatriculaDto }>();
+  @Output() enviarDados = new EventEmitter<{ doc: File , tipoDocumento: EnumDoc}>();
 
   arqNome: string = 'Escolha um arquivo';
   selectedFile: string = '';
   isFileImage = false;
   isFileDocument = false;
-
-  constructor(private matriculaService: MatriculaControllerService) {
-  }
 
   onFilechange(event: any){
     const file = event.target.files[0];
@@ -45,15 +41,8 @@ export class UploadArquivoComponent{
         this.arqNome = this.diminuirTamanhoNomeArquivo(fileName);
     }
 
-    let doc: DocumentoMatriculaDto = {
-      aceito: false,
-      idMatricula: 1,
-      tipoDocumento: this.enumDocPai,
-      caminhoDocumento: file.name,
-      arquivo: blob
-    };
 
-    const dados = {doc: doc};
+    const dados = {doc: file, tipoDocumento: this.enumDocPai};
     this.enviarDados.emit(dados)
 
   }

@@ -211,4 +211,112 @@ export class Validacoes{
       return null;
     }
   }
+
+  //validar se inseriu foto criança
+  validarFotoCrianca(formGroup: FormGroup ): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[0]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocFoto': true });
+      return { 'insiraODocFoto': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu certidão
+  validarCertidao(formGroup: FormGroup ): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[1]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocCertidao': true });
+      return { 'insiraODocCertidao': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu CPF criança
+  validarCPFCrianca(formGroup: FormGroup ): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[2]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocCPFCrianca': true });
+      return { 'insiraODocCPFCrianca': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu comprovante de endereço
+  valdiarComprovanteEndereco(formGroup: FormGroup ): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[4]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocCompEnd': true });
+      return { 'insiraODocCompEnd': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu comprovante de moradia
+  valdiarComprovanteMoradia(formGroup: FormGroup ): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[5]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocCompMora': true });
+      return { 'insiraODocCompMora': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu CPF tutor
+  validarCPFTutor(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[8]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocCPFTutor': true });
+      return { 'insiraODocCPFTutor': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu CPF conjugue
+  validarCPFConjugue(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[9] && formGroup.get('temconjugue')?.value) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocCPFConjugue': true });
+      return { 'insiraODocCPFConjugue': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu Certidão Estado Civil
+  validarCertidaoEstadoCivil(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[10]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocEstadoCivil': true });
+      return { 'insiraODocEstadoCivil': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu CarteiraTrabalhoTutor
+  validarCarteiraTrabalhoTutor(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[11]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocContraCheque1T': true });
+      return { 'insiraODocContraCheque1T': true };
+    } else {
+      return null;
+    }
+  }
 }

@@ -30,6 +30,7 @@ export class FormMatriculaComponent implements OnInit {
 
 
   formGroup!: FormGroup;
+  formDocumentos!: FormGroup;
   currentStep: number = 1; // Controla a etapa atual
   public readonly ACAO_INCLUIR = "Cadastrar";
   public readonly ACAO_EDITAR = "Editar";
@@ -45,20 +46,19 @@ export class FormMatriculaComponent implements OnInit {
   maxDate = new Date(2008, 0, 0);
   flexDivAlinhar: string = 'row';
   flexDivAlinharElementosGrandes: string = 'row';
-  admin!: boolean
   innerWidth: number = window.innerWidth;
   hide = true;
-  submitFormulario!: boolean;
   parentescos: string[] = ['Mãe', 'Pai', 'Tio', 'Padrasto', 'Madrasta']; // Lista de opções de parentesco
   nomeTitulo: string = "Dados da Criança";
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
   enviado: boolean = false;
-  docs: DocumentoMatriculaDto[] = []
+  // docs: File[] = [];
   temConjugue: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
+    private formBuilderDocs : FormBuilder,
     private _adapter: DateAdapter<any>,
     private router: Router,
     private route: ActivatedRoute,
@@ -72,6 +72,7 @@ export class FormMatriculaComponent implements OnInit {
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
+    this.formDocumentos = this.createFormListaDocs();
     this.createForm();
     this.adicionarCampoTutor();
     this._adapter.setLocale('pt-br');
@@ -106,7 +107,6 @@ export class FormMatriculaComponent implements OnInit {
         rendaFamiliar: [null, Validators.required],
         //Documentos - Etapa 4
         // implementar anexar documentos no form
-        documentoMatricula: this.docs,
         // declaro que li e concordo
         declaroLieConcordo: false
       }, {
@@ -115,7 +115,7 @@ export class FormMatriculaComponent implements OnInit {
           this.validacoes.validarBeneficio,
           this.validacoes.validarFrequentou,
           this.validacoes.validarBeneficioMarcado,
-          this.validacoes.validarDeclaroLiConcordo
+          this.validacoes.validarDeclaroLiConcordo,
         ]
       })
     }
@@ -138,12 +138,35 @@ export class FormMatriculaComponent implements OnInit {
     }, {validator: this.validacoes.validarTelefonesEmpresariais})
   }
 
+  private createFormListaDocs(): FormGroup {
+
+    return this.formBuilder.group({
+      listaDocumentos: [[]], // Inicialize com uma lista vazia
+      temconjugue: false
+    },{validator:
+        [this.validacoes.validarFotoCrianca,
+          this.validacoes.validarCertidao,
+          this.validacoes.validarCPFCrianca,
+          this.validacoes.valdiarComprovanteEndereco,
+          this.validacoes.valdiarComprovanteMoradia,
+          this.validacoes.validarCPFTutor,
+          this.validacoes.validarCPFConjugue,
+          this.validacoes.validarCertidaoEstadoCivil,
+
+          // mudar forma de implementação do validações para ficar mais felxivel
+        ] })
+  }
 
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
   };
   public handleErrorForm = (errorName: string) => {
     const formGroup = this.formGroup;
+    return formGroup.hasError(errorName);
+  };
+
+  public handleErrorFormDocs = (errorName: string) => {
+    const formGroup = this.formDocumentos;
     return formGroup.hasError(errorName);
   };
 
@@ -166,17 +189,17 @@ export class FormMatriculaComponent implements OnInit {
     //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
     console.log("Submit")
 
-      this.docs.forEach(doc => {
-          if (doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
-            console.log(doc.arquivo)
-            this.matriculaService.matriculaControllerUploadDocumento(
-              {idMatricula: doc.idMatricula, tipoDocumento: doc.tipoDocumento, body: {multipartFile: doc.arquivo}})
-              .subscribe(retorno => {
-                console.log(retorno)
-              })
-          }
-        }
-      )
+      // this.docs.forEach(doc => {
+      //     if (doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
+      //       console.log(doc.arquivo)
+      //       this.matriculaService.matriculaControllerUploadDocumento(
+      //         {idMatricula: doc.idMatricula, tipoDocumento: doc.tipoDocumento, body: {multipartFile: doc.arquivo}})
+      //         .subscribe(retorno => {
+      //           console.log(retorno)
+      //         })
+      //     }
+      //   }
+      // )
 
 
     if (this.codigo != null || this.formGroup.valid) {
@@ -367,6 +390,10 @@ export class FormMatriculaComponent implements OnInit {
       this.removerCampoTutor(1);
       this.temConjugue = false;
     }
+    this.formDocumentos.patchValue({
+      temconjugue: this.temConjugue
+    });
+
   }
 
   atribuirConjugueRelacionamento() {
@@ -385,82 +412,84 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  receberDadosDoFilho(dados: { doc: DocumentoMatriculaDto }) {
-    if (dados.doc && this.docs) {
-      switch (dados.doc.tipoDocumento) {
+  receberDadosDoFilho(dados: { doc: File , tipoDocumento: EnumDoc}) {
+    const docs = this.formDocumentos.get('listaDocumentos');
+    if (dados.doc && docs) {
+      const novosDocs = docs.value.slice();
+      switch (dados.tipoDocumento) {
         case EnumDoc.FOTO_CRIANCA:
-          this.docs[0] = dados.doc;
+          novosDocs[0] = dados.doc;
           console.log("doc Filho: ", dados.doc);
-          console.log("docs Lista: ", this.docs);
+          console.log("docs Lista: ", novosDocs);
           break;
         case EnumDoc.CERTIDAO_NASCIMENTO:
-          this.docs[1] = dados.doc;
+          novosDocs[1] = dados.doc;
           console.log("doc Filho: ", dados.doc);
-          console.log("docs Lista: ", this.docs);
+          console.log("docs Lista: ", novosDocs);
           break;
         case EnumDoc.CPF_CRIANCA:
-          this.docs[2] = dados.doc;
+          novosDocs[2] = dados.doc;
           break;
         case EnumDoc.DOCUMENTO_VEICULO:
-          this.docs[3] = dados.doc;
+          novosDocs[3] = dados.doc;
           break;
         case EnumDoc.COMPROVANTE_ENDERECO:
-          this.docs[4] = dados.doc;
+          novosDocs[4] = dados.doc;
           break;
         case EnumDoc.COMPROVANTE_MORADIA:
-          this.docs[5] = dados.doc;
+          novosDocs[5] = dados.doc;
           break;
         case EnumDoc.COMPROVANTE_BOLSA_FAMILIA:
-          this.docs[6] = dados.doc;
+          novosDocs[6] = dados.doc;
           break;
         case EnumDoc.ENCAMINHAMENTO_CRAS:
-          this.docs[7] = dados.doc;
+          novosDocs[7] = dados.doc;
           break;
         case EnumDoc.CPF_TUTOR1:
-          this.docs[8] = dados.doc;
+          novosDocs[8] = dados.doc;
           break;
         case EnumDoc.CPF_TUTOR2:
-          this.docs[9] = dados.doc;
+          novosDocs[9] = dados.doc;
           break;
         case EnumDoc.CERTIDAO_ESTADO_CIVIL:
-          this.docs[10] = dados.doc;
+          novosDocs[10] = dados.doc;
           break;
         case EnumDoc.COMPROVANTE_TRABALHO_T1:
-          this.docs[11] = dados.doc;
+          novosDocs[11] = dados.doc;
           break;
         case EnumDoc.CONTRA_CHEQUE1T1:
-          this.docs[12] = dados.doc;
+          novosDocs[12] = dados.doc;
           break;
         case EnumDoc.CONTRA_CHEQUE2T1:
-          this.docs[13] = dados.doc;
+          novosDocs[13] = dados.doc;
           break;
         case EnumDoc.CONTRA_CHEQUE3T1:
-          this.docs[14] = dados.doc;
+          novosDocs[14] = dados.doc;
           break;
         case EnumDoc.CONTRA_CHEQUE1T2:
-          this.docs[15] = dados.doc;
+          novosDocs[15] = dados.doc;
           break;
         case EnumDoc.CONTRA_CHEQUE2T2:
-          this.docs[16] = dados.doc;
+          novosDocs[16] = dados.doc;
           break;
         case EnumDoc.CONTRA_CHEQUE3T2:
-          this.docs[17] = dados.doc;
+          novosDocs[17] = dados.doc;
           break;
         case EnumDoc.COMPROVANTE_TRABALHO_T2:
-          this.docs[18] = dados.doc;
+          novosDocs[18] = dados.doc;
           break;
         case EnumDoc.DECLARACAO_ESCOLART1:
-          this.docs[19] = dados.doc;
+          novosDocs[19] = dados.doc;
           break;
         case EnumDoc.DECLARACAO_ESCOLART2:
-          this.docs[20] = dados.doc;
+          novosDocs[20] = dados.doc;
           break;
         case EnumDoc.CERTIDAO_ESTADO_CIVIL2:
-          this.docs[21] = dados.doc;
+          novosDocs[21] = dados.doc;
           break;
         default:
-
       }
+      this.formDocumentos.get('listaDocumentos')?.setValue(novosDocs);
     }
   }
 
