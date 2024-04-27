@@ -1,23 +1,24 @@
 import {Component, Inject} from '@angular/core';
+import {TurmaDto} from "../../../api/models/turma-dto";
+import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
-import {TurmaDto} from "../../../api/models/turma-dto";
-import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 
 @Component({
-  selector: 'app-info-turma-dialog',
-  templateUrl: './info-turma-dialog.component.html',
-  styleUrls: ['./info-turma-dialog.component.scss']
+  selector: 'app-add-aluno-turma-dialog',
+  templateUrl: './add-aluno-turma-dialog.component.html',
+  styleUrls: ['./add-aluno-turma-dialog.component.scss']
 })
-export class InfoTurmaDialogComponent {
+export class AddAlunoTurmaDialogComponent {
   turma?: TurmaDto;
   turmaID: number;
+  private turmaListaDataSource: any;
 
   constructor(
     public turmaService: TurmaControllerService,
-    private dialogRef: MatDialogRef<InfoTurmaDialogComponent>,
+    private dialogRef: MatDialogRef<AddAlunoTurmaDialogComponent>,
     private dialog: MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -32,15 +33,9 @@ export class InfoTurmaDialogComponent {
   }
 
   private buscarDados() {
-    this.turmaService.turmaControllerObterPorId({id: this.turmaID}).subscribe(
-      (data) => {
-        this.turma = data;
-        console.log(data);
-      },
-      (error) => {
-        console.error('Erro ao buscar dados da turma:', error);
-      }
-    );
+    this.turmaService.turmaControllerListAll().subscribe(data => {
+      this.turmaListaDataSource.data = data.content;
+    })
   }
 
 

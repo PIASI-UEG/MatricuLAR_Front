@@ -20,6 +20,7 @@ import {RouterLink, RouterOutlet} from "@angular/router";
 import { FormTurmaComponent } from './form-turma/form-turma.component';
 import {MatSelectModule} from "@angular/material/select";
 import { InfoTurmaDialogComponent } from './info-turma-dialog/info-turma-dialog.component';
+import { AddAlunoTurmaDialogComponent } from './add-aluno-turma-dialog/add-aluno-turma-dialog.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { InfoTurmaDialogComponent } from './info-turma-dialog/info-turma-dialog.
     FormTurmaComponent,
     FormTurmaDialogComponent,
     InfoTurmaDialogComponent,
+    AddAlunoTurmaDialogComponent,
   ],
   imports: [
     CommonModule,

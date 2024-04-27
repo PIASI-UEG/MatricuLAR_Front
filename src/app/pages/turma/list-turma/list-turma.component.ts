@@ -10,13 +10,10 @@ import {
   ConfirmationDialog,
   ConfirmationDialogResult
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
-import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {TurmaDto} from "../../../api/models/turma-dto";
 import {Mascaras} from "../../../../Mascaras";
-import {MatriculaDto} from "../../../api/models/matricula-dto";
-import {InfoMatriculaDialogComponent} from "../../matricula/info-matricula-dialog/info-matricula-dialog.component";
+import {InfoTurmaDialogComponent} from "../info-turma-dialog/info-turma-dialog.component";
 
 @Component({
   selector: 'app-list-turma',
@@ -130,13 +127,13 @@ export class ListTurmaComponent implements OnInit{
 
   }
 
-  openDialog(turmaDto: TurmaDto) {
-    console.log(turmaDto);
-    const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
+  openDialog(turmaID: number) {
+    console.log(turmaID);
+    const dialogRef = this.dialog.open(InfoTurmaDialogComponent,
       {
         data:
           {
-            matricula: turmaDto
+            id: turmaID
           }
       })
     dialogRef.afterClosed().subscribe(() => {

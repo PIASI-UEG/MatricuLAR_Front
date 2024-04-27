@@ -21,4 +21,5 @@ export { AuthDto } from './models/auth-dto';
 export { ISearchFieldDataObject } from './models/i-search-field-data-object';
 export { SearchField } from './models/search-field';
 export { Pageable } from './models/pageable';
+export { MatriculaVisualizarDto } from './models/matricula-visualizar-dto';
 export { MatriculaListagemDto } from './models/matricula-listagem-dto';
