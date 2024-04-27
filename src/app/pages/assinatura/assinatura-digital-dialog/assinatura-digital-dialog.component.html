@@ -14,13 +14,13 @@
         <span>Limpar</span>
       </button>
 
-      <button mat-raised-button class="button" type="button" (click)="this.gerarImagemAssinatura()">
+      <button mat-raised-button class="button" type="button" (click)="testarCrypto()">
         <span>Assinar</span>
       </button>
     </div>
 
   <div  class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinharDiv">
-    <button mat-raised-button class="button" type="button" (click)="this.salvarImagemAssinatura()">
+    <button mat-raised-button class="button" type="button" (click)="testarCrypto()">
       <span>Assinar</span>
     </button>
 
