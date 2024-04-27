@@ -19,6 +19,7 @@ import {SearchModule} from "../../arquitetura/search-module/search.module";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import { FormTurmaComponent } from './form-turma/form-turma.component';
 import {MatSelectModule} from "@angular/material/select";
+import { InfoTurmaDialogComponent } from './info-turma-dialog/info-turma-dialog.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {MatSelectModule} from "@angular/material/select";
     ListTurmaComponent,
     FormTurmaComponent,
     FormTurmaDialogComponent,
+    InfoTurmaDialogComponent,
   ],
   imports: [
     CommonModule,

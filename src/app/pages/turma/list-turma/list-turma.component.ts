@@ -130,5 +130,19 @@ export class ListTurmaComponent implements OnInit{
 
   }
 
+  openDialog(turmaDto: TurmaDto) {
+    console.log(turmaDto);
+    const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
+      {
+        data:
+          {
+            matricula: turmaDto
+          }
+      })
+    dialogRef.afterClosed().subscribe(() => {
+        this.buscarDados()
+      }
+    )
+  }
 
 }

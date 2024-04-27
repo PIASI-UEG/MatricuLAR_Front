@@ -1,0 +1,73 @@
+<div class="formMov">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
+    <ng-container *ngFor="let dados of turma">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Matrícula</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!--
+          <p>Nome do Aluno: {{ dados.nome }}</p>
+          <p>CPF do Aluno: {{ dados.cpf }}</p>
+          <p>Data de Nascimento: {{ dados.nascimento }}</p>
+          <p>Status do Aluno: {{dados.status}}</p>
+          -->
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Informações da Matrícula</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!--
+          <p>Beneficiário do Governo: {{ dados.informacoesMatricula?.beneficiarioGoverno }}</p>
+          -->
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Advertências</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Necessidades Especiais</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Responsáveis</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Tutores</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container *ngFor="let dadosTutor of tutor">
+            <p>Tutor: {{dadosTutor.pessoaNome}}</p>
+            <p>Telefone do Tutor: {{dadosTutor.telefoneWhatsapp}}</p>
+
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Endereços</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+
+    <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+    </div>
+  </form>
+</div>
