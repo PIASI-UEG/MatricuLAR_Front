@@ -13,6 +13,9 @@ import {
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
 import {InfoMatriculaDialogComponent} from "../info-matricula-dialog/info-matricula-dialog.component";
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import DevExpress from "devextreme";
+import data = DevExpress.data;
 
 @Component({
   selector: 'app-list-matricula',
@@ -29,6 +32,7 @@ export class ListMatriculaComponent implements OnInit{
   qtdRegistros!: number;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
+  matricula!: MatriculaDto;
   constructor(
     public matriculaService: MatriculaControllerService,
     private dialog: MatDialog,
@@ -51,6 +55,7 @@ export class ListMatriculaComponent implements OnInit{
   private buscarDados() {
     this.matriculaService.matriculaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
       this.matriculaListaDataSource.data = data.content;
+      console.log(data.content);
       this.pageSlice = this.matriculaListaDataSource.data;
       this.qtdRegistros = data.totalElements;
     })
@@ -102,8 +107,20 @@ export class ListMatriculaComponent implements OnInit{
 
   }
 
-    imprimirTermodaMatricula(element: any){
-
+    imprimirTermodaMatricula(id: number, cpfTutor: string){
+      this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
+        this.matricula = data;
+        console.log(data);
+        const caminhoDoc = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
+        this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:caminhoDoc})
+          .subscribe(response =>{
+            let blob:Blob = response
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = caminhoDoc;
+            downloadLink.click()
+          })
+      })
     }
 
   openDialog(matriculaDto: MatriculaDto) {

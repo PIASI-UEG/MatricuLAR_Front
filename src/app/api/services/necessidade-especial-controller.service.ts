@@ -216,7 +216,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<NecessidadeEspecialDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerListAllPath, 'get');
     if (params) {
@@ -229,7 +229,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<NecessidadeEspecialDto>>;
       })
     );
   }
@@ -246,10 +246,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<NecessidadeEspecialDto>> {
 
     return this.necessidadeEspecialControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<NecessidadeEspecialDto>>) => r.body as Array<NecessidadeEspecialDto>)
     );
   }
 
@@ -417,6 +417,72 @@ export class NecessidadeEspecialControllerService extends BaseService {
 ): Observable<any> {
 
     return this.necessidadeEspecialControllerSearchFieldsAction$Response(params,context).pipe(
+      map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+  /**
+   * Path part for operation necessidadeEspecialControllerSearchFieldsActionPage
+   */
+  static readonly NecessidadeEspecialControllerSearchFieldsActionPagePath = '/api/v1/necessidade_esp/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `necessidadeEspecialControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  necessidadeEspecialControllerSearchFieldsActionPage$Response(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<any>> {
+
+    const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.query('page', params.page, {});
+      rb.query('size', params.size, {});
+      rb.query('sort', params.sort, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `necessidadeEspecialControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  necessidadeEspecialControllerSearchFieldsActionPage(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<any> {
+
+    return this.necessidadeEspecialControllerSearchFieldsActionPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
