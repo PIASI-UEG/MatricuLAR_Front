@@ -34,6 +34,7 @@ export class ListMatriculaComponent implements OnInit{
   public readonly LIST_NORMAL = "Normal";
   public readonly LIST_VALIDACACAO = "Validar";
   tipoDeListagem: string = this.LIST_NORMAL;
+  matricula!: MatriculaDto;
   constructor(
     public matriculaService: MatriculaControllerService,
     private dialog: MatDialog,
@@ -121,9 +122,21 @@ export class ListMatriculaComponent implements OnInit{
 
   }
 
-    imprimirTermodaMatricula(element: any){
-
-    }
+  imprimirTermodaMatricula(id: number, cpfTutor: string){
+    this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
+      this.matricula = data;
+      console.log(data);
+      const caminhoDoc = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
+      this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:caminhoDoc})
+        .subscribe(response =>{
+          let blob:Blob = response
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(blob);
+          downloadLink.download = caminhoDoc;
+          downloadLink.click()
+        })
+    })
+  }
 
   openDialog(matriculaDto: MatriculaDto) {
     console.log(matriculaDto);
