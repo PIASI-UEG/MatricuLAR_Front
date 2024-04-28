@@ -27,7 +27,6 @@ import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
 export class FormMatriculaComponent implements OnInit{
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
-
   formGroup!: FormGroup;
   currentStep: number = 1; // Controla a etapa atual
   public readonly ACAO_INCLUIR = "Cadastrar";
