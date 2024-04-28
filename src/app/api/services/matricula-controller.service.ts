@@ -607,9 +607,69 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation matriculaControllerUploadDocumentos
+   */
+  static readonly MatriculaControllerUploadDocumentosPath = '/api/v1/matricula/documentos';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerUploadDocumentos()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  matriculaControllerUploadDocumentos$Response(params: {
+    idMatricula: number;
+    body: {
+'multipartFile'?: Array<Blob>;
+}
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<MatriculaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerUploadDocumentosPath, 'post');
+    if (params) {
+      rb.query('idMatricula', params.idMatricula, {});
+      rb.body(params.body, 'multipart/form-data');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<MatriculaDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerUploadDocumentos$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  matriculaControllerUploadDocumentos(params: {
+    idMatricula: number;
+    body: {
+'multipartFile'?: Array<Blob>;
+}
+  },
+  context?: HttpContext
+
+): Observable<MatriculaDto> {
+
+    return this.matriculaControllerUploadDocumentos$Response(params,context).pipe(
+      map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
+    );
+  }
+
+  /**
    * Path part for operation matriculaControllerUploadDocumento
    */
-  static readonly MatriculaControllerUploadDocumentoPath = '/api/v1/matricula/documentos';
+  static readonly MatriculaControllerUploadDocumentoPath = '/api/v1/matricula/documento';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -900,6 +960,63 @@ export class MatriculaControllerService extends BaseService {
 
     return this.matriculaControllerGetMatriculaVisualizar$Response(params,context).pipe(
       map((r: StrictHttpResponse<MatriculaVisualizarDto>) => r.body as MatriculaVisualizarDto)
+    );
+  }
+
+  /**
+   * Path part for operation matriculaControllerListarAlunosPorTurma
+   */
+  static readonly MatriculaControllerListarAlunosPorTurmaPath = '/api/v1/matricula/listar-por-turma';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerListarAlunosPorTurma()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerListarAlunosPorTurma$Response(params: {
+    idTurma: number;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<Array<MatriculaListagemDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerListarAlunosPorTurmaPath, 'get');
+    if (params) {
+      rb.query('idTurma', params.idTurma, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<MatriculaListagemDto>>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerListarAlunosPorTurma$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerListarAlunosPorTurma(params: {
+    idTurma: number;
+  },
+  context?: HttpContext
+
+): Observable<Array<MatriculaListagemDto>> {
+
+    return this.matriculaControllerListarAlunosPorTurma$Response(params,context).pipe(
+      map((r: StrictHttpResponse<Array<MatriculaListagemDto>>) => r.body as Array<MatriculaListagemDto>)
     );
   }
 
