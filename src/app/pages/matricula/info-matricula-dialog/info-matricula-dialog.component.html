@@ -1,16 +1,15 @@
 <div class="formMov">
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
         <div class="card-container">
-        <ng-container *ngFor="let dados of matricula">
             <mat-card class="matricula-card">
                 <mat-card-header>
                     <mat-card-title>Matrícula</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    <p>Nome do Aluno: {{ dados.nome }}</p>
-                    <p>CPF do Aluno: {{ dados.cpf }}</p>
-                    <p>Data de Nascimento: {{ dados.nascimento }}</p>
-                    <p>Status do Aluno: {{ dados.status }}</p>
+                    <p><strong>Nome do Aluno:</strong> {{ nomeAluno }}</p>
+                    <p><strong>CPF do Aluno:</strong> {{ cpfAluno }}</p>
+                    <p><strong>Data de Nascimento:</strong> {{ nascimento }}</p>
+                    <p><strong>Status do Aluno:</strong> {{ statusAluno }}</p>
                 </mat-card-content>
             </mat-card>
             <mat-card class="tutores-card">
@@ -18,8 +17,8 @@
                     <mat-card-title>Tutores</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                        <p>Tutor:</p>
-                        <p>Telefone do Tutor:</p>
+                    <p><strong>Tutor:</strong> {{ tutoresNomes }}</p>
+                    <p><strong>Telefone do Tutor:</strong> {{ tutoresTelefone }}</p>
                 </mat-card-content>
             </mat-card>
             <mat-card class ="responsaveis-card">
@@ -27,10 +26,9 @@
                     <mat-card-title>Responsáveis</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    <p>Responsáveis Permitidos:</p>
+                    <p><strong>Responsáveis Permitidos:</strong>{{responsaveisNome}}</p>
                 </mat-card-content>
             </mat-card>
-        </ng-container>
         </div>
         <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
