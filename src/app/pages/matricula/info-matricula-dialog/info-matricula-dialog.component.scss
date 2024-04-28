@@ -4,7 +4,11 @@
   width: 80%;
   margin: 0 auto;
   padding: 20px;
+  text-align: center;
+}
 
+.formMov h1{
+  margin-bottom: 20px;
 }
 
 .formMov mat-card {
@@ -19,6 +23,7 @@
   border: 3px solid #B2DFFF;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
 .card-container {
@@ -45,6 +50,7 @@
 
 .matricula-card, .tutores-card, .responsaveis-card {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .btn-mov {
