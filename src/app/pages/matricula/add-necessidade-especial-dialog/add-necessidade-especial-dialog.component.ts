@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
@@ -9,6 +9,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NecessidadeEspecialControllerService } from '../../../api/services/necessidade-especial-controller.service';
 import {MatriculaVisualizarDto} from "../../../api/models/matricula-visualizar-dto";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {UsuarioDto} from "../../../api/models/usuario-dto";
+import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
 
 @Component({
     selector: 'app-add-necessidade-especial-dialog',
@@ -49,9 +52,9 @@ export class AddNecessidadeEspecialDialogComponent implements OnInit {
 
     criaFormulario() {
         this.formGroup = this.formBuilder.group({
-            id: [],
-            observacoes: [],
-            titulo: []
+            id: [null, Validators.required],
+            titulo: [null, Validators.required],
+            observacoes: [null, Validators.required],
         });
     }
 
@@ -72,22 +75,41 @@ export class AddNecessidadeEspecialDialogComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.formGroup.valid) {
-            const necessidadeEspecialData = this.formGroup.value;
-            this.necessidadeService.necessidadeEspecialControllerIncluir(necessidadeEspecialData).subscribe(
-                (response) => {
-                    console.log('Necessidade especial incluída com sucesso!', response);
+        this.incluirNecessidade();
+    }
+
+    private incluirNecessidade() {
+        console.log("Dados da Necessidade:", this.formGroup.value);
+        const necessidadeEspecialData = this.formGroup.value;
+        this.necessidadeService.necessidadeEspecialControllerIncluir(necessidadeEspecialData)
+            .subscribe(retorno => {
+                console.log("Retorno da inclusão da necessidade especial:", retorno);
+            }, erro => {
+                console.error("Erro ao incluir necessidade especial:", erro);
+            });
+    }
+
+    confirmarAcao(necessidadeDto: NecessidadeEspecialDto) {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Cadastro!',
+                mensagem: `Ação de dados: ${necessidadeDto.titulo} realizada com sucesso!`,
+                textoBotoes: {
+                    ok: 'Confirmar',
                 },
-                (error) => {
-                    console.error('Erro ao incluir necessidade especial', error);
-                }
-            );
-        } else {
-            console.error('O formulário não é válido. Verifique os campos.');
-        }
+            },
+        });
     }
 
     fechar(): void {
         this.dialogRef.close();
     }
+
+    public handleError = (controlName: string, errorName: string) => {
+        return this.formGroup.controls[controlName].hasError(errorName);
+    };
+    public handleErrorForm = (errorName: string) => {
+        const formGroup = this.formGroup;
+        return formGroup.hasError(errorName);
+    };
 }

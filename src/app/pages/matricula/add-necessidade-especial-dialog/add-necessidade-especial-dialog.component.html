@@ -3,16 +3,16 @@
         <h1><strong>Necessidade Especial do Aluno: {{ nomeAluno }}</strong></h1>
         <div fxLayout="row" fxLayoutAlign="center">
             <mat-form-field>
-                <mat-label>Observações</mat-label>
-                <input matInput formControlName="observacoes">
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="titulo">
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Título</mat-label>
-                <input matInput formControlName="titulo">
+                <mat-label>Descrição</mat-label>
+                <input matInput formControlName="observacoes">
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="center">
-            <button mat-raised-button color="primary" type="submit">Salvar</button>
+            <button mat-raised-button type="submit">Salvar</button>
         </div>
     </form>
 </div>
