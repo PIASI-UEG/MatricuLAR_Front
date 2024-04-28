@@ -1,0 +1,23 @@
+<ng-container *ngIf="this.firstClickNecessidades()">
+    <div formArrayName="necessidadesEspeciais">
+        <div fxLayout="row" fxLayoutAlign="center"
+             *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+            <mat-form-field>
+                <mat-label>Necessidade especial</mat-label>
+                <input matInput formControlName="necessidadeEspecial"
+                       placeholder="EX: alergia, medicamentos, alimentação">
+                <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Desmarque ou preencha para
+                    continuar
+                </mat-error>
+            </mat-form-field>
+
+            <button mat-icon-button (click)="removerCampoNecessidade(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+    <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade()">
+        <mat-icon>add</mat-icon>
+        Adicionar necessidade
+    </button>
+</ng-container>

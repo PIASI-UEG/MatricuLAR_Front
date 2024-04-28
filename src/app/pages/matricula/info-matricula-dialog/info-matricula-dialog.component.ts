@@ -7,6 +7,10 @@ import { SecurityService } from "../../../arquitetura/security/security.service"
 import {MatriculaVisualizarDto} from "../../../api/models/matricula-visualizar-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {DateAdapter} from "@angular/material/core";
+import {MatriculaDto} from "../../../api/models/matricula-dto";
+import {
+    AddNecessidadeEspecialDialogComponent
+} from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -79,6 +83,17 @@ export class InfoMatriculaDialogComponent implements OnInit {
         );
     }
 
+    adicionarNecessidade() {
+        this.dialogRef.close();
+
+        const dialogRef = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
+            width: '400px',
+            data: {}
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('O diálogo foi fechado');
+        });
+    }
 
 
     fechar(): void {

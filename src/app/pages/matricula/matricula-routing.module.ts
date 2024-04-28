@@ -5,6 +5,9 @@ import {ListMatriculaComponent} from "./list-matricula/list-matricula.component"
 import {FormMatriculaComponent} from "./form-matricula/form-matricula.component";
 import {ImprimirTermoComponent} from "../imprimir-termo/imprimir-matricula/imprimir-termo.component";
 import {SecurityGuard} from "../../arquitetura/security/security.guard";
+import {
+    AddNecessidadeEspecialDialogComponent
+} from "./add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
 
 
 export const matriculaRoutes: Routes = [
