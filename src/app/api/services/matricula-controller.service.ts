@@ -541,75 +541,69 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation matriculaControllerSearchFieldsActionPage
+   * Path part for operation matriculaControllerUploadDocumentos
    */
-  static readonly MatriculaControllerSearchFieldsActionPagePath = '/api/v1/matricula/search-fields/page';
+  static readonly MatriculaControllerUploadDocumentosPath = '/api/v1/matricula/documentos';
 
   /**
-   * Realiza a busca pelos valores dos campos informados
-   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `matriculaControllerSearchFieldsActionPage()` instead.
+   * To access only the response body, use `matriculaControllerUploadDocumentos()` instead.
    *
-   * This method sends `application/json` and handles request body of type `application/json`.
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  matriculaControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
+  matriculaControllerUploadDocumentos$Response(params: {
+    idMatricula: number;
+    body: {
+'multipartFile'?: Array<Blob>;
+}
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<MatriculaDto>> {
 
-    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerSearchFieldsActionPagePath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerUploadDocumentosPath, 'post');
     if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
+      rb.query('idMatricula', params.idMatricula, {});
+      rb.body(params.body, 'multipart/form-data');
     }
 
     return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
+      responseType: 'blob',
+      accept: '*/*',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<MatriculaDto>;
       })
     );
   }
 
   /**
-   * Realiza a busca pelos valores dos campos informados
-   *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `matriculaControllerSearchFieldsActionPage$Response()` instead.
+   * To access the full response (for headers, for example), `matriculaControllerUploadDocumentos$Response()` instead.
    *
-   * This method sends `application/json` and handles request body of type `application/json`.
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  matriculaControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
+  matriculaControllerUploadDocumentos(params: {
+    idMatricula: number;
+    body: {
+'multipartFile'?: Array<Blob>;
+}
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<MatriculaDto> {
 
-    return this.matriculaControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+    return this.matriculaControllerUploadDocumentos$Response(params,context).pipe(
+      map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
     );
   }
 
   /**
    * Path part for operation matriculaControllerUploadDocumento
    */
-  static readonly MatriculaControllerUploadDocumentoPath = '/api/v1/matricula/documentos';
+  static readonly MatriculaControllerUploadDocumentoPath = '/api/v1/matricula/documento';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -900,6 +894,63 @@ export class MatriculaControllerService extends BaseService {
 
     return this.matriculaControllerGetMatriculaVisualizar$Response(params,context).pipe(
       map((r: StrictHttpResponse<MatriculaVisualizarDto>) => r.body as MatriculaVisualizarDto)
+    );
+  }
+
+  /**
+   * Path part for operation matriculaControllerListarAlunosPorTurma
+   */
+  static readonly MatriculaControllerListarAlunosPorTurmaPath = '/api/v1/matricula/listar-por-turma';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerListarAlunosPorTurma()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerListarAlunosPorTurma$Response(params: {
+    idTurma: number;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<Array<MatriculaListagemDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerListarAlunosPorTurmaPath, 'get');
+    if (params) {
+      rb.query('idTurma', params.idTurma, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<MatriculaListagemDto>>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerListarAlunosPorTurma$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerListarAlunosPorTurma(params: {
+    idTurma: number;
+  },
+  context?: HttpContext
+
+): Observable<Array<MatriculaListagemDto>> {
+
+    return this.matriculaControllerListarAlunosPorTurma$Response(params,context).pipe(
+      map((r: StrictHttpResponse<Array<MatriculaListagemDto>>) => r.body as Array<MatriculaListagemDto>)
     );
   }
 

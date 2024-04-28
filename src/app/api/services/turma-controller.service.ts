@@ -264,10 +264,10 @@ export class TurmaControllerService extends BaseService {
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `turmaControllerIncluir()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   turmaControllerIncluir$Response(params: {
-    modeloDTO: TurmaDto;
+    body: TurmaDto
   },
   context?: HttpContext
 
@@ -275,7 +275,7 @@ export class TurmaControllerService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerIncluirPath, 'post');
     if (params) {
-      rb.query('modeloDTO', params.modeloDTO, {});
+      rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
@@ -296,10 +296,10 @@ export class TurmaControllerService extends BaseService {
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `turmaControllerIncluir$Response()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   turmaControllerIncluir(params: {
-    modeloDTO: TurmaDto;
+    body: TurmaDto
   },
   context?: HttpContext
 
@@ -417,72 +417,6 @@ export class TurmaControllerService extends BaseService {
 ): Observable<any> {
 
     return this.turmaControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
-    );
-  }
-
-  /**
-   * Path part for operation turmaControllerSearchFieldsActionPage
-   */
-  static readonly TurmaControllerSearchFieldsActionPagePath = '/api/v1/turma/search-fields/page';
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerSearchFieldsActionPage()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  turmaControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<any>> {
-
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerSearchFieldsActionPagePath, 'post');
-    if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
-      })
-    );
-  }
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerSearchFieldsActionPage$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  turmaControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<any> {
-
-    return this.turmaControllerSearchFieldsActionPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
