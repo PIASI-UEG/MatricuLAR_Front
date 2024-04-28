@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-add-aluno-turma-dialog',
@@ -14,6 +15,10 @@ import {SecurityService} from "../../../arquitetura/security/security.service";
 export class AddAlunoTurmaDialogComponent {
   turma?: TurmaDto;
   turmaID: number;
+  formGroup!: FormGroup;
+  public readonly ACAO_INCLUIR = "Cadastrar";
+  public readonly ACAO_EDITAR = "Editar";
+  acao: string = this.ACAO_INCLUIR;
   private turmaListaDataSource: any;
 
   constructor(
@@ -44,6 +49,12 @@ export class AddAlunoTurmaDialogComponent {
   }
 
   onSubmit() {
-    // Lógica de envio do formulário, se necessário
+  }
+
+  limparFormulario(){
+      this.formGroup.reset();
+      this.formGroup.patchValue({
+          usuarioId: this.securityService.getUserId()
+      });
   }
 }
