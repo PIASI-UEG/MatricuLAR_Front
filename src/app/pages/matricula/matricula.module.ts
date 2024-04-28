@@ -40,7 +40,7 @@ import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especia
     HomeMatriculaComponent,
     ListMatriculaComponent,
     InfoMatriculaDialogComponent,
-    AddNecessidadeEspecialDialogComponent
+    AddNecessidadeEspecialDialogComponent,
   ],
     imports: [
         CommonModule,
