@@ -1,37 +1,44 @@
 <div class="formMov">
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
+        <h1><strong>Dados da Matrícula</strong></h1>
         <div class="card-container">
-            <mat-card class="matricula-card">
-                <mat-card-header>
-                    <mat-card-title>Matrícula</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <p><strong>Nome do Aluno:</strong> {{ nomeAluno }}</p>
-                    <p><strong>CPF do Aluno:</strong> {{ cpfAluno }}</p>
-                    <p><strong>Data de Nascimento:</strong> {{ nascimento }}</p>
-                    <p><strong>Status do Aluno:</strong> {{ statusAluno }}</p>
-                </mat-card-content>
-            </mat-card>
-            <mat-card class="tutores-card">
-                <mat-card-header>
-                    <mat-card-title>Tutores</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <p><strong>Tutor:</strong> {{ tutoresNomes }}</p>
-                    <p><strong>Telefone do Tutor:</strong> {{ tutoresTelefone }}</p>
-                </mat-card-content>
-            </mat-card>
-            <mat-card class ="responsaveis-card">
-                <mat-card-header>
-                    <mat-card-title>Responsáveis</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <p><strong>Responsáveis Permitidos:</strong>{{responsaveisNome}}</p>
-                </mat-card-content>
-            </mat-card>
+            <div class="imagem-card">
+                <img src="{{caminhoImagem ? caminhoImagem : 'assets/logos/foto_crianca.png' }}" alt="Imagem" class="imagem">
+            </div>
+            <div class="content-container">
+                <mat-card class="matricula-card">
+                    <mat-card-header>
+                        <mat-card-title>Dados do Aluno</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p><strong>Nome do Aluno:</strong> {{ nomeAluno }}</p>
+                        <p><strong>CPF do Aluno:</strong> {{ cpfAluno }}</p>
+                        <p><strong>Data de Nascimento:</strong> {{ nascimento }}</p>
+                        <p><strong>Status do Aluno:</strong> {{ statusAluno }}</p>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+                <mat-card class="tutores-card">
+                    <mat-card-header>
+                        <mat-card-title>Tutores</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p><strong>Tutor:</strong> {{tutoresNomes}}</p>
+                        <p><strong>Telefone do Tutor:</strong> {{ tutoresTelefone }}</p>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class ="responsaveis-card">
+                    <mat-card-header>
+                        <mat-card-title>Responsáveis</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p><strong>Responsáveis Permitidos:</strong>{{responsaveisNome}}</p>
+                    </mat-card-content>
+                </mat-card>
         </div>
         <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+            <button mat-raised-button type="button" class="button botao-voltar" >Adicionar</button>
         </div>
     </form>
 </div>

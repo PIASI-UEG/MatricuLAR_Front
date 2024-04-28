@@ -1,8 +1,14 @@
 @import '../../../../StyleForms.css';
 
+.formMov {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+
+}
+
 .formMov mat-card {
   background-color: #F5F7FA;
-  border: 3px solid #B2DFFF;
   padding-top: 10px;
   padding-bottom: 10px;
   width: 95%;
@@ -10,45 +16,44 @@
   margin-bottom: 20px;
   max-width: 900px;
   border-radius: 10px;
+  border: 3px solid #B2DFFF;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.formMov {
-  width: 90%;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.form {
-  width: 100%;
-}
-
 .card-container {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.imagem-card {
+  width: 30%;
+  margin-right: 10px;
+  border-radius: 10px;
+  border: 3px solid #B2DFFF;
+}
+
+.imagem-card img {
+  max-width: 100%;
+}
+
+.content-container {
+  width: 65%;
 }
 
 .matricula-card, .tutores-card, .responsaveis-card {
-  width: calc(33.33% - 10px);
   margin-bottom: 20px;
 }
 
-.matricula-card {
-  margin-right: auto;
-}
-
-.tutores-card {
-  margin-left: auto;
+.btn-mov {
+  margin-top: 20px;
 }
 
 @media (max-width: 959px) {
-  .matricula-card, .tutores-card, .responsaveis-card {
+  .imagem-card, .content-container {
     width: 100%;
     margin-right: 0;
-    margin-left: 0;
   }
 }
-
-

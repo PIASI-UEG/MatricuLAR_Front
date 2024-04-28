@@ -17,6 +17,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
     matricula: MatriculaVisualizarDto[] = [];
     formGroup!: FormGroup;
     dados: any;
+    caminhoImagem: string = '';
     nomeAluno: string = '';
     cpfAluno: string = '';
     nascimento: string = '';
@@ -38,7 +39,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
-        this.dados = data
+        this.dados = data;
     }
 
     ngOnInit(): void {
@@ -59,6 +60,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
         this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: matricula.id }).subscribe(
             (response: MatriculaVisualizarDto) => {
+                this.caminhoImagem = response.caminhoImagem ?? '';
                 this.nomeAluno = response.nomeAluno ?? '';
                 this.cpfAluno = response.cpfAluno ?? '';
                 this.nascimento = response.nascimento ?? '';
