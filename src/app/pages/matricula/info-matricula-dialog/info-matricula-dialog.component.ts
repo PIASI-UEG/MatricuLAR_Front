@@ -1,24 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SecurityService } from "../../../arquitetura/security/security.service";
-import { forkJoin } from 'rxjs';
-import { MatriculaControllerService } from "../../../api/services/matricula-controller.service";
-import { InformacoesMatriculaControllerService } from "../../../api/services/informacoes-matricula-controller.service";
-import { AdvertenciaControllerService } from "../../../api/services/advertencia-controller.service";
-import { NecessidadeEspecialControllerService } from "../../../api/services/necessidade-especial-controller.service";
-import { ResponsavelControllerService } from "../../../api/services/responsavel-controller.service";
-import { TutorControllerService } from "../../../api/services/tutor-controller.service";
-import { EnderecoControllerService } from "../../../api/services/endereco-controller.service";
-import { MatriculaDto } from "../../../api/models/matricula-dto";
-import { InformacoesMatriculaDto } from "../../../api/models/informacoes-matricula-dto";
-import { AdvertenciaDto } from "../../../api/models/advertencia-dto";
-import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial-dto";
-import { ResponsavelDto } from "../../../api/models/responsavel-dto";
-import { TutorDto } from "../../../api/models/tutor-dto";
-import { EnderecoDto } from "../../../api/models/endereco-dto";
+import {MatriculaVisualizarDto} from "../../../api/models/matricula-visualizar-dto";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {DateAdapter} from "@angular/material/core";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -26,68 +14,75 @@ import { EnderecoDto } from "../../../api/models/endereco-dto";
     styleUrls: ['./info-matricula-dialog.component.scss']
 })
 export class InfoMatriculaDialogComponent implements OnInit {
-    matricula: MatriculaDto[] = [];
-    informacoesMatricula: InformacoesMatriculaDto[] = [];
-    advertencia: AdvertenciaDto[] = [];
-    necessidadeEspecial: NecessidadeEspecialDto[] = [];
-    responsavel: ResponsavelDto[] = [];
-    tutor: TutorDto[] = [];
-    endereco: EnderecoDto[] = [];
+    matricula: MatriculaVisualizarDto[] = [];
     formGroup!: FormGroup;
+    dados: any;
+    nomeAluno: string = '';
+    cpfAluno: string = '';
+    nascimento: string = '';
+    statusAluno: string = '';
+    tutoresNomes: string[] = [];
+    tutoresTelefone: string[] = [];
+    responsaveisNome: string[] = [];
 
     constructor(
         private formBuilder: FormBuilder,
-        public matriculaService: MatriculaControllerService,
-        public informacoesService: InformacoesMatriculaControllerService,
-        public advertenciaService: AdvertenciaControllerService,
-        public necessidadeEspecialService: NecessidadeEspecialControllerService,
-        public responsavelService: ResponsavelControllerService,
-        public tutorService: TutorControllerService,
-        public enderecoService: EnderecoControllerService,
+        private _adapter: DateAdapter<any>,
+        private matriculas: MatriculaControllerService,
         private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
         private dialog: MatDialog,
         private router: Router,
+        private route: ActivatedRoute,
         private snackBar: MatSnackBar,
         private securityService: SecurityService,
-        @Inject(MAT_DIALOG_DATA) data: any
+        @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-        this.matricula = data.matricula;
+        this._adapter.setLocale('pt-br');
+        this.dados = data
     }
 
     ngOnInit(): void {
-        this.listarMatricula();
+        this.visualizacao();
     }
 
-    private listarMatricula() {
-        forkJoin([
-            this.matriculaService.matriculaControllerListAll(),
-            this.informacoesService.informacoesMatriculaControllerListAll(),
-            this.advertenciaService.advertenciaControllerListAll(),
-            this.necessidadeEspecialService.necessidadeEspecialControllerListAll(),
-            this.responsavelService.responsavelControllerListAll(),
-            this.tutorService.tutorControllerListAll(),
-            this.enderecoService.enderecoControllerListAll()
-        ]).subscribe(
-            ([matriculas, informacoes, advertencias, necessidades, responsaveis, tutores, enderecos]) => {
-                this.matricula = matriculas as MatriculaDto[];
-                this.informacoesMatricula = informacoes as InformacoesMatriculaDto[];
-                this.advertencia = advertencias as AdvertenciaDto[];
-                this.necessidadeEspecial = necessidades as NecessidadeEspecialDto[];
-                this.responsavel = responsaveis as ResponsavelDto[];
-                this.tutor = tutores as TutorDto[];
-                this.endereco = enderecos as EnderecoDto[];
+    private visualizacao(){
+        const matricula = this.dados.matricula;
+
+        if (!matricula) {
+            console.error('Dados da matrícula não fornecidos');
+            this.snackBar.open('Dados da matrícula não fornecidos', 'Fechar', {
+                duration: 3000,
+            });
+            this.fechar();
+            return;
+        }
+
+        this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: matricula.id }).subscribe(
+            (response: MatriculaVisualizarDto) => {
+                this.nomeAluno = response.nomeAluno ?? '';
+                this.cpfAluno = response.cpfAluno ?? '';
+                this.nascimento = response.nascimento ?? '';
+                this.statusAluno = response.statusAluno ?? '';
+                this.tutoresNomes = response.tutoresNomes ?? [];
+                this.tutoresTelefone = response.tutoresTelefone ?? [];
+                this.responsaveisNome = response.responsaveisNome ?? [];
             },
-            error => {
-                console.error('Ocorreu um erro ao obter os dados:', error);
+            (error) => {
+                console.error('Erro ao obter os dados da matrícula:', error);
+                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
+                    duration: 3000,
+                });
+                this.fechar();
             }
         );
     }
+
+
 
     fechar(): void {
         this.dialogRef.close();
     }
 
     onSubmit() {
-        // Lógica de envio do formulário, se necessário
     }
 }

@@ -1,1 +1,54 @@
 @import '../../../../StyleForms.css';
+
+.formMov mat-card {
+  background-color: #F5F7FA;
+  border: 3px solid #B2DFFF;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 95%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  max-width: 900px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formMov {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.form {
+  width: 100%;
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.matricula-card, .tutores-card, .responsaveis-card {
+  width: calc(33.33% - 10px);
+  margin-bottom: 20px;
+}
+
+.matricula-card {
+  margin-right: auto;
+}
+
+.tutores-card {
+  margin-left: auto;
+}
+
+@media (max-width: 959px) {
+  .matricula-card, .tutores-card, .responsaveis-card {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+
