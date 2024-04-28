@@ -16,7 +16,7 @@ import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
 export class InfoTurmaDialogComponent {
   turma?: TurmaDto;
   turmaID: number;
-  alunosNaTurma?: Array<MatriculaListagemDto>;
+  alunosNaTurma: Array<MatriculaListagemDto> = [];
 
   constructor(
     public turmaService: TurmaControllerService,
@@ -47,7 +47,7 @@ export class InfoTurmaDialogComponent {
     this.matriculaService.matriculaControllerListarAlunosPorTurma({idTurma: this.turmaID}).subscribe(
       (data) => {
         this.alunosNaTurma = data;
-        console.log("OK"+this.alunosNaTurma);
+        console.log(this.alunosNaTurma[0]);
       },
       (error) => {
         console.error('Erro ao buscar dados dos alunos na turma:', error);
