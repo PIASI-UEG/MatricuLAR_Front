@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Inject, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Validacoes} from "../../../../Validacoes";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
@@ -6,13 +6,14 @@ import SignaturePad, {PointGroup} from "signature_pad";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {JSONWebKeySet, JWK} from "jose";
 
 @Component({
   selector: 'app-assinatura-digital-dialog',
   templateUrl: './assinatura-digital-dialog.component.html',
   styleUrls: ['./assinatura-digital-dialog.component.scss']
 })
-export class AssinaturaDigitalDialogComponent implements AfterViewInit {
+export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
   mensagens = new MensagensUniversais({
     dialog: this.dialog,
     dialogRefParameter: this.dialogRef,
@@ -37,6 +38,13 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
     dialogRef.disableClose = true;
   }
 
+  ngOnInit() {
+    this.matriculaContrller.matriculaControllerGeraTermo({cpfCrianca: "12345678922"})
+      .subscribe( (response: Blob) => {
+        this.fileTermo = new File([response], "Termo-Responsabilidade12345678922.pdf", { type: response.type });
+      });
+  }
+
   ngAfterViewInit() {
     this.ativarCanva();
   }
@@ -44,9 +52,7 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
   ativarCanva() {
     if (this.canvas && this.canvas.nativeElement) {
       this.sig = new SignaturePad(this.canvas.nativeElement);
-      console.log("CHEGOU AQUI")
     }
-    console.log("NAO FUNCIONA" + this.canvas, this.canvas?.nativeElement)
   }
 
   clearCanvas() {
@@ -107,6 +113,7 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
   }
 
   async testarCrypto() {
+    const { subtle } = globalThis.crypto;
     //https://nodejs.org/api/webcrypto.html
     try {
       // Gerar o par de chaves RSA
@@ -114,22 +121,8 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
 
 
       const imgAss = this.gerarImagemAssinatura()
-      // fazer uma requisicao passando a imagem da assinatura com o cpf
-      // retornar o termo com a assinaura e o carimbo de data e hora prontos como esta
-      // this.matriculaContrller.matriculaControllerUploadTermoAssinado({idMatricula: 1, body: imgAss}).subscribe()
-      this.matriculaContrller.matriculaControllerGetTermo({caminhodoc: "Termo-Responsabilidade-12345678922.pdf"})
-        .subscribe( (response: Blob) => {
-        this.fileTermo = new File([response], "Termo-Responsabilidade-Assinado12345678922.pdf", { type: response.type });
-      });
-      // this.matriculaContrller.matriculaControllerGetTermoAssinado({caminhodoc: "Termo-Responsabilidade-Assinado12345678922.pdf"})
-      //   .subscribe((response: Blob) => {
-      //     this.fileTermo = new File([response], "Termo-Responsabilidade-Assinado12345678922.pdf", { type: response.type });
-      //   });
 
       if(this.fileTermo) {
-        // apos isso assinar o documento digitalmente e fazer o hash que sera criptografado com a chave privada
-
-        const selectedFile = this.makeURLFile(this.fileTermo);
         // gerando hash de documento
         const hashString = await this.calcularHashSHA256(this.fileTermo);
 
@@ -137,13 +130,30 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
         const assinatura = await this.sign(privateKey, hashString)
 
         // PDF assinado
-        await this.assinaPDF(imgAss, assinatura)
+        const blobArq = await this.assinaPDF(imgAss, assinatura)
+
+
         // mandar esse PDF com a assinatura e a chave publica para o back
         // ele vai guardar esse PDF assinado e a chave publica em uma tabela
+        const publicKeyJWK = await subtle.exportKey('jwk', publicKey);
+        //
+        // const passarChavePublica = {
+        //   encoded: publicKeyJWK.n,
+        //   algorithm: publicKeyJWK.alg,
+        //   format: 'jwk'
+        // };
+        //
+        console.log("public",publicKeyJWK)
+        this.matriculaContrller.matriculaControllerUploadTermo(
+          {cpfCrianca:"12345678922", body:{multipartFile:blobArq}, chavePub: JSON.stringify(publicKeyJWK) })
+          .subscribe(retorno =>{
+            console.log(retorno)
+          })
         // apos isso fazer uma funcao no back que recebe um pdf e verifica se ele foi assinado pelo sistema da creche
         // o arquivo de termo estara no back entao fazer um hash dele, depois usar chave publica para descriptografar o hash e testar se conferem
 
-        console.log("hash", hashString)
+        // console.log("hash", hashString)
+
       }
       // Sem um certificado digital emitido por uma autoridade de certificação (CA), a abordagem mais comum para implementar uma assinatura digital em um PDF é usar uma chave privada para assinar o documento. Aqui está uma sequência de passos simplificada para realizar isso:
       //
@@ -171,7 +181,6 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
   async assinaPDF(URLAss: string, assinatura: ArrayBuffer) {
     //https://pdf-lib.js.org/
     const { PDFDocument } = require('pdf-lib');
-    const axios = require('axios');
     const imgBuffer = Uint8Array.from(atob(URLAss), c => c.charCodeAt(0)).buffer
 
     const pdfDoc = await PDFDocument.load( await this.fileTermo.arrayBuffer());
@@ -180,7 +189,7 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
     const page = pdfDoc.getPages()[pdfDoc.getPageCount() - 1];
     const pngDims = pngImage.scale(0.5);
     const x = page.getWidth() / 2 - pngDims.width / 2;
-    const y = pngDims.height + 40; // Distância da margem inferior
+    const y = pngDims.height + 40;
     page.drawImage(pngImage, {
       x: x,
       y: y,
@@ -216,6 +225,8 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
 
     // Limpa o URL blob criado
     URL.revokeObjectURL(url);
+
+    return blob
   }
 
   // funcao para calcular hash do arquivo gerado
@@ -230,7 +241,7 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
 
   // funcao para gerar url do arquivo
   private makeURLFile(file: any) {
-    const fileUrl = URL.createObjectURL(file); // Obter o URL do arquivo
+    const fileUrl = URL.createObjectURL(file);
     return fileUrl as string;
   }
 
@@ -259,9 +270,9 @@ export class AssinaturaDigitalDialogComponent implements AfterViewInit {
       hash,
     }, true, ['sign', 'verify']);
 
+
     return {publicKey, privateKey};
   }
-
 
 }
 
