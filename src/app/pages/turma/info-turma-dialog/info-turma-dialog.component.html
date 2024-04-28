@@ -16,8 +16,13 @@
         <mat-card-header>
           <mat-card-title>Alunos na turma</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
 
+        <mat-card-content>
+          <ul>
+            <li *ngFor="let aluno of alunosNaTurma">
+              {{ aluno.nomeAluno }} - Matrícula: {{ aluno.nroMatricula }}
+            </li>
+          </ul>
         </mat-card-content>
       </mat-card>
 

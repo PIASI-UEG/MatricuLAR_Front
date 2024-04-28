@@ -5,6 +5,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {TurmaDto} from "../../../api/models/turma-dto";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
 
 @Component({
   selector: 'app-info-turma-dialog',
@@ -14,9 +16,11 @@ import {TurmaControllerService} from "../../../api/services/turma-controller.ser
 export class InfoTurmaDialogComponent {
   turma?: TurmaDto;
   turmaID: number;
+  alunosNaTurma?: Array<MatriculaListagemDto>;
 
   constructor(
     public turmaService: TurmaControllerService,
+    public matriculaService: MatriculaControllerService,
     private dialogRef: MatDialogRef<InfoTurmaDialogComponent>,
     private dialog: MatDialog,
     private router: Router,
@@ -35,10 +39,18 @@ export class InfoTurmaDialogComponent {
     this.turmaService.turmaControllerObterPorId({id: this.turmaID}).subscribe(
       (data) => {
         this.turma = data;
-        console.log(data);
       },
       (error) => {
         console.error('Erro ao buscar dados da turma:', error);
+      }
+    );
+    this.matriculaService.matriculaControllerListarAlunosPorTurma({idTurma: this.turmaID}).subscribe(
+      (data) => {
+        this.alunosNaTurma = data;
+        console.log("OK"+this.alunosNaTurma);
+      },
+      (error) => {
+        console.error('Erro ao buscar dados dos alunos na turma:', error);
       }
     );
   }
