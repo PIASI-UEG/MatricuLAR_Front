@@ -41,7 +41,9 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.matriculaContrller.matriculaControllerGeraTermo({cpfCrianca: "12345678922"})
       .subscribe( (response: Blob) => {
-        this.fileTermo = new File([response], "Termo-Responsabilidade12345678922.pdf", { type: response.type });
+
+        this.fileTermo = new File([response], "Termo-Responsabilidade12345678922.pdf", { type: 'application/pdf' });
+        console.log("Termo file ", this.fileTermo)
       });
   }
 
@@ -125,6 +127,7 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
       if(this.fileTermo) {
         // gerando hash de documento
         const hashString = await this.calcularHashSHA256(this.fileTermo);
+        console.log("publicHash", hashString)
 
         // assinando documento
         const assinatura = await this.sign(privateKey, hashString)
@@ -136,19 +139,17 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
         // mandar esse PDF com a assinatura e a chave publica para o back
         // ele vai guardar esse PDF assinado e a chave publica em uma tabela
         const publicKeyJWK = await subtle.exportKey('jwk', publicKey);
-        //
-        // const passarChavePublica = {
-        //   encoded: publicKeyJWK.n,
-        //   algorithm: publicKeyJWK.alg,
-        //   format: 'jwk'
-        // };
-        //
-        console.log("public",publicKeyJWK)
+
         this.matriculaContrller.matriculaControllerUploadTermo(
-          {cpfCrianca:"12345678922", body:{multipartFile:blobArq}, chavePub: JSON.stringify(publicKeyJWK) })
+          {cpfCrianca:"12345678922", chavePub: JSON.stringify(publicKeyJWK) })
           .subscribe(retorno =>{
             console.log(retorno)
           })
+
+        this.matriculaContrller.matriculaControllerUploadTermoValidar({cpfCrianca:"12345678922", body:{multipartFile: blobArq}})
+          .subscribe(retorno =>{
+
+        })
         // apos isso fazer uma funcao no back que recebe um pdf e verifica se ele foi assinado pelo sistema da creche
         // o arquivo de termo estara no back entao fazer um hash dele, depois usar chave publica para descriptografar o hash e testar se conferem
 
@@ -230,12 +231,21 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
   }
 
   // funcao para calcular hash do arquivo gerado
-  async calcularHashSHA256(data: any, algorithm = 'SHA-256') {
-    const { subtle } = globalThis.crypto;
-    const ec = new TextEncoder();
-    const digest = await subtle.digest(algorithm, ec.encode(data));
+  // async calcularHashSHA256(data: any, algorithm = 'SHA-256') {
+  //   const { subtle } = globalThis.crypto;
+  //   const ec = new TextEncoder();
+  //   const digest = await subtle.digest(algorithm, ec.encode(data));
+  //   const hashArray = Array.from(new Uint8Array(digest));
+  //   const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+  //   return hashHex;
+  // }
+
+  async calcularHashSHA256(arquivo: Blob): Promise<string> {
+    const digest = await crypto.subtle.digest('SHA-256', await arquivo.arrayBuffer());
+
     const hashArray = Array.from(new Uint8Array(digest));
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
     return hashHex;
   }
 
@@ -246,11 +256,11 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
   }
 
   // funcao para assinar o documento
-  async sign(key: any, data: string) {
-    const {subtle} = globalThis.crypto;
+  async sign(key: CryptoKey, data: string) {
+    const { subtle } = globalThis.crypto;
     const ec = new TextEncoder();
-    const signature =
-      await subtle.sign('RSASSA-PKCS1-v1_5', key, ec.encode(data));
+    const hashedData = await subtle.digest('SHA-256', ec.encode(data));
+    const signature = await subtle.sign({ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, key, hashedData);
     return signature;
   }
 

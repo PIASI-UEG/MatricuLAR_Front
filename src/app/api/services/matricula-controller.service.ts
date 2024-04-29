@@ -311,6 +311,66 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation matriculaControllerUploadTermoValidar
+   */
+  static readonly MatriculaControllerUploadTermoValidarPath = '/api/v1/matricula/validarTermo';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerUploadTermoValidar()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  matriculaControllerUploadTermoValidar$Response(params: {
+    cpfCrianca: string;
+    body: {
+'multipartFile'?: Blob;
+}
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<MatriculaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerUploadTermoValidarPath, 'post');
+    if (params) {
+      rb.query('cpfCrianca', params.cpfCrianca, {});
+      rb.body(params.body, 'multipart/form-data');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<MatriculaDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerUploadTermoValidar$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  matriculaControllerUploadTermoValidar(params: {
+    cpfCrianca: string;
+    body: {
+'multipartFile'?: Blob;
+}
+  },
+  context?: HttpContext
+
+): Observable<MatriculaDto> {
+
+    return this.matriculaControllerUploadTermoValidar$Response(params,context).pipe(
+      map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
+    );
+  }
+
+  /**
    * Path part for operation matriculaControllerValidaMatricula
    */
   static readonly MatriculaControllerValidaMatriculaPath = '/api/v1/matricula/valida';
@@ -422,60 +482,57 @@ export class MatriculaControllerService extends BaseService {
   static readonly MatriculaControllerUploadTermoPath = '/api/v1/matricula/termo';
 
   /**
+   * Listagem Geral
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `matriculaControllerUploadTermo()` instead.
    *
-   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   * This method doesn't expect any request body.
    */
   matriculaControllerUploadTermo$Response(params: {
     cpfCrianca: string;
     chavePub: string;
-    body: {
-'multipartFile'?: Blob;
-}
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<MatriculaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerUploadTermoPath, 'post');
     if (params) {
       rb.query('cpfCrianca', params.cpfCrianca, {});
       rb.query('chavePub', params.chavePub, {});
-      rb.body(params.body, 'multipart/form-data');
     }
 
     return this.http.request(rb.build({
       responseType: 'blob',
-      accept: '*/*',
+      accept: 'application/pdf',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<MatriculaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
 
   /**
+   * Listagem Geral
+   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `matriculaControllerUploadTermo$Response()` instead.
    *
-   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   * This method doesn't expect any request body.
    */
   matriculaControllerUploadTermo(params: {
     cpfCrianca: string;
     chavePub: string;
-    body: {
-'multipartFile'?: Blob;
-}
   },
   context?: HttpContext
 
-): Observable<MatriculaDto> {
+): Observable<any> {
 
     return this.matriculaControllerUploadTermo$Response(params,context).pipe(
-      map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
