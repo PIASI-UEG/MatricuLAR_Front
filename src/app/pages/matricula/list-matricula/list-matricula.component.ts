@@ -15,6 +15,7 @@ import {MatriculaDto} from "../../../api/models/matricula-dto";
 import {InfoMatriculaDialogComponent} from "../info-matricula-dialog/info-matricula-dialog.component";
 import DevExpress from "devextreme";
 import data = DevExpress.data;
+import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
 
 @Component({
   selector: 'app-list-matricula',
@@ -145,6 +146,21 @@ export class ListMatriculaComponent implements OnInit{
         data:
           {
             matricula: matriculaDto
+          }
+      })
+    dialogRef.afterClosed().subscribe(() => {
+        this.buscarDados()
+      }
+    )
+  }
+
+  openDialogTest(matriculaDto: MatriculaDto) {
+    console.log(matriculaDto);
+    const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
+      {
+        data:
+          {
+            id: matriculaDto.id
           }
       })
     dialogRef.afterClosed().subscribe(() => {

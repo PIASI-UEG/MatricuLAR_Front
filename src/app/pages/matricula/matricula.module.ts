@@ -32,7 +32,7 @@ import {PdfViewerModule} from "ng2-pdf-viewer";
 import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
 import {ArquivoViwerModule} from "../../arquitetura/arquivo-viwer/arquivo-viwer.module";
 import {MatListModule} from "@angular/material/list";
-import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especial-dialog/add-necessidade-especial-dialog.component';
+import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-advertencia-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especia
     HomeMatriculaComponent,
     ListMatriculaComponent,
     InfoMatriculaDialogComponent,
-    AddNecessidadeEspecialDialogComponent,
+    AddAdvertenciaDialogComponent
   ],
     imports: [
         CommonModule,

@@ -5,11 +5,8 @@
         <mat-card-title>Incluir aluno na turma</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>Ano da turma: {{turma?.ano}}</p>
-        <p>Turno: {{turma?.turno}}</p>
-        <p>Horário de aula: {{turma?.horaInicio}} ás {{turma?.horaFim}}</p>
-        <p>Professora: {{turma?.nomeProfessor}}</p>
-
+        <p>Aluno: {{aluno?.nome}}</p>
+        <p>Data de nascimento: {{aluno?.nascimento}}</p>
       </mat-card-content>
     </mat-card>
     <mat-card>
@@ -21,11 +18,11 @@
         (ngSubmit)="onSubmit()"
         class="form" fxFlex="1 1 auto"
       >
-        <h1>{{acao}} Turma</h1>
-
         <mat-form-field>
-          <mat-label>Titulo</mat-label>
-          <input matInput formControlName="titulo" >
+          <mat-label>Turmas</mat-label>
+          <mat-select formControlName="turmaID">
+            <mat-option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.titulo }}</mat-option>
+          </mat-select>
         </mat-form-field>
 
 
@@ -41,9 +38,6 @@
 
   </ng-container>
 
-  <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
-    <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
-  </div>
 </div>
 
 <div class="formMov" fxLayout="row" fxLayoutAlign="center">
