@@ -5,8 +5,8 @@
         <mat-card-title>Incluir aluno na turma</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>Aluno: {{turma?.ano}}</p>
-        <p>Idade: {{turma?.turno}}</p>
+        <p>Aluno: {{aluno?.nome}}</p>
+        <p>Data de nascimento: {{aluno?.nascimento}}</p>
       </mat-card-content>
     </mat-card>
     <mat-card>
@@ -38,9 +38,6 @@
 
   </ng-container>
 
-  <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
-    <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
-  </div>
 </div>
 
 <div class="formMov" fxLayout="row" fxLayoutAlign="center">

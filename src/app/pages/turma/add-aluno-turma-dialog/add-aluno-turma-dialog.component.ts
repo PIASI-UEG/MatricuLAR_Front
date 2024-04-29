@@ -17,7 +17,6 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
   styleUrls: ['./add-aluno-turma-dialog.component.scss']
 })
 export class AddAlunoTurmaDialogComponent {
-  formGroup!: FormGroup;
   turma?: TurmaDto;
   alunoID: number;
   formGroup!: FormGroup;
@@ -55,15 +54,16 @@ export class AddAlunoTurmaDialogComponent {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      pessoaID: [null, Validators.required],
-      livroID: [null,Validators.required]
+      alunoID: [null, Validators.required],
+      turmaID: [null,Validators.required]
     })
   }
 
   private realizarInclusao() {
     console.log("Dados:",this.formGroup.value);
-    const turma: TurmaDto = this.formGroup.value;
-    this.turmaService.turmaControllerIncluir({body: turma})
+    const aluno: Array<number> = this.formGroup.get('alunoID')?.value;
+    const turmaID: number = this.formGroup.get('turmaID')?.value;
+    this.turmaService.turmaControllerAdicionaAlunos({idTurma: turmaID, body: aluno})
       .subscribe( retorno =>{
         console.log("Retorno:",retorno);
         this.confirmarAcao(retorno);

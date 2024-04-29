@@ -488,6 +488,62 @@ export class TurmaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation turmaControllerAdicionaAlunos
+   */
+  static readonly TurmaControllerAdicionaAlunosPath = '/api/v1/turma/adicionaAlunos';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `turmaControllerAdicionaAlunos()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  turmaControllerAdicionaAlunos$Response(params: {
+    idTurma: number;
+    body: Array<number>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<TurmaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerAdicionaAlunosPath, 'post');
+    if (params) {
+      rb.query('idTurma', params.idTurma, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TurmaDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `turmaControllerAdicionaAlunos$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  turmaControllerAdicionaAlunos(params: {
+    idTurma: number;
+    body: Array<number>
+  },
+  context?: HttpContext
+
+): Observable<TurmaDto> {
+
+    return this.turmaControllerAdicionaAlunos$Response(params,context).pipe(
+      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
+    );
+  }
+
+  /**
    * Path part for operation turmaControllerListAllPage
    */
   static readonly TurmaControllerListAllPagePath = '/api/v1/turma/page';
