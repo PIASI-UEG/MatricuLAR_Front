@@ -42,7 +42,7 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
     this.matriculaContrller.matriculaControllerGeraTermo({cpfCrianca: "12345678922"})
       .subscribe( (response: Blob) => {
 
-        this.fileTermo = new File([response], "Termo-Responsabilidade12345678922.pdf", { type: 'application/pdf' });
+        this.fileTermo = new File([response], "Termo-Responsabilidade12345678922.pdf", { type: 'application/json' });
         console.log("Termo file ", this.fileTermo)
       });
   }
@@ -215,7 +215,7 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
 
     const pdfBytes = await pdfDoc.save();
 
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const blob = new Blob([pdfBytes], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
@@ -259,7 +259,7 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
   async sign(key: CryptoKey, data: string) {
     const { subtle } = globalThis.crypto;
     const ec = new TextEncoder();
-    const hashedData = await subtle.digest('SHA-256', ec.encode(data));
+    const hashedData = ec.encode(data).buffer;
     const signature = await subtle.sign({ name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, key, hashedData);
     return signature;
   }
