@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
         this.confirmarAcao(retorno, "Validar");
         this.router.navigate(["/home"]);
       }, erro => {
-        console.log("Erro:", erro.error);
+        console.log("Erro:", erro);
         this.mensagens.confirmarErro("Validar", erro.message)
         //this.showError(erro.error, this.ACAO_EDITAR);
       })

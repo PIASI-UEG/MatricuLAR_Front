@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angula
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {JSONWebKeySet, JWK} from "jose";
+import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-assinatura-digital-dialog',
@@ -144,6 +145,17 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
           .subscribe(retorno =>{
             console.log(retorno)
           })
+
+        this.dialog.closeAll();
+        const dialogRef = this.dialogConfirmation.open(ConfirmationDialog, {
+          data: {
+            titulo: 'Assinatura',
+            mensagem: `Termo Assinado com sucesso!`,
+            textoBotoes: {
+              ok: 'Ok',
+            },
+          },
+        })
 
         // apos isso fazer uma funcao no back que recebe um pdf e verifica se ele foi assinado pelo sistema da creche
         // o arquivo de termo estara no back entao fazer um hash dele, depois usar chave publica para descriptografar o hash e testar se conferem
