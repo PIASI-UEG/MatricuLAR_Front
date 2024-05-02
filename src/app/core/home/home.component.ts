@@ -8,6 +8,10 @@ import {filter} from "rxjs/operators";
 import {SecurityService} from "../../arquitetura/security/security.service";
 import {VerificaCPFDialogComponent} from "../../pages/assinatura/verifica-cpf-dialog/verifica-c-p-f-dialog.component";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatriculaControllerService} from "../../api/services/matricula-controller.service";
+import {TurmaDto} from "../../api/models/turma-dto";
+import {ConfirmationDialog} from "../confirmation-dialog/confirmation-dialog.component";
+import {MensagensUniversais} from "../../../MensagensUniversais";
 
 
 @UntilDestroy()
@@ -20,14 +24,48 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   admin!: any;
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'home'});
 
 
   constructor(
     private dialog : MatDialog,
     private observer: BreakpointObserver,
     private router: Router,
+    private matriculaContrller: MatriculaControllerService,
     protected securityService: SecurityService) {
   }
+  onFilechange(event: any){
+    const file = event.target.files[0];
+    const fileName = file.name;
+    console.log(file);
+    let blob: Blob;
+    blob = file;
+
+    this.matriculaContrller.matriculaControllerUploadTermoValidar({cpfCrianca:"12345678922", body:{multipartFile: blob}})
+      .subscribe(retorno => {
+        console.log("Retorno:", retorno);
+        this.confirmarAcao(retorno, "Validar");
+        this.router.navigate(["/home"]);
+      }, erro => {
+        console.log("Erro:", erro.error);
+        this.mensagens.confirmarErro("Validar", erro.message)
+        //this.showError(erro.error, this.ACAO_EDITAR);
+      })
+
+  }
+
+  confirmarAcao(turma: TurmaDto, nome: String) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        titulo: 'VALIDAÇÃO!!',
+        mensagem: `A assinatura é válida, e foi feita pelo sistema!`,
+        textoBotoes: {
+          ok: 'OK',
+        },
+      },
+    });
+  }
+
 
   openDialogAssinatura(): void {
     const config: MatDialogConfig = {

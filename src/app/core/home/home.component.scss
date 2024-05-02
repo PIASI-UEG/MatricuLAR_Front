@@ -78,3 +78,13 @@ mat-divider {
   flex: 1 1 auto;
 }
 
+.btn{
+  font-weight: bold;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #e0e0e0;
+}
+

@@ -13,6 +13,14 @@
       <button  title="Assinar Documento"  mat-button class="example-icon" (click)="openDialogAssinatura()"> Assinar Documento
         <mat-icon>assignment</mat-icon>
       </button>
+
+  <div style="position: relative;">
+    <label for="validarDoc" class="btn" >Validar Documento</label>
+
+    <input type="file" id="validarDoc" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0;" (change)="onFilechange($event)" #fileUpload>
+  </div>
+
+
 </mat-toolbar>
 <mat-sidenav-container>
     <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">

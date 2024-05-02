@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import {MatriculaControllerService} from "../../../api/services";
 
 @Component({
     selector: 'app-home',
@@ -14,10 +15,15 @@ export class HomePageComponent {
         'assets/fotos_home/imagem3-home.jpeg'
     ];
 
-    constructor(config: NgbCarouselConfig) {
+    constructor(
+      config: NgbCarouselConfig,
+      private matriculaContrller: MatriculaControllerService)
+    {
         config.interval = 3000;
         config.wrap = true;
         config.keyboard = false;
         config.pauseOnHover = false;
     }
+
+
 }

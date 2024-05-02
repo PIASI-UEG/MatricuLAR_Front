@@ -146,28 +146,12 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
             console.log(retorno)
           })
 
-        this.matriculaContrller.matriculaControllerUploadTermoValidar({cpfCrianca:"12345678922", body:{multipartFile: blobArq}})
-          .subscribe(retorno =>{
-
-        })
         // apos isso fazer uma funcao no back que recebe um pdf e verifica se ele foi assinado pelo sistema da creche
         // o arquivo de termo estara no back entao fazer um hash dele, depois usar chave publica para descriptografar o hash e testar se conferem
 
         // console.log("hash", hashString)
 
       }
-      // Sem um certificado digital emitido por uma autoridade de certificação (CA), a abordagem mais comum para implementar uma assinatura digital em um PDF é usar uma chave privada para assinar o documento. Aqui está uma sequência de passos simplificada para realizar isso:
-      //
-      //   Geração do par de chaves: Use uma biblioteca criptográfica para gerar um par de chaves pública/privada. Isso pode ser feito usando algoritmos como RSA ou ECDSA. Exemplos de bibliotecas incluem OpenSSL para ambientes de servidor ou a API Web Cryptography para navegadores.
-      //   Assinatura do PDF:
-      //   Calcule um hash do conteúdo do PDF. Isso normalmente é feito usando um algoritmo de hash seguro, como SHA-256.
-      // Use sua chave privada para assinar o hash calculado. Isso pode ser feito criptografando o hash com sua chave privada.
-      //   Anexe a assinatura resultante ao PDF. Isso pode ser feito adicionando um campo de assinatura ao PDF ou adicionando a assinatura como um anexo.
-      //   Validação da assinatura:
-      //   Extraia a assinatura do PDF.
-      //   Recalcule o hash do conteúdo do PDF original.
-      //   Use a chave pública correspondente à chave privada usada para assinar o PDF para verificar a assinatura. Isso normalmente envolve descriptografar a assinatura com a chave pública e comparar o hash recalculado com o hash extraído da assinatura.
-
 
 
       // debug

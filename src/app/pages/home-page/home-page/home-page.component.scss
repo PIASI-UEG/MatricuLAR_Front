@@ -38,3 +38,20 @@ p {
 a {
   color: black;
 }
+
+.file-button {
+  background-image: url("/assets/fotos_documentos/envio_documento.png") ;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 230px 200px;
+  text-align:center;
+  align-items: center;
+  width: 230px;
+  line-height: 35px;
+  height: 200px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
