@@ -121,7 +121,6 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
       // Gerar o par de chaves RSA
       const {publicKey, privateKey} = await this.generateRsaKey();
 
-
       const imgAss = this.gerarImagemAssinatura()
 
       if(this.fileTermo) {
@@ -133,7 +132,7 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
         const assinatura = await this.sign(privateKey, hashString)
 
         // PDF assinado
-        const blobArq = await this.assinaPDF(imgAss, assinatura)
+        await this.assinaPDF(imgAss, assinatura)
 
 
         // mandar esse PDF com a assinatura e a chave publica para o back
@@ -208,28 +207,15 @@ export class AssinaturaDigitalDialogComponent implements OnInit, AfterViewInit {
     document.body.appendChild(a);
     a.click();
 
-    // Limpa o URL blob criado
     URL.revokeObjectURL(url);
 
     return blob
   }
 
-  // funcao para calcular hash do arquivo gerado
-  // async calcularHashSHA256(data: any, algorithm = 'SHA-256') {
-  //   const { subtle } = globalThis.crypto;
-  //   const ec = new TextEncoder();
-  //   const digest = await subtle.digest(algorithm, ec.encode(data));
-  //   const hashArray = Array.from(new Uint8Array(digest));
-  //   const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-  //   return hashHex;
-  // }
-
   async calcularHashSHA256(arquivo: Blob): Promise<string> {
     const digest = await crypto.subtle.digest('SHA-256', await arquivo.arrayBuffer());
-
     const hashArray = Array.from(new Uint8Array(digest));
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-
     return hashHex;
   }
 

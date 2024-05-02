@@ -316,6 +316,8 @@ export class MatriculaControllerService extends BaseService {
   static readonly MatriculaControllerUploadTermoValidarPath = '/api/v1/matricula/validarTermo';
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `matriculaControllerUploadTermoValidar()` instead.
    *
@@ -338,8 +340,8 @@ export class MatriculaControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
+      responseType: 'json',
+      accept: 'application/json',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
@@ -350,6 +352,8 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `matriculaControllerUploadTermoValidar$Response()` instead.
    *
