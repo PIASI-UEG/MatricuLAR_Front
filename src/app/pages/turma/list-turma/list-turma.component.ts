@@ -23,12 +23,12 @@ import {InfoTurmaDialogComponent} from "../info-turma-dialog/info-turma-dialog.c
 export class ListTurmaComponent implements OnInit{
 
   colunasMostrar = ['titulo','turno','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
-  turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]);
+  turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]) ;
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
   mascaras: Mascaras = new Mascaras();
   admin!: boolean;
   pageSlice!: TurmaDto[];
-  qtdRegistros!: number;
+  qtdRegistros!: number | undefined;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
   constructor(
@@ -47,14 +47,14 @@ export class ListTurmaComponent implements OnInit{
   onPageChange(event: PageEvent){
     console.log("teste")
     this.turmaService.turmaControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["id"]}}).subscribe(data => {
-      this.turmaListaDataSource.data = data.content;
+      this.turmaListaDataSource.data = data?.content || [];
       this.pageSlice = this.turmaListaDataSource.data;
     })
   }
 
   private buscarDados() {
     this.turmaService.turmaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
-      this.turmaListaDataSource.data = data.content;
+      this.turmaListaDataSource.data = data?.content || [];
       this.pageSlice = this.turmaListaDataSource.data;
       this.qtdRegistros = data.totalElements;
     })
@@ -73,7 +73,7 @@ export class ListTurmaComponent implements OnInit{
 
   showResult($event: any[]) {
     this.turmaListaDataSource.data = $event;
-    console.log(this.turmaListaDataSource.data)
+    //console.log(this.turmaListaDataSource.data)
   }
 
   remover(turma: TurmaDto) {

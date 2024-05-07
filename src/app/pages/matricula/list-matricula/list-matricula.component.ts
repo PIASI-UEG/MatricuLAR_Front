@@ -60,18 +60,17 @@ export class ListMatriculaComponent implements OnInit{
   private buscarDados() {
     if(this.tipoDeListagem == "Validar"){
 
-      this.matriculaService.matriculaControllerSearchFieldsAction({body: [{name: "status", type: "StatusMatricula", value: "AC", searchType: "CONTAINS" }]})
-          .subscribe(data => {
-        this.matriculaListaDataSource.data = data.content;
+      this.matriculaService.matriculaControllerSearchFieldsAction({body: [{name: "status", type: "StatusMatricula", value: "AC", searchType: "CONTAINS" }]}).subscribe(data => {
+        this.matriculaListaDataSource.data = data || [];
         this.pageSlice = this.matriculaListaDataSource.data;
-        this.qtdRegistros = data.totalElements;
+        //this.qtdRegistros = data.totalElements || 0;
           })}
     else{
 
       this.matriculaService.matriculaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
-        this.matriculaListaDataSource.data = data.content;
+        this.matriculaListaDataSource.data = data?.content || [];
         this.pageSlice = this.matriculaListaDataSource.data;
-        this.qtdRegistros = data.totalElements;
+        this.qtdRegistros = data.totalElements || 0;
         console.log(data.content);
       })
     }

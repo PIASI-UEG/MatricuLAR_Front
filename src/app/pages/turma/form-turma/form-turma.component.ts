@@ -68,13 +68,13 @@ export class FormTurmaComponent {
     if(this.acao == "Editar"){
       this.turmaservice.turmaControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
-          titulo: [retorno.nome, Validators.required],
+          titulo: [retorno.titulo, Validators.required],
           turno: [retorno.turno, Validators.required],
           ano: [retorno.ano, Validators.required],
-          horaInicio: [retorno.horarioInicio, Validators.required],
-          horaFim: [retorno.horarioFim, Validators.required],
-          nomeProfessor: [retorno.professora, Validators.required],
-          telefoneProfessor: [retorno.telefoneProfessora, [Validators.required, this.validacoes.validarTelefone]]
+          horaInicio: [retorno.horaInicio, Validators.required],
+          horaFim: [retorno.horaFim, Validators.required],
+          nomeProfessor: [retorno.nomeProfessor, Validators.required],
+          telefoneProfessor: [retorno.telefoneProfessor, [Validators.required, this.validacoes.validarTelefone]]
         }));
     }
     else{

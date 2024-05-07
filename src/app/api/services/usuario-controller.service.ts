@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { PageUsuarioDto } from '../models/page-usuario-dto';
 import { Pageable } from '../models/pageable';
 import { RedefinirSenhaDto } from '../models/redefinir-senha-dto';
 import { SearchField } from '../models/search-field';
@@ -44,7 +45,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<UsuarioDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerObterPorIdPath, 'get');
     if (params) {
@@ -58,7 +59,7 @@ export class UsuarioControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<UsuarioDto>;
       })
     );
   }
@@ -76,10 +77,10 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<UsuarioDto> {
 
     return this.usuarioControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<UsuarioDto>) => r.body as UsuarioDto)
     );
   }
 
@@ -161,7 +162,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<UsuarioDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerRemoverPath, 'delete');
     if (params) {
@@ -175,7 +176,7 @@ export class UsuarioControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<UsuarioDto>;
       })
     );
   }
@@ -193,10 +194,10 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<UsuarioDto> {
 
     return this.usuarioControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<UsuarioDto>) => r.body as UsuarioDto)
     );
   }
 
@@ -218,7 +219,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<UsuarioDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerIncluirPath, 'post');
     if (params) {
@@ -226,13 +227,13 @@ export class UsuarioControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
+      responseType: 'blob',
+      accept: '*/*',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<UsuarioDto>;
       })
     );
   }
@@ -250,10 +251,10 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<UsuarioDto> {
 
     return this.usuarioControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<UsuarioDto>) => r.body as UsuarioDto)
     );
   }
 
@@ -329,7 +330,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<UsuarioDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -343,7 +344,7 @@ export class UsuarioControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<UsuarioDto>>;
       })
     );
   }
@@ -361,10 +362,76 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<UsuarioDto>> {
 
     return this.usuarioControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<UsuarioDto>>) => r.body as Array<UsuarioDto>)
+    );
+  }
+
+  /**
+   * Path part for operation usuarioControllerSearchFieldsActionPage
+   */
+  static readonly UsuarioControllerSearchFieldsActionPagePath = '/api/v1/usuario/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `usuarioControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  usuarioControllerSearchFieldsActionPage$Response(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<PageUsuarioDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.query('page', params.page, {});
+      rb.query('size', params.size, {});
+      rb.query('sort', params.sort, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PageUsuarioDto>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `usuarioControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  usuarioControllerSearchFieldsActionPage(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<PageUsuarioDto> {
+
+    return this.usuarioControllerSearchFieldsActionPage$Response(params,context).pipe(
+      map((r: StrictHttpResponse<PageUsuarioDto>) => r.body as PageUsuarioDto)
     );
   }
 
@@ -438,7 +505,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<UsuarioDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerListAllPath, 'get');
     if (params) {
@@ -451,7 +518,7 @@ export class UsuarioControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<UsuarioDto>>;
       })
     );
   }
@@ -468,10 +535,10 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<UsuarioDto>> {
 
     return this.usuarioControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<UsuarioDto>>) => r.body as Array<UsuarioDto>)
     );
   }
 
@@ -664,7 +731,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<PageUsuarioDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerListAllPagePath, 'get');
     if (params) {
@@ -678,7 +745,7 @@ export class UsuarioControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<PageUsuarioDto>;
       })
     );
   }
@@ -696,10 +763,10 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<PageUsuarioDto> {
 
     return this.usuarioControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<PageUsuarioDto>) => r.body as PageUsuarioDto)
     );
   }
 
