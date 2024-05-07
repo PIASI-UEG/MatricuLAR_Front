@@ -44,7 +44,7 @@
 
 .logo {
   position: absolute;
-  top: 15%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
@@ -56,6 +56,7 @@
 
 h1{
   user-select:none;
+  position: relative;
 }
 
 .container-login {
@@ -82,7 +83,7 @@ h1{
     display: none;
   }
   .logo{
-    width: 55%;
+    width: 50%;
   }
   .container{
     margin-top: 18%;

@@ -44,7 +44,7 @@ export class ListFuncionarioComponent implements OnInit {
 
   onPageChange(event: PageEvent){
     this.usuarioService.usuarioControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["pessoaCpf"]}}).subscribe(data => {
-      this.usuarioListaDataSource.data = data.content;
+      this.usuarioListaDataSource.data = data.content || [];
       this.pageSlice = this.usuarioListaDataSource.data;
     })
   }
@@ -52,9 +52,9 @@ export class ListFuncionarioComponent implements OnInit {
 
   private buscarDados() {
     this.usuarioService.usuarioControllerListAllPage({page: {page: 0, size: 5, sort:["pessoaCpf"]}}).subscribe(data => {
-      this.usuarioListaDataSource.data = data.content;
+      this.usuarioListaDataSource.data = data.content  || [];
       this.pageSlice = this.usuarioListaDataSource.data;
-      this.qtdRegistros = data.totalElements;
+      this.qtdRegistros = data.totalElements || 0;
     })
   }
 

@@ -10,13 +10,10 @@ import {
   ConfirmationDialog,
   ConfirmationDialogResult
 } from "../../../core/confirmation-dialog/confirmation-dialog.component";
-import {FormTurmaDialogComponent} from "../form-turma-dialog/form-turma-dialog.component";
-import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {TurmaDto} from "../../../api/models/turma-dto";
 import {Mascaras} from "../../../../Mascaras";
-import {MatriculaDto} from "../../../api/models/matricula-dto";
-import {InfoMatriculaDialogComponent} from "../../matricula/info-matricula-dialog/info-matricula-dialog.component";
+import {InfoTurmaDialogComponent} from "../info-turma-dialog/info-turma-dialog.component";
 
 @Component({
   selector: 'app-list-turma',
@@ -26,12 +23,12 @@ import {InfoMatriculaDialogComponent} from "../../matricula/info-matricula-dialo
 export class ListTurmaComponent implements OnInit{
 
   colunasMostrar = ['titulo','turno','nomeProfessor', 'telefoneProfessor','quantidadeAlunos','acao'];
-  turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]);
+  turmaListaDataSource: MatTableDataSource<TurmaDto> = new MatTableDataSource<TurmaDto>([]) ;
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
   mascaras: Mascaras = new Mascaras();
   admin!: boolean;
   pageSlice!: TurmaDto[];
-  qtdRegistros!: number;
+  qtdRegistros!: number | undefined;
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
   constructor(
@@ -50,14 +47,14 @@ export class ListTurmaComponent implements OnInit{
   onPageChange(event: PageEvent){
     console.log("teste")
     this.turmaService.turmaControllerListAllPage({page: {page: event.pageIndex, size: event.pageSize, sort:["id"]}}).subscribe(data => {
-      this.turmaListaDataSource.data = data.content;
+      this.turmaListaDataSource.data = data?.content || [];
       this.pageSlice = this.turmaListaDataSource.data;
     })
   }
 
   private buscarDados() {
     this.turmaService.turmaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
-      this.turmaListaDataSource.data = data.content;
+      this.turmaListaDataSource.data = data?.content || [];
       this.pageSlice = this.turmaListaDataSource.data;
       this.qtdRegistros = data.totalElements;
     })
@@ -76,7 +73,7 @@ export class ListTurmaComponent implements OnInit{
 
   showResult($event: any[]) {
     this.turmaListaDataSource.data = $event;
-    console.log(this.turmaListaDataSource.data)
+    //console.log(this.turmaListaDataSource.data)
   }
 
   remover(turma: TurmaDto) {
@@ -130,5 +127,19 @@ export class ListTurmaComponent implements OnInit{
 
   }
 
+  openDialog(turmaID: number) {
+    console.log(turmaID);
+    const dialogRef = this.dialog.open(InfoTurmaDialogComponent,
+      {
+        data:
+          {
+            id: turmaID
+          }
+      })
+    dialogRef.afterClosed().subscribe(() => {
+        this.buscarDados()
+      }
+    )
+  }
 
 }

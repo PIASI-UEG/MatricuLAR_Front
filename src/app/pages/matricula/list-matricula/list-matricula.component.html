@@ -1,18 +1,18 @@
 
 
 <mat-card>
-  <h2> Controle de Matrículas</h2>
+  <h2 *ngIf="tipoDeListagem === 'Validar'"> Validação de Matrículas</h2>
+  <h2 *ngIf="tipoDeListagem != 'Validar'"> Controle de Matrículas</h2>
   <mat-card-actions [fxLayout]="mudarAlinhar()" fxLayoutAlign="center none" >
     <div fxLayout="row" fxLayoutAlign="center center">
-      <button class="button-config" mat-raised-button [routerLink]="['/matricula','novo']">
+      <button class="button-config" mat-raised-button [routerLink]="['/matricula','novo']" *ngIf="tipoDeListagem == 'Normal'">
         <span>Nova Matricula</span>
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    <!--
-    <div class="searchFlex">
+    <div class="searchFlex" *ngIf="tipoDeListagem != 'Validar'">
       <app-search-component [controller]="" (onSearchResult)="showResult($event)"/>
-    </div> -->
+    </div>
   </mat-card-actions>
   <mat-card-content>
     <div style="overflow-x:auto">
@@ -51,7 +51,7 @@
         </ng-container>
 
 
-        <ng-container matColumnDef="acao">
+        <ng-container matColumnDef="acao" *ngIf="tipoDeListagem == 'Normal'">
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let element">
             <button mat-button [matMenuTriggerFor]="acoes">
@@ -61,16 +61,32 @@
               <button mat-menu-item (click)="openDialog(element)">
                 <mat-icon>visibility</mat-icon>Vizualizar Matricula
               </button>
+              <button mat-menu-item (click)="openDialogTest(element)">
+                <mat-icon>visibility</mat-icon>Teste add turma
+              </button>
               <button mat-menu-item [routerLink]="['/matricula',element.id]">
                 <mat-icon>edit</mat-icon>Editar
               </button>
               <button mat-menu-item (click)="confirmarExcluir(element)">
                 <mat-icon>delete_forever</mat-icon>Excluir
               </button>
-                <button mat-menu-item (click)="imprimirTermodaMatricula(element)" routerLink="/imprimir-termo" >
-                    <mat-icon>print</mat-icon>Imprimir Termo de Matrícula
+                <button mat-menu-item [matMenuTriggerFor]="tutores" >
+                    <mat-icon>print</mat-icon>Gerar Termo de Matrícula
                 </button>
+              <mat-menu #tutores="matMenu">
+                <button mat-menu-item *ngFor="let tutor of element.responsaveis" (click)="imprimirTermodaMatricula(element.id, tutor.cpfResponsavel)">
+                  <mat-icon>person</mat-icon>
+                  {{tutor.nomeResponsavel}}
+                </button>
+              </mat-menu>
             </mat-menu>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acao" *ngIf="tipoDeListagem == 'Validar'">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let element">
+
           </td>
         </ng-container>
 

@@ -3,11 +3,9 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@a
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
 import {DateAdapter} from "@angular/material/core";
-import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
-import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
 import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
@@ -27,7 +25,6 @@ import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
 
 export class FormMatriculaComponent implements OnInit {
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
-
 
   formGroup!: FormGroup;
   formDocumentos!: FormGroup;

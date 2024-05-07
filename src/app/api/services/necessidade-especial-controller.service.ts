@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { NecessidadeEspecialDto } from '../models/necessidade-especial-dto';
+import { PageNecessidadeEspecialDto } from '../models/page-necessidade-especial-dto';
 import { Pageable } from '../models/pageable';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
@@ -43,7 +44,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<NecessidadeEspecialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerObterPorIdPath, 'get');
     if (params) {
@@ -57,7 +58,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<NecessidadeEspecialDto>;
       })
     );
   }
@@ -75,10 +76,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<NecessidadeEspecialDto> {
 
     return this.necessidadeEspecialControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<NecessidadeEspecialDto>) => r.body as NecessidadeEspecialDto)
     );
   }
 
@@ -101,7 +102,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<NecessidadeEspecialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerAlterarPath, 'put');
     if (params) {
@@ -116,7 +117,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<NecessidadeEspecialDto>;
       })
     );
   }
@@ -135,10 +136,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<NecessidadeEspecialDto> {
 
     return this.necessidadeEspecialControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<NecessidadeEspecialDto>) => r.body as NecessidadeEspecialDto)
     );
   }
 
@@ -160,7 +161,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<NecessidadeEspecialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerRemoverPath, 'delete');
     if (params) {
@@ -174,7 +175,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<NecessidadeEspecialDto>;
       })
     );
   }
@@ -192,10 +193,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<NecessidadeEspecialDto> {
 
     return this.necessidadeEspecialControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<NecessidadeEspecialDto>) => r.body as NecessidadeEspecialDto)
     );
   }
 
@@ -216,7 +217,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<NecessidadeEspecialDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerListAllPath, 'get');
     if (params) {
@@ -229,7 +230,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<NecessidadeEspecialDto>>;
       })
     );
   }
@@ -246,10 +247,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<NecessidadeEspecialDto>> {
 
     return this.necessidadeEspecialControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<NecessidadeEspecialDto>>) => r.body as Array<NecessidadeEspecialDto>)
     );
   }
 
@@ -271,7 +272,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<NecessidadeEspecialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerIncluirPath, 'post');
     if (params) {
@@ -285,7 +286,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<NecessidadeEspecialDto>;
       })
     );
   }
@@ -303,10 +304,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<NecessidadeEspecialDto> {
 
     return this.necessidadeEspecialControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<NecessidadeEspecialDto>) => r.body as NecessidadeEspecialDto)
     );
   }
 
@@ -382,7 +383,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<NecessidadeEspecialDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -396,7 +397,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<NecessidadeEspecialDto>>;
       })
     );
   }
@@ -414,10 +415,76 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<NecessidadeEspecialDto>> {
 
     return this.necessidadeEspecialControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<NecessidadeEspecialDto>>) => r.body as Array<NecessidadeEspecialDto>)
+    );
+  }
+
+  /**
+   * Path part for operation necessidadeEspecialControllerSearchFieldsActionPage
+   */
+  static readonly NecessidadeEspecialControllerSearchFieldsActionPagePath = '/api/v1/necessidade_esp/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `necessidadeEspecialControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  necessidadeEspecialControllerSearchFieldsActionPage$Response(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<PageNecessidadeEspecialDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.query('page', params.page, {});
+      rb.query('size', params.size, {});
+      rb.query('sort', params.sort, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PageNecessidadeEspecialDto>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `necessidadeEspecialControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  necessidadeEspecialControllerSearchFieldsActionPage(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<PageNecessidadeEspecialDto> {
+
+    return this.necessidadeEspecialControllerSearchFieldsActionPage$Response(params,context).pipe(
+      map((r: StrictHttpResponse<PageNecessidadeEspecialDto>) => r.body as PageNecessidadeEspecialDto)
     );
   }
 
@@ -439,7 +506,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<PageNecessidadeEspecialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, NecessidadeEspecialControllerService.NecessidadeEspecialControllerListAllPagePath, 'get');
     if (params) {
@@ -453,7 +520,7 @@ export class NecessidadeEspecialControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<PageNecessidadeEspecialDto>;
       })
     );
   }
@@ -471,10 +538,10 @@ export class NecessidadeEspecialControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<PageNecessidadeEspecialDto> {
 
     return this.necessidadeEspecialControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<PageNecessidadeEspecialDto>) => r.body as PageNecessidadeEspecialDto)
     );
   }
 

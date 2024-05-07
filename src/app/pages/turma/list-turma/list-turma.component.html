@@ -54,6 +54,9 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #acoes="matMenu">
+              <button mat-menu-item (click)="openDialog(element.id)">
+                <mat-icon>visibility</mat-icon>Vizualizar Turma
+              </button>
               <button mat-menu-item [routerLink]="['/turma',element.id]">
                 <mat-icon>edit</mat-icon>Editar
               </button>

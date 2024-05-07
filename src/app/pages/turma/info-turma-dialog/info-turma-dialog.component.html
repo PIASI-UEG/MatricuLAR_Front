@@ -1,0 +1,34 @@
+<div class="formMov">
+    <ng-container >
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{turma?.titulo}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Ano da turma: {{turma?.ano}}</p>
+          <p>Turno: {{turma?.turno}}</p>
+          <p>Horário de aula: {{turma?.horaInicio}} ás {{turma?.horaFim}}</p>
+          <p>Professora: {{turma?.nomeProfessor}}</p>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Alunos na turma</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <ul>
+            <li *ngFor="let aluno of alunosNaTurma">
+              {{ aluno.nomeAluno }} - Matrícula: {{ aluno.nroMatricula }}
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+    </ng-container>
+
+    <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+    </div>
+</div>
