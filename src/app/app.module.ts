@@ -34,7 +34,7 @@ import {MatriculaModule} from "./pages/matricula/matricula.module";
 import {TurmaModule} from "./pages/turma/turma.module";
 import {MinhaContaModule} from "./pages/minha-conta/minha-conta.module";
 import {HomePageModule} from "./pages/home-page/home-page.module";
-import {NgbCarouselModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCarouselModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { HomePainelComponent } from './pages/painel/home-painel/home-painel.component';
 import {PainelModule} from "./pages/painel/painel.module";
 import {ImprimirTermoModule} from "./pages/imprimir-termo/imprimir-termo.module";
