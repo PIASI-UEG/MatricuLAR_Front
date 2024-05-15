@@ -2,6 +2,7 @@
 /* eslint-disable */
 import { AdvertenciaDto } from './advertencia-dto';
 import { DocumentoMatriculaDto } from './documento-matricula-dto';
+import { EnderecoDto } from './endereco-dto';
 import { InformacoesMatriculaDto } from './informacoes-matricula-dto';
 import { NecessidadeEspecialDto } from './necessidade-especial-dto';
 import { ResponsavelDto } from './responsavel-dto';
@@ -11,7 +12,7 @@ export interface MatriculaDto {
   advertencias?: Array<AdvertenciaDto>;
   cpf?: string;
   documentoMatricula?: Array<DocumentoMatriculaDto>;
-  enderecoId?: number;
+  endereco?: EnderecoDto;
   id?: number;
   informacoesMatricula?: InformacoesMatriculaDto;
   nascimento?: string;

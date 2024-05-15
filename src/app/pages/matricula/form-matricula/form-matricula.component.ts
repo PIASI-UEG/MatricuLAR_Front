@@ -4,7 +4,7 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {Validacoes} from "../../../../Validacoes";
 import {DateAdapter} from "@angular/material/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
@@ -15,6 +15,16 @@ import {MatriculaControllerService} from "../../../api/services/matricula-contro
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
 import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
+import {
+  ViwerDocumetDialogComponent
+} from "../../../arquitetura/arquivo-viwer/viewer-documet-dialog/viwer-documet-dialog.component";
+import {UsuarioDto} from "../../../api/models/usuario-dto";
+import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
+import {InformacoesMatriculaDto} from "../../../api/models/informacoes-matricula-dto";
+import {ResponsavelDto} from "../../../api/models/responsavel-dto";
+import {TurmaDto} from "../../../api/models/turma-dto";
+import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
+import {EnderecoDto} from "../../../api/models/endereco-dto";
 
 @Component({
   selector: 'app-form-matricula',
@@ -45,7 +55,7 @@ export class FormMatriculaComponent implements OnInit {
   flexDivAlinharElementosGrandes: string = 'row';
   innerWidth: number = window.innerWidth;
   hide = true;
-  parentescos: string[] = ['Mãe', 'Pai', 'Tio', 'Padrasto', 'Madrasta']; // Lista de opções de parentesco
+  parentescos: string[] = ['PAI', 'MAE', 'AVO', 'VIZINHO', 'TIO']; // Lista de opções de parentesco
   nomeTitulo: string = "Dados da Criança";
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
@@ -121,16 +131,18 @@ export class FormMatriculaComponent implements OnInit {
   private createTutorFormGroup(): FormGroup {
     return this.formBuilder.group({
       nomeTutor: [null, Validators.required],
-      dataNascimentoTutor: [null, Validators.required],
-      cpfTutor: [null, [Validators.required, this.validacoes.validarCpf]],
+      //colocar
+      dataNascimento: [null, Validators.required],
+      cpf: [null, [Validators.required, this.validacoes.validarCpf]],
       vinculo: [null, Validators.required],
-      telefoneCelular: [null, [Validators.required, this.validacoes.validarTelefone]],
-      telefoneFixo: [null, this.validacoes.validarTelefoneFixo],
-      nomeEmpresa: [null, Validators.required],
-      cnpj: [null, [Validators.required, this.validacoes.validarCnpj]],
+      pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+      profissao: [null, Validators.required],
+      empresaNome: [null, Validators.required],
+      empresaCnpj: [null, [Validators.required, this.validacoes.validarCnpj]],
       telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
+      //colocar
       telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
-      relacionamento: false,
+      casado: false,
       moraComConjuge: false,
     }, {validator: this.validacoes.validarTelefonesEmpresariais})
   }
@@ -139,7 +151,8 @@ export class FormMatriculaComponent implements OnInit {
 
     return this.formBuilder.group({
       listaDocumentos: [[]], // Inicialize com uma lista vazia
-      temconjugue: false
+      temconjugue: false,
+      recebeBeneficio: null,
     },{validator:
         [this.validacoes.validarFotoCrianca,
           this.validacoes.validarCertidao,
@@ -149,6 +162,13 @@ export class FormMatriculaComponent implements OnInit {
           this.validacoes.validarCPFTutor,
           this.validacoes.validarCPFConjugue,
           this.validacoes.validarCertidaoEstadoCivil,
+          this.validacoes.validarCarteiraTrabalhoTutor,
+          this.validacoes.validarCarteiraTrabalhoConjugue,
+          this.validacoes.validarCarteiraContraChequeTutor,
+          this.validacoes.validarCarteiraContraChequeConjugue,
+          this.validacoes.validarDeclaracaoEscolarTutor,
+          this.validacoes.validarDeclaracaoEscolarConjugue,
+          this.validacoes.validarComprovanteBeneficio
 
           // mudar forma de implementação do validações para ficar mais felxivel
         ] })
@@ -180,11 +200,11 @@ export class FormMatriculaComponent implements OnInit {
 
   onSubmit() {
     this.enviado = true;
-    if (this.codigo == null) {
-      return;
-    }
+    // if (this.codigo == null) {
+    //   return;
+    // }
     //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
-    console.log("Submit")
+    // console.log("Submit")
 
       // this.docs.forEach(doc => {
       //     if (doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
@@ -209,12 +229,96 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  private realizarInclusao() {
-    console.log("Dados:", this.formGroup.value);
-    const matricula: MatriculaDto = this.formGroup.value;
+
+
+private realizarInclusao() {
+    const docs = this.formDocumentos.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    const matricula: MatriculaDto = this.makeDTOMatricula();
     console.log("Matricula:", matricula);
+    console.log("Dados:",this.formGroup.value);
+
+    this.matriculaService.matriculaControllerIncluir({body: matricula})
+        .subscribe( retorno =>{
+          console.log("Retorno:",retorno);
+
+          // mandar documentos
+          if(retorno.id)
+          {
+            const matriculaID: number = retorno.id
+            this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: matriculaID, body: {multipartFile: copiaDocs}})
+                .subscribe(retorno =>{
+                  this.confirmarAcao(retorno, this.ACAO_INCLUIR);
+                  this.router.navigate(["/matricula"]);
+                }, error => {
+                  console.log("Erro:"+error);
+                  this.mensagens.confirmarErro(this.ACAO_INCLUIR, error.message)
+                })
+          }
+
+        }, erro =>{
+          console.log("Erro:"+erro);
+          this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
+        })
   }
 
+  private makeDTOMatricula(): MatriculaDto{
+
+    const necessidadesEspeciaisArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+    const valoresNecessidadesEspeciais: NecessidadeEspecialDto[] = necessidadesEspeciaisArray.value;
+
+    const tutorArray = this.formGroup.get('tutor') as FormArray;
+    const valoresTutor: TutorDto[] = tutorArray.value;
+
+    const responsaveis: ResponsavelDto[] = [];
+
+    valoresTutor.forEach((valorTutor) => {
+
+      const responsavel: ResponsavelDto = {
+        cpfResponsavel: valorTutor.cpf,
+        nomeResponsavel: valorTutor.nomeTutor,
+        tutor: true,
+        vinculo: valorTutor.vinculo
+      };
+
+      responsaveis.push(responsavel);
+    });
+
+    const possuiBeneficiosDoGoverno = this.formGroup.get('possuiBeneficiosDoGoverno')?.value;
+    const possuiEsteveOutraCreche = this.formGroup.get('frequentouOutraCreche')?.value;
+
+    const infoMatricula: InformacoesMatriculaDto = {
+      possuiBeneficiosDoGoverno: possuiBeneficiosDoGoverno === 'sim' ? true : false,
+      frequentouOutraCreche: possuiEsteveOutraCreche === 'sim' ? true : false,
+      razaoSaida: this.formGroup.get('razaoSaida')?.value,
+      rendaFamiliar: this.formGroup.get('rendaFamiliar')?.value,
+      tipoResidencia: this.formGroup.get('tipoResidencia')?.value,
+      valorAluguel: this.formGroup.get('valorAluguel')?.value,
+      valorBeneficio: this.formGroup.get('valorBeneficio')?.value
+    }
+
+    const endereco: EnderecoDto = {
+      bairro: this.formGroup.get('bairro')?.value,
+      cep: this.formGroup.get('cep')?.value,
+      cidade: this.formGroup.get('cidade')?.value,
+      complemento: this.formGroup.get('complemento')?.value,
+      logradouro: this.formGroup.get('logradouro')?.value
+    }
+
+    const matriculaDtoPreenchido: MatriculaDto = {
+      cpf: this.formGroup.get('cpfCrianca')?.value,
+      endereco: endereco,
+      informacoesMatricula: infoMatricula,
+      nascimento:  this.formGroup.get('dataNascimento')?.value,
+      necessidades: valoresNecessidadesEspeciais,
+      nome: this.formGroup.get('nomeCrianca')?.value,
+      responsaveis: responsaveis,
+      status: 'ATIVO',
+      tutorDTOList: valoresTutor
+    };
+
+    return matriculaDtoPreenchido;
+  }
 
   private prepararEdicao() {
     const paramId = this.route.snapshot.paramMap.get('id');
@@ -314,7 +418,7 @@ export class FormMatriculaComponent implements OnInit {
 
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
-      necessidadeEspecial: [null, Validators.required]
+      titulo: [null, Validators.required]
     });
   }
 
@@ -349,7 +453,7 @@ export class FormMatriculaComponent implements OnInit {
 
   getNecessidadeEspecialControl(index: number): AbstractControl {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-    return formArray.at(index)?.get('necessidadeEspecial') as AbstractControl;
+    return formArray.at(index)?.get('titulo') as AbstractControl;
   }
 
   adicionarCampoTutor(): void {
@@ -377,12 +481,11 @@ export class FormMatriculaComponent implements OnInit {
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
     const tutorFormArrayLength = tutorFormArray.length;
 
-    if (formGroupTutor.get('relacionamento')?.value || formGroupTutor.get('moraComConjuge')?.value) {
+    if (formGroupTutor.get('casado')?.value || formGroupTutor.get('moraComConjuge')?.value) {
       if (tutorFormArrayLength == 1) {
         this.adicionarCampoTutor();
         this.temConjugue = true;
       }
-
     } else {
       this.removerCampoTutor(1);
       this.temConjugue = false;
@@ -393,6 +496,17 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
+  atribuirRecebeBeneficioAoListDocsSim(){
+    this.formDocumentos.patchValue({
+      recebeBeneficio: "sim"
+    });
+  }
+  atribuirRecebeBeneficioAoListDocsNao(){
+    this.formDocumentos.patchValue({
+      recebeBeneficio: "nao"
+    });
+  }
+
   atribuirConjugueRelacionamento() {
     const formGroupTutor: FormGroup = this.getTutorForm(0);
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
@@ -400,12 +514,9 @@ export class FormMatriculaComponent implements OnInit {
     if (tutorFormArrayLength > 1) {
       const formGroupConjugue: FormGroup = this.getTutorForm(1);
       formGroupConjugue.patchValue({
-        relacionamento: formGroupTutor.get('relacionamento')?.value,
+        relacionamento: formGroupTutor.get('casado')?.value,
         moraComConjuge: formGroupTutor.get('moraComConjuge')?.value,
       });
-      // console.log(formGroupConjugue.value)
-      // console.log(formGroupTutor.value)
-      // console.log("tutor quantidade",tutorFormArrayLength)
     }
   }
 
@@ -489,8 +600,6 @@ export class FormMatriculaComponent implements OnInit {
       this.formDocumentos.get('listaDocumentos')?.setValue(novosDocs);
     }
   }
-
-
-
   protected readonly EnumDoc = EnumDoc;
+
 }

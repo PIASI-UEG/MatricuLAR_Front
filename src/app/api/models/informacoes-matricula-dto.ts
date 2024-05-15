@@ -1,13 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface InformacoesMatriculaDto {
-  beneficiarioGoverno?: boolean;
-  esteveOutraCreche?: boolean;
+  frequentouOutraCreche?: boolean;
   id?: number;
-  moramJuntos?: boolean;
   observacao?: string;
-  paisCasados?: boolean;
-  razaoSaidaCreche?: string;
+  possuiBeneficiosDoGoverno?: boolean;
+  razaoSaida?: string;
   rendaFamiliar?: number;
   tipoResidencia?: string;
   valorAluguel?: number;

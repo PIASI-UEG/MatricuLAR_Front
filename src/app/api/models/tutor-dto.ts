@@ -1,13 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface TutorDto {
+  casado?: boolean;
   cpf?: string;
+  dataNascimento?: string;
   empresaCnpj?: string;
   empresaNome?: string;
-  empresaTelefone?: string;
-  pessoaNome?: string;
+  moraComConjuge?: boolean;
+  nomeTutor?: string;
   pessoaTelefone?: string;
   profissao?: string;
-  telefoneWhatsapp?: boolean;
+  telefoneCelularEmpresarial?: string;
+  telefoneFixoEmpresarial?: string;
   vinculo?: 'PAI' | 'MAE' | 'TIO' | 'VIZINHO' | 'AVO';
 }

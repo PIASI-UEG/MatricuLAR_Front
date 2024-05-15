@@ -47,7 +47,7 @@
                      *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
                   <mat-form-field>
                     <mat-label>Necessidade especial</mat-label>
-                    <input matInput formControlName="necessidadeEspecial"
+                    <input matInput formControlName="titulo"
                            placeholder="EX: alergia, medicamentos, alimentação">
                     <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Desmarque ou preencha para
                       continuar
@@ -139,18 +139,18 @@
                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                   <mat-form-field>
                     <mat-label>CPF</mat-label>
-                    <input matInput formControlName="cpfTutor" mask="000.000.000-00" placeholder="000.000.000-00">
-                    <mat-error *ngIf="handleErrorTutor('cpfTutor', 'required', i)">Campo Obrigatório</mat-error>
-                    <mat-error *ngIf="handleErrorTutor('cpfTutor', 'cpfInvalido', i)">CPF Inválido</mat-error>
+                    <input matInput formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
+                    <mat-error *ngIf="handleErrorTutor('cpf', 'required', i)">Campo Obrigatório</mat-error>
+                    <mat-error *ngIf="handleErrorTutor('cpf', 'cpfInvalido', i)">CPF Inválido</mat-error>
                   </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Data de Nascimento</mat-label>
-                    <input matInput readonly formControlName="dataNascimentoTutor" placeholder="Escolha uma data"
+                    <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
                            [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
                     <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                     <mat-datepicker #dp3></mat-datepicker>
-                    <mat-error *ngIf="handleErrorTutor('dataNascimentoTutor', 'required', i)">Campo Obrigatório
+                    <mat-error *ngIf="handleErrorTutor('dataNascimento', 'required', i)">Campo Obrigatório
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -164,23 +164,15 @@
                   <mat-error *ngIf="handleErrorTutor('vinculo', 'required', i)">Campo Obrigatório</mat-error>
                 </mat-form-field>
 
-                <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
-                  <mat-form-field>
-                    <mat-label>Telefone Celular</mat-label>
-                    <input matInput mask="(00) 0 0000-0000" formControlName="telefoneCelular"
-                           placeholder="(00) 0 0000-0000">
-                    <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'required', i)">Campo Obrigatório</mat-error>
-                    <mat-error *ngIf="handleErrorTutor('telefoneCelular', 'telefoneInvalido', i)">Telefone Inválido
-                    </mat-error>
-                  </mat-form-field>
 
                   <mat-form-field>
-                    <mat-label>Telefone Fixo</mat-label>
-                    <input matInput mask="(00) 0000-0000" formControlName="telefoneFixo" placeholder="(00) 0000-0000">
-                    <mat-error *ngIf="handleErrorTutor('telefoneFixo', 'telefoneInvalido', i)">Telefone Inválido
+                    <mat-label>Telefone Celular</mat-label>
+                    <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone"
+                           placeholder="(00) 0 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'required', i)">Campo Obrigatório</mat-error>
+                    <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
                     </mat-error>
                   </mat-form-field>
-                </div>
 
                 <div fxLayout="center" class="linha-horizontal"></div>
                 <h2> Dados da empresa </h2>
@@ -188,17 +180,25 @@
 
                 <mat-form-field>
                   <mat-label>Nome da empresa</mat-label>
-                  <input matInput formControlName="nomeEmpresa" placeholder="Digite o nome da empresa">
-                  <mat-error *ngIf="handleErrorTutor('nomeEmpresa', 'required', i)">Campo Obrigatório</mat-error>
+                  <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa">
+                  <mat-error *ngIf="handleErrorTutor('empresaNome', 'required', i)">Campo Obrigatório</mat-error>
                 </mat-form-field>
 
+                  <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                  <mat-form-field>
+                    <mat-label>Profissão</mat-label>
+                    <input matInput formControlName="profissao" placeholder="(00) 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('profissao', 'required', i)">Campo Obrigatório
+                    </mat-error>
+                  </mat-form-field>
 
                 <mat-form-field>
                   <mat-label>CNPJ da empresa</mat-label>
-                  <input matInput formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
-                  <mat-error *ngIf="handleErrorTutor('cnpj', 'required', i)">Campo Obrigatório</mat-error>
-                  <mat-error *ngIf="handleErrorTutor('cnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
+                  <input matInput formControlName="empresaCnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
+                  <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'required', i)">Campo Obrigatório</mat-error>
+                  <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
                 </mat-form-field>
+                </div>
 
                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                   <mat-form-field>
@@ -225,7 +225,7 @@
                 </mat-error>
 
                 <div fxLayout="column" fxLayoutAlign="center start" *ngIf="i !== 1">
-                  <mat-checkbox color="primary" formControlName="relacionamento" (change)="adicionarConjugue(i)">
+                  <mat-checkbox color="primary" formControlName="casado" (change)="adicionarConjugue(i)">
                     É casado(a), amasiado(a) ou união estável ?
                   </mat-checkbox>
 
@@ -270,7 +270,8 @@
             <div fxLayout="column" fxLayoutAlign="center start">
               <p>A criança já frequentou outra creche ?</p>
               <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
-                <mat-error *ngIf="handleErrorForm('informeValorFrequentou') && this.enviado">Marque uma opção</mat-error>
+                <mat-error *ngIf="handleErrorForm('informeValorFrequentou') && this.enviado">Marque uma opção
+                </mat-error>
                 <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
                 <mat-radio-button [value]="'nao'">Não</mat-radio-button>
               </mat-radio-group>
@@ -302,9 +303,12 @@
             <div fxLayout="column" fxLayoutAlign="center start">
               <p>A criança é beneficiada com algum tipo de ajuda do governo?</p>
               <mat-radio-group color="primary" formControlName="possuiBeneficiosDoGoverno">
-                <mat-error *ngIf="handleErrorForm('informeValorBeneficioGoverno') && this.enviado">Marque uma opção</mat-error>
-                <mat-radio-button [value]="'sim'">Sim</mat-radio-button>
-                <mat-radio-button [value]="'nao'">Não</mat-radio-button>
+                <mat-error *ngIf="handleErrorForm('informeValorBeneficioGoverno') && this.enviado">Marque uma opção
+                </mat-error>
+                <mat-radio-button [value]="'sim'" (click)="atribuirRecebeBeneficioAoListDocsSim()">Sim
+                </mat-radio-button>
+                <mat-radio-button [value]="'nao'" (click)="atribuirRecebeBeneficioAoListDocsNao()">Não
+                </mat-radio-button>
               </mat-radio-group>
 
               <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
@@ -368,7 +372,7 @@
               <mat-error *ngIf="handleErrorFormDocs('insiraODocFoto') && this.enviado">Documento obrigatótio</mat-error>
             </div>
 
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
+            <div fxLayout="center" class="linha-horizontal-docs"></div>
 
 
             <div fxLayout="column" fxLayoutAlign="space-evenly center">
@@ -378,7 +382,8 @@
                                   [idBotaoInputImagemPreview]="'certidaoIDPreview'"
                                   [enumDocPai]="EnumDoc.CERTIDAO_NASCIMENTO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-              <mat-error *ngIf="handleErrorFormDocs('insiraODocCertidao') && this.enviado">Documento obrigatótio</mat-error>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCertidao') && this.enviado">Documento obrigatótio
+              </mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>CPF da criança:</strong> <br></mat-label>
@@ -387,7 +392,8 @@
                                   [idBotaoInputImagemPreview]="'cpfCriancaIDPreview'"
                                   [enumDocPai]="EnumDoc.CPF_CRIANCA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-              <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFCrianca') && this.enviado">Documento obrigatótio</mat-error>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFCrianca') && this.enviado">Documento obrigatótio
+              </mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
@@ -407,7 +413,8 @@
                                   [idBotaoInputImagemPreview]="'docMoradiaIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_ENDERECO"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-              <mat-error *ngIf="handleErrorFormDocs('insiraODocCompEnd') && this.enviado">Documento obrigatótio</mat-error>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCompEnd') && this.enviado">Documento obrigatótio
+              </mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Comprovante de acordo com a resposta informada na tela anterior
@@ -421,16 +428,27 @@
                                   [idBotaoInputImagemPreview]="'docEstadoMoradiaIDPreview'"
                                   [enumDocPai]="EnumDoc.COMPROVANTE_MORADIA"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-              <mat-error *ngIf="handleErrorFormDocs('insiraODocCompMora') && this.enviado">Documento obrigatótio</mat-error>
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocCompMora') && this.enviado">Documento obrigatótio
+              </mat-error>
 
-              <mat-label class="titulo-doc"><strong>Comprovante de que recebe o auxílo do governo (Caso não receba, não
-                informar nada):</strong> <br></mat-label>
-              <app-upload-arquivo class="espaco-docs"
-                                  [idBotaoInputImagem]="'docAuxilioID'"
-                                  [idBotaoInputImagemPreview]="'docAuxilioIDPreview'"
-                                  [enumDocPai]="EnumDoc.COMPROVANTE_BOLSA_FAMILIA"
-                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+<!--              duplicada mesmo a validacao pois a linha horizontal diminui-->
+              <div *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'" fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <div *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
+
+                <mat-label class="titulo-doc"><strong>Comprovante de que recebe o auxílo do governo:</strong> <br>
+                </mat-label>
+                <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <app-upload-arquivo class="espaco-docs"
+                                      [idBotaoInputImagem]="'docAuxilioID'"
+                                      [idBotaoInputImagemPreview]="'docAuxilioIDPreview'"
+                                      [enumDocPai]="EnumDoc.COMPROVANTE_BOLSA_FAMILIA"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('recebeBeneficioGoverno') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
+                </div>
+              </div>
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
@@ -443,7 +461,8 @@
                                       [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
                                       [enumDocPai]="EnumDoc.CPF_TUTOR1"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFTutor') && this.enviado">Documento obrigatótio</mat-error>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFTutor') && this.enviado">Documento obrigatótio
+                  </mat-error>
                 </div>
                 <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
@@ -451,7 +470,9 @@
                                       [idBotaoInputImagemPreview]="'docCPFConjugueIDPreview'"
                                       [enumDocPai]="EnumDoc.CPF_TUTOR2"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFConjugue') && this.enviado">Documento obrigatótio</mat-error>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFConjugue') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
                 </div>
               </div>
 
@@ -467,6 +488,9 @@
                                       [idBotaoInputImagemPreview]="'docCarteiraTutorIDPreview'"
                                       [enumDocPai]="EnumDoc.COMPROVANTE_TRABALHO_T1"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraCarteiraDeTrabalhoTutor') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
                 </div>
 
                 <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
@@ -476,6 +500,9 @@
                                       [idBotaoInputImagemPreview]="'docCarteiraTConjugueIDPreview'"
                                       [enumDocPai]="EnumDoc.COMPROVANTE_TRABALHO_T2"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraCarteiraDeTrabalhoConjugue') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
                 </div>
               </div>
 
@@ -494,6 +521,7 @@
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE1T1"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
+
                     <app-upload-arquivo class="espaco-docs"
                                         [idBotaoInputImagem]="'docContraChueque2TID'"
                                         [idBotaoInputImagemPreview]="'docContraChueque2TIDPreview'"
@@ -506,6 +534,9 @@
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE3T1"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
                   </div>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraContraChequesTutor') && this.enviado">Documentos
+                    obrigatótios
+                  </mat-error>
                 </div>
                 <div *ngIf="this.temConjugue" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong><br></mat-label>
@@ -528,6 +559,9 @@
                                         [enumDocPai]="EnumDoc.CONTRA_CHEQUE3T2"
                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
                   </div>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraContraChequesConjugue') && this.enviado">Documentos
+                    obrigatótios
+                  </mat-error>
                 </div>
               </div>
 
@@ -542,7 +576,8 @@
                                   [idBotaoInputImagemPreview]="'docEstadoCivilIDPreview'"
                                   [enumDocPai]="EnumDoc.CERTIDAO_ESTADO_CIVIL"
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-              <mat-error *ngIf="handleErrorFormDocs('insiraODocEstadoCivil') && this.enviado">Documento obrigatótio</mat-error>
+              <mat-error *ngIf="handleErrorFormDocs('insiraODocEstadoCivil') && this.enviado">Documento obrigatótio
+              </mat-error>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o
@@ -564,6 +599,9 @@
                                       [idBotaoInputImagemPreview]="'docEscolarTutorIDPreview'"
                                       [enumDocPai]="EnumDoc.DECLARACAO_ESCOLART1"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraDeclaracaoEscolarTutor') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
                 </div>
                 <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                   <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
@@ -571,6 +609,9 @@
                                       [idBotaoInputImagemPreview]="'docEscolarConjugueIDPreview'"
                                       [enumDocPai]="EnumDoc.DECLARACAO_ESCOLART2"
                                       (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('insiraDeclaracaoEscolarConjugue') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
                 </div>
               </div>
 
@@ -591,12 +632,16 @@
                 dados apresentados.</strong> <br></mat-label>
             </div>
 
-            <mat-error *ngIf="handleErrorForm('marqueLieConcordo') && this.enviado">Leia e marque para continuar</mat-error>
-            <mat-checkbox color="primary" formControlName="possuiversoCertidao">
+            <mat-error *ngIf="handleErrorForm('marqueLieConcordo') && this.enviado">Leia e marque para continuar
+            </mat-error>
+            <mat-checkbox color="primary" formControlName="declaroLieConcordo">
               Decalro que li e concordo
             </mat-checkbox>
 
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center">
+
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="!this.verificarAlinhar()">
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
                 Etapa
                 Anterior
@@ -606,6 +651,16 @@
               </button>
               <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula
               </button>
+            </div>
+
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                 *ngIf="this.verificarAlinhar()">
+              <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                      class="button botao-cancelar">Cancelar
+              </button>
+
             </div>
           </div>
         </mat-tab>

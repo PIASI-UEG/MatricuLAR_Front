@@ -5,7 +5,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 import {RouterLink} from "@angular/router";
 import {FlexModule} from "@angular/flex-layout";
-import { ViwerDocumetDialogComponent } from './viwer-documet-dialog/viwer-documet-dialog.component';
+import { ViwerDocumetDialogComponent } from './viewer-documet-dialog/viwer-documet-dialog.component';
+import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
+import {ImageModule} from "primeng/image";
 
 @NgModule({
   declarations: [
@@ -20,9 +22,11 @@ import { ViwerDocumetDialogComponent } from './viwer-documet-dialog/viwer-docume
     MatFormFieldModule,
     PdfViewerModule,
     RouterLink,
-    FlexModule
+    FlexModule,
+    NgxExtendedPdfViewerModule,
+    ImageModule,
   ]
 })
-export class ArquivoViwerModule {
+export class ArquivoViewerModule {
 
 }

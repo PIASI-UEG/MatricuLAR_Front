@@ -30,7 +30,7 @@ import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 
 import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matricula-dialog.component';
-import {ArquivoViwerModule} from "../../arquitetura/arquivo-viwer/arquivo-viwer.module";
+import {ArquivoViewerModule} from "../../arquitetura/arquivo-viwer/arquivo-viewer.module";
 import {MatListModule} from "@angular/material/list";
 import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-advertencia-dialog.component';
 
@@ -71,7 +71,7 @@ import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-adve
         NgxDocViewerModule,
         NgxExtendedPdfViewerModule,
         PdfViewerModule,
-        ArquivoViwerModule,
+        ArquivoViewerModule,
         MatListModule,
     ]
 })

@@ -16,6 +16,12 @@ h2{
   margin-top: 2%;
 }
 
+.form {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .formMov {
     width: 80%;
     margin: 0 auto;

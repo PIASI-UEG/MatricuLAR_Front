@@ -2,10 +2,14 @@
 <mat-label class="ampliar-doc" *ngIf="this.isFileDocument || this.isFileImage">Clique na imagem do arquivo para ampliar <br></mat-label>
 <input type="file" style="display: none" id="{{idBotaoInputImagem}}" (change)="onFilechange($event)" #fileUpload>
 <label for="{{idBotaoInputImagem}}" class="file-button" *ngIf="!this.isFileImage && !this.isFileDocument"></label>
-
-<input type="button" style="display: none" id="{{idBotaoInputImagemPreview}}" routerLink="/imprimir-termo">
-<label for="{{idBotaoInputImagemPreview}}" class="file-button-dialog-pdf"  *ngIf="this.isFileDocument || this.isFileImage">
-  <img *ngIf="this.isFileImage" [src]="this.selectedFile" class="viewer" >
+  <p-image
+    *ngIf="this.isFileImage"
+    [src]="this.selectedFile"
+    [preview]="true"
+    class="viewer" >
+  </p-image>
+<input type="button" style="display: none" id="{{idBotaoInputImagemPreview}}" (click)="this.openDialogPreviewExpanded()">
+<label for="{{idBotaoInputImagemPreview}}" class="file-button-dialog-pdf"  *ngIf="this.isFileDocument">
   <pdf-viewer
     *ngIf="this.isFileDocument"
     [src]="this.selectedFile"

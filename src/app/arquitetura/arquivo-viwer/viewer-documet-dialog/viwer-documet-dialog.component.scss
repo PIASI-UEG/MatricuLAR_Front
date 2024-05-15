@@ -1,0 +1,26 @@
+.file-button-document {
+  background:#5AB9EA ;
+  color: white ;
+  text-align:center;
+  align-items: center;
+  width: 200px ;
+  line-height: 35px;
+  height: 35px ;
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  border:1px solid #A2B6C8;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  margin: 20px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.viewer {
+  display: block;
+  margin: 0 auto;
+  border-radius: 5px;
+  user-select: none;
+}
+

@@ -3,6 +3,13 @@ import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto
 import {EnumDoc} from "../EnumDoc";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {async} from "@angular/core/testing";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ViwerDocumetDialogComponent} from "../viewer-documet-dialog/viwer-documet-dialog.component";
+import {FormBuilder} from "@angular/forms";
+import {DateAdapter} from "@angular/material/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {SecurityService} from "../../security/security.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-upload-arquivo',
@@ -15,10 +22,16 @@ export class UploadArquivoComponent{
   @Input() idBotaoInputImagemPreview !: string;
   @Output() enviarDados = new EventEmitter<{ doc: File , tipoDocumento: EnumDoc}>();
 
+  file!: File;
   arqNome: string = 'Escolha um arquivo';
   selectedFile: string = '';
   isFileImage = false;
   isFileDocument = false;
+
+  constructor(
+    private dialog: MatDialog,
+  ) {}
+
 
   onFilechange(event: any){
     const file = event.target.files[0];
@@ -26,6 +39,7 @@ export class UploadArquivoComponent{
     console.log(file);
     let blob: Blob;
     blob = file;
+    this.file = file;
 
     console.log("Enum doc pai", this.enumDocPai)
 
@@ -66,6 +80,17 @@ export class UploadArquivoComponent{
 
   private diminuirTamanhoNomeArquivo(fileName: string) {
     return fileName.substring(0, 20 - 3) + '...';
+  }
+
+  openDialogPreviewExpanded(){
+    const config: MatDialogConfig = {
+      data: {
+        file: this.file,
+        isFileImage: this.isFileImage,
+        isFileDocument: this.isFileDocument,
+      }
+    };
+    this.dialog.open(ViwerDocumetDialogComponent, config);
   }
 
   // pegaDoc() {

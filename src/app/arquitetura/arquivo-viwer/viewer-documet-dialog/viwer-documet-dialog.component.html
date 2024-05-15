@@ -1,0 +1,30 @@
+<div fxLayout="column" fxLayoutAlign="space-evenly center">
+    <ngx-extended-pdf-viewer
+      class="viewer"
+      *ngIf="this.isFileDocument"
+      [src]="this.fileSRC"
+      [zoom]="this.mudarZoom()"
+      [showToolbar]="true"
+      [showSidebarButton]="false"
+      [showFindButton]="true"
+      [showPagingButtons]="false"
+      [showDrawEditor]="false"
+      [showStampEditor]="false"
+      [showTextEditor]="false"
+      [showZoomButtons]="true"
+      [showPresentationModeButton]="false"
+      [showOpenFileButton]="false"
+      [showPrintButton]="false"
+      [showDownloadButton]="true"
+      [showSecondaryToolbarButton]="false"
+      [showHandToolButton]="false"
+      [showScrollingButton]="false"
+      [showSpreadButton]="false"
+      [showPropertiesButton]="false"
+      [height]="'90vh'"
+      [mobileFriendlyZoom]="'true'"
+      [textLayer]="true"
+      [ngStyle]="this.mudarAlinhar()" >
+    </ngx-extended-pdf-viewer>
+  <button class="file-button-document " (click)="closeDialog()">Fechar</button>
+</div>

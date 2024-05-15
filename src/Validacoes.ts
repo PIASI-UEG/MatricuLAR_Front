@@ -313,8 +313,80 @@ export class Validacoes{
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
     if (!copiaDocs[11]) {
-      formGroup.get('listaDocumentos')?.setErrors({ 'insiraODocContraCheque1T': true });
-      return { 'insiraODocContraCheque1T': true };
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraCarteiraDeTrabalhoTutor': true });
+      return { 'insiraCarteiraDeTrabalhoTutor': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu CarteiraTrabalhoConjugue
+  validarCarteiraTrabalhoConjugue(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[18]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraCarteiraDeTrabalhoConjugue': true });
+      return { 'insiraCarteiraDeTrabalhoConjugue': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu ContraChequeTutor
+  validarCarteiraContraChequeTutor(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[12] || !copiaDocs[13] || !copiaDocs[14]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraContraChequesTutor': true });
+      return { 'insiraContraChequesTutor': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu ContraChequeConjugue
+  validarCarteiraContraChequeConjugue(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[15] || !copiaDocs[16] || !copiaDocs[17]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraContraChequesConjugue': true });
+      return { 'insiraContraChequesConjugue': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu DeclaracaoEscolarTutor
+  validarDeclaracaoEscolarTutor(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[19]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraDeclaracaoEscolarTutor': true });
+      return { 'insiraDeclaracaoEscolarTutor': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu DeclaracaoEscolarConjugue
+  validarDeclaracaoEscolarConjugue(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[20]) {
+      formGroup.get('listaDocumentos')?.setErrors({ 'insiraDeclaracaoEscolarConjugue': true });
+      return { 'insiraDeclaracaoEscolarConjugue': true };
+    } else {
+      return null;
+    }
+  }
+
+  //validar se inseriu ComprovanteBeneficio
+  validarComprovanteBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[6] && formGroup.get('recebeBeneficio')?.value === 'sim') {
+      formGroup.get('listaDocumentos')?.setErrors({ 'recebeBeneficioGoverno': true });
+      return { 'recebeBeneficioGoverno': true };
     } else {
       return null;
     }
