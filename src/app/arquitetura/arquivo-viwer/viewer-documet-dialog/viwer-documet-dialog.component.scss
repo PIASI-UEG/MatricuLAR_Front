@@ -1,5 +1,5 @@
 .file-button-document {
-  background:#5AB9EA ;
+  background:#FF7676 ;
   color: white ;
   text-align:center;
   align-items: center;
@@ -24,3 +24,43 @@
   user-select: none;
 }
 
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  padding: 10px;
+  margin-bottom: 10px;
+  z-index: 1;
+}
+
+.zoom-button {
+  background: #5AB9EA;
+  color: white;
+  text-align: center;
+  width: 55px;
+  height: 55px;
+  font-family: inherit;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.zoom-button:hover {
+  background: #0056b3;
+}
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.image-container img {
+  transition: transform 0.3s ease-in-out;
+}

@@ -8,6 +8,7 @@ import {FlexModule} from "@angular/flex-layout";
 import { ViwerDocumetDialogComponent } from './viewer-documet-dialog/viwer-documet-dialog.component';
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {ImageModule} from "primeng/image";
+import {NgxImageZoomModule} from "ngx-image-zoom";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {ImageModule} from "primeng/image";
     FlexModule,
     NgxExtendedPdfViewerModule,
     ImageModule,
+    NgxImageZoomModule,
   ]
 })
 export class ArquivoViewerModule {

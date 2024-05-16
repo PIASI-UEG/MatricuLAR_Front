@@ -1,4 +1,22 @@
 <div fxLayout="column" fxLayoutAlign="space-evenly center">
+  <div *ngIf="this.isFileImage">
+    <div class="toolbar">
+      <button class="zoom-button" (click)="zoomIn()">+</button>
+      <button class="zoom-button" (click)="zoomOut()">-</button>
+    </div>
+    <div class="image-container"
+         (wheel)="onWheel($event)"
+         (touchstart)="onTouchStart($event)"
+         (touchmove)="onTouchMove($event)"
+         (touchend)="onTouchEnd($event)">
+      <div class="image-wrapper">
+        <img [src]="this.fileSRC"
+             [ngStyle]="this.mudarAlinharImagem()"
+             [style.transform]="'scale(' + zoomLevel + ') translate(' + offsetX + 'px, ' + offsetY + 'px)'"
+             alt="Imagem" >
+      </div>
+    </div>
+  </div>
     <ngx-extended-pdf-viewer
       class="viewer"
       *ngIf="this.isFileDocument"

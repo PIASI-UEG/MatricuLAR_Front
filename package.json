@@ -37,6 +37,7 @@
     "ng2-pdf-viewer": "^10.0.0",
     "ngx-doc-viewer": "^15.0.1",
     "ngx-extended-pdf-viewer": "^18.0.0",
+    "ngx-image-zoom": "^3.0.0",
     "ngx-mask": "^16.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^16.9.1",
