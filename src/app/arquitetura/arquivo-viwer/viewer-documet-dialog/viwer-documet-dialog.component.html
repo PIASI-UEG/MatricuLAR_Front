@@ -8,7 +8,10 @@
          (wheel)="onWheel($event)"
          (touchstart)="onTouchStart($event)"
          (touchmove)="onTouchMove($event)"
-         (touchend)="onTouchEnd($event)">
+         (touchend)="onTouchEnd($event)"
+         (pointerdown)="onPointerDown($event)"
+         (pointermove)="onPointerMove($event)"
+         (pointerup)="onPointerUp($event)">
       <div class="image-wrapper">
         <img [src]="this.fileSRC"
              [ngStyle]="this.mudarAlinharImagem()"

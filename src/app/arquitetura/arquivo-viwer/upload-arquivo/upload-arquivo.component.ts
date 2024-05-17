@@ -10,6 +10,7 @@ import {DateAdapter} from "@angular/material/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../security/security.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {MensagensUniversais} from "../../../../MensagensUniversais";
 
 @Component({
   selector: 'app-upload-arquivo',
@@ -22,6 +23,9 @@ export class UploadArquivoComponent{
   @Input() idBotaoInputImagemPreview !: string;
   @Output() enviarDados = new EventEmitter<{ doc: File , tipoDocumento: EnumDoc}>();
 
+  mensagens: MensagensUniversais = new MensagensUniversais({
+    dialog: this.dialog
+  })
   file!: File;
   arqNome: string = 'Escolha um arquivo';
   selectedFile: string = '';
@@ -36,14 +40,20 @@ export class UploadArquivoComponent{
   onFilechange(event: any){
     const file = event.target.files[0];
     const fileName = file.name;
-    console.log(file);
     let blob: Blob;
     blob = file;
     this.file = file;
-
-    console.log("Enum doc pai", this.enumDocPai)
+    const extensoesSuportadas = ['.jpg', '.jpeg', '.pdf'];
 
     if (file) {
+
+      const fileExtension = fileName.split('.').pop()?.toLowerCase();
+      if (extensoesSuportadas.indexOf('.' + fileExtension) === -1) {
+        this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg ou .pdf.")
+        return;
+      }
+
+
       this.selectedFile = this.makeURLFile(file);
       if (this.verificarTipoArquivo(file)) {
         this.isFileImage = true;

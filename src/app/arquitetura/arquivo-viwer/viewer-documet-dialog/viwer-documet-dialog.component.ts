@@ -74,10 +74,10 @@ export class ViwerDocumetDialogComponent implements OnInit{
   mudarAlinharImagem() {
     if(innerWidth < 650)
     {
-      return {'width' : '28vh'};
+      return {'width' : '28vh', 'height': '70vh'};
     }
     else if (innerWidth < 1200){
-      return {'width' : '60vh'};
+      return {'width' : '60vh', 'height': '70vh'};
     }
     return {'width': '100vh', 'height': '70vh'};
   }
@@ -88,6 +88,8 @@ export class ViwerDocumetDialogComponent implements OnInit{
   offsetY = 0;
   initialTouchX = 0;
   initialTouchY = 0;
+  initialPointerX = 0;
+  initialPointerY = 0;
   isDragging = false;
 
   onWheel(event: WheelEvent) {
@@ -128,4 +130,31 @@ export class ViwerDocumetDialogComponent implements OnInit{
   zoomOut() {
     this.zoomLevel = Math.max(this.zoomLevel - 0.1, 0.5);
   }
+
+  onPointerDown(event: PointerEvent) {
+    event.preventDefault();
+    if (event.pointerType === 'touch' || event.pointerType === 'mouse') {
+      this.isDragging = true;
+      this.initialPointerX = event.clientX;
+      this.initialPointerY = event.clientY;
+    }
+  }
+
+  onPointerMove(event: PointerEvent) {
+    event.preventDefault();
+    if (this.isDragging) {
+      const pointerX = event.clientX;
+      const pointerY = event.clientY;
+      this.offsetX += pointerX - this.initialPointerX;
+      this.offsetY += pointerY - this.initialPointerY;
+      this.initialPointerX = pointerX;
+      this.initialPointerY = pointerY;
+    }
+  }
+
+  onPointerUp(event: PointerEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
 }
