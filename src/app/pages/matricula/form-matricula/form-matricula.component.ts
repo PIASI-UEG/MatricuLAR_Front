@@ -55,7 +55,7 @@ export class FormMatriculaComponent implements OnInit {
   flexDivAlinharElementosGrandes: string = 'row';
   innerWidth: number = window.innerWidth;
   hide = true;
-  parentescos: string[] = ['PAI', 'MAE', 'AVO', 'VIZINHO', 'TIO']; // Lista de opções de parentesco
+  parentescos: string[] = ['PAI', 'MAE', 'AVO', 'TIO']; // Lista de opções de parentesco
   nomeTitulo: string = "Dados da Criança";
   guiaAtiva = 0;
   botaoNecessidadeClicado: boolean = false;
