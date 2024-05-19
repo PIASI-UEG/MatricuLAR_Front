@@ -46,7 +46,8 @@ export class FormMatriculaComponent implements OnInit {
   mensagens: MensagensUniversais = new MensagensUniversais({
     dialog: this.dialog,
     router: this.router,
-    telaAtual: 'matricula'
+    telaAtual: 'matricula',
+    securityService: this.securityService
   })
   validacoes: Validacoes = new Validacoes();
   minDate = new Date(1900, 0, 1);
@@ -79,11 +80,15 @@ export class FormMatriculaComponent implements OnInit {
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    this.formDocumentos = this.createFormListaDocs();
+    this._adapter.setLocale('pt-br');
+
+    this.createFormListaDocs();
     this.createForm();
     this.adicionarCampoTutor();
-    this._adapter.setLocale('pt-br');
     this.prepararEdicao();
+
+    this.validacoes.formGroupMatricula = this.formGroup;
+    this.validacoes.formGroupDocsList = this.formDocumentos;
   }
 
   private createForm() {
@@ -93,7 +98,7 @@ export class FormMatriculaComponent implements OnInit {
       //Dados da Criança
       this.formGroup = this.formBuilder.group({
         nomeCrianca: [null, Validators.required],
-        cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf]],
+        cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
         dataNascimento: [null, Validators.required],
         possuiNecessidadeEspecial: false,
         necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
@@ -133,7 +138,7 @@ export class FormMatriculaComponent implements OnInit {
       nomeTutor: [null, Validators.required],
       //colocar
       dataNascimento: [null, Validators.required],
-      cpf: [null, [Validators.required, this.validacoes.validarCpf]],
+      cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
       vinculo: [null, Validators.required],
       pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
       profissao: [null, Validators.required],
@@ -147,9 +152,9 @@ export class FormMatriculaComponent implements OnInit {
     }, {validator: this.validacoes.validarTelefonesEmpresariais})
   }
 
-  private createFormListaDocs(): FormGroup {
+  private createFormListaDocs() {
 
-    return this.formBuilder.group({
+    this.formDocumentos = this.formBuilder.group({
       listaDocumentos: [[]], // Inicialize com uma lista vazia
       temconjugue: false,
       recebeBeneficio: null,

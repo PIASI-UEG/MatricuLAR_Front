@@ -25,6 +25,7 @@
                 <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
                 <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
                 <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
+                <mat-error *ngIf="handleError('cpfCrianca', 'cpfsIguais')">CPF Já informado</mat-error>
               </mat-form-field>
 
               <mat-form-field>
@@ -49,7 +50,7 @@
                     <mat-label>Necessidade especial</mat-label>
                     <input matInput formControlName="titulo"
                            placeholder="EX: alergia, medicamentos, alimentação">
-                    <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">Desmarque ou preencha para
+                    <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && this.formGroup.get('possuiNecessidadeEspecial')?.value">Desmarque ou preencha para
                       continuar
                     </mat-error>
                   </mat-form-field>
@@ -142,11 +143,12 @@
                     <input matInput formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
                     <mat-error *ngIf="handleErrorTutor('cpf', 'required', i)">Campo Obrigatório</mat-error>
                     <mat-error *ngIf="handleErrorTutor('cpf', 'cpfInvalido', i)">CPF Inválido</mat-error>
+                    <mat-error *ngIf="handleErrorTutor('cpf', 'cpfsIguais', i)">CPF Já informado.</mat-error>
                   </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Data de Nascimento</mat-label>
-                    <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
+                    <input matInput formControlName="dataNascimento" placeholder="Escolha uma data"
                            [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
                     <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                     <mat-datepicker #dp3></mat-datepicker>
