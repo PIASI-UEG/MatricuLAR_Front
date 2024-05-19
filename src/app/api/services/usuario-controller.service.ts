@@ -13,8 +13,8 @@ import { Pageable } from '../models/pageable';
 import { RedefinirSenhaDto } from '../models/redefinir-senha-dto';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
-import { UsuarioAlterarDto } from '../models/usuario-alterar-dto';
 import { UsuarioDto } from '../models/usuario-dto';
+import {UsuarioAlterarDto} from "../models/usuario-alterar-dto";
 
 @Injectable({
   providedIn: 'root',
