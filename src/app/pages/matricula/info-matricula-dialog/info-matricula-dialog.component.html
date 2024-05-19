@@ -35,9 +35,11 @@
                         <p><strong>Responsáveis Permitidos:</strong>{{responsaveisNome}}</p>
                     </mat-card-content>
                 </mat-card>
+
         </div>
         <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+          <button mat-raised-button type="button" class="button botao-voltar" (click)="openDialogAdvertencia()">Lançar Advertência</button>
             <button mat-raised-button type="button" class="button botao-voltar" (click)="adicionarNecessidade()">Adicionar Necessidade</button>
         </div>
     </form>

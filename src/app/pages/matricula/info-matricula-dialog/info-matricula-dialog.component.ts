@@ -11,6 +11,7 @@ import {MatriculaDto} from "../../../api/models/matricula-dto";
 import {
     AddNecessidadeEspecialDialogComponent
 } from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
+import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-advertencia-dialog.component";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -19,6 +20,7 @@ import {
 })
 export class InfoMatriculaDialogComponent implements OnInit {
     matricula: MatriculaVisualizarDto[] = [];
+    matriculaId?: number;
     formGroup!: FormGroup;
     dados: any;
     caminhoImagem: string = '';
@@ -61,7 +63,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
             this.fechar();
             return;
         }
-
+        this.matriculaId = matricula.id;
         this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: matricula.id }).subscribe(
             (response: MatriculaVisualizarDto) => {
                 this.caminhoImagem = response.caminhoImagem ?? '';
@@ -94,6 +96,16 @@ export class InfoMatriculaDialogComponent implements OnInit {
             console.log('O diálogo foi fechado');
         });
     }
+
+  openDialogAdvertencia() {
+    const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
+      {
+        data:
+          {
+            id: this.matriculaId
+          }
+      })
+  }
 
 
     fechar(): void {

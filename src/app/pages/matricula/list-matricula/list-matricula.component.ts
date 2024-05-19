@@ -16,6 +16,7 @@ import {InfoMatriculaDialogComponent} from "../info-matricula-dialog/info-matric
 import DevExpress from "devextreme";
 import data = DevExpress.data;
 import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
+import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-advertencia-dialog.component";
 
 @Component({
   selector: 'app-list-matricula',
@@ -156,6 +157,21 @@ export class ListMatriculaComponent implements OnInit{
   openDialogTest(matriculaDto: MatriculaDto) {
     console.log(matriculaDto);
     const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
+      {
+        data:
+          {
+            id: matriculaDto.id
+          }
+      })
+    dialogRef.afterClosed().subscribe(() => {
+        this.buscarDados()
+      }
+    )
+  }
+
+  openDialogAdvertencia(matriculaDto: MatriculaDto) {
+    console.log(matriculaDto);
+    const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
       {
         data:
           {

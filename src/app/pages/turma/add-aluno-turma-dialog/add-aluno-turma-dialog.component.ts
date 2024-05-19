@@ -54,14 +54,14 @@ export class AddAlunoTurmaDialogComponent {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      alunoID: [null, Validators.required],
       turmaID: [null,Validators.required]
     })
   }
 
   private realizarInclusao() {
     console.log("Dados:",this.formGroup.value);
-    const aluno: Array<number> = this.formGroup.get('alunoID')?.value;
+    let aluno: Array<number> = [];
+    aluno[0] = this.aluno?.id || -1;
     const turmaID: number = this.formGroup.get('turmaID')?.value;
     this.turmaService.turmaControllerAdicionaAlunos({idTurma: turmaID, body: aluno})
       .subscribe( retorno =>{
