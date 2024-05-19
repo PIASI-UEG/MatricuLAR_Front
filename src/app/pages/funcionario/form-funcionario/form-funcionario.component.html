@@ -32,6 +32,7 @@
         <mat-label>Cargo</mat-label>
         <mat-select formControlName="cargo" placeholder="Selecione o cargo">
           <mat-option value="SECRETARIA">SECRETARIA</mat-option>
+          <mat-option value="COORDENADORA">COORDENADORA</mat-option>
         </mat-select>
         <mat-error *ngIf="handleError('cargo', 'required')">Campo Obrigatório</mat-error>
       </mat-form-field>
