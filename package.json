@@ -38,12 +38,13 @@
     "ngx-doc-viewer": "^15.0.1",
     "ngx-extended-pdf-viewer": "^18.0.0",
     "ngx-image-zoom": "^3.0.0",
-    "ngx-mask": "^16.0.0",
+    "ngx-mask": "^16.4.2",
     "primeicons": "^7.0.0",
     "primeng": "^16.9.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "typescript": "^5.0.2",
+    "vanilla-text-mask": "^5.1.1",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

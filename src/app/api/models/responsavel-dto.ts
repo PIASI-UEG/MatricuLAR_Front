@@ -6,5 +6,5 @@ export interface ResponsavelDto {
   nomeMatricula?: string;
   nomeResponsavel?: string;
   tutor?: boolean;
-  vinculo?: 'PAI' | 'MAE' | 'TIO' | 'VIZINHO' | 'AVO';
+  vinculo?: 'PAI' | 'MAE' | 'TIO' | 'VIZINHO' | 'AVO' | 'TIA' | 'BISAVO';
 }

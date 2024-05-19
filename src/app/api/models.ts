@@ -1,6 +1,7 @@
 export { FieldResponse } from './models/field-response';
 export { MessageResponse } from './models/message-response';
 export { UsuarioDto } from './models/usuario-dto';
+export { UsuarioAlterarDto } from './models/usuario-alterar-dto';
 export { TutorDto } from './models/tutor-dto';
 export { MatriculaListagemDto } from './models/matricula-listagem-dto';
 export { TurmaDto } from './models/turma-dto';

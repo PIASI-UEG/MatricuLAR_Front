@@ -37,6 +37,12 @@ export const matriculaRoutes: Routes = [
         canActivate: [SecurityGuard],
         data: {security: {roles: ['A', 'C','S']}}
       },
+      {
+        path: "validar/:id",
+        component: FormMatriculaComponent,
+        canActivate: [SecurityGuard],
+        data: {security: {roles: ['A', 'C','S']}}
+      },
     ]
   }
 ];

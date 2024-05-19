@@ -11,5 +11,5 @@ export interface TurmaDto {
   quantidadeAlunos?: number;
   telefoneProfessor?: string;
   titulo?: string;
-  turno?: 'MATUTINO' | 'VESPERTINO' | 'NOTURNO';
+  turno?: 'MATUTINO' | 'VESPERTINO' | 'INTEGRAL';
 }
