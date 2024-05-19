@@ -12,7 +12,7 @@ export class MensagensUniversais {
   private router?: Router;
   private telaAtual?: string;
   private snackBar?: MatSnackBar;
-  protected securityService?: SecurityService;
+  private securityService?: SecurityService;
 
   constructor(config: {
     dialog?: MatDialog,
@@ -25,6 +25,7 @@ export class MensagensUniversais {
     this.router = config.router;
     this.telaAtual = config.telaAtual;
     this.snackBar = config.snackBar;
+    this.securityService =  config.securityService;
   }
   confirmarErro(acao: String, erro: String){
     if(this.dialog) {
@@ -55,11 +56,8 @@ export class MensagensUniversais {
       dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
         if (confirmed?.resultado && this.router && this.securityService?.isValid()) {
           this.router.navigate(["/" + this.telaAtual]);
-        }
-        else{
-          if (this.router instanceof Router) {
-            this.router.navigate(["/home"]);
-          }
+        }else if (this.router && confirmed?.resultado){
+          this.router.navigate(["/home"]);
         }
       });
     }

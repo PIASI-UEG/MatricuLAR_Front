@@ -22,7 +22,7 @@ export class FormTurmaComponent {
   acao: string = this.ACAO_INCLUIR;
   turma?: TurmaDto;
   codigo!: number;
-  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'turma'});
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'turma', securityService: this.securityService});
   validacoes: Validacoes = new Validacoes();
   flexDivAlinhar: string = 'row';
   innerWidth: number = window.innerWidth;

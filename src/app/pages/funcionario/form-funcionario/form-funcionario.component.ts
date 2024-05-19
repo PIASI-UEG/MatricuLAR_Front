@@ -32,7 +32,7 @@ export class FormFuncionarioComponent implements OnInit {
   codigo!: number;
   usuario?:UsuarioDto;
   //cargos: CargoDto[] = [];
-  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'funcionario'})
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'funcionario', securityService: this.securityService})
   validacoes: Validacoes = new Validacoes();
   flexDivAlinhar: string = 'row';
   admin!: boolean
