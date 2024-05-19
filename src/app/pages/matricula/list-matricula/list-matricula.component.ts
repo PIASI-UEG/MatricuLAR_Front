@@ -82,8 +82,17 @@ export class ListMatriculaComponent implements OnInit{
   }
 
   remover(listaMatricula: MatriculaDto) {
-    console.log("Removido", listaMatricula.nome);
-    this.mensagens.showMensagemSimples("Excluído com sucesso!");
+    console.log(listaMatricula)
+    this.matriculaService.matriculaControllerRemover({id: listaMatricula.id || 0})
+      .subscribe(
+        retorno => {
+          this.buscarDados();
+          this.mensagens.showMensagemSimples("Excluído com sucesso!");
+          console.log("Exclusão:", retorno);
+        },error => {
+          this.mensagens.confirmarErro("Excluir", error.message)
+        }
+      );
   }
 
 

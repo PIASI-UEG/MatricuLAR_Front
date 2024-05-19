@@ -13,6 +13,7 @@ import { Pageable } from '../models/pageable';
 import { RedefinirSenhaDto } from '../models/redefinir-senha-dto';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
+import { UsuarioAlterarDto } from '../models/usuario-alterar-dto';
 import { UsuarioDto } from '../models/usuario-dto';
 import {UsuarioAlterarDto} from "../models/usuario-alterar-dto";
 
@@ -103,7 +104,7 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<UsuarioDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerAlterarPath, 'put');
     if (params) {
@@ -118,7 +119,7 @@ export class UsuarioControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<UsuarioDto>;
       })
     );
   }
@@ -137,10 +138,10 @@ export class UsuarioControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<UsuarioDto> {
 
     return this.usuarioControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<UsuarioDto>) => r.body as UsuarioDto)
     );
   }
 
@@ -197,6 +198,66 @@ export class UsuarioControllerService extends BaseService {
 ): Observable<any> {
 
     return this.usuarioControllerRemover$Response(params,context).pipe(
+      map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+  /**
+   * Path part for operation usuarioControllerNovoAlterar
+   */
+  static readonly UsuarioControllerNovoAlterarPath = '/api/v1/usuario/alterar/{id}';
+
+  /**
+   * Método utilizado para altlerar os dados de uma entidiade
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `usuarioControllerNovoAlterar()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  usuarioControllerNovoAlterar$Response(params: {
+    id: number;
+    body: UsuarioAlterarDto
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<any>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UsuarioControllerService.UsuarioControllerNovoAlterarPath, 'put');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  /**
+   * Método utilizado para altlerar os dados de uma entidiade
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `usuarioControllerNovoAlterar$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  usuarioControllerNovoAlterar(params: {
+    id: number;
+    body: UsuarioAlterarDto
+  },
+  context?: HttpContext
+
+): Observable<any> {
+
+    return this.usuarioControllerNovoAlterar$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }

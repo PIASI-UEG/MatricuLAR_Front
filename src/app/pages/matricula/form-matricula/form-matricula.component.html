@@ -19,7 +19,7 @@
               <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
             </mat-form-field>
 
-            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+            <div  [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
               <mat-form-field>
                 <mat-label>CPF da criança</mat-label>
                 <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
@@ -30,11 +30,12 @@
 
               <mat-form-field>
                 <mat-label>Data de Nascimento</mat-label>
-                <input matInput formControlName="dataNascimento" placeholder="Escolha uma data"
-                       [matDatepicker]="dp3">
-                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
+                         [matDatepicker]="dp3">
+                <mat-datepicker-toggle matSuffix [for]="dp3" ></mat-datepicker-toggle>
                 <mat-datepicker #dp3></mat-datepicker>
                 <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
+                <mat-error *ngIf="handleError('dataNascimento', 'idadeInvalida')">Idade máxima 5 e mínima 3</mat-error>
               </mat-form-field>
             </div>
 
@@ -60,7 +61,7 @@
                   </button>
                 </div>
               </div>
-              <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade()">
+              <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade(null)">
                 <mat-icon>add</mat-icon>
                 Adicionar necessidade
               </button>
@@ -167,6 +168,7 @@
                 </mat-form-field>
 
 
+                <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                   <mat-form-field>
                     <mat-label>Telefone Celular</mat-label>
                     <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone"
@@ -175,6 +177,15 @@
                     <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
                     </mat-error>
                   </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Telefone Reserva</mat-label>
+                  <input matInput mask="(00) 0 0000-0000" formControlName="telefoneReserva"
+                         placeholder="(00) 0 0000-0000">
+                  <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
+                  </mat-error>
+                </mat-form-field>
+                </div>
 
                 <div fxLayout="center" class="linha-horizontal"></div>
                 <h2> Dados da empresa </h2>
@@ -197,7 +208,6 @@
                 <mat-form-field>
                   <mat-label>CNPJ da empresa</mat-label>
                   <input matInput formControlName="empresaCnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
-                  <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'required', i)">Campo Obrigatório</mat-error>
                   <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
                 </mat-form-field>
                 </div>
@@ -227,11 +237,11 @@
                 </mat-error>
 
                 <div fxLayout="column" fxLayoutAlign="center start" *ngIf="i !== 1">
-                  <mat-checkbox color="primary" formControlName="casado" (change)="adicionarConjugue(i)">
+                  <mat-checkbox color="primary" formControlName="casado" (change)="adicionarConjugue(i, conjugue)">
                     É casado(a), amasiado(a) ou união estável ?
                   </mat-checkbox>
 
-                  <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="adicionarConjugue(i)">
+                  <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="adicionarConjugue(i,conjugue)">
                     Mora com seu Cônjuge?
                   </mat-checkbox>
                 </div>
@@ -292,6 +302,7 @@
               <mat-select formControlName="tipoResidencia" placeholder="Selecione o tipo da residência">
                 <mat-option value="alugado">Alugado</mat-option>
                 <mat-option value="proprio">Próprio</mat-option>
+                <mat-option value="cedido">Cedido</mat-option>
               </mat-select>
               <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
             </mat-form-field>
@@ -327,6 +338,7 @@
               <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator=","
                      placeholder="0,00">
               <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
+              <mat-error *ngIf="handleError('rendaFamiliar', 'rendaInvalida')">Renda máxima de 2200</mat-error>
             </mat-form-field>
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
@@ -356,7 +368,7 @@
 
         <!-- Etapa 4 -->
         <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
-          <div class="conteudo-mat-tab">
+          <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio != 'Validar'">
             <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
               serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
               e
@@ -396,15 +408,6 @@
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
               <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFCrianca') && this.enviado">Documento obrigatótio
               </mat-error>
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
-
-              <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
-                não informar nenhum documento:</strong> <br></mat-label>
-              <app-upload-arquivo class="espaco-docs"
-                                  [idBotaoInputImagem]="'docVeiculoID'"
-                                  [idBotaoInputImagemPreview]="'docVeiculoIDPreview'"
-                                  [enumDocPai]="EnumDoc.DOCUMENTO_VEICULO"
-                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
@@ -477,6 +480,16 @@
                   </mat-error>
                 </div>
               </div>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
+                não informar nenhum documento:</strong> <br></mat-label>
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docVeiculoID'"
+                                  [idBotaoInputImagemPreview]="'docVeiculoIDPreview'"
+                                  [enumDocPai]="EnumDoc.DOCUMENTO_VEICULO"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
@@ -580,15 +593,6 @@
                                   (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
               <mat-error *ngIf="handleErrorFormDocs('insiraODocEstadoCivil') && this.enviado">Documento obrigatótio
               </mat-error>
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
-
-              <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o
-                documento não informar)</strong> <br></mat-label>
-              <app-upload-arquivo class="espaco-docs"
-                                  [idBotaoInputImagem]="'docCRASID'"
-                                  [idBotaoInputImagemPreview]="'docCRASIDPreview'"
-                                  [enumDocPai]="EnumDoc.ENCAMINHAMENTO_CRAS"
-                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
@@ -616,6 +620,16 @@
                   </mat-error>
                 </div>
               </div>
+
+              <div fxLayout="center" class="linha-horizontal-docs"></div>
+
+              <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o
+                documento não informar)</strong> <br></mat-label>
+              <app-upload-arquivo class="espaco-docs"
+                                  [idBotaoInputImagem]="'docCRASID'"
+                                  [idBotaoInputImagemPreview]="'docCRASIDPreview'"
+                                  [enumDocPai]="EnumDoc.ENCAMINHAMENTO_CRAS"
+                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
 
               <div fxLayout="center" class="linha-horizontal-docs"></div>
               <!--              // colocar aqui uma validacao se possui conjugue e aparecer outro campo&ndash;&gt;-->

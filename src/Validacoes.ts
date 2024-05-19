@@ -7,6 +7,43 @@ export class Validacoes {
   public formGroupMatricula ?: FormGroup;
   public formGroupDocsList ?: FormGroup;
 
+  validarIdadeCrianca(control: AbstractControl): { [key: string]: any } | null {
+    const dataNascimento: Date = control.value;
+
+    if (!(dataNascimento instanceof Date) || isNaN(dataNascimento.getTime())) {
+      return null;
+    }
+
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - dataNascimento.getFullYear();
+    const mesAtual = hoje.getMonth();
+    const diaAtual = hoje.getDate();
+    if (mesAtual < dataNascimento.getMonth() || (mesAtual === dataNascimento.getMonth() && diaAtual < dataNascimento.getDate())) {
+      idade--;
+    }
+
+    const idadeMinima = 3;
+    const idadeMaxima = 5;
+
+    if (idade >= idadeMinima && idade <= idadeMaxima) {
+      return null;
+    } else {
+      return { 'idadeInvalida': true };
+    }
+  }
+
+  validarRenda(control: AbstractControl): { [key: string]: any } | null {
+    const salario: number = control.value;
+
+    const salarioMaximo = 2200;
+
+    if (salario <= salarioMaximo) {
+      return null;
+    } else {
+      return { 'rendaInvalida': true };
+    }
+  }
+
   validarEmail(control: AbstractControl): { [key: string]: any } | null {
     const email: string = control.value;
     //npm install class-validator --save
@@ -42,7 +79,7 @@ export class Validacoes {
     const cnpj: string = control.value;
 
     if (!cnpj) {
-      return {'cnpjVazio': true};
+      return null;
     }
 
     const cnpjLimpo = cnpj.replace(/\D/g, '');

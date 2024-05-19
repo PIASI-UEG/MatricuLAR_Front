@@ -1,1 +1,16 @@
 @import '../../../../styles.scss';
+
+.button-config-validar{
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  padding:1px;
+  text-decoration: none;
+  background:#7FBFFF;
+  color: white;
+  width:100px;
+  height:40px;
+  border: none;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  margin: 6px;
+}
