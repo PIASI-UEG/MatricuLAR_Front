@@ -49,7 +49,7 @@
       <button *ngIf="!securityService.isValid()"title="Acesso" mat-button class="menu-button" routerLink="/acesso"> Acesso
         <mat-icon>login</mat-icon>
       </button>
-        <button *ngIf="securityService.isValid()"title="Sair" mat-button class="menu-button" (click)="sair()"> Sair
+        <button *ngIf="securityService.isValid()"title="Sair" mat-button class="menu-button" (click)="this.mensagens.acaoSair()"> Sair
             <mat-icon>logout</mat-icon>
         </button>
     </mat-sidenav>

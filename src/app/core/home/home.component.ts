@@ -8,6 +8,7 @@ import {filter} from "rxjs/operators";
 import {SecurityService} from "../../arquitetura/security/security.service";
 
 import {MatDialog} from "@angular/material/dialog";
+import {MensagensUniversais} from "../../../MensagensUniversais";
 
 
 @UntilDestroy()
@@ -20,11 +21,18 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   admin!: any;
+  mensagens: MensagensUniversais = new MensagensUniversais({
+      dialog: this.dialog,
+      router: this.router,
+      securityService: this.securityService
+  })
 
   constructor(
     private observer: BreakpointObserver,
     private router: Router,
-    protected securityService: SecurityService) {
+    private dialog: MatDialog,
+    protected securityService: SecurityService,
+    ) {
   }
 
   ngOnInit(): void {
@@ -72,11 +80,6 @@ export class HomeComponent implements OnInit {
           this.sidenav.close();
         }
       });
-  }
-
-  sair() {
-    this.securityService.invalidate();
-    this.router.navigate(['/acesso']);
   }
 
 

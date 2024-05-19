@@ -6,6 +6,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "./app/arquitetura/security/security.service";
+import DevExpress from "devextreme";
+import dialog = DevExpress.ui.dialog;
 
 export class MensagensUniversais {
   private dialog?: MatDialog;
@@ -61,6 +63,26 @@ export class MensagensUniversais {
         }
       });
     }
+  }
+
+  acaoSair(){
+      if(this.dialog && this.router){
+          const dialogRef = this.dialog.open(ConfirmationDialog,{
+              data: {
+                  titulo: 'DESEJA SAIR DO SISTEMA ?',
+                  textoBotoes: {
+                      ok: 'Sim',
+                      cancel: 'Não'
+                  },
+              },
+          });
+          dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) =>{
+              if(confirmed?.resultado && this.router && this.securityService?.isValid()){
+                  this.securityService?.invalidate();
+                  this.router.navigate(['/acesso']);
+              }
+          });
+      }
   }
 
   showMensagemSimples( mensagem: string, duracao: number = 2000) {

@@ -12,5 +12,6 @@ export interface TutorDto {
   profissao?: string;
   telefoneCelularEmpresarial?: string;
   telefoneFixoEmpresarial?: string;
-  vinculo?: 'PAI' | 'MAE' | 'TIO' | 'VIZINHO' | 'AVO';
+  telefoneReserva?: string;
+  vinculo?: 'PAI' | 'MAE' | 'TIO' | 'VIZINHO' | 'AVO' | 'TIA' | 'BISAVO';
 }
