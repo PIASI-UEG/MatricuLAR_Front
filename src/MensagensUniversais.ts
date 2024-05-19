@@ -54,7 +54,7 @@ export class MensagensUniversais {
 
       dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
         if (confirmed?.resultado && this.router && this.securityService?.isValid()) {
-          this.router.navigate(["/" + this.telaAtual]);
+          this.router.navigate(["/painel" + this.telaAtual]);
         }
         else{
           if (this.router instanceof Router) {
