@@ -81,7 +81,7 @@ export class AutenticacaoComponent implements OnInit {
         };
 
         this.securityService.init(user);
-        this.router.navigate(['/']);
+        this.router.navigate(['/painel']);
       }, error => {
         console.log('erro', error);
         this.mensagens.showMensagemSimples(error.message,10000);
