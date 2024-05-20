@@ -12,6 +12,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   EsqueceuSenhaDialogComponent
 } from "../../pages/esqueceu-senha/esqueceu-senha-dialog/esqueceu-senha-dialog.component";
+import {MensagensUniversais} from "../../../MensagensUniversais";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-autentication',
@@ -20,6 +22,7 @@ import {
 })
 export class AutenticacaoComponent implements OnInit {
   formGroup!: FormGroup;
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
     hide = true;
 
 
@@ -37,6 +40,7 @@ export class AutenticacaoComponent implements OnInit {
     private autenticationService: AutenticacaoService,
     private router: Router,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,) {
     this.createForm();
   }
@@ -77,10 +81,10 @@ export class AutenticacaoComponent implements OnInit {
         };
 
         this.securityService.init(user);
-        this.router.navigate(['/']);
+        this.router.navigate(['/painel']);
       }, error => {
         console.log('erro', error);
-        alert(error);
+        this.mensagens.showMensagemSimples(error.message,10000);
       });
     }
   }

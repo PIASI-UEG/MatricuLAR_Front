@@ -296,14 +296,13 @@ export class FormMatriculaComponent implements OnInit {
                 {
                     this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
                         .subscribe(retorno =>{
-                            this.confirmarAcao(retorno, this.FORM_INCLUIR);
                             this.router.navigate(["/matricula"]);
                         }, error => {
                             console.log("Erro:"+error);
                             this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
                         })
                 }
-
+                this.confirmarAcao(retorno, this.FORM_INCLUIR);
             }, erro =>{
                 console.log("Erro:"+erro);
                 this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
@@ -399,21 +398,21 @@ export class FormMatriculaComponent implements OnInit {
                         //Dados Tutor - Etapa2
                         tutor: retorno.tutorDTOList,
                         //Perguntas culturais - Etapa 3
-                        frequentouOutraCreche: retorno.informacoesMatricula?.frequentouOutraCreche,
+                        frequentouOutraCreche: retorno.informacoesMatricula?.frequentouOutraCreche === true ? 'sim' : 'nao',
                         razaoSaida: retorno.informacoesMatricula?.razaoSaida,
                         tipoResidencia: retorno.informacoesMatricula?.tipoResidencia,
                         valorAluguel: retorno.informacoesMatricula?.valorAluguel,
-                        possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno,
+                        possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno === true ? 'sim' : 'nao',
                         valorBeneficio: retorno.informacoesMatricula?.valorBeneficio,
                         rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
                     });
 
-                    retorno.necessidades?.forEach((necessidadeEspecial: any, index: number) => {
+                    retorno.necessidades?.forEach((necessidadeEspecial, index) => {
                         this.adicionarCampoNecessidade(necessidadeEspecial)
                     });
 
                     // pega o vinculo em responsavei
-                    retorno.tutorDTOList?.forEach((tutor: any, index: number) => {
+                    retorno.tutorDTOList?.forEach((tutor, index) => {
                         if (index === 0 && retorno.responsaveis) {
                             tutor.vinculo = retorno.responsaveis[index].vinculo;
                             const tutorControl = this.getTutorForm(index);
@@ -529,7 +528,7 @@ export class FormMatriculaComponent implements OnInit {
 
     adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
         return this.formBuilder.group({
-            titulo: [necessidade, Validators.required]
+            titulo: [necessidade.titulo, Validators.required]
         });
     }
 
@@ -552,8 +551,9 @@ export class FormMatriculaComponent implements OnInit {
         if(necessidade != null)
         {
             formArray.push(this.adicionarNecessidadePreenchido(necessidade))
+        } else {
+            formArray.push(this.criarCampoNecessidadeEspecial());
         }
-        formArray.push(this.criarCampoNecessidadeEspecial());
     }
 
     removerCampoNecessidade(index: number): void {
