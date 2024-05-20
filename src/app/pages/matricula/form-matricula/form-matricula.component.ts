@@ -399,11 +399,11 @@ private realizarInclusao() {
             //Dados Tutor - Etapa2
             tutor: retorno.tutorDTOList,
             //Perguntas culturais - Etapa 3
-            frequentouOutraCreche: retorno.informacoesMatricula?.frequentouOutraCreche,
+            frequentouOutraCreche: retorno.informacoesMatricula?.frequentouOutraCreche === true ? 'sim' : 'nao',
             razaoSaida: retorno.informacoesMatricula?.razaoSaida,
             tipoResidencia: retorno.informacoesMatricula?.tipoResidencia,
             valorAluguel: retorno.informacoesMatricula?.valorAluguel,
-            possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno,
+            possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno === true ? 'sim' : 'nao',
             valorBeneficio: retorno.informacoesMatricula?.valorBeneficio,
             rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
           });
@@ -529,7 +529,7 @@ private realizarInclusao() {
 
   adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
     return this.formBuilder.group({
-      titulo: [necessidade, Validators.required]
+      titulo: [necessidade.titulo, Validators.required]
     });
   }
 
@@ -552,8 +552,9 @@ private realizarInclusao() {
     if(necessidade != null)
     {
       formArray.push(this.adicionarNecessidadePreenchido(necessidade))
+    } else {
+      formArray.push(this.criarCampoNecessidadeEspecial());
     }
-    formArray.push(this.criarCampoNecessidadeEspecial());
   }
 
   removerCampoNecessidade(index: number): void {

@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { PageTutorDto } from '../models/page-tutor-dto';
 import { Pageable } from '../models/pageable';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
@@ -43,7 +44,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<TutorDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerObterPorIdPath, 'get');
     if (params) {
@@ -57,7 +58,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<TutorDto>;
       })
     );
   }
@@ -75,10 +76,10 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<TutorDto> {
 
     return this.tutorControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<TutorDto>) => r.body as TutorDto)
     );
   }
 
@@ -101,7 +102,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<TutorDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerAlterarPath, 'put');
     if (params) {
@@ -116,7 +117,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<TutorDto>;
       })
     );
   }
@@ -135,10 +136,10 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<TutorDto> {
 
     return this.tutorControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<TutorDto>) => r.body as TutorDto)
     );
   }
 
@@ -160,7 +161,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<TutorDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerRemoverPath, 'delete');
     if (params) {
@@ -174,7 +175,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<TutorDto>;
       })
     );
   }
@@ -192,10 +193,10 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<TutorDto> {
 
     return this.tutorControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<TutorDto>) => r.body as TutorDto)
     );
   }
 
@@ -216,7 +217,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<TutorDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerListAllPath, 'get');
     if (params) {
@@ -229,7 +230,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<TutorDto>>;
       })
     );
   }
@@ -246,10 +247,10 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<TutorDto>> {
 
     return this.tutorControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<TutorDto>>) => r.body as Array<TutorDto>)
     );
   }
 
@@ -271,7 +272,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<TutorDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerIncluirPath, 'post');
     if (params) {
@@ -285,7 +286,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<TutorDto>;
       })
     );
   }
@@ -303,10 +304,10 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<TutorDto> {
 
     return this.tutorControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<TutorDto>) => r.body as TutorDto)
     );
   }
 
@@ -382,7 +383,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<TutorDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -396,7 +397,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<TutorDto>>;
       })
     );
   }
@@ -414,10 +415,76 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<TutorDto>> {
 
     return this.tutorControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<TutorDto>>) => r.body as Array<TutorDto>)
+    );
+  }
+
+  /**
+   * Path part for operation tutorControllerSearchFieldsActionPage
+   */
+  static readonly TutorControllerSearchFieldsActionPagePath = '/api/v1/tutor/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `tutorControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  tutorControllerSearchFieldsActionPage$Response(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<PageTutorDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.query('page', params.page, {});
+      rb.query('size', params.size, {});
+      rb.query('sort', params.sort, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PageTutorDto>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `tutorControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  tutorControllerSearchFieldsActionPage(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<PageTutorDto> {
+
+    return this.tutorControllerSearchFieldsActionPage$Response(params,context).pipe(
+      map((r: StrictHttpResponse<PageTutorDto>) => r.body as PageTutorDto)
     );
   }
 
@@ -439,7 +506,7 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<PageTutorDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, TutorControllerService.TutorControllerListAllPagePath, 'get');
     if (params) {
@@ -453,7 +520,7 @@ export class TutorControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<PageTutorDto>;
       })
     );
   }
@@ -471,10 +538,10 @@ export class TutorControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<PageTutorDto> {
 
     return this.tutorControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<PageTutorDto>) => r.body as PageTutorDto)
     );
   }
 
