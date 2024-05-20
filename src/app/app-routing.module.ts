@@ -24,7 +24,7 @@ const routes: Routes = [
       ...matriculaRoutes,
       ...minhaContaRoutes,
         ...imprimirTermoRoutes,
-       { path: '', redirectTo: 'home', pathMatch: 'full' },
+       { path: '', redirectTo: '/', pathMatch: 'full' },
     ],
     //canActivate: [SecurityGuard],
     //data: {security: {roles: ['', '']}}
