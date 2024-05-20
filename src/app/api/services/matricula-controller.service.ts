@@ -731,19 +731,19 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation matriculaControllerAtualizaContraChequeMatricula
+   * Path part for operation matriculaControllerAtualizaDocumentoMatricula
    */
-  static readonly MatriculaControllerAtualizaContraChequeMatriculaPath = '/api/v1/matricula/documento/atualiza-contra-cheque';
+  static readonly MatriculaControllerAtualizaDocumentoMatriculaPath = '/api/v1/matricula/documento/atualiza-documento';
 
   /**
    * Busca a quantidade de registros
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `matriculaControllerAtualizaContraChequeMatricula()` instead.
+   * To access only the response body, use `matriculaControllerAtualizaDocumentoMatricula()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  matriculaControllerAtualizaContraChequeMatricula$Response(params: {
+  matriculaControllerAtualizaDocumentoMatricula$Response(params: {
     idMatricula: number;
     tipoDocumento: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2';
     body: {
@@ -754,7 +754,7 @@ export class MatriculaControllerService extends BaseService {
 
 ): Observable<StrictHttpResponse<MatriculaDto>> {
 
-    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerAtualizaContraChequeMatriculaPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerAtualizaDocumentoMatriculaPath, 'post');
     if (params) {
       rb.query('idMatricula', params.idMatricula, {});
       rb.query('tipoDocumento', params.tipoDocumento, {});
@@ -777,11 +777,11 @@ export class MatriculaControllerService extends BaseService {
    * Busca a quantidade de registros
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `matriculaControllerAtualizaContraChequeMatricula$Response()` instead.
+   * To access the full response (for headers, for example), `matriculaControllerAtualizaDocumentoMatricula$Response()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  matriculaControllerAtualizaContraChequeMatricula(params: {
+  matriculaControllerAtualizaDocumentoMatricula(params: {
     idMatricula: number;
     tipoDocumento: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2';
     body: {
@@ -792,7 +792,7 @@ export class MatriculaControllerService extends BaseService {
 
 ): Observable<MatriculaDto> {
 
-    return this.matriculaControllerAtualizaContraChequeMatricula$Response(params,context).pipe(
+    return this.matriculaControllerAtualizaDocumentoMatricula$Response(params,context).pipe(
       map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
     );
   }

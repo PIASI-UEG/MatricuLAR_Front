@@ -296,14 +296,13 @@ private realizarInclusao() {
           {
             this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
                 .subscribe(retorno =>{
-                  this.confirmarAcao(retorno, this.FORM_INCLUIR);
                   this.router.navigate(["/matricula"]);
                 }, error => {
                   console.log("Erro:"+error);
                   this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
                 })
           }
-
+          this.confirmarAcao(retorno, this.FORM_INCLUIR);
         }, erro =>{
           console.log("Erro:"+erro);
           this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
