@@ -506,11 +506,13 @@ export class FormMatriculaComponent implements OnInit {
     }
 
     alterarNomeTitulo(indice: number): void {
-        if (indice == 0) {
-            this.nomeTitulo = "Dados da Criança"
+        if(indice == 0){
+            this.nomeTitulo = "Dados da Associação Sagrada Família"
         } else if (indice == 1) {
-            this.nomeTitulo = "Dados do Tutor(a)"
+            this.nomeTitulo = "Dados da Criança"
         } else if (indice == 2) {
+            this.nomeTitulo = "Dados do Tutor(a)"
+        } else if (indice == 3) {
             this.nomeTitulo = "Perguntas Culturais"
         } else {
             this.nomeTitulo = "Anexar documentos"

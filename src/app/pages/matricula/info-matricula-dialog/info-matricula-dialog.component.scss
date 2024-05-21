@@ -1,5 +1,6 @@
 @import '../../../../StyleForms.css';
 
+
 .imagem-card {
   width: 30%;
   margin-right: 10px;
@@ -15,7 +16,7 @@
   width: 65%;
 }
 
-.matricula-card, .tutores-card, .responsaveis-card {
+.matricula-card, .tutores-card, .responsaveis-card, .adicionar-necessidade-card{
   margin-bottom: 20px;
   text-align: center;
 }
@@ -28,5 +29,13 @@
   .imagem-card, .content-container {
     width: 100%;
     margin-right: 0;
+  }
+}
+
+@media (max-width: 999px) {
+  .button {
+    width: 180px !important;
+    height: 50px !important;
+    margin-bottom: 40px;
   }
 }

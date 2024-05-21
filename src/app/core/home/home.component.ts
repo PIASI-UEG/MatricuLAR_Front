@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
       router: this.router,
       securityService: this.securityService
   })
+    route!: string;
 
   constructor(
     private observer: BreakpointObserver,
@@ -33,6 +34,11 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     protected securityService: SecurityService,
     ) {
+      this.router.events.subscribe(event =>{
+          if(event instanceof NavigationEnd) {
+              this.route = event.urlAfterRedirects;
+          }
+      });
   }
 
   ngOnInit(): void {
@@ -80,6 +86,10 @@ export class HomeComponent implements OnInit {
           this.sidenav.close();
         }
       });
+  }
+
+  isActive(url: string){
+      return this.route === url;
   }
 
 

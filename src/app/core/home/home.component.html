@@ -13,42 +13,38 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-        <button *ngIf="!securityService.isValid()" title="Home"  mat-button class="menu-button" routerLink=""> Pagina Inicial
+        <button *ngIf="!securityService.isValid()" title="Home"  mat-button class="menu-button" routerLink="" [ngClass]="{'active-link': isActive('/')}" > Pagina Inicial
             <mat-icon>home</mat-icon>
         </button>
-        <button *ngIf="!securityService.isValid()" title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']"> Pré-Matrícula
-          <mat-icon>assignment</mat-icon>
+        <button *ngIf="!securityService.isValid()" title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']" [ngClass]="{'active-link': isActive('/matricula/novo')}" > Pré-Matrícula
+            <mat-icon>assignment</mat-icon>
         </button>
-        <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel"> Painel
-          <mat-icon>home</mat-icon>
+        <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel" [ngClass]="{'active-link': isActive('/painel')}"> Painel
+            <mat-icon>home</mat-icon>
         </button>
-        <button *ngIf="securityService.isValid()"title="Validações de Matrículas" mat-button class="menu-button" routerLink="/matricula/validar"> Validações de <br>Matrículas
+        <button *ngIf="securityService.isValid()"title="Validações de Matrículas" mat-button class="menu-button" routerLink="/matricula/validar" [ngClass]="{'active-link': isActive('/matricula/validar')}"> Validações de <br>Matrículas
             <mat-icon>check_circle</mat-icon>
         </button>
-        <button *ngIf="securityService.isValid()"title="Matrículas"  mat-button class="menu-button" routerLink="/matricula">
+        <button *ngIf="securityService.isValid()"title="Matrículas"  mat-button class="menu-button" routerLink="/matricula" [ngClass]="{'active-link': isActive('/matricula')}">
             <mat-icon>face</mat-icon> Matrículas
         </button>
-        <button *ngIf="securityService.isValid()"title="Turmas"  mat-button class="menu-button" routerLink="/turma">
+        <button *ngIf="securityService.isValid()"title="Turmas"  mat-button class="menu-button" routerLink="/turma" [ngClass]="{'active-link': isActive('/turma')}">
             <mat-icon>airline_seat_recline_normal</mat-icon> Turmas
         </button>
-        <button *ngIf="securityService.isValid()"title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario">
+        <button *ngIf="securityService.isValid()"title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario" [ngClass]="{'active-link': isActive('/funcionario')}">
             <mat-icon>supervisor_account</mat-icon>Funcionários
         </button>
-<!--        <button *ngIf="securityService.isValid()"title="imprirTermo"  mat-button class="menu-button" routerLink="/imprimir-termo">-->
-<!--            <mat-icon>print</mat-icon>Imprimir-->
-<!--        </button>-->
         <mat-divider></mat-divider>
 
-      <button *ngIf="securityService.isValid()"title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta', usuarioLogado()]"> Minha Conta
-        <mat-icon>account_circle</mat-icon>
-      </button>
+        <button *ngIf="securityService.isValid()"title="minhaConta" mat-button class="menu-button" [routerLink]="['/minha-conta', usuarioLogado()]" [ngClass]="{'active-link': isActive('/minha-conta')}"> Minha Conta
+            <mat-icon>account_circle</mat-icon>
+        </button>
 
+        <mat-divider></mat-divider>
 
-      <mat-divider></mat-divider>
-
-      <button *ngIf="!securityService.isValid()"title="Acesso" mat-button class="menu-button" routerLink="/acesso"> Acesso
-        <mat-icon>login</mat-icon>
-      </button>
+        <button *ngIf="!securityService.isValid()"title="Acesso" mat-button class="menu-button" routerLink="/acesso" [ngClass]="{'active-link': isActive('/acesso')}"> Acesso
+            <mat-icon>login</mat-icon>
+        </button>
         <button *ngIf="securityService.isValid()"title="Sair" mat-button class="menu-button" (click)="this.mensagens.acaoSair()"> Sair
             <mat-icon>logout</mat-icon>
         </button>
@@ -59,4 +55,3 @@
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
-
