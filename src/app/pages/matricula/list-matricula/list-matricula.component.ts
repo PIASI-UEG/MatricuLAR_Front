@@ -132,21 +132,21 @@ export class ListMatriculaComponent implements OnInit{
 
   }
 
-  imprimirTermodaMatricula(id: number, cpfTutor: string){
-    this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
-      this.matricula = data;
-      console.log(data);
-      const caminhoDoc = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
-      this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:caminhoDoc})
-        .subscribe(response =>{
-          let blob:Blob = response
-          let downloadLink = document.createElement('a');
-          downloadLink.href = window.URL.createObjectURL(blob);
-          downloadLink.download = caminhoDoc;
-          downloadLink.click()
-        })
-    })
-  }
+  // imprimirTermodaMatricula(id: number, cpfTutor: string){
+  //   this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
+  //     this.matricula = data;
+  //     console.log(data);
+  //     const caminhoDoc = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
+  //     this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:caminhoDoc})
+  //       .subscribe(response =>{
+  //         let blob:Blob = response
+  //         let downloadLink = document.createElement('a');
+  //         downloadLink.href = window.URL.createObjectURL(blob);
+  //         downloadLink.download = caminhoDoc;
+  //         downloadLink.click()
+  //       })
+  //   })
+  // }
 
   openDialog(matriculaDto: MatriculaDto) {
     console.log(matriculaDto);

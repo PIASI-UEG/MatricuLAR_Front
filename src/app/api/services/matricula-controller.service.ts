@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { DocumentoMatriculaDto } from '../models/documento-matricula-dto';
 import { MatriculaDto } from '../models/matricula-dto';
 import { MatriculaListagemDto } from '../models/matricula-listagem-dto';
 import { MatriculaVisualizarDto } from '../models/matricula-visualizar-dto';
@@ -608,11 +609,134 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation matriculaControllerIncluirComDocumentos
+   */
+  static readonly MatriculaControllerIncluirComDocumentosPath = '/api/v1/matricula/inclusao-com-docs';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerIncluirComDocumentos$FormData()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  matriculaControllerIncluirComDocumentos$FormData$Response(params?: {
+    body?: {
+'dto': MatriculaDto;
+'files': Array<Blob>;
+}
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<MatriculaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerIncluirComDocumentosPath, 'post');
+    if (params) {
+      rb.body(params.body, 'multipart/form-data');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<MatriculaDto>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerIncluirComDocumentos$FormData$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  matriculaControllerIncluirComDocumentos$FormData(params?: {
+    body?: {
+'dto': MatriculaDto;
+'files': Array<Blob>;
+}
+  },
+  context?: HttpContext
+
+): Observable<MatriculaDto> {
+
+    return this.matriculaControllerIncluirComDocumentos$FormData$Response(params,context).pipe(
+      map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerIncluirComDocumentos$Json()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  matriculaControllerIncluirComDocumentos$Json$Response(params?: {
+    body?: {
+'dto': MatriculaDto;
+'files': Array<Blob>;
+}
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<MatriculaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerIncluirComDocumentosPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<MatriculaDto>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerIncluirComDocumentos$Json$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  matriculaControllerIncluirComDocumentos$Json(params?: {
+    body?: {
+'dto': MatriculaDto;
+'files': Array<Blob>;
+}
+  },
+  context?: HttpContext
+
+): Observable<MatriculaDto> {
+
+    return this.matriculaControllerIncluirComDocumentos$Json$Response(params,context).pipe(
+      map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
+    );
+  }
+
+  /**
    * Path part for operation matriculaControllerUploadDocumentos
    */
   static readonly MatriculaControllerUploadDocumentosPath = '/api/v1/matricula/documentos';
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `matriculaControllerUploadDocumentos()` instead.
    *
@@ -635,8 +759,8 @@ export class MatriculaControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
+      responseType: 'json',
+      accept: 'application/json',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
@@ -647,6 +771,8 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `matriculaControllerUploadDocumentos$Response()` instead.
    *
@@ -673,6 +799,8 @@ export class MatriculaControllerService extends BaseService {
   static readonly MatriculaControllerUploadDocumentoPath = '/api/v1/matricula/documento';
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `matriculaControllerUploadDocumento()` instead.
    *
@@ -697,8 +825,8 @@ export class MatriculaControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
+      responseType: 'json',
+      accept: 'application/json',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
@@ -709,6 +837,8 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `matriculaControllerUploadDocumento$Response()` instead.
    *
@@ -731,19 +861,19 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation matriculaControllerAtualizaContraChequeMatricula
+   * Path part for operation matriculaControllerAtualizaDocumentoMatricula
    */
-  static readonly MatriculaControllerAtualizaContraChequeMatriculaPath = '/api/v1/matricula/documento/atualiza-contra-cheque';
+  static readonly MatriculaControllerAtualizaDocumentoMatriculaPath = '/api/v1/matricula/documento/atualiza-documento';
 
   /**
    * Busca a quantidade de registros
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `matriculaControllerAtualizaContraChequeMatricula()` instead.
+   * To access only the response body, use `matriculaControllerAtualizaDocumentoMatricula()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  matriculaControllerAtualizaContraChequeMatricula$Response(params: {
+  matriculaControllerAtualizaDocumentoMatricula$Response(params: {
     idMatricula: number;
     tipoDocumento: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2';
     body: {
@@ -754,7 +884,7 @@ export class MatriculaControllerService extends BaseService {
 
 ): Observable<StrictHttpResponse<MatriculaDto>> {
 
-    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerAtualizaContraChequeMatriculaPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerAtualizaDocumentoMatriculaPath, 'post');
     if (params) {
       rb.query('idMatricula', params.idMatricula, {});
       rb.query('tipoDocumento', params.tipoDocumento, {});
@@ -777,11 +907,11 @@ export class MatriculaControllerService extends BaseService {
    * Busca a quantidade de registros
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `matriculaControllerAtualizaContraChequeMatricula$Response()` instead.
+   * To access the full response (for headers, for example), `matriculaControllerAtualizaDocumentoMatricula$Response()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  matriculaControllerAtualizaContraChequeMatricula(params: {
+  matriculaControllerAtualizaDocumentoMatricula(params: {
     idMatricula: number;
     tipoDocumento: 'FOTO_CRIANCA' | 'CERTIDAO_NASCIMENTO' | 'CPF_CRIANCA' | 'DOCUMENTO_VEICULO' | 'COMPROVANTE_ENDERECO' | 'COMPROVANTE_MORADIA' | 'COMPROVANTE_BOLSA_FAMILIA' | 'ENCAMINHAMENTO_CRAS' | 'CPF_TUTOR1' | 'CPF_TUTOR2' | 'CERTIDAO_ESTADO_CIVIL' | 'COMPROVANTE_TRABALHO_T1' | 'CONTRA_CHEQUE1T1' | 'CONTRA_CHEQUE2T1' | 'CONTRA_CHEQUE3T1' | 'CONTRA_CHEQUE1T2' | 'CONTRA_CHEQUE2T2' | 'CONTRA_CHEQUE3T2' | 'COMPROVANTE_TRABALHO_T2' | 'DECLARACAO_ESCOLART1' | 'DECLARACAO_ESCOLART2';
     body: {
@@ -792,7 +922,7 @@ export class MatriculaControllerService extends BaseService {
 
 ): Observable<MatriculaDto> {
 
-    return this.matriculaControllerAtualizaContraChequeMatricula$Response(params,context).pipe(
+    return this.matriculaControllerAtualizaDocumentoMatricula$Response(params,context).pipe(
       map((r: StrictHttpResponse<MatriculaDto>) => r.body as MatriculaDto)
     );
   }
@@ -904,6 +1034,63 @@ export class MatriculaControllerService extends BaseService {
 
     return this.matriculaControllerListAllPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<PageMatriculaDto>) => r.body as PageMatriculaDto)
+    );
+  }
+
+  /**
+   * Path part for operation matriculaControllerGetDocumentoMatricula
+   */
+  static readonly MatriculaControllerGetDocumentoMatriculaPath = '/api/v1/matricula/obter-documento';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerGetDocumentoMatricula()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerGetDocumentoMatricula$Response(params: {
+    documentoMatriculaDTO: DocumentoMatriculaDto;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<void>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerGetDocumentoMatriculaPath, 'get');
+    if (params) {
+      rb.query('documentoMatriculaDTO', params.documentoMatriculaDTO, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerGetDocumentoMatricula$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerGetDocumentoMatricula(params: {
+    documentoMatriculaDTO: DocumentoMatriculaDto;
+  },
+  context?: HttpContext
+
+): Observable<void> {
+
+    return this.matriculaControllerGetDocumentoMatricula$Response(params,context).pipe(
+      map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }
 
@@ -1195,59 +1382,6 @@ export class MatriculaControllerService extends BaseService {
 
     return this.matriculaControllerListAllPageMatriculaListagemDto$Response(params,context).pipe(
       map((r: StrictHttpResponse<Array<MatriculaListagemDto>>) => r.body as Array<MatriculaListagemDto>)
-    );
-  }
-
-  /**
-   * Path part for operation matriculaControllerGetDocumentoMatricula
-   */
-  static readonly MatriculaControllerGetDocumentoMatriculaPath = '/api/v1/matricula/documento/{caminhodoc}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `matriculaControllerGetDocumentoMatricula()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  matriculaControllerGetDocumentoMatricula$Response(params: {
-    caminhodoc: string;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Blob>> {
-
-    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerGetDocumentoMatriculaPath, 'get');
-    if (params) {
-      rb.path('caminhodoc', params.caminhodoc, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Blob>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `matriculaControllerGetDocumentoMatricula$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  matriculaControllerGetDocumentoMatricula(params: {
-    caminhodoc: string;
-  },
-  context?: HttpContext
-
-): Observable<Blob> {
-
-    return this.matriculaControllerGetDocumentoMatricula$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Blob>) => r.body as Blob)
     );
   }
 

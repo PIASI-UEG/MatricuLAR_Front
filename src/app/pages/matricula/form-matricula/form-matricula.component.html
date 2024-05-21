@@ -19,7 +19,7 @@
               <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
             </mat-form-field>
 
-            <div  [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+            <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
               <mat-form-field>
                 <mat-label>CPF da criança</mat-label>
                 <input matInput formControlName="cpfCrianca" mask="000.000.000-00" placeholder="000.000.000-00">
@@ -31,8 +31,8 @@
               <mat-form-field>
                 <mat-label>Data de Nascimento</mat-label>
                 <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
-                         [matDatepicker]="dp3">
-                <mat-datepicker-toggle matSuffix [for]="dp3" ></mat-datepicker-toggle>
+                       [matDatepicker]="dp3">
+                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                 <mat-datepicker #dp3></mat-datepicker>
                 <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
                 <mat-error *ngIf="handleError('dataNascimento', 'idadeInvalida')">Idade máxima 5 e mínima 3</mat-error>
@@ -51,7 +51,9 @@
                     <mat-label>Necessidade especial</mat-label>
                     <input matInput formControlName="titulo"
                            placeholder="EX: alergia, medicamentos, alimentação">
-                    <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && this.formGroup.get('possuiNecessidadeEspecial')?.value">Desmarque ou preencha para
+                    <mat-error
+                      *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && this.formGroup.get('possuiNecessidadeEspecial')?.value">
+                      Desmarque ou preencha para
                       continuar
                     </mat-error>
                   </mat-form-field>
@@ -178,13 +180,13 @@
                     </mat-error>
                   </mat-form-field>
 
-                <mat-form-field>
-                  <mat-label>Telefone Reserva</mat-label>
-                  <input matInput mask="(00) 0 0000-0000" formControlName="telefoneReserva"
-                         placeholder="(00) 0 0000-0000">
-                  <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
-                  </mat-error>
-                </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Telefone Reserva</mat-label>
+                    <input matInput mask="(00) 0 0000-0000" formControlName="telefoneReserva"
+                           placeholder="(00) 0 0000-0000">
+                    <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
+                    </mat-error>
+                  </mat-form-field>
                 </div>
 
                 <div fxLayout="center" class="linha-horizontal"></div>
@@ -197,7 +199,7 @@
                   <mat-error *ngIf="handleErrorTutor('empresaNome', 'required', i)">Campo Obrigatório</mat-error>
                 </mat-form-field>
 
-                  <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
+                <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                   <mat-form-field>
                     <mat-label>Profissão</mat-label>
                     <input matInput formControlName="profissao" placeholder="(00) 0000-0000">
@@ -205,11 +207,12 @@
                     </mat-error>
                   </mat-form-field>
 
-                <mat-form-field>
-                  <mat-label>CNPJ da empresa</mat-label>
-                  <input matInput formControlName="empresaCnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
-                  <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
-                </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>CNPJ da empresa</mat-label>
+                    <input matInput formControlName="empresaCnpj" mask="00.000.000/0000-00"
+                           placeholder="00.000.000/0000-00">
+                    <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
+                  </mat-form-field>
                 </div>
 
                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
@@ -241,7 +244,8 @@
                     É casado(a), amasiado(a) ou união estável ?
                   </mat-checkbox>
 
-                  <mat-checkbox color="primary" formControlName="moraComConjuge" (change)="adicionarConjugue(i,conjugue)">
+                  <mat-checkbox color="primary" formControlName="moraComConjuge"
+                                (change)="adicionarConjugue(i,conjugue)">
                     Mora com seu Cônjuge?
                   </mat-checkbox>
                 </div>
@@ -368,7 +372,7 @@
 
         <!-- Etapa 4 -->
         <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
-          <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio != 'Validar'">
+          <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Cadastrar'">
             <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
               serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
               e
@@ -436,8 +440,9 @@
               <mat-error *ngIf="handleErrorFormDocs('insiraODocCompMora') && this.enviado">Documento obrigatótio
               </mat-error>
 
-<!--              duplicada mesmo a validacao pois a linha horizontal diminui-->
-              <div *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'" fxLayout="center" class="linha-horizontal-docs"></div>
+              <!--              duplicada mesmo a validacao pois a linha horizontal diminui-->
+              <div *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'" fxLayout="center"
+                   class="linha-horizontal-docs"></div>
 
               <div *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
 
@@ -655,7 +660,6 @@
             </mat-checkbox>
 
 
-
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="!this.verificarAlinhar()">
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
@@ -671,14 +675,33 @@
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+              <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula
+              </button>
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
+                Anterior
+              </button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
 
             </div>
           </div>
+
+
+
+          <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Editar' || tipoDeFormuladorio == 'Validar'">
+            <mat-selection-list #shoes>
+              <mat-list-option *ngFor="let item of enumDocValues">
+                {{item.value}}
+              </mat-list-option>
+            </mat-selection-list>
+
+            <p>
+              Options selected: {{shoes.selectedOptions.selected.length}}
+            </p>
+
+          </div>
+
         </mat-tab>
       </mat-tab-group>
     </div>
