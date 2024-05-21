@@ -12,6 +12,8 @@ import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial
 import { NecessidadeEspecialControllerService } from "../../../api/services/necessidade-especial-controller.service";
 import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
+import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -33,11 +35,12 @@ export class InfoMatriculaDialogComponent implements OnInit {
     responsaveisNome: string[] = [];
     botaoNecessidadeClicado: boolean = false;
     aluno?: MatriculaDto;
+    innerWidth: number = window.innerWidth;
 
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
-        private matriculas: MatriculaControllerService,
+        private matriculaService: MatriculaControllerService,
         private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
         private dialog: MatDialog,
         private router: Router,
@@ -67,7 +70,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
     private buscarDados() {
         if (this.matriculaId !== undefined) {
-            this.matriculas.matriculaControllerObterPorId({ id: this.matriculaId }).subscribe(data => {
+            this.matriculaService.matriculaControllerObterPorId({ id: this.matriculaId }).subscribe(data => {
                 this.aluno = data;
             });
         } else {
@@ -89,7 +92,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.matriculaId = matricula.id;
 
         if (this.matriculaId !== undefined) {
-            this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
+            this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
                 (response: MatriculaVisualizarDto) => {
                     this.caminhoImagem = response.caminhoImagem ?? '';
                     this.nomeAluno = response.nomeAluno ?? '';
@@ -129,6 +132,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         });
     }
+
+
 
     criarCampoNecessidadeEspecial(): FormGroup {
         return this.formBuilder.group({
