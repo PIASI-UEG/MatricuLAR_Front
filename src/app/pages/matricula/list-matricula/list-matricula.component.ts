@@ -137,7 +137,7 @@ export class ListMatriculaComponent implements OnInit{
       this.matricula = data;
       console.log(data);
       const caminhoDoc = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
-      this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc:caminhoDoc})
+      this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoDoc})
         .subscribe(response =>{
           let blob:Blob = response
           let downloadLink = document.createElement('a');
