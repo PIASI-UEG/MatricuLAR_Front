@@ -55,15 +55,15 @@
                             </button>
                         </div>
                     </div>
-                    <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade(null)">
-                        <mat-icon>add</mat-icon> Adicionar necessidade
-                    </button>
                 </ng-container>
-                <button mat-raised-button type="submit" class="button botao-voltar">Adicionar Necessidade</button>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-raised-button type="submit" class="button botao-cadastro">Salvar</button>
+                </div>
             </mat-card>
-            <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
-                <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
-                <button mat-raised-button type="button" class="button botao-voltar" (click)="openDialogAdvertencia()">Advertência</button>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
+                <button mat-raised-button type="button" class="button " (click)="openDialogAdvertencia()">Advertência</button>
+                <button mat-raised-button type="button" class="button botao-cadastro">Imprimir Matrícula</button>
             </div>
         </div>
     </form>

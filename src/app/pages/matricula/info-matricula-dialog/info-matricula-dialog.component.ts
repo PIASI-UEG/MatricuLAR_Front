@@ -114,9 +114,18 @@ export class InfoMatriculaDialogComponent implements OnInit {
     }
 
     openDialogAdvertencia() {
-        const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent, {
+        this.dialogRef.close();
+        const dialogRefAdvertencia = this.dialog.open(AddAdvertenciaDialogComponent, {
             data: {
                 id: this.matriculaId
+            }
+        });
+
+        dialogRefAdvertencia.afterClosed().subscribe(result => {
+            if (result === this.fechar()) {
+                this.dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: this.dados
+                });
             }
         });
     }
@@ -183,6 +192,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 .subscribe(
                     retorno => {
                         console.log("Retorno do servidor:", retorno);
+                        this.confirmarAcao();
+                        this.router.navigate(["/matricula"]);
                     },
                     erro => {
                         console.error("Erro ao incluir necessidade especial:", erro);
@@ -192,9 +203,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
                     }
                 );
         });
-
-        this.confirmarAcao();
-        this.router.navigate(["/matricula"]);
     }
 
     confirmarAcao() {
