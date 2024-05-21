@@ -1,17 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SecurityService } from "../../../arquitetura/security/security.service";
-import {MatriculaVisualizarDto} from "../../../api/models/matricula-visualizar-dto";
-import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
-import {DateAdapter} from "@angular/material/core";
+import { MatriculaVisualizarDto } from "../../../api/models/matricula-visualizar-dto";
+import { MatriculaControllerService } from "../../../api/services/matricula-controller.service";
+import { DateAdapter } from "@angular/material/core";
+import { AddNecessidadeEspecialDialogComponent } from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
+import { AddAdvertenciaDialogComponent } from "../add-advertencia-dialog/add-advertencia-dialog.component";
+import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial-dto";
+import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
+import {NecessidadeEspecialControllerService} from "../../../api/services/necessidade-especial-controller.service";
+import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
-import {
-    AddNecessidadeEspecialDialogComponent
-} from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
-import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-advertencia-dialog.component";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -31,6 +33,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
     tutoresNomes: string[] = [];
     tutoresTelefone: string[] = [];
     responsaveisNome: string[] = [];
+    botaoNecessidadeClicado: boolean = false;
+    titulo?: NecessidadeEspecialDto;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -42,17 +46,23 @@ export class InfoMatriculaDialogComponent implements OnInit {
         private route: ActivatedRoute,
         private snackBar: MatSnackBar,
         private securityService: SecurityService,
+        private nessecidadeEspecialService: NecessidadeEspecialControllerService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
-        this.dados = data;
+        this.dados = data
     }
 
     ngOnInit(): void {
+        this.formGroup = this.formBuilder.group({
+            possuiNecessidadeEspecial: [false],
+            necessidadesEspeciais: this.formBuilder.array([])
+        });
         this.visualizacao();
     }
 
-    private visualizacao(){
+
+    private visualizacao() {
         const matricula = this.dados.matricula;
 
         if (!matricula) {
@@ -85,33 +95,110 @@ export class InfoMatriculaDialogComponent implements OnInit {
         );
     }
 
-    adicionarNecessidade() {
-        this.dialogRef.close();
-
-        const dialogRef = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
-            width: '400px',
-            data: {}
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('O diálogo foi fechado');
+    openDialogAdvertencia() {
+        const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent, {
+            data: {
+                id: this.matriculaId
+            }
         });
     }
-
-  openDialogAdvertencia() {
-    const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
-      {
-        data:
-          {
-            id: this.matriculaId
-          }
-      })
-  }
-
 
     fechar(): void {
         this.dialogRef.close();
     }
 
     onSubmit() {
+        if (this.formGroup.valid) {
+            if (!this.titulo) {
+                this.realizarInclusao();
+            }
+            this.fechar();
+        }
     }
+
+    criarCampoNecessidadeEspecial(): FormGroup {
+        return this.formBuilder.group({
+            titulo: [null, Validators.required]
+        });
+    }
+
+    adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
+        return this.formBuilder.group({
+            titulo: [necessidade.titulo, Validators.required]
+        });
+    }
+
+    firstClickNecessidades(): boolean {
+        if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
+            return true;
+        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
+            this.adicionarCampoNecessidade(null);
+            this.botaoNecessidadeClicado = true;
+            return true;
+        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
+            return true;
+        }
+        this.botaoNecessidadeClicado = false;
+        return false;
+    }
+
+
+    adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        if (necessidade != null) {
+            formArray.push(this.adicionarNecessidadePreenchido(necessidade));
+        } else {
+            formArray.push(this.criarCampoNecessidadeEspecial());
+        }
+    }
+
+    removerCampoNecessidade(index: number): void {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        formArray.removeAt(index);
+    }
+
+    getNecessidadesEspeciaisControls(): AbstractControl[] {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        return formArray.controls;
+    }
+
+    getNecessidadeEspecialControl(index: number): AbstractControl {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        return formArray.at(index)?.get('titulo') as AbstractControl;
+    }
+
+    // Método para realizar a inclusão da necessidade especial
+    private realizarInclusao() {
+        console.log("Dados enviados:", this.formGroup.value);
+        let necessidadeEspecialDTO: NecessidadeEspecialDto = this.formGroup.value;
+        this.nessecidadeEspecialService.necessidadeEspecialControllerIncluir({body: necessidadeEspecialDTO})
+            .subscribe(
+                retorno => {
+                    console.log("Retorno do servidor:", retorno);
+                    this.confirmarAcao(necessidadeEspecialDTO);
+                    this.router.navigate(["/matricula"]);
+                },
+                erro => {
+                    console.error("Erro ao incluir necessidade especial:", erro);
+                    this.snackBar.open('Erro ao incluir necessidade especial', 'Fechar', {
+                        duration: 3000,
+                    });
+                }
+            );
+    }
+
+
+
+    confirmarAcao(nesseidadeEspecial: NecessidadeEspecialDto) {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Necessidade Registrada !',
+                mensagem: `Necessidade: ${nesseidadeEspecial.titulo}. Incluida com sucesso!`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                },
+            },
+        });
+    }
+
 }

@@ -18,29 +18,53 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-                <mat-card class="tutores-card">
-                    <mat-card-header>
-                        <mat-card-title>Tutores</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <p><strong>Tutor:</strong> {{tutoresNomes}}</p>
-                        <p><strong>Telefone do Tutor:</strong> {{ tutoresTelefone }}</p>
-                    </mat-card-content>
-                </mat-card>
-                <mat-card class ="responsaveis-card">
-                    <mat-card-header>
-                        <mat-card-title>Responsáveis</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <p><strong>Responsáveis Permitidos:</strong>{{responsaveisNome}}</p>
-                    </mat-card-content>
-                </mat-card>
-
-        </div>
-        <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
-            <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
-          <button mat-raised-button type="button" class="button botao-voltar" (click)="openDialogAdvertencia()">Lançar Advertência</button>
-            <button mat-raised-button type="button" class="button botao-voltar" (click)="adicionarNecessidade()">Adicionar Necessidade</button>
+            <mat-card class="tutores-card">
+                <mat-card-header>
+                    <mat-card-title>Tutores</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p><strong>Tutor:</strong> {{tutoresNomes}}</p>
+                    <p><strong>Telefone do Tutor:</strong> {{ tutoresTelefone }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="responsaveis-card">
+                <mat-card-header>
+                    <mat-card-title>Responsáveis</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p><strong>Responsáveis Permitidos:</strong> {{responsaveisNome}}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="adicionar-necessidade-card">
+                <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
+                    Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
+                </mat-checkbox>
+                <p></p>
+                <ng-container *ngIf="firstClickNecessidades()">
+                    <div formArrayName="necessidadesEspeciais">
+                        <div fxLayout="row" fxLayoutAlign="center" *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+                            <mat-form-field>
+                                <mat-label>Necessidade especial</mat-label>
+                                <input matInput formControlName="titulo" placeholder="EX: alergia, medicamentos, alimentação">
+                                <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && formGroup.get('possuiNecessidadeEspecial')?.value">
+                                    Desmarque ou preencha para continuar
+                                </mat-error>
+                            </mat-form-field>
+                            <button mat-icon-button (click)="removerCampoNecessidade(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade(null)">
+                        <mat-icon>add</mat-icon> Adicionar necessidade
+                    </button>
+                </ng-container>
+                <button mat-raised-button type="submit" class="button botao-voltar">Adicionar Necessidade</button>
+            </mat-card>
+            <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+                <button mat-raised-button type="button" class="button botao-voltar" (click)="openDialogAdvertencia()">Advertência</button>
+            </div>
         </div>
     </form>
 </div>

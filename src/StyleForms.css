@@ -27,6 +27,8 @@ h2{
     margin: 0 auto;
     padding: 20px;
     text-align: center;
+    overflow-y:auto;
+    max-height: 80vh;
 }
 
 .formMov h1{
