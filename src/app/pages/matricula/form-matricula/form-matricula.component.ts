@@ -41,7 +41,7 @@ import {forEach} from "lodash";
 
 @Component({
     selector: 'app-form-matricula',
-    templateUrl: './form-matricula.component.html',
+    templateUrl: 'form-matricula.component.html',
     styleUrls: ['./form-matricula.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
