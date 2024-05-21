@@ -38,6 +38,7 @@ import {TurmaDto} from "../../../api/models/turma-dto";
 import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
 import {EnderecoDto} from "../../../api/models/endereco-dto";
 import {forEach} from "lodash";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
     selector: 'app-form-matricula',
@@ -90,7 +91,8 @@ export class FormMatriculaComponent implements OnInit {
         private dialog: MatDialog,
         private securityService: SecurityService,
         private matriculaService: MatriculaControllerService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private http:HttpClient
     ) {
         this._adapter.setLocale('pt-br');
     }
@@ -271,7 +273,24 @@ export class FormMatriculaComponent implements OnInit {
         }
     }
 
+  uploadFiles(dto: any, files: File[]){
+    const formData: FormData = new FormData();
 
+    // Append DTO fields to FormData
+    formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+    // Append each file to the FormData
+    files.forEach(file => {
+      formData.append('files', file, file.name);
+    });
+    const token = this.securityService.credential.accessToken
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
+    return this.http.post(`http://localhost:8080/api/v1/matricula/incusa`, formData,{headers}).subscribe(retorno =>{
+      console.log("as", retorno);
+    }, error => {
+      console.log("erro", error)
+    });
+  }
 
     private realizarInclusao() {
         const docs = this.formDocumentos.get('listaDocumentos');
@@ -279,34 +298,37 @@ export class FormMatriculaComponent implements OnInit {
         const matricula: MatriculaDto = this.makeDTOMatricula();
         console.log("Matricula:", matricula);
         console.log("Dados:",this.formGroup.value);
+        console.log("doc", copiaDocs)
 
-        this.matriculaService.matriculaControllerIncluir({body: matricula})
-            .subscribe( retorno =>{
-                console.log("Retorno:",retorno);
+      this.uploadFiles(matricula, copiaDocs);
 
-
-                for (let i = 0; i < copiaDocs.length; i++) {
-                    if (typeof copiaDocs[i] === 'undefined') {
-                        copiaDocs[i] = null;
-                    }
-                }
-
-                // mandar documentos
-                if(retorno.id)
-                {
-                    this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
-                        .subscribe(retorno =>{
-                            this.router.navigate(["/matricula"]);
-                        }, error => {
-                            console.log("Erro:"+error);
-                            this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
-                        })
-                }
-                this.confirmarAcao(retorno, this.FORM_INCLUIR);
-            }, erro =>{
-                console.log("Erro:"+erro);
-                this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
-            })
+        //this.matriculaService.matriculaControllerIncluir({body:matricula})
+        //     .subscribe( retorno =>{
+        //         console.log("Retorno:",retorno);
+        //
+        //
+        //         for (let i = 0; i < copiaDocs.length; i++) {
+        //             if (typeof copiaDocs[i] === 'undefined') {
+        //                 copiaDocs[i] = null;
+        //             }
+        //         }
+        //
+        //         // mandar documentos
+        //         if(retorno.id)
+        //         {
+        //             this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
+        //                 .subscribe(retorno =>{
+        //                     this.router.navigate(["/matricula"]);
+        //                 }, error => {
+        //                     console.log("Erro:"+error);
+        //                     this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
+        //                 })
+        //         }
+        //         this.confirmarAcao(retorno, this.FORM_INCLUIR);
+        //     }, erro =>{
+        //         console.log("Erro:"+erro);
+        //         this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
+        //     })
     }
 
     private makeDTOMatricula(): MatriculaDto{
