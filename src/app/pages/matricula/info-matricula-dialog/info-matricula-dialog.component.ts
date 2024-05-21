@@ -34,7 +34,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
     tutoresTelefone: string[] = [];
     responsaveisNome: string[] = [];
     botaoNecessidadeClicado: boolean = false;
-    titulo?: NecessidadeEspecialDto;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -56,7 +55,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
     ngOnInit(): void {
         this.formGroup = this.formBuilder.group({
             possuiNecessidadeEspecial: [false],
-            necessidadesEspeciais: this.formBuilder.array([])
+            necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([])
         });
         this.visualizacao();
     }
@@ -101,19 +100,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 id: this.matriculaId
             }
         });
-    }
-
-    fechar(): void {
-        this.dialogRef.close();
-    }
-
-    onSubmit() {
-        if (this.formGroup.valid) {
-            if (!this.titulo) {
-                this.realizarInclusao();
-            }
-            this.fechar();
-        }
     }
 
     criarCampoNecessidadeEspecial(): FormGroup {
@@ -169,13 +155,14 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
     // Método para realizar a inclusão da necessidade especial
     private realizarInclusao() {
-        console.log("Dados enviados:", this.formGroup.value);
-        let necessidadeEspecialDTO: NecessidadeEspecialDto = this.formGroup.value;
-        this.nessecidadeEspecialService.necessidadeEspecialControllerIncluir({body: necessidadeEspecialDTO})
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        const necessidadesEspeciais = formArray.value;
+
+        this.nessecidadeEspecialService.necessidadeEspecialControllerIncluir({ body: necessidadesEspeciais })
             .subscribe(
                 retorno => {
                     console.log("Retorno do servidor:", retorno);
-                    this.confirmarAcao(necessidadeEspecialDTO);
+                    this.confirmarAcao(necessidadesEspeciais);
                     this.router.navigate(["/matricula"]);
                 },
                 erro => {
@@ -187,18 +174,31 @@ export class InfoMatriculaDialogComponent implements OnInit {
             );
     }
 
+    onSubmit() {
+        if (this.formGroup.valid) {
+            if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
+                this.realizarInclusao();
+            }
+        }
+    }
 
 
-    confirmarAcao(nesseidadeEspecial: NecessidadeEspecialDto) {
+
+    //Confirma ação da necessidade especial
+    confirmarAcao(necessidadeEspecial: NecessidadeEspecialDto) {
         const dialogRef = this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: 'Necessidade Registrada !',
-                mensagem: `Necessidade: ${nesseidadeEspecial.titulo}. Incluida com sucesso!`,
+                mensagem: `Necessidade: ${necessidadeEspecial.titulo}. Incluida com sucesso!`,
                 textoBotoes: {
                     ok: 'Confirmar',
                 },
             },
         });
+    }
+
+    fechar(): void {
+        this.dialogRef.close();
     }
 
 }
