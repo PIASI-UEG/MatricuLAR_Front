@@ -136,15 +136,24 @@ export class ListMatriculaComponent implements OnInit{
         this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
             this.matricula = data;
             console.log(data);
-            const caminhoDoc = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
-            this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoDoc})
+            const caminhoTermo = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
+            const caminhoTermoAut = "Termo-Autorizacao_Imagem-"+this.matricula.cpf+".pdf";
+            this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
                 .subscribe(response =>{
                     let blob:Blob = response
                     let downloadLink = document.createElement('a');
                     downloadLink.href = window.URL.createObjectURL(blob);
-                    downloadLink.download = caminhoDoc;
+                    downloadLink.download = caminhoTermo;
                     downloadLink.click()
-                })
+                });
+          this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermoAut})
+            .subscribe(response =>{
+              let blob:Blob = response
+              let downloadLink = document.createElement('a');
+              downloadLink.href = window.URL.createObjectURL(blob);
+              downloadLink.download = caminhoTermoAut;
+              downloadLink.click()
+            })
         })
     }
 
