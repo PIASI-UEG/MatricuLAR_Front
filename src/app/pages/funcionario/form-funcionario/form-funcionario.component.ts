@@ -181,7 +181,7 @@ export class FormFuncionarioComponent implements OnInit {
     console.log("Dados:", this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
     usuario.id = this.codigo;
-    this.usuarioService.usuarioControllerAlterar( {id: this.codigo, body: usuario})
+    this.usuarioService.usuarioControllerNovoAlterar( {id: this.codigo, body: usuario})
       .subscribe(retorno => {
         console.log("Retorno:", retorno);
         this.confirmarAcao(retorno, this.ACAO_EDITAR);

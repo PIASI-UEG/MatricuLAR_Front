@@ -6,19 +6,23 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {HomePainelComponent} from "./home-painel/home-painel.component";
+import {MatGridListModule} from "@angular/material/grid-list";
+import { InfoSistemaComponent } from './info-sistema/info-sistema.component';
 
 
 @NgModule({
   declarations: [
     HomePainelComponent,
+    InfoSistemaComponent,
   ],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    RouterOutlet,
-    RouterLink
-  ]
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        RouterOutlet,
+        RouterLink,
+        MatGridListModule
+    ]
 })
 export class PainelModule { }

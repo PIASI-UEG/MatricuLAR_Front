@@ -47,7 +47,15 @@
     </mat-checkbox>
 
     <div *ngIf="formGroup.get('alterarSenha')?.value" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
-
+        <mat-form-field>
+            <mat-label>Senha Antiga</mat-label>
+            <input matInput type="password" formControlName="senhaAntiga" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="formGroup.get('senhaAntiga')?.hasError('required')">Senha antiga é obrigatória</mat-error>
+            <mat-error *ngIf="formGroup.get('senhaAntiga')?.hasError('senhaAntiga', 'Senha Inválida')">Senha antiga incorreta</mat-error>
+        </mat-form-field>
       <mat-form-field>
         <mat-label>Senha</mat-label>
         <input matInput type="password" formControlName="senha" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">

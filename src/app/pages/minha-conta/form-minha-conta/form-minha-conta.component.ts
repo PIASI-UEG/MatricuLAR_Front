@@ -10,6 +10,7 @@ import {SecurityService} from "../../../arquitetura/security/security.service";
 import {UsuarioDto} from "../../../api/models/usuario-dto";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {Mascaras} from "../../../../Mascaras";
+import {UsuarioAlterarDto} from "../../../api/models/usuario-alterar-dto";
 
 @Component({
   selector: 'app-form-minha-conta',
@@ -28,7 +29,7 @@ export class FormMinhaContaComponent {
   innerWidth: number = window.innerWidth;
   hide = true;
   submitFormulario!: boolean;
-  userAtual !: UsuarioDto;
+  userAtual !: UsuarioAlterarDto;
   campoVisivelEmail = false;
   campoVisivelTelefone = false;
   userCpf!: string;
@@ -69,6 +70,7 @@ export class FormMinhaContaComponent {
     // Obtém os valores das senhas
     const senha = this.formGroup.get('senha')?.value;
     const confirmarSenha = this.formGroup.get('confirmarSenha')?.value;
+    const senhaAntiga = this.formGroup.get('senhaAntiga')?.value;
     // Verifica se as senhas são iguais
 
     if (senha !== confirmarSenha && confirmarSenha && confirmarSenha !== '') {
@@ -88,6 +90,7 @@ export class FormMinhaContaComponent {
       cargo: [null, Validators.required],
       email: [null, [Validators.required, this.validacoes.validarEmail]],
       pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+        senhaAntiga: [null,[Validators.required]],
       senha: [null, [Validators.required,
         Validators.minLength(6),
         this.validacoes.validarCaracterEspecial,
@@ -124,6 +127,7 @@ export class FormMinhaContaComponent {
 
     if (!this.formGroup.get('alterarSenha')?.value){
       this.formGroup.patchValue({
+          senhaAntiga: null,
         senha: null,
         confirmarSenha: null,
       });
@@ -133,7 +137,7 @@ export class FormMinhaContaComponent {
     {
       if(this.formGroup.get('email')?.valid &&
         this.formGroup.get('pessoaTelefone')?.valid &&
-        this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+          this.formGroup.get('senhaAntiga')?.valid && this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
         this.realizarEdicao();
       }
     }else if (this.campoVisivelTelefone && this.campoVisivelEmail){
@@ -143,16 +147,16 @@ export class FormMinhaContaComponent {
       }
     }else if (this.formGroup.get('alterarSenha')?.value && this.campoVisivelTelefone){
       if(this.formGroup.get('pessoaTelefone')?.valid &&
-        this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+          this.formGroup.get('senhaAntiga')?.valid && this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
         this.realizarEdicao();
       }
     }else if (this.formGroup.get('alterarSenha')?.value && this.campoVisivelEmail){
       if(this.formGroup.get('email')?.valid &&
-        this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+          this.formGroup.get('senhaAntiga')?.valid && this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
         this.realizarEdicao();
       }
     }else if (this.formGroup.get('alterarSenha')?.value){
-      if(this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
+      if(this.formGroup.get('senhaAntiga')?.valid && this.formGroup.get('senha')?.valid &&  this.formGroup.get('confirmarSenha')?.valid){
         this.realizarEdicao();
       }
     }else if (this.campoVisivelTelefone){
@@ -215,9 +219,9 @@ export class FormMinhaContaComponent {
   private realizarEdicao(){
     this.atribuirUsuarioForm();
     console.log("Dados:", this.formGroup.value);
-    const usuario: UsuarioDto = this.formGroup.value;
+    const usuario: UsuarioAlterarDto = this.formGroup.value;
     usuario.id = this.codigo
-    this.usuarioService.usuarioControllerAlterar( {id: this.codigo, body: usuario})
+    this.usuarioService.usuarioControllerNovoAlterar( {id: this.codigo, body: usuario})
       .subscribe(retorno => {
         console.log("Retorno:", retorno);
         this.confirmarAcao();

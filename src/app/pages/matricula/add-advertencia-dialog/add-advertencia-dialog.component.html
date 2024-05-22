@@ -24,9 +24,14 @@
           <mat-error *ngIf="handleError('titulo', 'required')">Campo Obrigatório</mat-error>
         </mat-form-field>
 
+<!--        <mat-form-field>-->
+<!--          <mat-label>Descrição</mat-label>-->
+<!--          <input matInput formControlName="descricao" placeholder="Digite o ocorrido...">-->
+<!--          <mat-error *ngIf="handleError('descricao', 'required')">Campo Obrigatório</mat-error>-->
+<!--        </mat-form-field>-->
         <mat-form-field>
           <mat-label>Descrição</mat-label>
-          <input matInput formControlName="descricao" placeholder="Digite o ocorrido...">
+          <textarea formControlName="descricao" placeholder="Digite o ocorrido..." maxlength="200"></textarea>
           <mat-error *ngIf="handleError('descricao', 'required')">Campo Obrigatório</mat-error>
         </mat-form-field>
 
