@@ -12,6 +12,8 @@ import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial
 import { NecessidadeEspecialControllerService } from "../../../api/services/necessidade-especial-controller.service";
 import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
+import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
+import {AdvertenciaControllerService} from "../../../api/services/advertencia-controller.service";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -33,11 +35,13 @@ export class InfoMatriculaDialogComponent implements OnInit {
     responsaveisNome: string[] = [];
     botaoNecessidadeClicado: boolean = false;
     aluno?: MatriculaDto;
+    advertenciasAluno: Array<AdvertenciaDto> | undefined;
 
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
         private matriculas: MatriculaControllerService,
+        private advertenciaService: AdvertenciaControllerService,
         private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
         private dialog: MatDialog,
         private router: Router,
