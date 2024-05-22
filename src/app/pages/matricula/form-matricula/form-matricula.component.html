@@ -11,7 +11,7 @@
     <div class="mat-tab-titulos">
       <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
         <!-- Etapa 1 -->
-        <mat-tab class="mat-tab-color" label="Criança" [disabled]="guiaAtiva !== 0">
+        <mat-tab   class="mat-tab-color" label="Criança" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0">
           <div class="conteudo-mat-tab">
             <mat-form-field>
               <mat-label>Nome da criança</mat-label>
@@ -52,7 +52,7 @@
                     <input matInput formControlName="titulo"
                            placeholder="EX: alergia, medicamentos, alimentação">
                     <mat-error
-                      *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && this.formGroup.get('possuiNecessidadeEspecial')?.value">
+                      *ngIf="getNecessidadeEspecialControl(i)?.hasError('campoNaoPreenchido')">
                       Desmarque ou preencha para
                       continuar
                     </mat-error>
@@ -125,8 +125,9 @@
 
         </mat-tab>
 
+
         <!-- Etapa 2 -->
-        <mat-tab label="Tutor(a)" [disabled]="guiaAtiva !== 1">
+        <mat-tab label="Tutor(a)" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 1">
           <div class="conteudo-mat-tab">
             <div formArrayName="tutor">
               <div *ngFor="let tutor of getTutoresControls(); let i = index;" [formGroupName]="i">
@@ -281,7 +282,7 @@
 
         <!-- Etapa 3 -->
 
-        <mat-tab label="Perguntas" [disabled]="guiaAtiva !== 2">
+        <mat-tab label="Perguntas" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 2">
           <div class="conteudo-mat-tab">
             <div fxLayout="column" fxLayoutAlign="center start">
               <p>A criança já frequentou outra creche ?</p>
@@ -371,7 +372,7 @@
         </mat-tab>
 
         <!-- Etapa 4 -->
-        <mat-tab label="Documentos" [disabled]="guiaAtiva !== 3">
+        <mat-tab label="Documentos" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 3">
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Cadastrar'">
             <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
               serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
@@ -690,15 +691,24 @@
 
 
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Editar' || tipoDeFormuladorio == 'Validar'">
-            <mat-selection-list #shoes>
-              <mat-list-option *ngFor="let item of enumDocValues">
-                {{item.value}}
-              </mat-list-option>
-            </mat-selection-list>
+            <mat-list #shoes>
+              <mat-list-item *ngFor="let item of enumDocValues">
+                <div matLine>
+                  <button mat-raised-button type="button" style="float:left" class="button-list" (click)="goToNextStep(1)">{{item.value}}
+                  </button>
+                  <mat-checkbox style="float:right" color="primary" [checked]="">
+                    Aceito
+                  </mat-checkbox>
+                </div>
+                <mat-divider></mat-divider>
 
-            <p>
-              Options selected: {{shoes.selectedOptions.selected.length}}
-            </p>
+
+              </mat-list-item>
+            </mat-list>
+
+<!--            <p>-->
+<!--              Options selected: {{shoes.selectedOptions.selected.length}}-->
+<!--            </p>-->
 
           </div>
 

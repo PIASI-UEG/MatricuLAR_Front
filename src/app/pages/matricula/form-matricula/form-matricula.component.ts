@@ -41,6 +41,7 @@ import {forEach} from "lodash";
 import {fileName} from "ng-openapi-gen/lib/gen-utils";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatListModule} from '@angular/material/list';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-form-matricula',
@@ -83,12 +84,11 @@ export class FormMatriculaComponent implements OnInit {
   public readonly FORM_EDITAR = "Editar";
   tipoDeFormuladorio: string = this.FORM_INCLUIR;
   colunasMostrar!: string[];
-  listaDocumentosEditareValidar: MatTableDataSource<EnumDoc> = new MatTableDataSource<EnumDoc>([]);
   protected readonly EnumDoc = EnumDoc;
-  enumDocValues: { key: string, value: string }[] = [];
   recebeBeneficio: string = "nao";
-
-
+  listaDocumentosEditareValidar: DocumentoMatriculaDto[] = [];
+  enumDocValues: { key: string, value: string }[] = [];
+  documentosCombinados = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -99,7 +99,8 @@ export class FormMatriculaComponent implements OnInit {
     private dialog: MatDialog,
     private securityService: SecurityService,
     private matriculaService: MatriculaControllerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private http:HttpClient
   ) {
     this._adapter.setLocale('pt-br');
   }
@@ -114,7 +115,6 @@ export class FormMatriculaComponent implements OnInit {
     this.adicionarCampoTutor();
     this.tipoFormulario();
     this.prepararEdicao();
-    this.enumDocValues = this.getEnumValues(EnumDoc, EnumDocDescriptions);
 
     this.validacoes.formGroupMatricula = this.formGroup;
     this.validacoes.formGroupDocsList = this.formDocumentos;
@@ -143,7 +143,7 @@ export class FormMatriculaComponent implements OnInit {
         nomeCrianca: [null, Validators.required],
         cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
         dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
-        possuiNecessidadeEspecial: false,
+        possuiNecessidadeEspecial: [false],
         necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
         cep: [null, [Validators.required, this.validacoes.validarCep]],
         cidade: [null, Validators.required],
@@ -289,13 +289,70 @@ export class FormMatriculaComponent implements OnInit {
     if (this.codigo != null || this.formGroup.valid) {
       if (!this.codigo) {
         this.atribuirConjugueRelacionamento();
-        // this.realizarInclusao();
+        this.realizarInclusao();
       } else {
         this.realizarEdicao();
       }
     }
   }
 
+  uploadFiles(dto: any, files: File[]){
+    const formData: FormData = new FormData();
+
+    // Append DTO fields to FormData
+    formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+    // Append each file to the FormData
+    files.forEach(file => {
+      formData.append('files', file, file.name);
+    });
+    const token = this.securityService.credential.accessToken
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
+    return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData,{headers}).subscribe(retorno =>{
+      console.log("as", retorno);
+    }, error => {
+      console.log("erro", error)
+    });
+  }
+
+  private realizarInclusao() {
+    const docs = this.formDocumentos.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    const matricula: MatriculaDto = this.makeDTOMatricula();
+    console.log("Matricula:", matricula);
+    console.log("Dados:",this.formGroup.value);
+    console.log("doc", copiaDocs)
+
+    this.uploadFiles(matricula, copiaDocs);
+
+    //this.matriculaService.matriculaControllerIncluir({body:matricula})
+    //     .subscribe( retorno =>{
+    //         console.log("Retorno:",retorno);
+    //
+    //
+    //         for (let i = 0; i < copiaDocs.length; i++) {
+    //             if (typeof copiaDocs[i] === 'undefined') {
+    //                 copiaDocs[i] = null;
+    //             }
+    //         }
+    //
+    //         // mandar documentos
+    //         if(retorno.id)
+    //         {
+    //             this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
+    //                 .subscribe(retorno =>{
+    //                     this.router.navigate(["/matricula"]);
+    //                 }, error => {
+    //                     console.log("Erro:"+error);
+    //                     this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
+    //                 })
+    //         }
+    //         this.confirmarAcao(retorno, this.FORM_INCLUIR);
+    //     }, erro =>{
+    //         console.log("Erro:"+erro);
+    //         this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
+    //     })
+  }
 
 
 // private realizarInclusao() {
@@ -461,6 +518,13 @@ export class FormMatriculaComponent implements OnInit {
           });
           //ate aqui preencher dados das matriculas nos inputs
 
+          // criar lista com os documentos que existem na matricula mostrando os que não existem s
+          this.enumDocValues = this.getEnumValues(EnumDoc, EnumDocDescriptions);
+          if(retorno.documentoMatricula){
+            this.listaDocumentosEditareValidar = retorno.documentoMatricula;
+          }
+
+
         },error => {
           this.mensagens.confirmarErro(this.FORM_EDITAR, error.message)
           console.log("erro", error);
@@ -560,13 +624,13 @@ export class FormMatriculaComponent implements OnInit {
 
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
-      titulo: [null, Validators.required]
+      titulo: [null, this.validacoes.validarNecessidadeEspecial]
     });
   }
 
   adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
     return this.formBuilder.group({
-      titulo: [necessidade.titulo, Validators.required]
+      titulo: [necessidade.titulo, this.validacoes.validarNecessidadeEspecial]
     });
   }
 
