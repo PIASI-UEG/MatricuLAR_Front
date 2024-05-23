@@ -1,1 +1,11 @@
 @import '../../../../StyleForms.css';
+
+
+textarea {
+  width: 100%;
+  height: 150px;
+  resize: none; /* Desativa a redimensionamento da caixa */
+  overflow: auto; /* Adiciona scroll se necessário */
+}
+
+

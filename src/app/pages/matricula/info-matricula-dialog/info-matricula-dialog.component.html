@@ -60,6 +60,19 @@
                     <button mat-raised-button type="submit" class="button botao-cadastro">Salvar</button>
                 </div>
             </mat-card>
+            <mat-card class="advertencias-card">
+              <mat-card-header>
+                <mat-card-title>Advertências</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div *ngFor="let advertencia of advertenciasAluno">
+                  <h3>{{advertencia.titulo}}</h3>
+                  <h3>Descrição</h3>
+                  <p>{{advertencia.descricao}}</p>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
                 <button mat-raised-button type="button" class="button " (click)="openDialogAdvertencia()">Advertência</button>

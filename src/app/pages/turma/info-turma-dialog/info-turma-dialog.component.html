@@ -1,6 +1,6 @@
 <div class="formMov">
     <ng-container >
-      <mat-card>
+      <mat-card class="mat-card-expanded">
         <mat-card-header>
           <mat-card-title>{{turma?.titulo}}</mat-card-title>
         </mat-card-header>
@@ -12,17 +12,22 @@
 
         </mat-card-content>
       </mat-card>
-      <mat-card>
+      <mat-card class="mat-card-expanded">
         <mat-card-header>
           <mat-card-title>Alunos na turma</mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
-          <ul>
-            <li *ngFor="let aluno of alunosNaTurma">
-              Nome:{{ aluno.nomeAluno }} - Matrícula: {{ aluno.nroMatricula }}
-            </li>
-          </ul>
+          <table >
+            <tr>
+              <th > Matricula </th>
+              <th > Aluno </th>
+            </tr>
+            <tr *ngFor="let aluno of alunosNaTurma">
+                <td > {{ aluno.nroMatricula }} </td>
+                <td > {{ aluno.nomeAluno }} </td>
+            </tr>
+          </table>
         </mat-card-content>
       </mat-card>
 
