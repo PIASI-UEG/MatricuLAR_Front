@@ -73,15 +73,15 @@
               <button mat-menu-item (click)="confirmarExcluir(element)">
                 <mat-icon>delete_forever</mat-icon>Excluir
               </button>
-<!--                <button mat-menu-item [matMenuTriggerFor]="tutores" >-->
-<!--                    <mat-icon>print</mat-icon>Gerar Termo de Matrícula-->
-<!--                </button>-->
-<!--              <mat-menu #tutores="matMenu">-->
-<!--                <button mat-menu-item *ngFor="let tutor of element.responsaveis" (click)="imprimirTermodaMatricula(element.id, tutor.cpfResponsavel)">-->
-<!--                  <mat-icon>person</mat-icon>-->
-<!--                  {{tutor.nomeResponsavel}}-->
-<!--                </button>-->
-<!--              </mat-menu>-->
+                <button mat-menu-item [matMenuTriggerFor]="tutores" >
+                    <mat-icon>print</mat-icon>Gerar Termo de Matrícula
+                </button>
+              <mat-menu #tutores="matMenu">
+                <button mat-menu-item *ngFor="let tutor of element.responsaveis" (click)="imprimirTermodaMatricula(element.id, tutor.cpfResponsavel)">
+                  <mat-icon>person</mat-icon>
+                  {{tutor.nomeResponsavel}}
+                </button>
+              </mat-menu>
             </mat-menu>
           </td>
         </ng-container>
