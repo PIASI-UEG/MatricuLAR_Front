@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import { MatriculaListagemDto } from './matricula-listagem-dto';
+import { MatriculaListagemDto } from '../models/matricula-listagem-dto';
 export interface TurmaDto {
   alunos?: Array<MatriculaListagemDto>;
   ano?: number;

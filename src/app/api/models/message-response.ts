@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import { FieldResponse } from './field-response';
+import { FieldResponse } from '../models/field-response';
 export interface MessageResponse {
 
   /**

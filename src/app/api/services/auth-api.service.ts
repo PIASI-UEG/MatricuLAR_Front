@@ -1,32 +1,35 @@
 /* tslint:disable */
 /* eslint-disable */
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
-import { RequestBuilder } from '../request-builder';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 
-import { AuthDto } from '../models/auth-dto';
 import { CredencialDto } from '../models/credencial-dto';
-import { UsuarioSenhaDto } from '../models/usuario-senha-dto';
+import { getInfoByToken } from '../fn/auth-api/get-info-by-token';
+import { GetInfoByToken$Params } from '../fn/auth-api/get-info-by-token';
+import { getInfoByTokenValidacao } from '../fn/auth-api/get-info-by-token-validacao';
+import { GetInfoByTokenValidacao$Params } from '../fn/auth-api/get-info-by-token-validacao';
+import { login } from '../fn/auth-api/login';
+import { Login$Params } from '../fn/auth-api/login';
+import { recuperarSenha } from '../fn/auth-api/recuperar-senha';
+import { RecuperarSenha$Params } from '../fn/auth-api/recuperar-senha';
+import { redefinirSenha } from '../fn/auth-api/redefinir-senha';
+import { RedefinirSenha$Params } from '../fn/auth-api/redefinir-senha';
+import { refresh } from '../fn/auth-api/refresh';
+import { Refresh$Params } from '../fn/auth-api/refresh';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
-  /**
-   * Path part for operation redefinirSenha
-   */
+  /** Path part for operation `redefinirSenha()` */
   static readonly RedefinirSenhaPath = '/api/v1/auth/senha';
 
   /**
@@ -37,40 +40,8 @@ export class AuthApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  redefinirSenha$Response(params: {
-
-    /**
-     * Request Token
-     */
-    requestToken?: string;
-
-    /**
-     * Request Token
-     */
-    'Request-Token'?: string;
-    body: UsuarioSenhaDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<CredencialDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AuthApiService.RedefinirSenhaPath, 'put');
-    if (params) {
-      rb.query('requestToken', params.requestToken, {});
-      rb.header('Request-Token', params['Request-Token'], {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<CredencialDto>>;
-      })
-    );
+  redefinirSenha$Response(params: RedefinirSenha$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+    return redefinirSenha(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -81,31 +52,13 @@ export class AuthApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  redefinirSenha(params: {
-
-    /**
-     * Request Token
-     */
-    requestToken?: string;
-
-    /**
-     * Request Token
-     */
-    'Request-Token'?: string;
-    body: UsuarioSenhaDto
-  },
-  context?: HttpContext
-
-): Observable<Array<CredencialDto>> {
-
-    return this.redefinirSenha$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<CredencialDto>>) => r.body as Array<CredencialDto>)
+  redefinirSenha(params: RedefinirSenha$Params, context?: HttpContext): Observable<Array<CredencialDto>> {
+    return this.redefinirSenha$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<CredencialDto>>): Array<CredencialDto> => r.body)
     );
   }
 
-  /**
-   * Path part for operation login
-   */
+  /** Path part for operation `login()` */
   static readonly LoginPath = '/api/v1/auth/login';
 
   /**
@@ -116,28 +69,8 @@ export class AuthApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  login$Response(params: {
-    body: AuthDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<CredencialDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AuthApiService.LoginPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<CredencialDto>;
-      })
-    );
+  login$Response(params: Login$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+    return login(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -148,21 +81,13 @@ export class AuthApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  login(params: {
-    body: AuthDto
-  },
-  context?: HttpContext
-
-): Observable<CredencialDto> {
-
-    return this.login$Response(params,context).pipe(
-      map((r: StrictHttpResponse<CredencialDto>) => r.body as CredencialDto)
+  login(params: Login$Params, context?: HttpContext): Observable<Array<CredencialDto>> {
+    return this.login$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<CredencialDto>>): Array<CredencialDto> => r.body)
     );
   }
 
-  /**
-   * Path part for operation recuperarSenha
-   */
+  /** Path part for operation `recuperarSenha()` */
   static readonly RecuperarSenhaPath = '/api/v1/auth/senha/solicitacao/{email}';
 
   /**
@@ -173,32 +98,8 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  recuperarSenha$Response(params: {
-
-    /**
-     * EMail do Usuário
-     */
-    email: string;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<CredencialDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AuthApiService.RecuperarSenhaPath, 'get');
-    if (params) {
-      rb.path('email', params.email, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<CredencialDto>>;
-      })
-    );
+  recuperarSenha$Response(params: RecuperarSenha$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+    return recuperarSenha(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -209,25 +110,13 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  recuperarSenha(params: {
-
-    /**
-     * EMail do Usuário
-     */
-    email: string;
-  },
-  context?: HttpContext
-
-): Observable<Array<CredencialDto>> {
-
-    return this.recuperarSenha$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<CredencialDto>>) => r.body as Array<CredencialDto>)
+  recuperarSenha(params: RecuperarSenha$Params, context?: HttpContext): Observable<Array<CredencialDto>> {
+    return this.recuperarSenha$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<CredencialDto>>): Array<CredencialDto> => r.body)
     );
   }
 
-  /**
-   * Path part for operation getInfoByTokenValidacao
-   */
+  /** Path part for operation `getInfoByTokenValidacao()` */
   static readonly GetInfoByTokenValidacaoPath = '/api/v1/auth/senha/solicitacao/info';
 
   /**
@@ -238,38 +127,8 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getInfoByTokenValidacao$Response(params?: {
-
-    /**
-     * Request Token
-     */
-    requestToken?: string;
-
-    /**
-     * Request Token
-     */
-    'Request-Token'?: string;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<boolean>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AuthApiService.GetInfoByTokenValidacaoPath, 'get');
-    if (params) {
-      rb.query('requestToken', params.requestToken, {});
-      rb.header('Request-Token', params['Request-Token'], {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<boolean>>;
-      })
-    );
+  getInfoByTokenValidacao$Response(params?: GetInfoByTokenValidacao$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<boolean>>> {
+    return getInfoByTokenValidacao(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -280,30 +139,13 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getInfoByTokenValidacao(params?: {
-
-    /**
-     * Request Token
-     */
-    requestToken?: string;
-
-    /**
-     * Request Token
-     */
-    'Request-Token'?: string;
-  },
-  context?: HttpContext
-
-): Observable<Array<boolean>> {
-
-    return this.getInfoByTokenValidacao$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<boolean>>) => r.body as Array<boolean>)
+  getInfoByTokenValidacao(params?: GetInfoByTokenValidacao$Params, context?: HttpContext): Observable<Array<boolean>> {
+    return this.getInfoByTokenValidacao$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<boolean>>): Array<boolean> => r.body)
     );
   }
 
-  /**
-   * Path part for operation refresh
-   */
+  /** Path part for operation `refresh()` */
   static readonly RefreshPath = '/api/v1/auth/refresh';
 
   /**
@@ -314,32 +156,8 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  refresh$Response(params: {
-
-    /**
-     * Token de refresh
-     */
-    refreshToken: string;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<CredencialDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AuthApiService.RefreshPath, 'get');
-    if (params) {
-      rb.query('refreshToken', params.refreshToken, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<CredencialDto>>;
-      })
-    );
+  refresh$Response(params: Refresh$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+    return refresh(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -350,25 +168,13 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  refresh(params: {
-
-    /**
-     * Token de refresh
-     */
-    refreshToken: string;
-  },
-  context?: HttpContext
-
-): Observable<Array<CredencialDto>> {
-
-    return this.refresh$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<CredencialDto>>) => r.body as Array<CredencialDto>)
+  refresh(params: Refresh$Params, context?: HttpContext): Observable<Array<CredencialDto>> {
+    return this.refresh$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<CredencialDto>>): Array<CredencialDto> => r.body)
     );
   }
 
-  /**
-   * Path part for operation getInfoByToken
-   */
+  /** Path part for operation `getInfoByToken()` */
   static readonly GetInfoByTokenPath = '/api/v1/auth/info';
 
   /**
@@ -379,32 +185,8 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getInfoByToken$Response(params: {
-
-    /**
-     * Token
-     */
-    Authorization: string;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<CredencialDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AuthApiService.GetInfoByTokenPath, 'get');
-    if (params) {
-      rb.header('Authorization', params.Authorization, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<CredencialDto>>;
-      })
-    );
+  getInfoByToken$Response(params: GetInfoByToken$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+    return getInfoByToken(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -415,19 +197,9 @@ export class AuthApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getInfoByToken(params: {
-
-    /**
-     * Token
-     */
-    Authorization: string;
-  },
-  context?: HttpContext
-
-): Observable<Array<CredencialDto>> {
-
-    return this.getInfoByToken$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<CredencialDto>>) => r.body as Array<CredencialDto>)
+  getInfoByToken(params: GetInfoByToken$Params, context?: HttpContext): Observable<Array<CredencialDto>> {
+    return this.getInfoByToken$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<CredencialDto>>): Array<CredencialDto> => r.body)
     );
   }
 

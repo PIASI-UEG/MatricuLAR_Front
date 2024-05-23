@@ -1,34 +1,39 @@
 /* tslint:disable */
 /* eslint-disable */
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
-import { RequestBuilder } from '../request-builder';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 
-import { EnderecoDto } from '../models/endereco-dto';
-import { PageEnderecoDto } from '../models/page-endereco-dto';
-import { Pageable } from '../models/pageable';
+import { enderecoControllerAlterar } from '../fn/endereco-controller/endereco-controller-alterar';
+import { EnderecoControllerAlterar$Params } from '../fn/endereco-controller/endereco-controller-alterar';
+import { enderecoControllerIncluir } from '../fn/endereco-controller/endereco-controller-incluir';
+import { EnderecoControllerIncluir$Params } from '../fn/endereco-controller/endereco-controller-incluir';
+import { enderecoControllerListAll } from '../fn/endereco-controller/endereco-controller-list-all';
+import { EnderecoControllerListAll$Params } from '../fn/endereco-controller/endereco-controller-list-all';
+import { enderecoControllerListAllPage } from '../fn/endereco-controller/endereco-controller-list-all-page';
+import { EnderecoControllerListAllPage$Params } from '../fn/endereco-controller/endereco-controller-list-all-page';
+import { enderecoControllerObterPorId } from '../fn/endereco-controller/endereco-controller-obter-por-id';
+import { EnderecoControllerObterPorId$Params } from '../fn/endereco-controller/endereco-controller-obter-por-id';
+import { enderecoControllerRemover } from '../fn/endereco-controller/endereco-controller-remover';
+import { EnderecoControllerRemover$Params } from '../fn/endereco-controller/endereco-controller-remover';
+import { enderecoControllerSearchFieldsAction } from '../fn/endereco-controller/endereco-controller-search-fields-action';
+import { EnderecoControllerSearchFieldsAction$Params } from '../fn/endereco-controller/endereco-controller-search-fields-action';
+import { enderecoControllerSearchFieldsList } from '../fn/endereco-controller/endereco-controller-search-fields-list';
+import { EnderecoControllerSearchFieldsList$Params } from '../fn/endereco-controller/endereco-controller-search-fields-list';
 import { SearchField } from '../models/search-field';
-import { SearchFieldValue } from '../models/search-field-value';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class EnderecoControllerService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
-  /**
-   * Path part for operation enderecoControllerObterPorId
-   */
+  /** Path part for operation `enderecoControllerObterPorId()` */
   static readonly EnderecoControllerObterPorIdPath = '/api/v1/endereco/{id}';
 
   /**
@@ -39,28 +44,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerObterPorId$Response(params: {
-    id: number;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<EnderecoDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerObterPorIdPath, 'get');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<EnderecoDto>;
-      })
-    );
+  enderecoControllerObterPorId$Response(params: EnderecoControllerObterPorId$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerObterPorId(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -71,21 +56,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerObterPorId(params: {
-    id: number;
-  },
-  context?: HttpContext
-
-): Observable<EnderecoDto> {
-
-    return this.enderecoControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<EnderecoDto>) => r.body as EnderecoDto)
+  enderecoControllerObterPorId(params: EnderecoControllerObterPorId$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerObterPorId$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerAlterar
-   */
+  /** Path part for operation `enderecoControllerAlterar()` */
   static readonly EnderecoControllerAlterarPath = '/api/v1/endereco/{id}';
 
   /**
@@ -96,30 +73,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  enderecoControllerAlterar$Response(params: {
-    id: number;
-    body: EnderecoDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<EnderecoDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerAlterarPath, 'put');
-    if (params) {
-      rb.path('id', params.id, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<EnderecoDto>;
-      })
-    );
+  enderecoControllerAlterar$Response(params: EnderecoControllerAlterar$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerAlterar(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -130,22 +85,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  enderecoControllerAlterar(params: {
-    id: number;
-    body: EnderecoDto
-  },
-  context?: HttpContext
-
-): Observable<EnderecoDto> {
-
-    return this.enderecoControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<EnderecoDto>) => r.body as EnderecoDto)
+  enderecoControllerAlterar(params: EnderecoControllerAlterar$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerAlterar$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerRemover
-   */
+  /** Path part for operation `enderecoControllerRemover()` */
   static readonly EnderecoControllerRemoverPath = '/api/v1/endereco/{id}';
 
   /**
@@ -156,28 +102,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerRemover$Response(params: {
-    id: number;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<EnderecoDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerRemoverPath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<EnderecoDto>;
-      })
-    );
+  enderecoControllerRemover$Response(params: EnderecoControllerRemover$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerRemover(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -188,21 +114,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerRemover(params: {
-    id: number;
-  },
-  context?: HttpContext
-
-): Observable<EnderecoDto> {
-
-    return this.enderecoControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<EnderecoDto>) => r.body as EnderecoDto)
+  enderecoControllerRemover(params: EnderecoControllerRemover$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerRemover$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerListAll
-   */
+  /** Path part for operation `enderecoControllerListAll()` */
   static readonly EnderecoControllerListAllPath = '/api/v1/endereco';
 
   /**
@@ -213,26 +131,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerListAll$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<EnderecoDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerListAllPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<EnderecoDto>>;
-      })
-    );
+  enderecoControllerListAll$Response(params?: EnderecoControllerListAll$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerListAll(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -243,20 +143,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerListAll(params?: {
-  },
-  context?: HttpContext
-
-): Observable<Array<EnderecoDto>> {
-
-    return this.enderecoControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<EnderecoDto>>) => r.body as Array<EnderecoDto>)
+  enderecoControllerListAll(params?: EnderecoControllerListAll$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerListAll$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerIncluir
-   */
+  /** Path part for operation `enderecoControllerIncluir()` */
   static readonly EnderecoControllerIncluirPath = '/api/v1/endereco';
 
   /**
@@ -267,28 +160,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  enderecoControllerIncluir$Response(params: {
-    body: EnderecoDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<EnderecoDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerIncluirPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<EnderecoDto>;
-      })
-    );
+  enderecoControllerIncluir$Response(params: EnderecoControllerIncluir$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerIncluir(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -299,21 +172,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  enderecoControllerIncluir(params: {
-    body: EnderecoDto
-  },
-  context?: HttpContext
-
-): Observable<EnderecoDto> {
-
-    return this.enderecoControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<EnderecoDto>) => r.body as EnderecoDto)
+  enderecoControllerIncluir(params: EnderecoControllerIncluir$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerIncluir$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerSearchFieldsList
-   */
+  /** Path part for operation `enderecoControllerSearchFieldsList()` */
   static readonly EnderecoControllerSearchFieldsListPath = '/api/v1/endereco/search-fields';
 
   /**
@@ -324,26 +189,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerSearchFieldsList$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<SearchField>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerSearchFieldsListPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<SearchField>>;
-      })
-    );
+  enderecoControllerSearchFieldsList$Response(params?: EnderecoControllerSearchFieldsList$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<SearchField>>> {
+    return enderecoControllerSearchFieldsList(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -354,20 +201,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerSearchFieldsList(params?: {
-  },
-  context?: HttpContext
-
-): Observable<Array<SearchField>> {
-
-    return this.enderecoControllerSearchFieldsList$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<SearchField>>) => r.body as Array<SearchField>)
+  enderecoControllerSearchFieldsList(params?: EnderecoControllerSearchFieldsList$Params, context?: HttpContext): Observable<Array<SearchField>> {
+    return this.enderecoControllerSearchFieldsList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<SearchField>>): Array<SearchField> => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerSearchFieldsAction
-   */
+  /** Path part for operation `enderecoControllerSearchFieldsAction()` */
   static readonly EnderecoControllerSearchFieldsActionPath = '/api/v1/endereco/search-fields';
 
   /**
@@ -378,28 +218,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  enderecoControllerSearchFieldsAction$Response(params: {
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<EnderecoDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerSearchFieldsActionPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<EnderecoDto>>;
-      })
-    );
+  enderecoControllerSearchFieldsAction$Response(params: EnderecoControllerSearchFieldsAction$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerSearchFieldsAction(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -410,87 +230,13 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  enderecoControllerSearchFieldsAction(params: {
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<Array<EnderecoDto>> {
-
-    return this.enderecoControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<EnderecoDto>>) => r.body as Array<EnderecoDto>)
+  enderecoControllerSearchFieldsAction(params: EnderecoControllerSearchFieldsAction$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerSearchFieldsAction$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation enderecoControllerSearchFieldsActionPage
-   */
-  static readonly EnderecoControllerSearchFieldsActionPagePath = '/api/v1/endereco/search-fields/page';
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `enderecoControllerSearchFieldsActionPage()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  enderecoControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageEnderecoDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerSearchFieldsActionPagePath, 'post');
-    if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageEnderecoDto>;
-      })
-    );
-  }
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `enderecoControllerSearchFieldsActionPage$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  enderecoControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<PageEnderecoDto> {
-
-    return this.enderecoControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageEnderecoDto>) => r.body as PageEnderecoDto)
-    );
-  }
-
-  /**
-   * Path part for operation enderecoControllerListAllPage
-   */
+  /** Path part for operation `enderecoControllerListAllPage()` */
   static readonly EnderecoControllerListAllPagePath = '/api/v1/endereco/page';
 
   /**
@@ -501,28 +247,8 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerListAllPage$Response(params: {
-    page: Pageable;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageEnderecoDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, EnderecoControllerService.EnderecoControllerListAllPagePath, 'get');
-    if (params) {
-      rb.query('page', params.page, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageEnderecoDto>;
-      })
-    );
+  enderecoControllerListAllPage$Response(params: EnderecoControllerListAllPage$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return enderecoControllerListAllPage(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -533,15 +259,9 @@ export class EnderecoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  enderecoControllerListAllPage(params: {
-    page: Pageable;
-  },
-  context?: HttpContext
-
-): Observable<PageEnderecoDto> {
-
-    return this.enderecoControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageEnderecoDto>) => r.body as PageEnderecoDto)
+  enderecoControllerListAllPage(params: EnderecoControllerListAllPage$Params, context?: HttpContext): Observable<any> {
+    return this.enderecoControllerListAllPage$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 

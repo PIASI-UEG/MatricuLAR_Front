@@ -1,35 +1,39 @@
 /* tslint:disable */
 /* eslint-disable */
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
-import { RequestBuilder } from '../request-builder';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 
-import { AdvertenciaDto } from '../models/advertencia-dto';
-import { PageAdvertenciaDto } from '../models/page-advertencia-dto';
-import { Pageable } from '../models/pageable';
-import { PkAdvertencia } from '../models/pk-advertencia';
+import { advertenciaControllerAlterar } from '../fn/advertencia-controller/advertencia-controller-alterar';
+import { AdvertenciaControllerAlterar$Params } from '../fn/advertencia-controller/advertencia-controller-alterar';
+import { advertenciaControllerIncluir } from '../fn/advertencia-controller/advertencia-controller-incluir';
+import { AdvertenciaControllerIncluir$Params } from '../fn/advertencia-controller/advertencia-controller-incluir';
+import { advertenciaControllerListAll } from '../fn/advertencia-controller/advertencia-controller-list-all';
+import { AdvertenciaControllerListAll$Params } from '../fn/advertencia-controller/advertencia-controller-list-all';
+import { advertenciaControllerListAllPage } from '../fn/advertencia-controller/advertencia-controller-list-all-page';
+import { AdvertenciaControllerListAllPage$Params } from '../fn/advertencia-controller/advertencia-controller-list-all-page';
+import { advertenciaControllerObterPorId } from '../fn/advertencia-controller/advertencia-controller-obter-por-id';
+import { AdvertenciaControllerObterPorId$Params } from '../fn/advertencia-controller/advertencia-controller-obter-por-id';
+import { advertenciaControllerRemover } from '../fn/advertencia-controller/advertencia-controller-remover';
+import { AdvertenciaControllerRemover$Params } from '../fn/advertencia-controller/advertencia-controller-remover';
+import { advertenciaControllerSearchFieldsAction } from '../fn/advertencia-controller/advertencia-controller-search-fields-action';
+import { AdvertenciaControllerSearchFieldsAction$Params } from '../fn/advertencia-controller/advertencia-controller-search-fields-action';
+import { advertenciaControllerSearchFieldsList } from '../fn/advertencia-controller/advertencia-controller-search-fields-list';
+import { AdvertenciaControllerSearchFieldsList$Params } from '../fn/advertencia-controller/advertencia-controller-search-fields-list';
 import { SearchField } from '../models/search-field';
-import { SearchFieldValue } from '../models/search-field-value';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AdvertenciaControllerService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
-  /**
-   * Path part for operation advertenciaControllerObterPorId
-   */
+  /** Path part for operation `advertenciaControllerObterPorId()` */
   static readonly AdvertenciaControllerObterPorIdPath = '/api/v1/advertencia/{id}';
 
   /**
@@ -40,28 +44,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerObterPorId$Response(params: {
-    id: PkAdvertencia;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<AdvertenciaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerObterPorIdPath, 'get');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<AdvertenciaDto>;
-      })
-    );
+  advertenciaControllerObterPorId$Response(params: AdvertenciaControllerObterPorId$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerObterPorId(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -72,21 +56,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerObterPorId(params: {
-    id: PkAdvertencia;
-  },
-  context?: HttpContext
-
-): Observable<AdvertenciaDto> {
-
-    return this.advertenciaControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<AdvertenciaDto>) => r.body as AdvertenciaDto)
+  advertenciaControllerObterPorId(params: AdvertenciaControllerObterPorId$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerObterPorId$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerAlterar
-   */
+  /** Path part for operation `advertenciaControllerAlterar()` */
   static readonly AdvertenciaControllerAlterarPath = '/api/v1/advertencia/{id}';
 
   /**
@@ -97,30 +73,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  advertenciaControllerAlterar$Response(params: {
-    id: PkAdvertencia;
-    body: AdvertenciaDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<AdvertenciaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerAlterarPath, 'put');
-    if (params) {
-      rb.path('id', params.id, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<AdvertenciaDto>;
-      })
-    );
+  advertenciaControllerAlterar$Response(params: AdvertenciaControllerAlterar$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerAlterar(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -131,22 +85,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  advertenciaControllerAlterar(params: {
-    id: PkAdvertencia;
-    body: AdvertenciaDto
-  },
-  context?: HttpContext
-
-): Observable<AdvertenciaDto> {
-
-    return this.advertenciaControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<AdvertenciaDto>) => r.body as AdvertenciaDto)
+  advertenciaControllerAlterar(params: AdvertenciaControllerAlterar$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerAlterar$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerRemover
-   */
+  /** Path part for operation `advertenciaControllerRemover()` */
   static readonly AdvertenciaControllerRemoverPath = '/api/v1/advertencia/{id}';
 
   /**
@@ -157,28 +102,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerRemover$Response(params: {
-    id: PkAdvertencia;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<AdvertenciaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerRemoverPath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<AdvertenciaDto>;
-      })
-    );
+  advertenciaControllerRemover$Response(params: AdvertenciaControllerRemover$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerRemover(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -189,21 +114,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerRemover(params: {
-    id: PkAdvertencia;
-  },
-  context?: HttpContext
-
-): Observable<AdvertenciaDto> {
-
-    return this.advertenciaControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<AdvertenciaDto>) => r.body as AdvertenciaDto)
+  advertenciaControllerRemover(params: AdvertenciaControllerRemover$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerRemover$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerListAll
-   */
+  /** Path part for operation `advertenciaControllerListAll()` */
   static readonly AdvertenciaControllerListAllPath = '/api/v1/advertencia';
 
   /**
@@ -214,26 +131,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerListAll$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<AdvertenciaDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerListAllPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<AdvertenciaDto>>;
-      })
-    );
+  advertenciaControllerListAll$Response(params?: AdvertenciaControllerListAll$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerListAll(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -244,20 +143,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerListAll(params?: {
-  },
-  context?: HttpContext
-
-): Observable<Array<AdvertenciaDto>> {
-
-    return this.advertenciaControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<AdvertenciaDto>>) => r.body as Array<AdvertenciaDto>)
+  advertenciaControllerListAll(params?: AdvertenciaControllerListAll$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerListAll$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerIncluir
-   */
+  /** Path part for operation `advertenciaControllerIncluir()` */
   static readonly AdvertenciaControllerIncluirPath = '/api/v1/advertencia';
 
   /**
@@ -268,28 +160,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  advertenciaControllerIncluir$Response(params: {
-    body: AdvertenciaDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<AdvertenciaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerIncluirPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<AdvertenciaDto>;
-      })
-    );
+  advertenciaControllerIncluir$Response(params: AdvertenciaControllerIncluir$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerIncluir(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -300,21 +172,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  advertenciaControllerIncluir(params: {
-    body: AdvertenciaDto
-  },
-  context?: HttpContext
-
-): Observable<AdvertenciaDto> {
-
-    return this.advertenciaControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<AdvertenciaDto>) => r.body as AdvertenciaDto)
+  advertenciaControllerIncluir(params: AdvertenciaControllerIncluir$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerIncluir$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerSearchFieldsList
-   */
+  /** Path part for operation `advertenciaControllerSearchFieldsList()` */
   static readonly AdvertenciaControllerSearchFieldsListPath = '/api/v1/advertencia/search-fields';
 
   /**
@@ -325,26 +189,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerSearchFieldsList$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<SearchField>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerSearchFieldsListPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<SearchField>>;
-      })
-    );
+  advertenciaControllerSearchFieldsList$Response(params?: AdvertenciaControllerSearchFieldsList$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<SearchField>>> {
+    return advertenciaControllerSearchFieldsList(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -355,20 +201,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerSearchFieldsList(params?: {
-  },
-  context?: HttpContext
-
-): Observable<Array<SearchField>> {
-
-    return this.advertenciaControllerSearchFieldsList$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<SearchField>>) => r.body as Array<SearchField>)
+  advertenciaControllerSearchFieldsList(params?: AdvertenciaControllerSearchFieldsList$Params, context?: HttpContext): Observable<Array<SearchField>> {
+    return this.advertenciaControllerSearchFieldsList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<SearchField>>): Array<SearchField> => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerSearchFieldsAction
-   */
+  /** Path part for operation `advertenciaControllerSearchFieldsAction()` */
   static readonly AdvertenciaControllerSearchFieldsActionPath = '/api/v1/advertencia/search-fields';
 
   /**
@@ -379,28 +218,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  advertenciaControllerSearchFieldsAction$Response(params: {
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<AdvertenciaDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerSearchFieldsActionPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<AdvertenciaDto>>;
-      })
-    );
+  advertenciaControllerSearchFieldsAction$Response(params: AdvertenciaControllerSearchFieldsAction$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerSearchFieldsAction(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -411,87 +230,13 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  advertenciaControllerSearchFieldsAction(params: {
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<Array<AdvertenciaDto>> {
-
-    return this.advertenciaControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<AdvertenciaDto>>) => r.body as Array<AdvertenciaDto>)
+  advertenciaControllerSearchFieldsAction(params: AdvertenciaControllerSearchFieldsAction$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerSearchFieldsAction$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation advertenciaControllerSearchFieldsActionPage
-   */
-  static readonly AdvertenciaControllerSearchFieldsActionPagePath = '/api/v1/advertencia/search-fields/page';
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `advertenciaControllerSearchFieldsActionPage()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  advertenciaControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageAdvertenciaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerSearchFieldsActionPagePath, 'post');
-    if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageAdvertenciaDto>;
-      })
-    );
-  }
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `advertenciaControllerSearchFieldsActionPage$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  advertenciaControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<PageAdvertenciaDto> {
-
-    return this.advertenciaControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageAdvertenciaDto>) => r.body as PageAdvertenciaDto)
-    );
-  }
-
-  /**
-   * Path part for operation advertenciaControllerListAllPage
-   */
+  /** Path part for operation `advertenciaControllerListAllPage()` */
   static readonly AdvertenciaControllerListAllPagePath = '/api/v1/advertencia/page';
 
   /**
@@ -502,28 +247,8 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerListAllPage$Response(params: {
-    page: Pageable;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageAdvertenciaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerListAllPagePath, 'get');
-    if (params) {
-      rb.query('page', params.page, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageAdvertenciaDto>;
-      })
-    );
+  advertenciaControllerListAllPage$Response(params: AdvertenciaControllerListAllPage$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return advertenciaControllerListAllPage(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -534,15 +259,9 @@ export class AdvertenciaControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  advertenciaControllerListAllPage(params: {
-    page: Pageable;
-  },
-  context?: HttpContext
-
-): Observable<PageAdvertenciaDto> {
-
-    return this.advertenciaControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageAdvertenciaDto>) => r.body as PageAdvertenciaDto)
+  advertenciaControllerListAllPage(params: AdvertenciaControllerListAllPage$Params, context?: HttpContext): Observable<any> {
+    return this.advertenciaControllerListAllPage$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 

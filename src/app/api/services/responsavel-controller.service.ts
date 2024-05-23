@@ -1,35 +1,39 @@
 /* tslint:disable */
 /* eslint-disable */
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
-import { RequestBuilder } from '../request-builder';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 
-import { PageResponsavelDto } from '../models/page-responsavel-dto';
-import { Pageable } from '../models/pageable';
-import { PkResponsavel } from '../models/pk-responsavel';
-import { ResponsavelDto } from '../models/responsavel-dto';
+import { responsavelControllerAlterar } from '../fn/responsavel-controller/responsavel-controller-alterar';
+import { ResponsavelControllerAlterar$Params } from '../fn/responsavel-controller/responsavel-controller-alterar';
+import { responsavelControllerIncluir } from '../fn/responsavel-controller/responsavel-controller-incluir';
+import { ResponsavelControllerIncluir$Params } from '../fn/responsavel-controller/responsavel-controller-incluir';
+import { responsavelControllerListAll } from '../fn/responsavel-controller/responsavel-controller-list-all';
+import { ResponsavelControllerListAll$Params } from '../fn/responsavel-controller/responsavel-controller-list-all';
+import { responsavelControllerListAllPage } from '../fn/responsavel-controller/responsavel-controller-list-all-page';
+import { ResponsavelControllerListAllPage$Params } from '../fn/responsavel-controller/responsavel-controller-list-all-page';
+import { responsavelControllerObterPorId } from '../fn/responsavel-controller/responsavel-controller-obter-por-id';
+import { ResponsavelControllerObterPorId$Params } from '../fn/responsavel-controller/responsavel-controller-obter-por-id';
+import { responsavelControllerRemover } from '../fn/responsavel-controller/responsavel-controller-remover';
+import { ResponsavelControllerRemover$Params } from '../fn/responsavel-controller/responsavel-controller-remover';
+import { responsavelControllerSearchFieldsAction } from '../fn/responsavel-controller/responsavel-controller-search-fields-action';
+import { ResponsavelControllerSearchFieldsAction$Params } from '../fn/responsavel-controller/responsavel-controller-search-fields-action';
+import { responsavelControllerSearchFieldsList } from '../fn/responsavel-controller/responsavel-controller-search-fields-list';
+import { ResponsavelControllerSearchFieldsList$Params } from '../fn/responsavel-controller/responsavel-controller-search-fields-list';
 import { SearchField } from '../models/search-field';
-import { SearchFieldValue } from '../models/search-field-value';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ResponsavelControllerService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
-  /**
-   * Path part for operation responsavelControllerObterPorId
-   */
+  /** Path part for operation `responsavelControllerObterPorId()` */
   static readonly ResponsavelControllerObterPorIdPath = '/api/v1/responsavel/{id}';
 
   /**
@@ -40,28 +44,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerObterPorId$Response(params: {
-    id: PkResponsavel;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<ResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerObterPorIdPath, 'get');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
-      })
-    );
+  responsavelControllerObterPorId$Response(params: ResponsavelControllerObterPorId$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerObterPorId(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -72,21 +56,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerObterPorId(params: {
-    id: PkResponsavel;
-  },
-  context?: HttpContext
-
-): Observable<ResponsavelDto> {
-
-    return this.responsavelControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+  responsavelControllerObterPorId(params: ResponsavelControllerObterPorId$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerObterPorId$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerAlterar
-   */
+  /** Path part for operation `responsavelControllerAlterar()` */
   static readonly ResponsavelControllerAlterarPath = '/api/v1/responsavel/{id}';
 
   /**
@@ -97,30 +73,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  responsavelControllerAlterar$Response(params: {
-    id: PkResponsavel;
-    body: ResponsavelDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<ResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerAlterarPath, 'put');
-    if (params) {
-      rb.path('id', params.id, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
-      })
-    );
+  responsavelControllerAlterar$Response(params: ResponsavelControllerAlterar$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerAlterar(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -131,22 +85,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  responsavelControllerAlterar(params: {
-    id: PkResponsavel;
-    body: ResponsavelDto
-  },
-  context?: HttpContext
-
-): Observable<ResponsavelDto> {
-
-    return this.responsavelControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+  responsavelControllerAlterar(params: ResponsavelControllerAlterar$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerAlterar$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerRemover
-   */
+  /** Path part for operation `responsavelControllerRemover()` */
   static readonly ResponsavelControllerRemoverPath = '/api/v1/responsavel/{id}';
 
   /**
@@ -157,28 +102,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerRemover$Response(params: {
-    id: PkResponsavel;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<ResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerRemoverPath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
-      })
-    );
+  responsavelControllerRemover$Response(params: ResponsavelControllerRemover$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerRemover(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -189,21 +114,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerRemover(params: {
-    id: PkResponsavel;
-  },
-  context?: HttpContext
-
-): Observable<ResponsavelDto> {
-
-    return this.responsavelControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+  responsavelControllerRemover(params: ResponsavelControllerRemover$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerRemover$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerListAll
-   */
+  /** Path part for operation `responsavelControllerListAll()` */
   static readonly ResponsavelControllerListAllPath = '/api/v1/responsavel';
 
   /**
@@ -214,26 +131,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerListAll$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<ResponsavelDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerListAllPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ResponsavelDto>>;
-      })
-    );
+  responsavelControllerListAll$Response(params?: ResponsavelControllerListAll$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerListAll(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -244,20 +143,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerListAll(params?: {
-  },
-  context?: HttpContext
-
-): Observable<Array<ResponsavelDto>> {
-
-    return this.responsavelControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<ResponsavelDto>>) => r.body as Array<ResponsavelDto>)
+  responsavelControllerListAll(params?: ResponsavelControllerListAll$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerListAll$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerIncluir
-   */
+  /** Path part for operation `responsavelControllerIncluir()` */
   static readonly ResponsavelControllerIncluirPath = '/api/v1/responsavel';
 
   /**
@@ -268,28 +160,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  responsavelControllerIncluir$Response(params: {
-    body: ResponsavelDto
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<ResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerIncluirPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
-      })
-    );
+  responsavelControllerIncluir$Response(params: ResponsavelControllerIncluir$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerIncluir(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -300,21 +172,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  responsavelControllerIncluir(params: {
-    body: ResponsavelDto
-  },
-  context?: HttpContext
-
-): Observable<ResponsavelDto> {
-
-    return this.responsavelControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+  responsavelControllerIncluir(params: ResponsavelControllerIncluir$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerIncluir$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerSearchFieldsList
-   */
+  /** Path part for operation `responsavelControllerSearchFieldsList()` */
   static readonly ResponsavelControllerSearchFieldsListPath = '/api/v1/responsavel/search-fields';
 
   /**
@@ -325,26 +189,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerSearchFieldsList$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<SearchField>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsListPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<SearchField>>;
-      })
-    );
+  responsavelControllerSearchFieldsList$Response(params?: ResponsavelControllerSearchFieldsList$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<SearchField>>> {
+    return responsavelControllerSearchFieldsList(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -355,20 +201,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerSearchFieldsList(params?: {
-  },
-  context?: HttpContext
-
-): Observable<Array<SearchField>> {
-
-    return this.responsavelControllerSearchFieldsList$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<SearchField>>) => r.body as Array<SearchField>)
+  responsavelControllerSearchFieldsList(params?: ResponsavelControllerSearchFieldsList$Params, context?: HttpContext): Observable<Array<SearchField>> {
+    return this.responsavelControllerSearchFieldsList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<SearchField>>): Array<SearchField> => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerSearchFieldsAction
-   */
+  /** Path part for operation `responsavelControllerSearchFieldsAction()` */
   static readonly ResponsavelControllerSearchFieldsActionPath = '/api/v1/responsavel/search-fields';
 
   /**
@@ -379,28 +218,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  responsavelControllerSearchFieldsAction$Response(params: {
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<Array<ResponsavelDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsActionPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ResponsavelDto>>;
-      })
-    );
+  responsavelControllerSearchFieldsAction$Response(params: ResponsavelControllerSearchFieldsAction$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerSearchFieldsAction(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -411,87 +230,13 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  responsavelControllerSearchFieldsAction(params: {
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<Array<ResponsavelDto>> {
-
-    return this.responsavelControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<ResponsavelDto>>) => r.body as Array<ResponsavelDto>)
+  responsavelControllerSearchFieldsAction(params: ResponsavelControllerSearchFieldsAction$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerSearchFieldsAction$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 
-  /**
-   * Path part for operation responsavelControllerSearchFieldsActionPage
-   */
-  static readonly ResponsavelControllerSearchFieldsActionPagePath = '/api/v1/responsavel/search-fields/page';
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `responsavelControllerSearchFieldsActionPage()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  responsavelControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsActionPagePath, 'post');
-    if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageResponsavelDto>;
-      })
-    );
-  }
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `responsavelControllerSearchFieldsActionPage$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  responsavelControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<PageResponsavelDto> {
-
-    return this.responsavelControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageResponsavelDto>) => r.body as PageResponsavelDto)
-    );
-  }
-
-  /**
-   * Path part for operation responsavelControllerListAllPage
-   */
+  /** Path part for operation `responsavelControllerListAllPage()` */
   static readonly ResponsavelControllerListAllPagePath = '/api/v1/responsavel/page';
 
   /**
@@ -502,28 +247,8 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerListAllPage$Response(params: {
-    page: Pageable;
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerListAllPagePath, 'get');
-    if (params) {
-      rb.query('page', params.page, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageResponsavelDto>;
-      })
-    );
+  responsavelControllerListAllPage$Response(params: ResponsavelControllerListAllPage$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+    return responsavelControllerListAllPage(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -534,15 +259,9 @@ export class ResponsavelControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  responsavelControllerListAllPage(params: {
-    page: Pageable;
-  },
-  context?: HttpContext
-
-): Observable<PageResponsavelDto> {
-
-    return this.responsavelControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageResponsavelDto>) => r.body as PageResponsavelDto)
+  responsavelControllerListAllPage(params: ResponsavelControllerListAllPage$Params, context?: HttpContext): Observable<any> {
+    return this.responsavelControllerListAllPage$Response(params, context).pipe(
+      map((r: StrictHttpResponse<any>): any => r.body)
     );
   }
 

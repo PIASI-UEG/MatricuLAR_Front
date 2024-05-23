@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-import { AdvertenciaDto } from './advertencia-dto';
-import { DocumentoMatriculaDto } from './documento-matricula-dto';
-import { EnderecoDto } from './endereco-dto';
-import { InformacoesMatriculaDto } from './informacoes-matricula-dto';
-import { NecessidadeEspecialDto } from './necessidade-especial-dto';
-import { ResponsavelDto } from './responsavel-dto';
-import { TurmaDto } from './turma-dto';
-import { TutorDto } from './tutor-dto';
+import { AdvertenciaDto } from '../models/advertencia-dto';
+import { DocumentoMatriculaDto } from '../models/documento-matricula-dto';
+import { EnderecoDto } from '../models/endereco-dto';
+import { InformacoesMatriculaDto } from '../models/informacoes-matricula-dto';
+import { NecessidadeEspecialDto } from '../models/necessidade-especial-dto';
+import { ResponsavelDto } from '../models/responsavel-dto';
+import { TurmaDto } from '../models/turma-dto';
+import { TutorDto } from '../models/tutor-dto';
 export interface MatriculaDto {
   advertencias?: Array<AdvertenciaDto>;
   cpf?: string;

@@ -508,12 +508,12 @@ export class FormMatriculaComponent implements OnInit {
                         });
                     }
 
-                    retorno.necessidades?.forEach((necessidadeEspecial, index) => {
+                    retorno.necessidades?.forEach((necessidadeEspecial: any, index: number) => {
                         this.adicionarCampoNecessidade(necessidadeEspecial)
                     });
 
                     // pega o vinculo em responsavel
-                    retorno.tutorDTOList?.forEach((tutor, index) => {
+                    retorno.tutorDTOList?.forEach((tutor: any, index: number) => {
                         if (index === 0 && retorno.responsaveis) {
                             tutor.vinculo = retorno.responsaveis[index].vinculo;
                             const tutorControl = this.getTutorForm(index);

@@ -9,13 +9,13 @@ import { RequestBuilder } from '../../request-builder';
 import { UsuarioDto } from '../../models/usuario-dto';
 
 export interface UsuarioControllerIncluir$Params {
-  usuarioDTO: UsuarioDto;
+      body: UsuarioDto
 }
 
 export function usuarioControllerIncluir(http: HttpClient, rootUrl: string, params: UsuarioControllerIncluir$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
   const rb = new RequestBuilder(rootUrl, usuarioControllerIncluir.PATH, 'post');
   if (params) {
-    rb.query('usuarioDTO', params.usuarioDTO, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
