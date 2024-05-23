@@ -88,7 +88,6 @@ export class FormMatriculaComponent implements OnInit {
   recebeBeneficio: string = "nao";
   listaDocumentosEditareValidar: DocumentoMatriculaDto[] = [];
   enumDocValues: { key: string, value: string }[] = [];
-  documentosCombinados = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -118,23 +117,6 @@ export class FormMatriculaComponent implements OnInit {
 
     this.validacoes.formGroupMatricula = this.formGroup;
     this.validacoes.formGroupDocsList = this.formDocumentos;
-  }
-
-  getEnumValues(enumObj: any, enumDescriptions: Record<string, string>): { key: string, value: string }[] {
-    return Object.keys(enumObj)
-      .filter(key => {
-        if (this.temConjugue && (key === 'CPF_TUTOR2' || key.startsWith('CONTRA_CHEQUE2T') || key.startsWith('CONTRA_CHEQUE3T') || key === 'DECLARACAO_ESCOLART2' || key === 'COMPROVANTE_TRABALHO_T2')) {
-          return false;
-        }
-        if (this.recebeBeneficio && key === 'COMPROVANTE_BOLSA_FAMILIA') {
-          return false;
-        }
-        return true;
-      })
-      .map(key => ({
-        key: enumObj[key],
-        value: enumDescriptions[enumObj[key]]
-      }));
   }
 
   private createForm() {
@@ -430,6 +412,8 @@ export class FormMatriculaComponent implements OnInit {
     });
 
     const possuiBeneficiosDoGoverno = this.formGroup.get('possuiBeneficiosDoGoverno')?.value;
+    const possuiCRAS = this.formGroup.get('possuiCRAS')?.value;
+    const possuiVeiculoProprio = this.formGroup.get('possuiVeiculoProprio')?.value;
     const possuiEsteveOutraCreche = this.formGroup.get('frequentouOutraCreche')?.value;
     const tipoResidencia = this.formGroup.get('tipoResidencia')?.value;
 
@@ -440,7 +424,9 @@ export class FormMatriculaComponent implements OnInit {
       rendaFamiliar: this.formGroup.get('rendaFamiliar')?.value,
       tipoResidencia: tipoResidencia,
       valorAluguel: tipoResidencia === 'alugado' ? this.formGroup.get('valorAluguel')?.value : null,
-      valorBeneficio: possuiBeneficiosDoGoverno === 'sim' ? this.formGroup.get('valorBeneficio')?.value : null
+      valorBeneficio: possuiBeneficiosDoGoverno === 'sim' ? this.formGroup.get('valorBeneficio')?.value : null,
+      possuiEcaminhamentoCRAS: possuiCRAS === 'sim' ? true : false,
+      possuiVeiculoProprio: possuiVeiculoProprio === 'sim' ? true : false,
     }
 
     const endereco: EnderecoDto = {
@@ -528,7 +514,6 @@ export class FormMatriculaComponent implements OnInit {
           //ate aqui preencher dados das matriculas nos inputs
 
           // criar lista com os documentos que existem na matricula mostrando os que não existem s
-          this.enumDocValues = this.getEnumValues(EnumDoc, EnumDocDescriptions);
           if(retorno.documentoMatricula){
             this.listaDocumentosEditareValidar = retorno.documentoMatricula;
           }
@@ -882,6 +867,15 @@ export class FormMatriculaComponent implements OnInit {
       this.tipoDeFormuladorio = this.FORM_VALIDACACAO;
       this.colunasMostrar = ['Aceite','Tipo'];
     }
+  }
+
+  openDialogPreviewExpanded(element: DocumentoMatriculaDto){
+    const config: MatDialogConfig = {
+      data: {
+        documentoEditarValidar: element
+      }
+    };
+    this.dialog.open(ViwerDocumetDialogComponent, config);
   }
 
 }
