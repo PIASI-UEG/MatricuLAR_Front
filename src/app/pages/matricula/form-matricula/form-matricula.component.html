@@ -11,7 +11,8 @@
     <div class="mat-tab-titulos">
       <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
         <!-- Etapa 1 -->
-        <mat-tab   class="mat-tab-color" label="Criança" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0">
+        <mat-tab class="mat-tab-color" label="Criança"
+                 [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0">
           <div class="conteudo-mat-tab">
             <mat-form-field>
               <mat-label>Nome da criança</mat-label>
@@ -337,6 +338,26 @@
               </mat-form-field>
             </div>
 
+            <p>A família possui veículo próprio?</p>
+            <mat-radio-group color="primary" formControlName="possuiVeiculoProprio">
+              <mat-error *ngIf="handleErrorForm('informePossuiVeiculoProprio') && this.enviado">Marque uma opção
+              </mat-error>
+              <mat-radio-button [value]="'sim'" (click)="atribuirVeiculoAoListDocsSim()">Sim
+              </mat-radio-button>
+              <mat-radio-button [value]="'nao'" (click)="atribuirVeiculoAoListDocsNao()">Não
+              </mat-radio-button>
+            </mat-radio-group>
+
+            <p>A criança possui encaminhamento do CRAS?</p>
+            <mat-radio-group color="primary" formControlName="possuiCRAS">
+              <mat-error *ngIf="handleErrorForm('informePossuiCRAS') && this.enviado">Marque uma opção
+              </mat-error>
+              <mat-radio-button [value]="'sim'" (click)="atribuirCRASAoListDocsSim()">Sim
+              </mat-radio-button>
+              <mat-radio-button [value]="'nao'" (click)="atribuirCRASAoListDocsNao()">Não
+              </mat-radio-button>
+            </mat-radio-group>
+
             <p>Qual a renda familiar?</p>
             <mat-form-field>
               <mat-label>Renda familiar</mat-label>
@@ -487,16 +508,21 @@
                 </div>
               </div>
 
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
-
-              <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc), caso não possua,
-                não informar nenhum documento:</strong> <br></mat-label>
-              <app-upload-arquivo class="espaco-docs"
-                                  [idBotaoInputImagem]="'docVeiculoID'"
-                                  [idBotaoInputImagemPreview]="'docVeiculoIDPreview'"
-                                  [enumDocPai]="EnumDoc.DOCUMENTO_VEICULO"
-                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
+              <div *ngIf="formGroup.get('possuiVeiculoProprio')?.value === 'sim'" fxLayout="center"
+                   class="linha-horizontal-docs"></div>
+              <div *ngIf="formGroup.get('possuiVeiculoProprio')?.value === 'sim'">
+                <mat-label class="titulo-doc"><strong>Documento do veículo que possui (carro, moto, etc):</strong> <br></mat-label>
+                <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
+                  <app-upload-arquivo class="espaco-docs"
+                                      [idBotaoInputImagem]="'docVeiculoID'"
+                                      [idBotaoInputImagemPreview]="'docVeiculoIDPreview'"
+                                      [enumDocPai]="EnumDoc.DOCUMENTO_VEICULO"
+                                      (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                  <mat-error *ngIf="handleErrorFormDocs('possuiVeiculoProprio') && this.enviado">Documento
+                    obrigatótio
+                  </mat-error>
+                </div>
+              </div>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
 
               <mat-label class="titulo-doc"><strong>Carteira de trabalho ou declaração de trabalho de todos os
@@ -627,16 +653,22 @@
                 </div>
               </div>
 
-              <div fxLayout="center" class="linha-horizontal-docs"></div>
+              <div *ngIf="formGroup.get('possuiCRAS')?.value === 'sim'" fxLayout="center"
+                   class="linha-horizontal-docs"></div>
 
-              <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar (Caso não tenha o
-                documento não informar)</strong> <br></mat-label>
-              <app-upload-arquivo class="espaco-docs"
-                                  [idBotaoInputImagem]="'docCRASID'"
-                                  [idBotaoInputImagemPreview]="'docCRASIDPreview'"
-                                  [enumDocPai]="EnumDoc.ENCAMINHAMENTO_CRAS"
-                                  (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-
+              <div *ngIf="formGroup.get('possuiCRAS')?.value === 'sim'">
+                <mat-label class="titulo-doc"><strong>Encaminhamento do CRAS e Conselho Tutelar: </strong> <br></mat-label>
+                <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
+                <app-upload-arquivo class="espaco-docs"
+                                    [idBotaoInputImagem]="'docCRASID'"
+                                    [idBotaoInputImagemPreview]="'docCRASIDPreview'"
+                                    [enumDocPai]="EnumDoc.ENCAMINHAMENTO_CRAS"
+                                    (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                <mat-error *ngIf="handleErrorFormDocs('possuiCRAS') && this.enviado">Documento
+                  obrigatótio
+                </mat-error>
+                </div>
+              </div>
               <div fxLayout="center" class="linha-horizontal-docs"></div>
               <!--              // colocar aqui uma validacao se possui conjugue e aparecer outro campo&ndash;&gt;-->
 
@@ -689,12 +721,12 @@
           </div>
 
 
-
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Editar' || tipoDeFormuladorio == 'Validar'">
             <mat-list #shoes>
               <mat-list-item *ngFor="let item of enumDocValues">
                 <div matLine>
-                  <button mat-raised-button type="button" style="float:left" class="button-list" (click)="goToNextStep(1)">{{item.value}}
+                  <button mat-raised-button type="button" style="float:left" class="button-list"
+                          (click)="goToNextStep(1)">{{item.value}}
                   </button>
                   <mat-checkbox style="float:right" color="primary" [checked]="">
                     Aceito
@@ -706,9 +738,9 @@
               </mat-list-item>
             </mat-list>
 
-<!--            <p>-->
-<!--              Options selected: {{shoes.selectedOptions.selected.length}}-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--              Options selected: {{shoes.selectedOptions.selected.length}}-->
+            <!--            </p>-->
 
           </div>
 

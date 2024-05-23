@@ -158,6 +158,8 @@ export class FormMatriculaComponent implements OnInit {
         tipoResidencia: [null, Validators.required],
         valorAluguel: [null],
         possuiBeneficiosDoGoverno: [null, Validators.required],
+        possuiVeiculoProprio: [null, Validators.required],
+        possuiCRAS: [null, Validators.required],
         valorBeneficio: [null],
         rendaFamiliar: [null, [Validators.required, this.validacoes.validarRenda]],
         //Documentos - Etapa 4
@@ -171,6 +173,8 @@ export class FormMatriculaComponent implements OnInit {
           this.validacoes.validarFrequentou,
           this.validacoes.validarBeneficioMarcado,
           this.validacoes.validarDeclaroLiConcordo,
+          this.validacoes.validarVeiculoMarcado,
+          this.validacoes.validarCRASMarcado
         ]
       })
   }
@@ -222,6 +226,8 @@ export class FormMatriculaComponent implements OnInit {
       listaDocumentos: [[],[]],
       temconjugue: false,
       recebeBeneficio: null,
+      veiculoProprio: null,
+      CRAS: null
     },{validator:
         [this.validacoes.validarFotoCrianca,
           this.validacoes.validarCertidao,
@@ -237,7 +243,9 @@ export class FormMatriculaComponent implements OnInit {
           this.validacoes.validarCarteiraContraChequeConjugue,
           this.validacoes.validarDeclaracaoEscolarTutor,
           this.validacoes.validarDeclaracaoEscolarConjugue,
-          this.validacoes.validarComprovanteBeneficio
+          this.validacoes.validarComprovanteBeneficio,
+          this.validacoes.validarVeiculoDocs,
+          this.validacoes.validarCRASDocs
         ] })
   }
 
@@ -752,6 +760,28 @@ export class FormMatriculaComponent implements OnInit {
     this.recebeBeneficio = "nao";
     this.formDocumentos.patchValue({
       recebeBeneficio: "nao"
+    });
+  }
+
+  atribuirVeiculoAoListDocsSim(){
+    this.formDocumentos.patchValue({
+      veiculoProprio: "sim"
+    });
+  }
+  atribuirVeiculoAoListDocsNao(){
+    this.formDocumentos.patchValue({
+      veiculoProprio: "nao"
+    });
+  }
+
+  atribuirCRASAoListDocsSim(){
+    this.formDocumentos.patchValue({
+      CRAS: "sim"
+    });
+  }
+  atribuirCRASAoListDocsNao(){
+    this.formDocumentos.patchValue({
+      CRAS: "nao"
     });
   }
 

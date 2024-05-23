@@ -244,6 +244,24 @@ export class Validacoes {
       return null;
   }
 
+  // validar se marcou a opção de veiculo
+  validarVeiculoMarcado(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('possuiVeiculoProprio')?.value === null) {
+      formGroup.get('possuiVeiculoProprio')?.setErrors({'informePossuiVeiculoProprio': true});
+      return {'informePossuiVeiculoProprio': true};
+    }
+    return null;
+  }
+
+  // validar se marcou a opção de veiculo
+  validarCRASMarcado(formGroup: FormGroup): { [key: string]: any } | null {
+    if (formGroup.get('possuiCRAS')?.value === null) {
+      formGroup.get('possuiCRAS')?.setErrors({'informePossuiCRAS': true});
+      return {'informePossuiCRAS': true};
+    }
+    return null;
+  }
+
   // form de perguntas validacao se marcou beneficio governo
   validarDeclaroLiConcordo(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('declaroLieConcordo')?.value === false) {
@@ -434,6 +452,29 @@ export class Validacoes {
     }
   }
 
+  //validar se inseriu ComprovanteBeneficio
+  validarVeiculoDocs(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[3] && formGroup.get('veiculoProprio')?.value === 'sim') {
+      formGroup.get('listaDocumentos')?.setErrors({'possuiVeiculoProprio': true});
+      return {'possuiVeiculoProprio': true};
+    } else {
+      return null;
+    }
+  }
+
+  validarCRASDocs(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    if (!copiaDocs[7] && formGroup.get('CRAS')?.value === 'sim') {
+      formGroup.get('listaDocumentos')?.setErrors({'possuiCRAS': true});
+      return {'possuiCRAS': true};
+    } else {
+      return null;
+    }
+  }
+
   //validar se os cpfs nao sao iguais
   validarIgualdadeCpf = (): { [key: string]: any } | null => {
     if (this.formGroupMatricula) {
@@ -473,7 +514,7 @@ export class Validacoes {
 
     if (!this.formGroupMatricula?.get('possuiNecessidadeEspecial')?.value) {
       console.log("NULL")
-      return null; 
+      return null;
     }
 
     if (valor == null || valor == '') {
