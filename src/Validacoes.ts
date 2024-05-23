@@ -199,6 +199,7 @@ export class Validacoes {
       formGroup.get('razaoSaida')?.setErrors({'informeRazaoSaida': true});
       return {'informeRazaoSaida': true};
     } else {
+      formGroup.get('razaoSaida')?.setErrors(null);
       return null;
     }
   }
@@ -209,6 +210,7 @@ export class Validacoes {
       formGroup.get('valorAluguel')?.setErrors({'informeValorAluguel': true});
       return {'informeValorAluguel': true};
     } else {
+      formGroup.get('valorAluguel')?.setErrors(null);
       return null;
     }
   }
@@ -218,9 +220,9 @@ export class Validacoes {
     if (formGroup.get('possuiBeneficiosDoGoverno')?.value === "sim" && !formGroup.get('valorBeneficio')?.value) {
       formGroup.get('valorBeneficio')?.setErrors({'informeValorBeneficio': true});
       return {'informeValorBeneficio': true};
-    } else {
-      return null;
     }
+      formGroup.get('valorBeneficio')?.setErrors(null);
+      return null;
   }
 
   // form de perguntas validacao se marcou frequentou outra creche
@@ -228,9 +230,9 @@ export class Validacoes {
     if (formGroup.get('frequentouOutraCreche')?.value === null) {
       formGroup.get('frequentouOutraCreche')?.setErrors({'informeValorFrequentou': true});
       return {'informeValorFrequentou': true};
-    } else {
-      return null;
     }
+      formGroup.get('frequentouOutraCreche')?.setErrors(null);
+      return null;
   }
 
   // form de perguntas validacao se marcou beneficio governo
@@ -238,9 +240,8 @@ export class Validacoes {
     if (formGroup.get('possuiBeneficiosDoGoverno')?.value === null) {
       formGroup.get('possuiBeneficiosDoGoverno')?.setErrors({'informeValorBeneficioGoverno': true});
       return {'informeValorBeneficioGoverno': true};
-    } else {
-      return null;
     }
+      return null;
   }
 
   // form de perguntas validacao se marcou beneficio governo
@@ -470,7 +471,13 @@ export class Validacoes {
   validarNecessidadeEspecial = (control: AbstractControl): { [key: string]: any } | null => {
     const valor: string = control.value;
 
-    if ((valor == null || valor.trim() === '') && this.formGroupMatricula?.get('possuiNecessidadeEspecial')?.value) {
+    if (!this.formGroupMatricula?.get('possuiNecessidadeEspecial')?.value) {
+      console.log("NULL")
+      return null; 
+    }
+
+    if (valor == null || valor == '') {
+      console.log("ERRO")
       return { 'campoNaoPreenchido': true };
     }
 

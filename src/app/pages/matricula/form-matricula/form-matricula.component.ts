@@ -423,15 +423,16 @@ export class FormMatriculaComponent implements OnInit {
 
     const possuiBeneficiosDoGoverno = this.formGroup.get('possuiBeneficiosDoGoverno')?.value;
     const possuiEsteveOutraCreche = this.formGroup.get('frequentouOutraCreche')?.value;
+    const tipoResidencia = this.formGroup.get('tipoResidencia')?.value;
 
     const infoMatricula: InformacoesMatriculaDto = {
       possuiBeneficiosDoGoverno: possuiBeneficiosDoGoverno === 'sim' ? true : false,
       frequentouOutraCreche: possuiEsteveOutraCreche === 'sim' ? true : false,
-      razaoSaida: this.formGroup.get('razaoSaida')?.value,
+      razaoSaida: possuiEsteveOutraCreche === 'sim' ? this.formGroup.get('razaoSaida')?.value : null,
       rendaFamiliar: this.formGroup.get('rendaFamiliar')?.value,
-      tipoResidencia: this.formGroup.get('tipoResidencia')?.value,
-      valorAluguel: this.formGroup.get('valorAluguel')?.value,
-      valorBeneficio: this.formGroup.get('valorBeneficio')?.value
+      tipoResidencia: tipoResidencia,
+      valorAluguel: tipoResidencia === 'alugado' ? this.formGroup.get('valorAluguel')?.value : null,
+      valorBeneficio: possuiBeneficiosDoGoverno === 'sim' ? this.formGroup.get('valorBeneficio')?.value : null
     }
 
     const endereco: EnderecoDto = {
@@ -635,18 +636,35 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   firstClickNecessidades(): boolean {
-    if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-      return true;
-    } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
-      this.adicionarCampoNecessidade(null);
-      this.botaoNecessidadeClicado = true;
-      return true;
-    } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-      return true
+    const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+    const possuiNecessidadeEspecial = this.formGroup.get('possuiNecessidadeEspecial')?.value;
+
+    if (possuiNecessidadeEspecial) {
+      if (formArray.length === 0) {
+        this.adicionarCampoNecessidade(null);
+        this.botaoNecessidadeClicado = true;
+        return true;
+      } else {
+        return true;
+      }
+    } else {
+      formArray.controls.forEach((control, index) => {
+        this.clearNecessidadeEspecialError(index);
+      });
+      this.botaoNecessidadeClicado = false;
+      formArray.updateValueAndValidity();
+      return false;
     }
-    this.botaoNecessidadeClicado = false;
-    return false
+
   }
+
+  clearNecessidadeEspecialError(index: number): void {
+    const control = this.getNecessidadeEspecialControl(index);
+    if (control) {
+      control.setErrors(null);
+    }
+  }
+
 
   adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
