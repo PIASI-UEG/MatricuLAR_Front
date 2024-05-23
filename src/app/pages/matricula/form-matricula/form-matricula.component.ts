@@ -158,6 +158,8 @@ export class FormMatriculaComponent implements OnInit {
             tipoResidencia: [null, Validators.required],
             valorAluguel: [null],
             possuiBeneficiosDoGoverno: [null, Validators.required],
+            possuiVeiculoProprio: [null, Validators.required],
+            possuiCRAS: [null, Validators.required],
             valorBeneficio: [null],
             rendaFamiliar: [null, [Validators.required, this.validacoes.validarRenda]],
             //Documentos - Etapa 4
@@ -171,6 +173,8 @@ export class FormMatriculaComponent implements OnInit {
                 this.validacoes.validarFrequentou,
                 this.validacoes.validarBeneficioMarcado,
                 this.validacoes.validarDeclaroLiConcordo,
+                this.validacoes.validarVeiculoMarcado,
+                this.validacoes.validarCRASMarcado
             ]
         })
     }
@@ -222,6 +226,8 @@ export class FormMatriculaComponent implements OnInit {
             listaDocumentos: [[],[]],
             temconjugue: false,
             recebeBeneficio: null,
+            veiculoProprio: null,
+            CRAS: null
         },{validator:
                 [this.validacoes.validarFotoCrianca,
                     this.validacoes.validarCertidao,
@@ -237,7 +243,9 @@ export class FormMatriculaComponent implements OnInit {
                     this.validacoes.validarCarteiraContraChequeConjugue,
                     this.validacoes.validarDeclaracaoEscolarTutor,
                     this.validacoes.validarDeclaracaoEscolarConjugue,
-                    this.validacoes.validarComprovanteBeneficio
+                    this.validacoes.validarComprovanteBeneficio,
+                    this.validacoes.validarVeiculoDocs,
+                    this.validacoes.validarCRASDocs
                 ] })
     }
 
@@ -423,15 +431,16 @@ export class FormMatriculaComponent implements OnInit {
 
         const possuiBeneficiosDoGoverno = this.formGroup.get('possuiBeneficiosDoGoverno')?.value;
         const possuiEsteveOutraCreche = this.formGroup.get('frequentouOutraCreche')?.value;
+        const tipoResidencia = this.formGroup.get('tipoResidencia')?.value;
 
         const infoMatricula: InformacoesMatriculaDto = {
             possuiBeneficiosDoGoverno: possuiBeneficiosDoGoverno === 'sim' ? true : false,
             frequentouOutraCreche: possuiEsteveOutraCreche === 'sim' ? true : false,
-            razaoSaida: this.formGroup.get('razaoSaida')?.value,
+            razaoSaida: possuiEsteveOutraCreche === 'sim' ? this.formGroup.get('razaoSaida')?.value : null,
             rendaFamiliar: this.formGroup.get('rendaFamiliar')?.value,
-            tipoResidencia: this.formGroup.get('tipoResidencia')?.value,
-            valorAluguel: this.formGroup.get('valorAluguel')?.value,
-            valorBeneficio: this.formGroup.get('valorBeneficio')?.value
+            tipoResidencia: tipoResidencia,
+            valorAluguel: tipoResidencia === 'alugado' ? this.formGroup.get('valorAluguel')?.value : null,
+            valorBeneficio: possuiBeneficiosDoGoverno === 'sim' ? this.formGroup.get('valorBeneficio')?.value : null
         }
 
         const endereco: EnderecoDto = {
@@ -635,18 +644,35 @@ export class FormMatriculaComponent implements OnInit {
     }
 
     firstClickNecessidades(): boolean {
-        if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-            return true;
-        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
-            this.adicionarCampoNecessidade(null);
-            this.botaoNecessidadeClicado = true;
-            return true;
-        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-            return true
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        const possuiNecessidadeEspecial = this.formGroup.get('possuiNecessidadeEspecial')?.value;
+
+        if (possuiNecessidadeEspecial) {
+            if (formArray.length === 0) {
+                this.adicionarCampoNecessidade(null);
+                this.botaoNecessidadeClicado = true;
+                return true;
+            } else {
+                return true;
+            }
+        } else {
+            formArray.controls.forEach((control, index) => {
+                this.clearNecessidadeEspecialError(index);
+            });
+            this.botaoNecessidadeClicado = false;
+            formArray.updateValueAndValidity();
+            return false;
         }
-        this.botaoNecessidadeClicado = false;
-        return false
+
     }
+
+    clearNecessidadeEspecialError(index: number): void {
+        const control = this.getNecessidadeEspecialControl(index);
+        if (control) {
+            control.setErrors(null);
+        }
+    }
+
 
     adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
         const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
@@ -734,6 +760,28 @@ export class FormMatriculaComponent implements OnInit {
         this.recebeBeneficio = "nao";
         this.formDocumentos.patchValue({
             recebeBeneficio: "nao"
+        });
+    }
+
+    atribuirVeiculoAoListDocsSim(){
+        this.formDocumentos.patchValue({
+            veiculoProprio: "sim"
+        });
+    }
+    atribuirVeiculoAoListDocsNao(){
+        this.formDocumentos.patchValue({
+            veiculoProprio: "nao"
+        });
+    }
+
+    atribuirCRASAoListDocsSim(){
+        this.formDocumentos.patchValue({
+            CRAS: "sim"
+        });
+    }
+    atribuirCRASAoListDocsNao(){
+        this.formDocumentos.patchValue({
+            CRAS: "nao"
         });
     }
 

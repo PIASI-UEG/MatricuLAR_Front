@@ -5,6 +5,8 @@ export interface InformacoesMatriculaDto {
   id?: number;
   observacao?: string;
   possuiBeneficiosDoGoverno?: boolean;
+  possuiEcaminhamentoCRAS?: boolean;
+  possuiVeiculoProprio?: boolean;
   razaoSaida?: string;
   rendaFamiliar?: number;
   tipoResidencia?: string;
