@@ -43,3 +43,4 @@ Thumbs.db
 src/assets/logos/loga_sagrada_familia_matricular.png
 src/app/api/services/usuario-controller.service.ts
 src/app/api/services/usuario-controller.service.ts
+/src/app/api/
