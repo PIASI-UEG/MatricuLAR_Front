@@ -309,39 +309,18 @@ export class FormMatriculaComponent implements OnInit {
     const docs = this.formDocumentos.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
     const matricula: MatriculaDto = this.makeDTOMatricula();
+
+    for (let i = 0; i < copiaDocs.length; i++) {
+      if (typeof copiaDocs[i] === 'undefined') {
+        copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/*'});
+      }
+    }
+
     console.log("Matricula:", matricula);
     console.log("Dados:",this.formGroup.value);
     console.log("doc", copiaDocs)
 
     this.uploadFiles(matricula, copiaDocs);
-
-    //this.matriculaService.matriculaControllerIncluir({body:matricula})
-    //     .subscribe( retorno =>{
-    //         console.log("Retorno:",retorno);
-    //
-    //
-    //         for (let i = 0; i < copiaDocs.length; i++) {
-    //             if (typeof copiaDocs[i] === 'undefined') {
-    //                 copiaDocs[i] = null;
-    //             }
-    //         }
-    //
-    //         // mandar documentos
-    //         if(retorno.id)
-    //         {
-    //             this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
-    //                 .subscribe(retorno =>{
-    //                     this.router.navigate(["/matricula"]);
-    //                 }, error => {
-    //                     console.log("Erro:"+error);
-    //                     this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
-    //                 })
-    //         }
-    //         this.confirmarAcao(retorno, this.FORM_INCLUIR);
-    //     }, erro =>{
-    //         console.log("Erro:"+erro);
-    //         this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
-    //     })
   }
 
 
