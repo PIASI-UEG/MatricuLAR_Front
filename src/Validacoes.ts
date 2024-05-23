@@ -467,4 +467,13 @@ export class Validacoes {
     return null;
   }
 
+  validarNecessidadeEspecial = (control: AbstractControl): { [key: string]: any } | null => {
+    const valor: string = control.value;
+
+    if ((valor == null || valor.trim() === '') && this.formGroupMatricula?.get('possuiNecessidadeEspecial')?.value) {
+      return { 'campoNaoPreenchido': true };
+    }
+
+    return null;
+  };
 }
