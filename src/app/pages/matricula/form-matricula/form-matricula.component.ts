@@ -312,7 +312,7 @@ export class FormMatriculaComponent implements OnInit {
 
     for (let i = 0; i < copiaDocs.length; i++) {
       if (typeof copiaDocs[i] === 'undefined') {
-        copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/*'});
+        copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/txt'});
       }
     }
 
