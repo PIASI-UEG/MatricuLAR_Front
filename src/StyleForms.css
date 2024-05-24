@@ -27,7 +27,6 @@ h2{
     margin: 0 auto;
     padding: 20px;
     text-align: center;
-    overflow-y:auto;
     max-height: 80vh;
     border-radius: 20px;
 }
@@ -36,7 +35,7 @@ h2{
     margin-bottom: 20px;
 }
 
-.formMov mat-card {
+.formMov mat card{
     background-color: #F5F7FA;
     padding-top: 10px;
     padding-bottom: 10px;

@@ -2,7 +2,7 @@
 
 
 .imagem-card {
-  width: 30%;
+  width: 25%;
   margin-right: 10px;
   border-radius: 10px;
   border: 3px solid #B2DFFF;
@@ -16,9 +16,16 @@
   width: 65%;
 }
 
-.matricula-card, .tutores-card, .responsaveis-card, .adicionar-necessidade-card, .advertencias-card{
+.card-container{
   margin-bottom: 20px;
-  text-align: center;
+  text-align: left;
+}
+
+.container-card, .matricula-card{
+  border: 3px solid #B2DFFF;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .btn-mov {
