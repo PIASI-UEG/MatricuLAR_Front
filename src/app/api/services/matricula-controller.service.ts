@@ -41,6 +41,10 @@ import { matriculaControllerListarMatriculasListagemPorStatus } from '../fn/matr
 import { MatriculaControllerListarMatriculasListagemPorStatus$Params } from '../fn/matricula-controller/matricula-controller-listar-matriculas-listagem-por-status';
 import { matriculaControllerObterPorId } from '../fn/matricula-controller/matricula-controller-obter-por-id';
 import { MatriculaControllerObterPorId$Params } from '../fn/matricula-controller/matricula-controller-obter-por-id';
+import { matriculaControllerQuantidadeMatriculasPorStatus } from '../fn/matricula-controller/matricula-controller-quantidade-matriculas-por-status';
+import { MatriculaControllerQuantidadeMatriculasPorStatus$Params } from '../fn/matricula-controller/matricula-controller-quantidade-matriculas-por-status';
+import { matriculaControllerQuantidadeTotalMatriculas } from '../fn/matricula-controller/matricula-controller-quantidade-total-matriculas';
+import { MatriculaControllerQuantidadeTotalMatriculas$Params } from '../fn/matricula-controller/matricula-controller-quantidade-total-matriculas';
 import { matriculaControllerRemover } from '../fn/matricula-controller/matricula-controller-remover';
 import { MatriculaControllerRemover$Params } from '../fn/matricula-controller/matricula-controller-remover';
 import { matriculaControllerSearchFieldsAction } from '../fn/matricula-controller/matricula-controller-search-fields-action';
@@ -489,6 +493,64 @@ export class MatriculaControllerService extends BaseService {
   matriculaControllerGetTermo(params: MatriculaControllerGetTermo$Params, context?: HttpContext): Observable<Blob> {
     return this.matriculaControllerGetTermo$Response(params, context).pipe(
       map((r: StrictHttpResponse<Blob>): Blob => r.body)
+    );
+  }
+
+  /** Path part for operation `matriculaControllerQuantidadeTotalMatriculas()` */
+  static readonly MatriculaControllerQuantidadeTotalMatriculasPath = '/api/v1/matricula/quantidade-total';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerQuantidadeTotalMatriculas()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeTotalMatriculas$Response(params?: MatriculaControllerQuantidadeTotalMatriculas$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+    return matriculaControllerQuantidadeTotalMatriculas(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerQuantidadeTotalMatriculas$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeTotalMatriculas(params?: MatriculaControllerQuantidadeTotalMatriculas$Params, context?: HttpContext): Observable<number> {
+    return this.matriculaControllerQuantidadeTotalMatriculas$Response(params, context).pipe(
+      map((r: StrictHttpResponse<number>): number => r.body)
+    );
+  }
+
+  /** Path part for operation `matriculaControllerQuantidadeMatriculasPorStatus()` */
+  static readonly MatriculaControllerQuantidadeMatriculasPorStatusPath = '/api/v1/matricula/quantidade-status';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerQuantidadeMatriculasPorStatus()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeMatriculasPorStatus$Response(params: MatriculaControllerQuantidadeMatriculasPorStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+    return matriculaControllerQuantidadeMatriculasPorStatus(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerQuantidadeMatriculasPorStatus$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeMatriculasPorStatus(params: MatriculaControllerQuantidadeMatriculasPorStatus$Params, context?: HttpContext): Observable<number> {
+    return this.matriculaControllerQuantidadeMatriculasPorStatus$Response(params, context).pipe(
+      map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 

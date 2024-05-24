@@ -22,6 +22,8 @@ import { turmaControllerListAllPage } from '../fn/turma-controller/turma-control
 import { TurmaControllerListAllPage$Params } from '../fn/turma-controller/turma-controller-list-all-page';
 import { turmaControllerObterPorId } from '../fn/turma-controller/turma-controller-obter-por-id';
 import { TurmaControllerObterPorId$Params } from '../fn/turma-controller/turma-controller-obter-por-id';
+import { turmaControllerQuantidadeTotal } from '../fn/turma-controller/turma-controller-quantidade-total';
+import { TurmaControllerQuantidadeTotal$Params } from '../fn/turma-controller/turma-controller-quantidade-total';
 import { turmaControllerRemover } from '../fn/turma-controller/turma-controller-remover';
 import { TurmaControllerRemover$Params } from '../fn/turma-controller/turma-controller-remover';
 import { turmaControllerSearchFieldsAction } from '../fn/turma-controller/turma-controller-search-fields-action';
@@ -243,6 +245,8 @@ export class TurmaControllerService extends BaseService {
   static readonly TurmaControllerAdicionaAlunosPath = '/api/v1/turma/adicionaAlunos';
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `turmaControllerAdicionaAlunos()` instead.
    *
@@ -253,6 +257,8 @@ export class TurmaControllerService extends BaseService {
   }
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `turmaControllerAdicionaAlunos$Response()` instead.
    *
@@ -261,6 +267,35 @@ export class TurmaControllerService extends BaseService {
   turmaControllerAdicionaAlunos(params: TurmaControllerAdicionaAlunos$Params, context?: HttpContext): Observable<TurmaDto> {
     return this.turmaControllerAdicionaAlunos$Response(params, context).pipe(
       map((r: StrictHttpResponse<TurmaDto>): TurmaDto => r.body)
+    );
+  }
+
+  /** Path part for operation `turmaControllerQuantidadeTotal()` */
+  static readonly TurmaControllerQuantidadeTotalPath = '/api/v1/turma/quantidade-total';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `turmaControllerQuantidadeTotal()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  turmaControllerQuantidadeTotal$Response(params?: TurmaControllerQuantidadeTotal$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+    return turmaControllerQuantidadeTotal(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `turmaControllerQuantidadeTotal$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  turmaControllerQuantidadeTotal(params?: TurmaControllerQuantidadeTotal$Params, context?: HttpContext): Observable<number> {
+    return this.turmaControllerQuantidadeTotal$Response(params, context).pipe(
+      map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 
