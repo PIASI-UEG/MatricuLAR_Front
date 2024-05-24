@@ -34,7 +34,7 @@
     "devextreme": "^23.1.2-beta",
     "devextreme-angular": "^23.1.2-beta",
     "iv-viewer": "^2.0.1",
-    "ng-openapi-gen": "^0.51.0",
+    "ng-openapi-gen": "^0.24.1",
     "ng2-pdf-viewer": "^10.0.0",
     "ngx-doc-viewer": "^15.0.1",
     "ngx-extended-pdf-viewer": "^18.0.0",
