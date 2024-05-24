@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import DevExpress from "devextreme";
 import {PdfBreakpoints} from "ngx-extended-pdf-viewer";
+import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 
 @Component({
   selector: 'app-viwer-documet-dialog',
@@ -14,6 +15,8 @@ export class ViwerDocumetDialogComponent implements OnInit{
   public fileSRC!: string;
   public isFileImage!: boolean;
   public isFileDocument!: boolean;
+  // edicao e validação
+  private documentoEditarValidar!: DocumentoMatriculaDto;
 
   public constructor(
     private dialogRef: MatDialogRef<ViwerDocumetDialogComponent>,
@@ -22,11 +25,13 @@ export class ViwerDocumetDialogComponent implements OnInit{
       file: File
       isFileImage: boolean
       isFileDocument: boolean
+      documentoEditarValidar: DocumentoMatriculaDto
     }
   ) {
     this.file = data.file;
     this.isFileImage =data.isFileImage;
     this.isFileDocument = data.isFileDocument;
+    this.documentoEditarValidar = data.documentoEditarValidar
     // PdfBreakpoints.xs = 490; // unit: pixels
     // PdfBreakpoints.sm = 560;
     // PdfBreakpoints.md = 610;
@@ -43,6 +48,8 @@ export class ViwerDocumetDialogComponent implements OnInit{
   ngOnInit(): void {
     this.fileSRC = this.makeURLFile(this.file);
     this.innerWidth = window.innerWidth;
+
+    console.log(this.documentoEditarValidar)
   }
 
   closeDialog(){

@@ -136,8 +136,7 @@ export class ListMatriculaComponent implements OnInit{
         this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
             this.matricula = data;
             console.log(data);
-            const caminhoTermo = "Termo-Responsabilidade-"+this.matricula.cpf+".pdf";
-            const caminhoTermoAut = "Termo-Autorizacao_Imagem-"+this.matricula.cpf+".pdf";
+            const caminhoTermo = "Termos-"+this.matricula.cpf+".pdf";
             this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
                 .subscribe(response =>{
                     let blob:Blob = response
@@ -146,14 +145,6 @@ export class ListMatriculaComponent implements OnInit{
                     downloadLink.download = caminhoTermo;
                     downloadLink.click()
                 });
-          this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermoAut})
-            .subscribe(response =>{
-              let blob:Blob = response
-              let downloadLink = document.createElement('a');
-              downloadLink.href = window.URL.createObjectURL(blob);
-              downloadLink.download = caminhoTermoAut;
-              downloadLink.click()
-            })
         })
     }
 
@@ -187,20 +178,20 @@ export class ListMatriculaComponent implements OnInit{
         )
     }
 
-    openDialogAdvertencia(matriculaDto: MatriculaDto) {
-        console.log(matriculaDto);
-        const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
-            {
-                data:
-                    {
-                        id: matriculaDto.id
-                    }
-            })
-        dialogRef.afterClosed().subscribe(() => {
-                this.buscarDados()
-            }
-        )
-    }
+    // openDialogAdvertencia(matriculaDto: MatriculaDto) {
+    //     console.log(matriculaDto);
+    //     const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
+    //         {
+    //             data:
+    //                 {
+    //                     id: matriculaDto.id
+    //                 }
+    //         })
+    //     dialogRef.afterClosed().subscribe(() => {
+    //             this.buscarDados()
+    //         }
+    //     )
+    // }
 
     private tipoListagem() {
         const param = this.route.snapshot.url.at(0)?.path;

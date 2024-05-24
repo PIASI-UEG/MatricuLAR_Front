@@ -22,7 +22,7 @@
         <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel" [ngClass]="{'active-link': isActive('/painel')}"> Painel
             <mat-icon>home</mat-icon>
         </button>
-        <button *ngIf="securityService.isValid()"title="Validações de Matrículas" mat-button class="menu-button" routerLink="/matricula/validar" [ngClass]="{'active-link': isActive('/matricula/validar')}"> Validações de <br>Matrículas
+        <button *ngIf="securityService.isValid()"title="Validações de Matrículas" mat-button class="menu-button" routerLink="/matricula/validar" [ngClass]="{'active-link': isActive('/matricula/validar')}"> Validações
             <mat-icon>check_circle</mat-icon>
         </button>
         <button *ngIf="securityService.isValid()"title="Matrículas"  mat-button class="menu-button" routerLink="/matricula" [ngClass]="{'active-link': isActive('/matricula')}">

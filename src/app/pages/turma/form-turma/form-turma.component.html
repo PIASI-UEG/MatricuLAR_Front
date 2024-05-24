@@ -45,8 +45,9 @@
     </div>
     <mat-form-field>
       <mat-label>Nome da professora</mat-label>
-      <input matInput formControlName="nomeProfessor" placeholder="Digite o nome do professor(a)">
+      <input matInput formControlName="nomeProfessor" placeholder="Digite o nome do professor(a)" pattern="[a-zA-Z\s]*">
       <mat-error *ngIf="handleError('nomeProfessor', 'required')">Campo Obrigatório</mat-error>
+        <mat-error *ngIf="handleError('nomeProfessor', 'pattern')">Digite apenas letras</mat-error>
     </mat-form-field>
 
     <mat-form-field>
