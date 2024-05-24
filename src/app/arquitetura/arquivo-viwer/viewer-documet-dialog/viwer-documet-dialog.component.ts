@@ -48,11 +48,11 @@ export class ViwerDocumetDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.tipoDeFormuladorio == 'Cadastrar')
-    {
-      this.fileSRC = this.makeURLFile(this.file);
-    }
-
+    // if(this.tipoDeFormuladorio == 'Cadastrar')
+    // {
+    //
+    // }
+    this.fileSRC = this.makeURLFile(this.file);
     // this.matriculaService.matriculaControllerGetDocumentoMatricula({documentoMatriculaDTO: this.documentoEditarValidar})
     //   .subscribe(response => {
     //     this.isFileDocument = true;
