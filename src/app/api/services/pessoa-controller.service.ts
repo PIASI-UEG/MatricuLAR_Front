@@ -10,14 +10,14 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { Pageable } from '../models/pageable';
+import { PessoaDto } from '../models/pessoa-dto';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
-import { TurmaDto } from '../models/turma-dto';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TurmaControllerService extends BaseService {
+export class PessoaControllerService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -26,26 +26,26 @@ export class TurmaControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation turmaControllerObterPorId
+   * Path part for operation pessoaControllerObterPorId
    */
-  static readonly TurmaControllerObterPorIdPath = '/api/v1/turma/{id}';
+  static readonly PessoaControllerObterPorIdPath = '/api/v1/pessoa/{id}';
 
   /**
    * Obter os dados completos de uma entidiade pelo id informado!
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerObterPorId()` instead.
+   * To access only the response body, use `pessoaControllerObterPorId()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerObterPorId$Response(params: {
-    id: number;
+  pessoaControllerObterPorId$Response(params: {
+    id: string;
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerObterPorIdPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerObterPorIdPath, 'get');
     if (params) {
       rb.path('id', params.id, {});
     }
@@ -66,44 +66,44 @@ export class TurmaControllerService extends BaseService {
    * Obter os dados completos de uma entidiade pelo id informado!
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerObterPorId$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerObterPorId$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerObterPorId(params: {
-    id: number;
+  pessoaControllerObterPorId(params: {
+    id: string;
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerObterPorId$Response(params,context).pipe(
+    return this.pessoaControllerObterPorId$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerAlterar
+   * Path part for operation pessoaControllerAlterar
    */
-  static readonly TurmaControllerAlterarPath = '/api/v1/turma/{id}';
+  static readonly PessoaControllerAlterarPath = '/api/v1/pessoa/{id}';
 
   /**
    * Método utilizado para altlerar os dados de uma entidiade
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerAlterar()` instead.
+   * To access only the response body, use `pessoaControllerAlterar()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerAlterar$Response(params: {
-    id: number;
-    body: TurmaDto
+  pessoaControllerAlterar$Response(params: {
+    id: string;
+    body: PessoaDto
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerAlterarPath, 'put');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerAlterarPath, 'put');
     if (params) {
       rb.path('id', params.id, {});
       rb.body(params.body, 'application/json');
@@ -125,44 +125,44 @@ export class TurmaControllerService extends BaseService {
    * Método utilizado para altlerar os dados de uma entidiade
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerAlterar$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerAlterar$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerAlterar(params: {
-    id: number;
-    body: TurmaDto
+  pessoaControllerAlterar(params: {
+    id: string;
+    body: PessoaDto
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerAlterar$Response(params,context).pipe(
+    return this.pessoaControllerAlterar$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerRemover
+   * Path part for operation pessoaControllerRemover
    */
-  static readonly TurmaControllerRemoverPath = '/api/v1/turma/{id}';
+  static readonly PessoaControllerRemoverPath = '/api/v1/pessoa/{id}';
 
   /**
    * Método utilizado para remover uma entidiade pela id informado
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerRemover()` instead.
+   * To access only the response body, use `pessoaControllerRemover()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerRemover$Response(params: {
-    id: number;
+  pessoaControllerRemover$Response(params: {
+    id: string;
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerRemoverPath, 'delete');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerRemoverPath, 'delete');
     if (params) {
       rb.path('id', params.id, {});
     }
@@ -183,42 +183,42 @@ export class TurmaControllerService extends BaseService {
    * Método utilizado para remover uma entidiade pela id informado
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerRemover$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerRemover$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerRemover(params: {
-    id: number;
+  pessoaControllerRemover(params: {
+    id: string;
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerRemover$Response(params,context).pipe(
+    return this.pessoaControllerRemover$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerListAll
+   * Path part for operation pessoaControllerListAll
    */
-  static readonly TurmaControllerListAllPath = '/api/v1/turma';
+  static readonly PessoaControllerListAllPath = '/api/v1/pessoa';
 
   /**
    * Listagem Geral
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerListAll()` instead.
+   * To access only the response body, use `pessoaControllerListAll()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerListAll$Response(params?: {
+  pessoaControllerListAll$Response(params?: {
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerListAllPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerListAllPath, 'get');
     if (params) {
     }
 
@@ -238,42 +238,42 @@ export class TurmaControllerService extends BaseService {
    * Listagem Geral
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerListAll$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerListAll$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerListAll(params?: {
+  pessoaControllerListAll(params?: {
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerListAll$Response(params,context).pipe(
+    return this.pessoaControllerListAll$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerIncluir
+   * Path part for operation pessoaControllerIncluir
    */
-  static readonly TurmaControllerIncluirPath = '/api/v1/turma';
+  static readonly PessoaControllerIncluirPath = '/api/v1/pessoa';
 
   /**
    * Método utilizado para realizar a inclusão de um entidade
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerIncluir()` instead.
+   * To access only the response body, use `pessoaControllerIncluir()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerIncluir$Response(params: {
-    body: TurmaDto
+  pessoaControllerIncluir$Response(params: {
+    body: PessoaDto
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerIncluirPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerIncluirPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -294,42 +294,42 @@ export class TurmaControllerService extends BaseService {
    * Método utilizado para realizar a inclusão de um entidade
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerIncluir$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerIncluir$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerIncluir(params: {
-    body: TurmaDto
+  pessoaControllerIncluir(params: {
+    body: PessoaDto
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerIncluir$Response(params,context).pipe(
+    return this.pessoaControllerIncluir$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerSearchFieldsList
+   * Path part for operation pessoaControllerSearchFieldsList
    */
-  static readonly TurmaControllerSearchFieldsListPath = '/api/v1/turma/search-fields';
+  static readonly PessoaControllerSearchFieldsListPath = '/api/v1/pessoa/search-fields';
 
   /**
    * Listagem dos campos de busca
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerSearchFieldsList()` instead.
+   * To access only the response body, use `pessoaControllerSearchFieldsList()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerSearchFieldsList$Response(params?: {
+  pessoaControllerSearchFieldsList$Response(params?: {
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<Array<SearchField>>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerSearchFieldsListPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerSearchFieldsListPath, 'get');
     if (params) {
     }
 
@@ -349,42 +349,42 @@ export class TurmaControllerService extends BaseService {
    * Listagem dos campos de busca
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerSearchFieldsList$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerSearchFieldsList$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerSearchFieldsList(params?: {
+  pessoaControllerSearchFieldsList(params?: {
   },
   context?: HttpContext
 
 ): Observable<Array<SearchField>> {
 
-    return this.turmaControllerSearchFieldsList$Response(params,context).pipe(
+    return this.pessoaControllerSearchFieldsList$Response(params,context).pipe(
       map((r: StrictHttpResponse<Array<SearchField>>) => r.body as Array<SearchField>)
     );
   }
 
   /**
-   * Path part for operation turmaControllerSearchFieldsAction
+   * Path part for operation pessoaControllerSearchFieldsAction
    */
-  static readonly TurmaControllerSearchFieldsActionPath = '/api/v1/turma/search-fields';
+  static readonly PessoaControllerSearchFieldsActionPath = '/api/v1/pessoa/search-fields';
 
   /**
    * Realiza a busca pelos valores dos campos informados
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerSearchFieldsAction()` instead.
+   * To access only the response body, use `pessoaControllerSearchFieldsAction()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerSearchFieldsAction$Response(params: {
+  pessoaControllerSearchFieldsAction$Response(params: {
     body: Array<SearchFieldValue>
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerSearchFieldsActionPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerSearchFieldsActionPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -405,157 +405,43 @@ export class TurmaControllerService extends BaseService {
    * Realiza a busca pelos valores dos campos informados
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerSearchFieldsAction$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerSearchFieldsAction$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerSearchFieldsAction(params: {
+  pessoaControllerSearchFieldsAction(params: {
     body: Array<SearchFieldValue>
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerSearchFieldsAction$Response(params,context).pipe(
+    return this.pessoaControllerSearchFieldsAction$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerAdicionaAlunos
+   * Path part for operation pessoaControllerListAllPage
    */
-  static readonly TurmaControllerAdicionaAlunosPath = '/api/v1/turma/adicionaAlunos';
-
-  /**
-   * Busca a quantidade de registros
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerAdicionaAlunos()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  turmaControllerAdicionaAlunos$Response(params: {
-    idTurma: number;
-    body: Array<number>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<TurmaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerAdicionaAlunosPath, 'post');
-    if (params) {
-      rb.query('idTurma', params.idTurma, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<TurmaDto>;
-      })
-    );
-  }
-
-  /**
-   * Busca a quantidade de registros
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerAdicionaAlunos$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  turmaControllerAdicionaAlunos(params: {
-    idTurma: number;
-    body: Array<number>
-  },
-  context?: HttpContext
-
-): Observable<TurmaDto> {
-
-    return this.turmaControllerAdicionaAlunos$Response(params,context).pipe(
-      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
-    );
-  }
-
-  /**
-   * Path part for operation turmaControllerQuantidadeTotal
-   */
-  static readonly TurmaControllerQuantidadeTotalPath = '/api/v1/turma/quantidade-total';
-
-  /**
-   * Busca a quantidade de registros
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerQuantidadeTotal()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  turmaControllerQuantidadeTotal$Response(params?: {
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<number>> {
-
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerQuantidadeTotalPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
-      })
-    );
-  }
-
-  /**
-   * Busca a quantidade de registros
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerQuantidadeTotal$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  turmaControllerQuantidadeTotal(params?: {
-  },
-  context?: HttpContext
-
-): Observable<number> {
-
-    return this.turmaControllerQuantidadeTotal$Response(params,context).pipe(
-      map((r: StrictHttpResponse<number>) => r.body as number)
-    );
-  }
-
-  /**
-   * Path part for operation turmaControllerListAllPage
-   */
-  static readonly TurmaControllerListAllPagePath = '/api/v1/turma/page';
+  static readonly PessoaControllerListAllPagePath = '/api/v1/pessoa/page';
 
   /**
    * Listagem Geral paginada
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerListAllPage()` instead.
+   * To access only the response body, use `pessoaControllerListAllPage()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerListAllPage$Response(params: {
+  pessoaControllerListAllPage$Response(params: {
     page: Pageable;
   },
   context?: HttpContext
 
 ): Observable<StrictHttpResponse<any>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerListAllPagePath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerListAllPagePath, 'get');
     if (params) {
       rb.query('page', params.page, {});
     }
@@ -576,18 +462,18 @@ export class TurmaControllerService extends BaseService {
    * Listagem Geral paginada
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerListAllPage$Response()` instead.
+   * To access the full response (for headers, for example), `pessoaControllerListAllPage$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  turmaControllerListAllPage(params: {
+  pessoaControllerListAllPage(params: {
     page: Pageable;
   },
   context?: HttpContext
 
 ): Observable<any> {
 
-    return this.turmaControllerListAllPage$Response(params,context).pipe(
+    return this.pessoaControllerListAllPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
