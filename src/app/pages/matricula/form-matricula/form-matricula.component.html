@@ -12,7 +12,7 @@
       <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
         <!-- Etapa 1 -->
         <mat-tab class="mat-tab-color" label="Criança"
-                 [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0">
+                 [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0" (click)="alterarNomeTitulo(0)">
           <div class="conteudo-mat-tab">
             <mat-form-field>
               <mat-label>Nome da criança</mat-label>
@@ -204,7 +204,7 @@
                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                   <mat-form-field>
                     <mat-label>Profissão</mat-label>
-                    <input matInput formControlName="profissao" placeholder="(00) 0000-0000">
+                    <input matInput formControlName="profissao" placeholder="Digite a profissão">
                     <mat-error *ngIf="handleErrorTutor('profissao', 'required', i)">Campo Obrigatório
                     </mat-error>
                   </mat-form-field>
@@ -689,7 +689,7 @@
             <mat-error *ngIf="handleErrorForm('marqueLieConcordo') && this.enviado">Leia e marque para continuar
             </mat-error>
             <mat-checkbox color="primary" formControlName="declaroLieConcordo">
-              Decalro que li e concordo
+              Declaro que li e concordo
             </mat-checkbox>
 
 
@@ -721,6 +721,7 @@
           </div>
 
 
+          <div fxLayout="column" fxLayoutAlign="space-evenly center">
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Editar' || tipoDeFormuladorio == 'Validar'">
             <table mat-table [dataSource]="listaDocumentosEditareValidar" class="tabela">
 
@@ -737,6 +738,7 @@
               <tr mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></tr>
               <tr mat-row *matRowDef="let row; columns: colunasMostrar;"></tr>
             </table>
+          </div>
           </div>
 
         </mat-tab>

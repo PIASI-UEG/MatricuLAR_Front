@@ -494,6 +494,8 @@ export class TurmaControllerService extends BaseService {
   static readonly TurmaControllerAdicionaAlunosPath = '/api/v1/turma/adicionaAlunos';
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `turmaControllerAdicionaAlunos()` instead.
    *
@@ -514,8 +516,8 @@ export class TurmaControllerService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'blob',
-      accept: '*/*',
+      responseType: 'json',
+      accept: 'application/json',
       context: context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
@@ -526,6 +528,8 @@ export class TurmaControllerService extends BaseService {
   }
 
   /**
+   * Busca a quantidade de registros
+   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `turmaControllerAdicionaAlunos$Response()` instead.
    *
@@ -541,6 +545,60 @@ export class TurmaControllerService extends BaseService {
 
     return this.turmaControllerAdicionaAlunos$Response(params,context).pipe(
       map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
+    );
+  }
+
+  /**
+   * Path part for operation turmaControllerQuantidadeTotal
+   */
+  static readonly TurmaControllerQuantidadeTotalPath = '/api/v1/turma/quantidade-total';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `turmaControllerQuantidadeTotal()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  turmaControllerQuantidadeTotal$Response(params?: {
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<number>> {
+
+    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerQuantidadeTotalPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `turmaControllerQuantidadeTotal$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  turmaControllerQuantidadeTotal(params?: {
+  },
+  context?: HttpContext
+
+): Observable<number> {
+
+    return this.turmaControllerQuantidadeTotal$Response(params,context).pipe(
+      map((r: StrictHttpResponse<number>) => r.body as number)
     );
   }
 

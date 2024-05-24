@@ -981,6 +981,117 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation matriculaControllerQuantidadeTotalMatriculas
+   */
+  static readonly MatriculaControllerQuantidadeTotalMatriculasPath = '/api/v1/matricula/quantidade-total';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerQuantidadeTotalMatriculas()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeTotalMatriculas$Response(params?: {
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<number>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerQuantidadeTotalMatriculasPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerQuantidadeTotalMatriculas$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeTotalMatriculas(params?: {
+  },
+  context?: HttpContext
+
+): Observable<number> {
+
+    return this.matriculaControllerQuantidadeTotalMatriculas$Response(params,context).pipe(
+      map((r: StrictHttpResponse<number>) => r.body as number)
+    );
+  }
+
+  /**
+   * Path part for operation matriculaControllerQuantidadeMatriculasPorStatus
+   */
+  static readonly MatriculaControllerQuantidadeMatriculasPorStatusPath = '/api/v1/matricula/quantidade-status';
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerQuantidadeMatriculasPorStatus()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeMatriculasPorStatus$Response(params: {
+    statusMatricula: 'ATIVO' | 'INATIVO' | 'AGUARDANDO_RENOVACAO' | 'AGUARDANDO_ACEITE';
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<number>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerQuantidadeMatriculasPorStatusPath, 'get');
+    if (params) {
+      rb.query('statusMatricula', params.statusMatricula, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: parseFloat(String((r as HttpResponse<any>).body)) }) as StrictHttpResponse<number>;
+      })
+    );
+  }
+
+  /**
+   * Busca a quantidade de registros
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerQuantidadeMatriculasPorStatus$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerQuantidadeMatriculasPorStatus(params: {
+    statusMatricula: 'ATIVO' | 'INATIVO' | 'AGUARDANDO_RENOVACAO' | 'AGUARDANDO_ACEITE';
+  },
+  context?: HttpContext
+
+): Observable<number> {
+
+    return this.matriculaControllerQuantidadeMatriculasPorStatus$Response(params,context).pipe(
+      map((r: StrictHttpResponse<number>) => r.body as number)
+    );
+  }
+
+  /**
    * Path part for operation matriculaControllerListAllPage
    */
   static readonly MatriculaControllerListAllPagePath = '/api/v1/matricula/page';
