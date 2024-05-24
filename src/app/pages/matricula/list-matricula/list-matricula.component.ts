@@ -178,20 +178,20 @@ export class ListMatriculaComponent implements OnInit{
         )
     }
 
-    openDialogAdvertencia(matriculaDto: MatriculaDto) {
-        console.log(matriculaDto);
-        const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
-            {
-                data:
-                    {
-                        id: matriculaDto.id
-                    }
-            })
-        dialogRef.afterClosed().subscribe(() => {
-                this.buscarDados()
-            }
-        )
-    }
+    // openDialogAdvertencia(matriculaDto: MatriculaDto) {
+    //     console.log(matriculaDto);
+    //     const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
+    //         {
+    //             data:
+    //                 {
+    //                     id: matriculaDto.id
+    //                 }
+    //         })
+    //     dialogRef.afterClosed().subscribe(() => {
+    //             this.buscarDados()
+    //         }
+    //     )
+    // }
 
     private tipoListagem() {
         const param = this.route.snapshot.url.at(0)?.path;

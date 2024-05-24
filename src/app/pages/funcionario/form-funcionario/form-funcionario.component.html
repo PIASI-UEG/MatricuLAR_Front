@@ -9,8 +9,9 @@
     <h2>{{acao}}  Funcionário</h2>
     <mat-form-field>
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário">
+      <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário" pattern="[a-zA-Z\s]*">
       <mat-error *ngIf="handleError('pessoaNome', 'required')">Campo Obrigatório</mat-error>
+        <mat-error *ngIf="handleError('pessoaNome', 'pattern')">Digite apenas letras</mat-error>
     </mat-form-field>
 
       <mat-form-field>
@@ -31,6 +32,7 @@
       <mat-form-field>
         <mat-label>Cargo</mat-label>
         <mat-select formControlName="cargo" placeholder="Selecione o cargo">
+            <mat-option value="DIRETORA">DIRETORA</mat-option>
           <mat-option value="SECRETARIA">SECRETARIA</mat-option>
           <mat-option value="COORDENADORA">COORDENADORA</mat-option>
         </mat-select>
