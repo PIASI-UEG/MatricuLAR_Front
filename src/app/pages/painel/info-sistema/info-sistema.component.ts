@@ -36,7 +36,6 @@ export class InfoSistemaComponent implements OnInit{
   ngOnInit(): void {
     this.innerWidth = window.innerWidth;
     this.buscarDados();
-    this.doTheMaths();
   }
 
 
@@ -58,6 +57,10 @@ export class InfoSistemaComponent implements OnInit{
     subscribe(data => {
       this.qtdMatriculasPendente = data;
     });
+    this.matriculaService.matriculaControllerQuantidadeTotalMatriculas({}).
+    subscribe(data => {
+      this.totalMatriculas = data;
+    });
     //Turmas
     this.turmaService.turmaControllerQuantidadeTotal().
     subscribe(data =>{
@@ -65,7 +68,5 @@ export class InfoSistemaComponent implements OnInit{
     })
   }
 
-  private doTheMaths() {
-    this.totalMatriculas = this.qtdMatriculasPendente + this.qtdMatriculasInativas + this.qtdMatriculasAtivas + this.qtdMatriculasParaRenovar;
-  }
+
 }
