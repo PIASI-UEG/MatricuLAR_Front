@@ -65,7 +65,7 @@ export class AddAlunoTurmaDialogComponent {
     const turmaID: number = this.formGroup.get('turmaID')?.value;
     this.turmaService.turmaControllerAdicionaAlunos({idTurma: turmaID, body: aluno})
       .subscribe( retorno =>{
-        console.log("Retorno:",retorno);
+        console.log("Retorno Add aluno turma:",retorno);
         this.confirmarAcao(retorno);
         this.router.navigate(["/turma"]);
       }, erro =>{
@@ -78,7 +78,7 @@ export class AddAlunoTurmaDialogComponent {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Adicionado a turma!!',
-        mensagem: `Nome turma: ${turma.titulo} (ID: ${turma.id}). Cadastro realizada com sucesso!`,
+        mensagem: `${this.aluno?.nome} adicionado a turma ! ${turma.titulo}`,
         textoBotoes: {
           ok: 'Confirmar',
         },
