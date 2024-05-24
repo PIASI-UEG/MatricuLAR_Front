@@ -1,62 +1,68 @@
 <div class="formMov">
+  <h1 align="center">Informações do Sistema</h1>
   <!-- Infos sobre matriculas -->
-  <mat-card class="matGeral">
+  <mat-card class="painel">
     <mat-card-header>
       <mat-card-title>Matriculas</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <mat-grid-list cols="5">
-        <mat-grid-tile>
-          <mat-card class="meuMatCard">
-            <mat-card-header>
-              <mat-card-title>Total de Matriculas</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              1
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-card class="meuMatCard">
-            <mat-card-header>
-              <mat-card-title>Quantidade Matrículas pendentes</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              1
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
+    <mat-card-content class="painel">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Total de Matriculas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          {{ totalMatriculas }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Quantidade Matrículas pendentes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          {{ qtdMatriculasPendente }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Quantidade Matrículas Ativas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          {{ qtdMatriculasAtivas }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Quantidade Matrículas inativas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          {{ qtdMatriculasInativas }}
+        </mat-card-content>
+      </mat-card>
     </mat-card-content>
   </mat-card>
   <!-- Infos sobre turmas -->
-  <mat-card class="matGeral">
+  <mat-card class="painel">
     <mat-card-header>
       <mat-card-title>Turmas</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <mat-grid-list cols="5">
-        <mat-grid-tile>
-          <mat-card class="meuMatCard">
-            <mat-card-header>
-              <mat-card-title>Total de turmas</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              1
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-card class="meuMatCard">
-            <mat-card-header>
-              <mat-card-title>Quantidade turmas ativas</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              1
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
+    <mat-card-content class="painel">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Total de turmas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          {{ totalTurmas }}
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Quantidade turmas ativass</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          X
+        </mat-card-content>
+      </mat-card>
     </mat-card-content>
   </mat-card>
+
 </div>
