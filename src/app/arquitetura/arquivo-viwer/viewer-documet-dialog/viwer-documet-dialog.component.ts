@@ -48,33 +48,29 @@ export class ViwerDocumetDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // if(this.tipoDeFormuladorio == 'Cadastrar')
-    // {
-    //
-    // }
-    this.fileSRC = this.makeURLFile(this.file);
-    // this.matriculaService.matriculaControllerGetDocumentoMatricula({documentoMatriculaDTO: this.documentoEditarValidar})
-    //   .subscribe(response => {
-    //     this.isFileDocument = true;
-    //
-    //         // Extraindo o nome do arquivo do cabeçalho Content-Disposition
-    //         const contentDisposition = response.headers.get('Content-Disposition');
-    //         let fileName = 'default-filename';
-    //         if (contentDisposition) {
-    //           const matches = contentDisposition.match(/filename="(.+)"/);
-    //           if (matches && matches[1]) {
-    //             fileName = matches[1];
-    //           }
-    //         }
-    //         const file = new File([response], fileName, { type: response.type });
-    //
-    //         // Agora você tem o arquivo, você pode fazer o que precisar com ele
-    //         this.fileSRC = this.makeURLFile(file); // Se selectedFile for um atributo da sua classe
-    //
-    //
-    //         console.log("Arquivo:", file);
-    //       });
+    if(this.tipoDeFormuladorio == 'Cadastrar')
+    {
+      this.fileSRC = this.makeURLFile(this.file);
+    }
+    if (!this.documentoEditarValidar) {
+      console.error('documentoEditarValidar não está definido');
+      return;
+    }
 
+    const document = this.documentoEditarValidar || new Documento;
+
+      this.matriculaService.matriculaControllerObterDocumentoMatricula({body: document})
+        .subscribe(response => {
+          this.isFileDocument = true;
+
+          const fileName = (this.documentoEditarValidar.caminhoDocumento || 'arquivo_sem_nome')
+          const file = new File([response], fileName, {type: response.type});
+          console.log("Arquivo:", response);
+          // Agora você tem o arquivo, você pode fazer o que precisar com ele
+          this.fileSRC = this.makeURLFile(file); // Se selectedFile for um atributo da sua classe
+
+
+        });
     this.innerWidth = window.innerWidth;
 
     console.log(this.documentoEditarValidar)

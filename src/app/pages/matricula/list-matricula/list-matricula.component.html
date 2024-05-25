@@ -90,7 +90,7 @@
         <ng-container matColumnDef="acao" *ngIf="tipoDeListagem == 'Validar'">
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let element">
-            <button class="button-config-validar" mat-raised-button [routerLink]="['/matricula/validar',element.id]">
+            <button class="button-config-validar" mat-raised-button [routerLink]="['/matricula/validar',element.nroMatricula]">
               <mat-icon>edit</mat-icon>Validar
             </button>
           </td>
