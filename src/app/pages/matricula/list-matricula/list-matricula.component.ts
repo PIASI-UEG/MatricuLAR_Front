@@ -17,6 +17,7 @@ import DevExpress from "devextreme";
 import data = DevExpress.data;
 import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
 import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-advertencia-dialog.component";
+import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
 
 @Component({
     selector: 'app-list-matricula',
@@ -26,10 +27,10 @@ import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-adver
 export class ListMatriculaComponent implements OnInit{
 
     colunasMostrar = ['id','nome','turma','responsaveis','telefoneWhatsapp','status','acao'];
-    matriculaListaDataSource: MatTableDataSource<MatriculaDto> = new MatTableDataSource<MatriculaDto>([]);
+    matriculaListaDataSource: MatTableDataSource<MatriculaListagemDto> = new MatTableDataSource<MatriculaListagemDto>([]);
     mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar:this.snackBar})
     admin!: boolean;
-    pageSlice!: MatriculaDto[];
+    pageSlice!: MatriculaListagemDto[];
     qtdRegistros!: number;
     innerWidth: number = window.innerWidth;
     flexDivAlinhar: string = 'row';
@@ -61,18 +62,18 @@ export class ListMatriculaComponent implements OnInit{
     private buscarDados() {
         if(this.tipoDeListagem == "Validar"){
 
-            this.matriculaService.matriculaControllerSearchFieldsAction({body: [{name: "status", type: "StatusMatricula", value: "AC", searchType: "CONTAINS" }]}).subscribe(data => {
+            this.matriculaService.matriculaControllerListarMatriculasListagemPorStatus({statusMatricula:"AGUARDANDO_ACEITE"}).subscribe(data => {
                 this.matriculaListaDataSource.data = data || [];
                 this.pageSlice = this.matriculaListaDataSource.data;
                 //this.qtdRegistros = data.totalElements || 0;
             })}
         else{
 
-            this.matriculaService.matriculaControllerListAllPage({page: {page: 0, size: 5, sort:["id"]}}).subscribe(data => {
-                this.matriculaListaDataSource.data = data?.content || [];
+            this.matriculaService.matriculaControllerListAllPageMatriculaListagemDto({offset: 0, pageSize: 5,statusMatricula: "ATIVO" }).subscribe(data => {
+                this.matriculaListaDataSource.data = data || [];
                 this.pageSlice = this.matriculaListaDataSource.data;
-                this.qtdRegistros = data.totalElements || 0;
-                console.log(data.content);
+                // this.qtdRegistros = data.totalElements || 0;
+                // console.log(data.content);
             })
         }
     }

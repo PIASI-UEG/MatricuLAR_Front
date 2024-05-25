@@ -312,13 +312,19 @@ export class FormMatriculaComponent implements OnInit {
 
     for (let i = 0; i < copiaDocs.length; i++) {
       if (typeof copiaDocs[i] === 'undefined') {
-        copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/*'});
+        copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/txt'});
       }
     }
 
     console.log("Matricula:", matricula);
     console.log("Dados:",this.formGroup.value);
     console.log("doc", copiaDocs)
+    //
+    // for (let i = 0; i < copiaDocs.length; i++) {
+    //   if (typeof copiaDocs[i] === 'undefined') {
+    //     copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/*'});
+    //   }
+    // }
 
     this.uploadFiles(matricula, copiaDocs);
   }
@@ -462,6 +468,8 @@ export class FormMatriculaComponent implements OnInit {
             tipoResidencia: retorno.informacoesMatricula?.tipoResidencia,
             valorAluguel: retorno.informacoesMatricula?.valorAluguel,
             possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno === true ? 'sim' : 'nao',
+            possuiVeiculoProprio: retorno.informacoesMatricula?.possuiVeiculoProprio === true ? 'sim' : 'nao',
+            possuiCRAS: retorno.informacoesMatricula?.possuiEcaminhamentoCRAS === true ? 'sim' : 'nao',
             valorBeneficio: retorno.informacoesMatricula?.valorBeneficio,
             rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
           });

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { InformacoesMatriculaDto } from '../models/informacoes-matricula-dto';
+import { PageInformacoesMatriculaDto } from '../models/page-informacoes-matricula-dto';
 import { Pageable } from '../models/pageable';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
@@ -43,7 +44,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<InformacoesMatriculaDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerObterPorIdPath, 'get');
     if (params) {
@@ -57,7 +58,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<InformacoesMatriculaDto>;
       })
     );
   }
@@ -75,10 +76,10 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<InformacoesMatriculaDto> {
 
     return this.informacoesMatriculaControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<InformacoesMatriculaDto>) => r.body as InformacoesMatriculaDto)
     );
   }
 
@@ -101,7 +102,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<InformacoesMatriculaDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerAlterarPath, 'put');
     if (params) {
@@ -116,7 +117,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<InformacoesMatriculaDto>;
       })
     );
   }
@@ -135,10 +136,10 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<InformacoesMatriculaDto> {
 
     return this.informacoesMatriculaControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<InformacoesMatriculaDto>) => r.body as InformacoesMatriculaDto)
     );
   }
 
@@ -160,7 +161,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<InformacoesMatriculaDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerRemoverPath, 'delete');
     if (params) {
@@ -174,7 +175,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<InformacoesMatriculaDto>;
       })
     );
   }
@@ -192,10 +193,10 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<InformacoesMatriculaDto> {
 
     return this.informacoesMatriculaControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<InformacoesMatriculaDto>) => r.body as InformacoesMatriculaDto)
     );
   }
 
@@ -216,7 +217,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<InformacoesMatriculaDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerListAllPath, 'get');
     if (params) {
@@ -229,7 +230,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<InformacoesMatriculaDto>>;
       })
     );
   }
@@ -246,10 +247,10 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<InformacoesMatriculaDto>> {
 
     return this.informacoesMatriculaControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<InformacoesMatriculaDto>>) => r.body as Array<InformacoesMatriculaDto>)
     );
   }
 
@@ -271,7 +272,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<InformacoesMatriculaDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerIncluirPath, 'post');
     if (params) {
@@ -285,7 +286,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<InformacoesMatriculaDto>;
       })
     );
   }
@@ -303,10 +304,10 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<InformacoesMatriculaDto> {
 
     return this.informacoesMatriculaControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<InformacoesMatriculaDto>) => r.body as InformacoesMatriculaDto)
     );
   }
 
@@ -382,7 +383,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<Array<InformacoesMatriculaDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -396,7 +397,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<Array<InformacoesMatriculaDto>>;
       })
     );
   }
@@ -414,10 +415,76 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<Array<InformacoesMatriculaDto>> {
 
     return this.informacoesMatriculaControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<Array<InformacoesMatriculaDto>>) => r.body as Array<InformacoesMatriculaDto>)
+    );
+  }
+
+  /**
+   * Path part for operation informacoesMatriculaControllerSearchFieldsActionPage
+   */
+  static readonly InformacoesMatriculaControllerSearchFieldsActionPagePath = '/api/v1/infomatricula/search-fields/page';
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `informacoesMatriculaControllerSearchFieldsActionPage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  informacoesMatriculaControllerSearchFieldsActionPage$Response(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<PageInformacoesMatriculaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerSearchFieldsActionPagePath, 'post');
+    if (params) {
+      rb.query('page', params.page, {});
+      rb.query('size', params.size, {});
+      rb.query('sort', params.sort, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PageInformacoesMatriculaDto>;
+      })
+    );
+  }
+
+  /**
+   * Realiza a busca pelos valores dos campos informados
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `informacoesMatriculaControllerSearchFieldsActionPage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  informacoesMatriculaControllerSearchFieldsActionPage(params: {
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
+    body: Array<SearchFieldValue>
+  },
+  context?: HttpContext
+
+): Observable<PageInformacoesMatriculaDto> {
+
+    return this.informacoesMatriculaControllerSearchFieldsActionPage$Response(params,context).pipe(
+      map((r: StrictHttpResponse<PageInformacoesMatriculaDto>) => r.body as PageInformacoesMatriculaDto)
     );
   }
 
@@ -439,7 +506,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<any>> {
+): Observable<StrictHttpResponse<PageInformacoesMatriculaDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, InformacoesMatriculaControllerService.InformacoesMatriculaControllerListAllPagePath, 'get');
     if (params) {
@@ -453,7 +520,7 @@ export class InformacoesMatriculaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<any>;
+        return r as StrictHttpResponse<PageInformacoesMatriculaDto>;
       })
     );
   }
@@ -471,10 +538,10 @@ export class InformacoesMatriculaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<any> {
+): Observable<PageInformacoesMatriculaDto> {
 
     return this.informacoesMatriculaControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<any>) => r.body as any)
+      map((r: StrictHttpResponse<PageInformacoesMatriculaDto>) => r.body as PageInformacoesMatriculaDto)
     );
   }
 

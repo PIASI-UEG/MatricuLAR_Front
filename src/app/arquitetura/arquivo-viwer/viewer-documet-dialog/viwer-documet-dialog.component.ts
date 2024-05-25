@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angula
 import DevExpress from "devextreme";
 import {PdfBreakpoints} from "ngx-extended-pdf-viewer";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
+import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+
 
 @Component({
   selector: 'app-viwer-documet-dialog',
@@ -15,8 +17,10 @@ export class ViwerDocumetDialogComponent implements OnInit{
   public fileSRC!: string;
   public isFileImage!: boolean;
   public isFileDocument!: boolean;
+  public tipoDeFormuladorio: string =  "Cadastrar";
   // edicao e validação
   private documentoEditarValidar!: DocumentoMatriculaDto;
+  private  matriculaService: MatriculaControllerService;
 
   public constructor(
     private dialogRef: MatDialogRef<ViwerDocumetDialogComponent>,
@@ -26,18 +30,16 @@ export class ViwerDocumetDialogComponent implements OnInit{
       isFileImage: boolean
       isFileDocument: boolean
       documentoEditarValidar: DocumentoMatriculaDto
+      tipoDeFormuladorio: string
+      matriculaService: MatriculaControllerService,
     }
   ) {
     this.file = data.file;
     this.isFileImage =data.isFileImage;
     this.isFileDocument = data.isFileDocument;
     this.documentoEditarValidar = data.documentoEditarValidar
-    // PdfBreakpoints.xs = 490; // unit: pixels
-    // PdfBreakpoints.sm = 560;
-    // PdfBreakpoints.md = 610;
-    // PdfBreakpoints.lg = 660;
-    // PdfBreakpoints.xl = 740;
-    // PdfBreakpoints.xxl = 830;
+    this.tipoDeFormuladorio = data.tipoDeFormuladorio
+    this.matriculaService = data.matriculaService
   }
 
   private makeURLFile(file: any) {
@@ -46,7 +48,33 @@ export class ViwerDocumetDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // if(this.tipoDeFormuladorio == 'Cadastrar')
+    // {
+    //
+    // }
     this.fileSRC = this.makeURLFile(this.file);
+    // this.matriculaService.matriculaControllerGetDocumentoMatricula({documentoMatriculaDTO: this.documentoEditarValidar})
+    //   .subscribe(response => {
+    //     this.isFileDocument = true;
+    //
+    //         // Extraindo o nome do arquivo do cabeçalho Content-Disposition
+    //         const contentDisposition = response.headers.get('Content-Disposition');
+    //         let fileName = 'default-filename';
+    //         if (contentDisposition) {
+    //           const matches = contentDisposition.match(/filename="(.+)"/);
+    //           if (matches && matches[1]) {
+    //             fileName = matches[1];
+    //           }
+    //         }
+    //         const file = new File([response], fileName, { type: response.type });
+    //
+    //         // Agora você tem o arquivo, você pode fazer o que precisar com ele
+    //         this.fileSRC = this.makeURLFile(file); // Se selectedFile for um atributo da sua classe
+    //
+    //
+    //         console.log("Arquivo:", file);
+    //       });
+
     this.innerWidth = window.innerWidth;
 
     console.log(this.documentoEditarValidar)
