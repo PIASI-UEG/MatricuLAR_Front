@@ -29,10 +29,10 @@
                         <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS COMUNICAR À INSTITUIÇÃO O MOTIVO DA AUSÊNCIA DA CRIANÇA APÓS TRÊS DIAS CONSECUTIVOS. CASO CONTRÁRIO, A CRIANÇA SERÁ DESLIGADA AUTOMATICAMENTE DA INSTITUIÇÃO.</p>
                         <p>* O NÃO CUMPRIMENTO DAS NORMAS ESTABELECIDAS NESTE TERMO DE RESPONSABILIDADE RESULTARÁ EM ADVERTÊNCIA POR ESCRITO AOS PAIS OU RESPONSÁVEIS.</p>
 
-                        <mat-checkbox color="primary" formControlName="aceiteInformacoes">
+                        <mat-checkbox #aceiteInformacoes color="primary" formControlName="aceiteInformacoes">
                             POR ESTAR CIENTE DAS NORMAS ACIMA ESTABELECIDAS, COMPROMETO-ME E RESPONSABILIZO-ME A CUMPRI-LAS.
                         </mat-checkbox>
-                        <mat-error *ngIf="handleError('aceiteInformacoes', 'required')">Você deve concordar antes de continuar.</mat-error>
+                        <mat-error *ngIf="!aceiteInformacoes.checked && marcado">Por favor, leia e marque para continuar.</mat-error>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
                             <button type="button" class="button-hidden"></button>

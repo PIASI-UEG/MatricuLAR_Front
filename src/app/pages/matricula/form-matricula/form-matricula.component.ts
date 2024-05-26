@@ -23,6 +23,7 @@ import {InformacoesMatriculaDto} from "../../../api/models/informacoes-matricula
 import {ResponsavelDto} from "../../../api/models/responsavel-dto";
 import {EnderecoDto} from "../../../api/models/endereco-dto";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
     selector: 'app-form-matricula',
@@ -33,6 +34,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 export class FormMatriculaComponent implements OnInit {
     @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
+    @ViewChild('aceiteInformacoes') aceiteInformacoes!: MatCheckbox;
 
 
     formGroup!: FormGroup;
@@ -57,6 +59,7 @@ export class FormMatriculaComponent implements OnInit {
     guiaAtiva = 0;
     botaoNecessidadeClicado: boolean = false;
     enviado: boolean = false;
+    marcado: boolean = false;
     // docs: File[] = [];
     temConjugue: boolean = false;
     conjugue: TutorDto | null = null;
@@ -542,12 +545,19 @@ export class FormMatriculaComponent implements OnInit {
     }
 
     goToNextStep(indice: number) {
+        //Exibe checkbox de informacoes gerais
+        this.marcado = true;
         // Lógica para avançar para a próxima etapa
         if (indice >= 0 && indice < this.tabGroup._tabs.length) {
+            if (this.tipoDeFormulario === 'Cadastrar' && !this.aceiteInformacoes.checked) {
+                this.handleErrorForm('marqueLieConcordo');
+                return;
+            }
             this.tabGroup.selectedIndex = indice;
         }
-        this.alterarNomeTitulo(indice)
+        this.alterarNomeTitulo(indice);
     }
+
 
     goToPreviousStep(indice: number) {
         // Lógica para voltar para a etapa anterior
