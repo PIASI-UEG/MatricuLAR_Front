@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { PageResponsavelDto } from '../models/page-responsavel-dto';
 import { Pageable } from '../models/pageable';
 import { PkResponsavel } from '../models/pk-responsavel';
 import { ResponsavelDto } from '../models/responsavel-dto';
@@ -45,7 +44,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<ResponsavelDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerObterPorIdPath, 'get');
     if (params) {
@@ -59,7 +58,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -77,10 +76,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<ResponsavelDto> {
+): Observable<any> {
 
     return this.responsavelControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -103,7 +102,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<ResponsavelDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerAlterarPath, 'put');
     if (params) {
@@ -118,7 +117,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -137,10 +136,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<ResponsavelDto> {
+): Observable<any> {
 
     return this.responsavelControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -162,7 +161,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<ResponsavelDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerRemoverPath, 'delete');
     if (params) {
@@ -176,7 +175,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -194,10 +193,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<ResponsavelDto> {
+): Observable<any> {
 
     return this.responsavelControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -218,7 +217,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<ResponsavelDto>>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerListAllPath, 'get');
     if (params) {
@@ -231,7 +230,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ResponsavelDto>>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -248,10 +247,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<ResponsavelDto>> {
+): Observable<any> {
 
     return this.responsavelControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<ResponsavelDto>>) => r.body as Array<ResponsavelDto>)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -273,7 +272,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<ResponsavelDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerIncluirPath, 'post');
     if (params) {
@@ -287,7 +286,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ResponsavelDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -305,10 +304,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<ResponsavelDto> {
+): Observable<any> {
 
     return this.responsavelControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -384,7 +383,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<ResponsavelDto>>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -398,7 +397,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ResponsavelDto>>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -416,76 +415,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<ResponsavelDto>> {
+): Observable<any> {
 
     return this.responsavelControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<ResponsavelDto>>) => r.body as Array<ResponsavelDto>)
-    );
-  }
-
-  /**
-   * Path part for operation responsavelControllerSearchFieldsActionPage
-   */
-  static readonly ResponsavelControllerSearchFieldsActionPagePath = '/api/v1/responsavel/search-fields/page';
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `responsavelControllerSearchFieldsActionPage()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  responsavelControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PageResponsavelDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerSearchFieldsActionPagePath, 'post');
-    if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageResponsavelDto>;
-      })
-    );
-  }
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `responsavelControllerSearchFieldsActionPage$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  responsavelControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<PageResponsavelDto> {
-
-    return this.responsavelControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageResponsavelDto>) => r.body as PageResponsavelDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -507,7 +440,7 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PageResponsavelDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerListAllPagePath, 'get');
     if (params) {
@@ -521,7 +454,7 @@ export class ResponsavelControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageResponsavelDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -539,10 +472,10 @@ export class ResponsavelControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PageResponsavelDto> {
+): Observable<any> {
 
     return this.responsavelControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageResponsavelDto>) => r.body as PageResponsavelDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
