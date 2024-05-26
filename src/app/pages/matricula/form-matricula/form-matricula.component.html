@@ -104,8 +104,7 @@
             </mat-form-field>
             <!-- Campos da primeira etapa -->
 
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                 *ngIf="!this.verificarAlinhar()">
+            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
               <button type="button" class="button-hidden"></button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar

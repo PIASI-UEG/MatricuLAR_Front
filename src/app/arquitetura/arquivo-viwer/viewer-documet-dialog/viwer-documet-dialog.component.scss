@@ -1,5 +1,4 @@
 .file-button-document {
-  background:#FF7676 ;
   color: white ;
   text-align:center;
   align-items: center;
@@ -15,6 +14,14 @@
   transition: background-color 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   user-select: none;
+}
+
+.fechar {
+  background:#FF7676 ;
+}
+
+.substituir{
+  background:#5AB9EA ;
 }
 
 .viewer {

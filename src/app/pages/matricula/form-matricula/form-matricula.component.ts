@@ -859,7 +859,8 @@ export class FormMatriculaComponent implements OnInit {
   openDialogPreviewExpanded(element: DocumentoMatriculaDto){
     const config: MatDialogConfig = {
       data: {
-        documentoEditarValidar: element
+        documentoEditarValidar: element,
+        matriculaService: this.matriculaService
       }
     };
     this.dialog.open(ViwerDocumetDialogComponent, config);

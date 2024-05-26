@@ -42,10 +42,19 @@
       [showScrollingButton]="false"
       [showSpreadButton]="false"
       [showPropertiesButton]="false"
-      [height]="'90vh'"
+      [height]="'70vh'"
       [mobileFriendlyZoom]="'true'"
       [textLayer]="true"
       [ngStyle]="this.mudarAlinhar()" >
     </ngx-extended-pdf-viewer>
-  <button class="file-button-document " (click)="closeDialog()">Fechar</button>
+  <div class="divBotoes" [fxLayout]="mudarAlinharBotoes()" fxLayoutAlign="space-between center"
+       *ngIf="!this.verificarAlinhar()">
+  <button class="file-button-document fechar" (click)="closeDialog()">Fechar</button>
+  <button class="file-button-document substituir" >Subistituir Arquivo</button>
+  </div>
+  <div class="divBotoes" [fxLayout]="mudarAlinharBotoes()" fxLayoutAlign="space-between center"
+       *ngIf="this.verificarAlinhar()">
+    <button class="file-button-document substituir" >Subistituir Arquivo</button>
+    <button class="file-button-document fechar" (click)="closeDialog()">Fechar</button>
+  </div>
 </div>

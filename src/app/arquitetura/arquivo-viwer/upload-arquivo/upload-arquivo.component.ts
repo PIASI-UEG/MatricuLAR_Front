@@ -43,13 +43,13 @@ export class UploadArquivoComponent{
     let blob: Blob;
     blob = file;
     this.file = file;
-    const extensoesSuportadas = ['.jpg', '.jpeg', '.pdf'];
+    const extensoesSuportadas = ['.jpg', '.jpeg', '.pdf', '.png'];
 
     if (file) {
 
       const fileExtension = fileName.split('.').pop()?.toLowerCase();
       if (extensoesSuportadas.indexOf('.' + fileExtension) === -1) {
-        this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg ou .pdf.")
+        this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg , .png ou .pdf.")
         return;
       }
 

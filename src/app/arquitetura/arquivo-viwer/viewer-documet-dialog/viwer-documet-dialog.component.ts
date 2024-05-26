@@ -4,6 +4,7 @@ import DevExpress from "devextreme";
 import {PdfBreakpoints} from "ngx-extended-pdf-viewer";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
+import {MensagensUniversais} from "../../../../MensagensUniversais";
 
 
 @Component({
@@ -20,7 +21,11 @@ export class ViwerDocumetDialogComponent implements OnInit{
   public tipoDeFormuladorio: string =  "Cadastrar";
   // edicao e validação
   private documentoEditarValidar!: DocumentoMatriculaDto;
-  private  matriculaService: MatriculaControllerService;
+  private  matriculaService!: MatriculaControllerService;
+  mensagens: MensagensUniversais = new MensagensUniversais({
+    dialog: this.dialog
+  })
+  flexDivAlinhar: string = 'row';
 
   public constructor(
     private dialogRef: MatDialogRef<ViwerDocumetDialogComponent>,
@@ -48,40 +53,48 @@ export class ViwerDocumetDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.tipoDeFormuladorio == 'Cadastrar')
-    {
-      this.fileSRC = this.makeURLFile(this.file);
-    }
     if (!this.documentoEditarValidar) {
       console.error('documentoEditarValidar não está definido');
       return;
     }
 
-    const document = this.documentoEditarValidar || new Documento;
+    if (this.tipoDeFormuladorio === 'Cadastrar') {
+      this.fileSRC = this.makeURLFile(this.file);
+    } else {
+      const document = this.documentoEditarValidar;
 
-      this.matriculaService.matriculaControllerObterDocumentoMatricula({body: document})
+      this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: document })
         .subscribe(response => {
-          this.isFileDocument = true;
+          const fileName = this.documentoEditarValidar.caminhoDocumento || 'arquivo_sem_nome';
+          const fileExtension = fileName.split('.').pop()?.toLowerCase();
 
-          const fileName = (this.documentoEditarValidar.caminhoDocumento || 'arquivo_sem_nome')
-          const file = new File([response], fileName, {type: response.type});
-          console.log("Arquivo:", response);
-          // Agora você tem o arquivo, você pode fazer o que precisar com ele
-          this.fileSRC = this.makeURLFile(file); // Se selectedFile for um atributo da sua classe
+          if (fileExtension && ['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+            this.isFileImage = true;
+            this.isFileDocument = false;
+          } else if (fileExtension && ['pdf'].includes(fileExtension)) {
+            this.isFileImage = false;
+            this.isFileDocument = true;
+          } else {
+            this.mensagens.confirmarErro("Visualizar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg, .png ou .pdf.");
+            return;
+          }
 
-
+          const file = new File([response], fileName, { type: response.type });
+          this.fileSRC = this.makeURLFile(file);
+        }, error => {
+          console.error('Erro ao obter o documento:', error);
         });
+    }
     this.innerWidth = window.innerWidth;
-
-    console.log(this.documentoEditarValidar)
   }
 
   closeDialog(){
     this.dialogRef.close();
   }
 
+
   mudarAlinhar() {
-    if(innerWidth < 650)
+    if(this.innerWidth < 650)
     {
       return {'width' : '28vh'};
     }
@@ -89,6 +102,21 @@ export class ViwerDocumetDialogComponent implements OnInit{
       return {'width' : '60vh'};
     }
     return {'width': '100vh'};
+  }
+
+  mudarAlinharBotoes() {
+    if(this.innerWidth < 1500)
+    {
+      return this.flexDivAlinhar = "column";
+    }
+    return this.flexDivAlinhar = "row";
+  }
+
+  verificarAlinhar() {
+    if (this.flexDivAlinhar == "column") {
+      return true;
+    }
+    return false;
   }
 
   mudarZoom() {
