@@ -1,15 +1,4 @@
-
-
-import {
-  AfterViewInit,
-  Component,
-  Directive,
-  HostListener,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {MensagensUniversais} from "../../../../MensagensUniversais";
@@ -20,27 +9,19 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
-import {MatTabGroup, MatTabsModule} from "@angular/material/tabs";
+import {MatTabGroup} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
-import {EnumDoc, EnumDocDescriptions} from "../../../arquitetura/arquivo-viwer/EnumDoc";
+import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
 import {
   ViwerDocumetDialogComponent
 } from "../../../arquitetura/arquivo-viwer/viewer-documet-dialog/viwer-documet-dialog.component";
-import {UsuarioDto} from "../../../api/models/usuario-dto";
-import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
 import {InformacoesMatriculaDto} from "../../../api/models/informacoes-matricula-dto";
 import {ResponsavelDto} from "../../../api/models/responsavel-dto";
-import {TurmaDto} from "../../../api/models/turma-dto";
-import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
 import {EnderecoDto} from "../../../api/models/endereco-dto";
-import {forEach} from "lodash";
-import {fileName} from "ng-openapi-gen/lib/gen-utils";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatListModule} from '@angular/material/list';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
@@ -87,7 +68,7 @@ export class FormMatriculaComponent implements OnInit {
   protected readonly EnumDoc = EnumDoc;
   recebeBeneficio: string = "nao";
   listaDocumentosEditareValidar: DocumentoMatriculaDto[] = [];
-  enumDocValues: { key: string, value: string }[] = [];
+  show: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -474,13 +455,6 @@ export class FormMatriculaComponent implements OnInit {
             rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
           });
 
-          if(retorno.informacoesMatricula?.possuiBeneficiosDoGoverno){
-            this.recebeBeneficio = "sim";
-            this.formDocumentos.patchValue({
-              recebeBeneficio: "sim"
-            });
-          }
-
           retorno.necessidades?.forEach((necessidadeEspecial: any, index:number) => {
             this.adicionarCampoNecessidade(necessidadeEspecial)
           });
@@ -724,37 +698,96 @@ export class FormMatriculaComponent implements OnInit {
 
   atribuirRecebeBeneficioAoListDocsSim(){
     this.recebeBeneficio = "sim";
-    this.formDocumentos.patchValue({
-      recebeBeneficio: "sim"
-    });
+    if(this.tipoDeFormuladorio == "Cadastrar")
+    {
+      this.formDocumentos.patchValue({
+        recebeBeneficio: "sim"
+      });
+    }
+    else{
+      this.atualizarTabela(EnumDoc.COMPROVANTE_BOLSA_FAMILIA);
+    }
   }
+
   atribuirRecebeBeneficioAoListDocsNao(){
     this.recebeBeneficio = "nao";
-    this.formDocumentos.patchValue({
-      recebeBeneficio: "nao"
-    });
+    if(this.tipoDeFormuladorio == "Cadastrar") {
+      this.formDocumentos.patchValue({
+        recebeBeneficio: "nao"
+      });
+    }else {
+      this.removerDaTabela(EnumDoc.COMPROVANTE_BOLSA_FAMILIA);
+    }
   }
 
   atribuirVeiculoAoListDocsSim(){
-    this.formDocumentos.patchValue({
-      veiculoProprio: "sim"
-    });
+    if(this.tipoDeFormuladorio == "Cadastrar") {
+      this.formDocumentos.patchValue({
+        veiculoProprio: "sim"
+      });
+    }else {
+      this.atualizarTabela(EnumDoc.DOCUMENTO_VEICULO);
+    }
   }
   atribuirVeiculoAoListDocsNao(){
-    this.formDocumentos.patchValue({
-      veiculoProprio: "nao"
-    });
+    if(this.tipoDeFormuladorio == "Cadastrar") {
+      this.formDocumentos.patchValue({
+        veiculoProprio: "nao"
+      });
+    }else {
+      this.removerDaTabela(EnumDoc.DOCUMENTO_VEICULO);
+    }
   }
 
   atribuirCRASAoListDocsSim(){
-    this.formDocumentos.patchValue({
-      CRAS: "sim"
-    });
+    if(this.tipoDeFormuladorio == "Cadastrar") {
+      this.formDocumentos.patchValue({
+        CRAS: "sim"
+      });
+    }else {
+      this.atualizarTabela(EnumDoc.ENCAMINHAMENTO_CRAS);
+    }
   }
   atribuirCRASAoListDocsNao(){
-    this.formDocumentos.patchValue({
-      CRAS: "nao"
-    });
+    if(this.tipoDeFormuladorio == "Cadastrar") {
+      this.formDocumentos.patchValue({
+        CRAS: "nao"
+      });
+    }else {
+      this.removerDaTabela(EnumDoc.ENCAMINHAMENTO_CRAS);
+    }
+  }
+
+  private criarDocumentoList(tipo: EnumDoc) {
+    const documento: DocumentoMatriculaDto = {
+      aceito: false,
+      idMatricula: this.codigo,
+      tipoDocumento: tipo
+    };
+    return documento;
+  }
+
+  atualizarTabela(tipo: EnumDoc) {
+    this.show = false;
+    const documento = this.criarDocumentoList(tipo);
+    this.listaDocumentosEditareValidar.push(documento);
+    const copia = [...this.listaDocumentosEditareValidar];
+    this.listaDocumentosEditareValidar = [];
+    setTimeout(() => {
+      this.show = true;
+      this.listaDocumentosEditareValidar = copia;
+    }, 50);
+  }
+
+  removerDaTabela(tipo: string) {
+    this.show = false;
+    this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar.filter(documento => documento.tipoDocumento !== tipo);
+    const copia = [...this.listaDocumentosEditareValidar];
+    this.listaDocumentosEditareValidar = [];
+    setTimeout(() => {
+      this.show = true;
+      this.listaDocumentosEditareValidar = copia;
+    }, 50);
   }
 
   atribuirConjugueRelacionamento() {

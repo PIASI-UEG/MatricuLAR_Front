@@ -7,7 +7,7 @@
   height: 35px ;
   font-family: DM Roboto, sans-serif;
   font-size: 14px;
-  border:1px solid #A2B6C8;
+  border: none;
   border-radius: 10px 10px;
   cursor: pointer;
   margin: 20px;
@@ -21,6 +21,11 @@
 }
 
 .substituir{
+  background: #f6e39b ;
+  color: black;
+}
+
+.salvar{
   background:#5AB9EA ;
 }
 

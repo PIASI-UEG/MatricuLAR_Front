@@ -1,4 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="space-evenly center">
+  <h1>{{this.documentoEditarValidar.tipoDocumento}}</h1>
   <div *ngIf="this.isFileImage">
     <div class="toolbar">
       <button class="zoom-button" (click)="zoomIn()">+</button>
@@ -42,19 +43,23 @@
       [showScrollingButton]="false"
       [showSpreadButton]="false"
       [showPropertiesButton]="false"
-      [height]="'70vh'"
+      [height]="mudarAlinharDocHeight()"
       [mobileFriendlyZoom]="'true'"
       [textLayer]="true"
-      [ngStyle]="this.mudarAlinhar()" >
+      [ngStyle]="this.mudarAlinharDocWidth()" >
     </ngx-extended-pdf-viewer>
   <div class="divBotoes" [fxLayout]="mudarAlinharBotoes()" fxLayoutAlign="space-between center"
        *ngIf="!this.verificarAlinhar()">
   <button class="file-button-document fechar" (click)="closeDialog()">Fechar</button>
-  <button class="file-button-document substituir" >Subistituir Arquivo</button>
+    <input type="file" style="display: none" id="substituirArq" (change)="substituirArq($event)" #fileUpload>
+    <label for="substituirArq" class="file-button-document substituir">Substituir</label>
+    <button class="file-button-document salvar" (click)="salvarArq()">Salvar</button>
   </div>
   <div class="divBotoes" [fxLayout]="mudarAlinharBotoes()" fxLayoutAlign="space-between center"
        *ngIf="this.verificarAlinhar()">
-    <button class="file-button-document substituir" >Subistituir Arquivo</button>
-    <button class="file-button-document fechar" (click)="closeDialog()">Fechar</button>
+    <input type="file" style="display: none" id="substituirArqMenor" (change)="substituirArq($event)" #fileUpload>
+    <button class="file-button-document salvar" (click)="closeDialog()">Salvar</button>
+    <label for="substituirArqMenor" class="file-button-document substituir">Substituir</label>
+    <button class="file-button-document fechar" (click)="salvarArq()">Fechar</button>
   </div>
 </div>

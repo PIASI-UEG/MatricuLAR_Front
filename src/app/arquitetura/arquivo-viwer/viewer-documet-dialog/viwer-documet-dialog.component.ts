@@ -1,10 +1,13 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import DevExpress from "devextreme";
 import {PdfBreakpoints} from "ngx-extended-pdf-viewer";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import {MatriculaDto} from "../../../api/models/matricula-dto";
+import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 
 
 @Component({
@@ -12,16 +15,16 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
   templateUrl: './viwer-documet-dialog.component.html',
   styleUrls: ['./viwer-documet-dialog.component.scss']
 })
-export class ViwerDocumetDialogComponent implements OnInit{
+export class ViwerDocumetDialogComponent implements OnInit {
   public innerWidth: number = window.innerWidth;
   public file: File;
   public fileSRC!: string;
   public isFileImage!: boolean;
   public isFileDocument!: boolean;
-  public tipoDeFormuladorio: string =  "Cadastrar";
+  public tipoDeFormuladorio: string = "Cadastrar";
   // edicao e validação
-  private documentoEditarValidar!: DocumentoMatriculaDto;
-  private  matriculaService!: MatriculaControllerService;
+  public documentoEditarValidar!: DocumentoMatriculaDto;
+  private matriculaService!: MatriculaControllerService;
   mensagens: MensagensUniversais = new MensagensUniversais({
     dialog: this.dialog
   })
@@ -30,6 +33,7 @@ export class ViwerDocumetDialogComponent implements OnInit{
   public constructor(
     private dialogRef: MatDialogRef<ViwerDocumetDialogComponent>,
     private dialog: MatDialog,
+    private cd: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) data: {
       file: File
       isFileImage: boolean
@@ -40,7 +44,7 @@ export class ViwerDocumetDialogComponent implements OnInit{
     }
   ) {
     this.file = data.file;
-    this.isFileImage =data.isFileImage;
+    this.isFileImage = data.isFileImage;
     this.isFileDocument = data.isFileDocument;
     this.documentoEditarValidar = data.documentoEditarValidar
     this.tipoDeFormuladorio = data.tipoDeFormuladorio
@@ -53,6 +57,7 @@ export class ViwerDocumetDialogComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.cd.detectChanges();
     if (!this.documentoEditarValidar) {
       console.error('documentoEditarValidar não está definido');
       return;
@@ -63,8 +68,9 @@ export class ViwerDocumetDialogComponent implements OnInit{
     } else {
       const document = this.documentoEditarValidar;
 
-      this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: document })
+      this.matriculaService.matriculaControllerObterDocumentoMatricula({body: document})
         .subscribe(response => {
+
           const fileName = this.documentoEditarValidar.caminhoDocumento || 'arquivo_sem_nome';
           const fileExtension = fileName.split('.').pop()?.toLowerCase();
 
@@ -79,34 +85,95 @@ export class ViwerDocumetDialogComponent implements OnInit{
             return;
           }
 
-          const file = new File([response], fileName, { type: response.type });
+          const file = new File([response], fileName, {type: response.type});
+          this.file = file;
           this.fileSRC = this.makeURLFile(file);
         }, error => {
-          console.error('Erro ao obter o documento:', error);
+          this.mensagens.confirmarErro("Obter o documento", error);
         });
     }
     this.innerWidth = window.innerWidth;
   }
 
-  closeDialog(){
+  closeDialog() {
     this.dialogRef.close();
   }
 
+  substituirArq(event: any) {
+    const file = event.target.files[0];
+    const fileName = file.name;
+    this.file = file;
+    const extensoesSuportadas = ['.jpg', '.jpeg', '.pdf', '.png'];
 
-  mudarAlinhar() {
-    if(this.innerWidth < 650)
-    {
-      return {'width' : '28vh'};
+    if (file) {
+
+      const fileExtension = fileName.split('.').pop()?.toLowerCase();
+      if (extensoesSuportadas.indexOf('.' + fileExtension) === -1) {
+        this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg , .png ou .pdf.")
+        return;
+      }
+
+      this.fileSRC = this.makeURLFile(file);
+      if (file.type.includes("image")) {
+        this.isFileImage = true;
+        this.isFileDocument = false;
+      } else {
+        this.isFileImage = false;
+        this.isFileDocument = true;
+      }
+
     }
-    else if (innerWidth < 1200){
-      return {'width' : '60vh'};
+  }
+
+  salvarArq() {
+
+    const document = this.documentoEditarValidar;
+    if (document.idMatricula && document.tipoDocumento) {
+      this.matriculaService.matriculaControllerUploadDocumento({
+        idMatricula: document.idMatricula,
+        tipoDocumento: document.tipoDocumento,
+        body: {multipartFile: this.file}
+      }).subscribe(response => {
+          this.closeDialog();
+          this.confirmarAcao(response, "Salvar documento");
+      }, error => {
+        this.mensagens.confirmarErro("Salvar documento", error);
+      });
+    }
+  }
+
+  confirmarAcao(matricula: MatriculaDto, acao: string) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        titulo: 'Cadastro!',
+        mensagem: `Ação de ${acao} realizada com sucesso!`,
+        textoBotoes: {
+          ok: 'Confirmar',
+        },
+      },
+    });
+  }
+
+  mudarAlinharDocWidth() {
+    if (this.innerWidth < 650) {
+      return {'width': '28vh'};
+    } else if (innerWidth < 1200) {
+      return {'width': '60vh'};
     }
     return {'width': '100vh'};
   }
 
+  mudarAlinharDocHeight() {
+    if (this.innerWidth < 650) {
+      return '40vh';
+    } else if (innerWidth < 1200) {
+      return '50vh';
+    }
+    return '61vh';
+  }
+
   mudarAlinharBotoes() {
-    if(this.innerWidth < 1500)
-    {
+    if (this.innerWidth < 1000) {
       return this.flexDivAlinhar = "column";
     }
     return this.flexDivAlinhar = "row";
@@ -120,25 +187,21 @@ export class ViwerDocumetDialogComponent implements OnInit{
   }
 
   mudarZoom() {
-    if(innerWidth < 650)
-    {
+    if (innerWidth < 650) {
       return '30%';
-    }
-    else if (innerWidth < 1200){
+    } else if (innerWidth < 1200) {
       return '70%';
     }
     return '100%';
   }
 
   mudarAlinharImagem() {
-    if(innerWidth < 650)
-    {
-      return {'width' : '28vh', 'height': '70vh'};
+    if (innerWidth < 650) {
+      return {'width': '28vh', 'height': '38vh'};
+    } else if (innerWidth < 1200) {
+      return {'width': '60vh', 'height': '48vh'};
     }
-    else if (innerWidth < 1200){
-      return {'width' : '60vh', 'height': '70vh'};
-    }
-    return {'width': '100vh', 'height': '70vh'};
+    return {'width': '100vh', 'height': '61vh'};
   }
 
   // funcionalidade de zoom na imagem

@@ -722,7 +722,7 @@
 
           <div fxLayout="column" fxLayoutAlign="space-evenly center">
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Editar' || tipoDeFormuladorio == 'Validar'">
-            <table mat-table [dataSource]="listaDocumentosEditareValidar" class="tabela">
+            <table mat-table *ngIf="show"  [dataSource]="listaDocumentosEditareValidar" class="tabela">
 
               <ng-container *ngIf="tipoDeFormuladorio == 'Validar'" matColumnDef="Aceite">
                 <th mat-header-cell *matHeaderCellDef> Aceitar </th>
