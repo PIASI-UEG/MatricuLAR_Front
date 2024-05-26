@@ -15,7 +15,7 @@ import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
-import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
+import {EnumDoc, EnumDocDescriptions} from "../../../arquitetura/arquivo-viwer/EnumDoc";
 import {
   ViwerDocumetDialogComponent
 } from "../../../arquitetura/arquivo-viwer/viewer-documet-dialog/viwer-documet-dialog.component";
@@ -238,30 +238,13 @@ export class FormMatriculaComponent implements OnInit {
 
   onSubmit() {
     this.enviado = true;
-    // if (this.codigo == null) {
-    //   return;
-    // }
-    //depois de salvar a matricula e pegar o id vamos setar nos doc e salvando eles
-    // console.log("Submit")
 
-      // this.docs.forEach(doc => {
-      //     if (doc.idMatricula && doc.tipoDocumento && doc.arquivo) {
-      //       console.log(doc.arquivo)
-      //       this.matriculaService.matriculaControllerUploadDocumento(
-      //         {idMatricula: doc.idMatricula, tipoDocumento: doc.tipoDocumento, body: {multipartFile: doc.arquivo}})
-      //         .subscribe(retorno => {
-      //           console.log(retorno)
-      //         })
-      //     }
-      //   }
-      // )
-
-
-    if (this.codigo != null || this.formGroup.valid) {
+    if (this.codigo != null || (this.formGroup.valid && this.formDocumentos.valid)) {
       if (!this.codigo) {
         this.atribuirConjugueRelacionamento();
         this.realizarInclusao();
       } else {
+        this.atribuirConjugueRelacionamento();
         this.realizarEdicao();
       }
     }
@@ -270,19 +253,25 @@ export class FormMatriculaComponent implements OnInit {
   uploadFiles(dto: any, files: File[]){
     const formData: FormData = new FormData();
 
-    // Append DTO fields to FormData
     formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
 
-    // Append each file to the FormData
     files.forEach(file => {
       formData.append('files', file, file.name);
     });
     const token = this.securityService.credential.accessToken
     const headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
     return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData,{headers}).subscribe(retorno =>{
-      console.log("as", retorno);
+      if(this.securityService.isValid()){
+        this.router.navigate(["/matricula"]);
+      }
+      else {
+        this.router.navigate(["/"]);
+      }
+      this.confirmarAcao(retorno, this.tipoDeFormulario);
+      // console.log("as", retorno);
     }, error => {
-      console.log("erro", error)
+      this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+      // console.log("erro", error)
     });
   }
 
@@ -297,56 +286,30 @@ export class FormMatriculaComponent implements OnInit {
       }
     }
 
-    console.log("Matricula:", matricula);
-    console.log("Dados:",this.formGroup.value);
-    console.log("doc", copiaDocs)
-    //
-    // for (let i = 0; i < copiaDocs.length; i++) {
-    //   if (typeof copiaDocs[i] === 'undefined') {
-    //     copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/*'});
-    //   }
-    // }
+    // console.log("Matricula:", matricula);
+    // console.log("Dados:",this.formGroup.value);
+    // console.log("doc", copiaDocs)
 
     this.uploadFiles(matricula, copiaDocs);
   }
 
+  private realizarEdicao() {
+    const matricula: MatriculaDto = this.makeDTOMatricula();
 
-// private realizarInclusao() {
-//     const docs = this.formDocumentos.get('listaDocumentos');
-//     const copiaDocs = docs?.value.slice();
-//     const matricula: MatriculaDto = this.makeDTOMatricula();
-//     console.log("Matricula:", matricula);
-//     console.log("Dados:",this.formGroup.value);
-//
-//     this.matriculaService.matriculaControllerIncluir1({body: {data: matricula, files: copiaDocs}})
-//         .subscribe( retorno =>{
-//           console.log("Retorno:",retorno);
-//
-//
-//           // for (let i = 0; i < copiaDocs.length; i++) {
-//           //   if (typeof copiaDocs[i] === 'undefined') {
-//           //     copiaDocs[i] = new File("");
-//           //   }
-//           // }
-//
-//           // mandar documentos
-//            if(retorno.id)
-//           {
-//             this.matriculaService.matriculaControllerUploadDocumentos({idMatricula: retorno.id, body: {multipartFile: copiaDocs}})
-//                 .subscribe(retorno =>{
-//                   this.confirmarAcao(retorno, this.FORM_INCLUIR);
-//                   this.router.navigate(["/matricula"]);
-//                 }, error => {
-//                   console.log("Erro:"+error);
-//                   this.mensagens.confirmarErro(this.FORM_INCLUIR, error.message)
-//                 })
-//           }
-//
-//         }, erro =>{
-//           console.log("Erro:"+erro);
-//           this.mensagens.confirmarErro(this.tipoDeFormuladorio, erro.message)
-//         })
-//   }
+    this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno =>{
+      if(this.tipoDeFormulario == 'Editar'){
+        this.router.navigate(["/matricula"]);
+      }
+      else if(this.tipoDeFormulario == 'Validar'){
+        this.router.navigate(["/validar"]);
+      }
+      this.confirmarAcao(retorno, this.tipoDeFormulario);
+    }, error => {
+      this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+      console.log("erro", error)
+    });
+
+  }
 
   private makeDTOMatricula(): MatriculaDto{
 
@@ -474,9 +437,10 @@ export class FormMatriculaComponent implements OnInit {
           });
           //ate aqui preencher dados das matriculas nos inputs
 
-          // criar lista com os documentos que existem na matricula mostrando os que não existem s
+          // criar lista com os documentos que existem na matricula mostrando os que não existem
           if(retorno.documentoMatricula){
             this.listaDocumentosEditareValidar = retorno.documentoMatricula;
+            this.ordenarLista();
           }
 
 
@@ -499,11 +463,6 @@ export class FormMatriculaComponent implements OnInit {
         },
       },
     });
-  }
-
-  private realizarEdicao() {
-    console.log("Dados:", this.formGroup.value);
-    this.router.navigate(["/matricula"]);
   }
 
   mudarAlinhar() {
@@ -680,14 +639,40 @@ export class FormMatriculaComponent implements OnInit {
         if(conjugue!= null)
         {
           this.adicionarCampoTutorPreenchido(conjugue);
+          if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
+            this.atualizarTabela(EnumDoc.CPF_TUTOR2);
+            this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
+            this.atualizarTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
+            this.atualizarTabela(EnumDoc.CONTRA_CHEQUE1T2);
+            this.atualizarTabela(EnumDoc.CONTRA_CHEQUE2T2);
+            this.atualizarTabela(EnumDoc.CONTRA_CHEQUE3T2);
+            console.log("TESTE", this.listaDocumentosEditareValidar)
+          }
           this.temConjugue = true;
         }else{
+          if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
           this.adicionarCampoTutor();
+          this.atualizarTabela(EnumDoc.CPF_TUTOR2);
+          this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
+          this.atualizarTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
+          this.atualizarTabela(EnumDoc.CONTRA_CHEQUE1T2);
+          this.atualizarTabela(EnumDoc.CONTRA_CHEQUE2T2);
+          this.atualizarTabela(EnumDoc.CONTRA_CHEQUE3T2);
+            console.log("TESTE", this.listaDocumentosEditareValidar)
+          }
           this.temConjugue = true;
         }
       }
     } else {
       this.removerCampoTutor(1);
+      this.removerDaTabela(EnumDoc.CPF_TUTOR2);
+      this.removerDaTabela(EnumDoc.DECLARACAO_ESCOLART2);
+      this.removerDaTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
+      this.removerDaTabela(EnumDoc.CONTRA_CHEQUE1T2);
+      this.removerDaTabela(EnumDoc.CONTRA_CHEQUE2T2);
+      this.removerDaTabela(EnumDoc.CONTRA_CHEQUE3T2);
+      console.log("TESTE", this.listaDocumentosEditareValidar)
+
       this.temConjugue = false;
     }
     this.formDocumentos.patchValue({
@@ -771,23 +756,26 @@ export class FormMatriculaComponent implements OnInit {
     this.show = false;
     const documento = this.criarDocumentoList(tipo);
     this.listaDocumentosEditareValidar.push(documento);
-    const copia = [...this.listaDocumentosEditareValidar];
+    const copia = this.listaDocumentosEditareValidar;
     this.listaDocumentosEditareValidar = [];
     setTimeout(() => {
       this.show = true;
       this.listaDocumentosEditareValidar = copia;
-    }, 50);
+      this.ordenarLista();
+    }, 150);
+
   }
 
   removerDaTabela(tipo: string) {
     this.show = false;
     this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar.filter(documento => documento.tipoDocumento !== tipo);
-    const copia = [...this.listaDocumentosEditareValidar];
+    const copia = this.listaDocumentosEditareValidar;
     this.listaDocumentosEditareValidar = [];
     setTimeout(() => {
       this.show = true;
       this.listaDocumentosEditareValidar = copia;
-    }, 50);
+      this.ordenarLista();
+    }, 150);
   }
 
   atribuirConjugueRelacionamento() {
@@ -898,6 +886,17 @@ export class FormMatriculaComponent implements OnInit {
       }
     };
     this.dialog.open(ViwerDocumetDialogComponent, config);
+  }
+
+  getEnumNames(docName: string): string | undefined {
+    const enumKey = EnumDoc[docName as keyof typeof EnumDoc];
+    return EnumDocDescriptions[enumKey];
+  }
+
+  ordenarLista(): void {
+    this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
+      .filter(doc => doc.tipoDocumento !== undefined)
+      .sort((a, b) => a.tipoDocumento!.localeCompare(b.tipoDocumento!));
   }
 
 }

@@ -7,6 +7,7 @@
         fxLayoutAlign="space-between center"
         fxFlex="1 1 auto"
   >
+    <h1>{{this.formGroup.get('nomeCrianca')?.value}}</h1>
     <h2>{{this.nomeTitulo}}</h2>
     <div class="mat-tab-titulos">
       <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
@@ -109,7 +110,8 @@
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
+              <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
+              <button mat-raised-button type="button" class="button " (click)="goToNextStep(1)">Próxima <br> Etapa
               </button>
             </div>
 
@@ -117,6 +119,7 @@
                  *ngIf="this.verificarAlinhar()">
               <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
               </button>
+              <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
@@ -262,6 +265,7 @@
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
+              <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
               <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
             </div>
 
@@ -271,6 +275,7 @@
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
                 Anterior
               </button>
+              <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
@@ -374,6 +379,7 @@
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
+              <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
               <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
             </div>
 
@@ -383,6 +389,7 @@
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
                 Anterior
               </button>
+              <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
@@ -720,23 +727,22 @@
           </div>
 
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" >
-            <table mat-table *ngIf="show"  [dataSource]="listaDocumentosEditareValidar" class="tabela">
+            <mat-table *ngIf="show"  [dataSource]="listaDocumentosEditareValidar" class="tabela">
 
               <ng-container *ngIf="tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
-                <th mat-header-cell *matHeaderCellDef> Aceitar </th>
-                <td mat-cell *matCellDef="let element" > {{element.aceito}} </td>
+                <mat-header-cell *matHeaderCellDef> Aceitar </mat-header-cell>
+                <mat-cell *matCellDef="let element" > {{element.aceito}} </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="Tipo">
-                <th mat-header-cell *matHeaderCellDef> Documentos </th>
-                <td mat-cell *matCellDef="let element" (click)="openDialogPreviewExpanded(element)"> {{element.tipoDocumento}} </td>
+                <mat-header-cell *matHeaderCellDef> Documentos </mat-header-cell>
+                <mat-cell mat-cell *matCellDef="let element" (click)="openDialogPreviewExpanded(element)"> {{getEnumNames(element.tipoDocumento)}} </mat-cell>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns: colunasMostrar;"></tr>
+              <mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: colunasMostrar;"></mat-row>
 
-            </table>
-          </div>
+            </mat-table>
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" *ngIf="!this.verificarAlinhar()" fxLayoutAlign="space-between center">
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
@@ -746,14 +752,12 @@
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
-              <button mat-raised-button type="submit" class="button botao-cadastro">Salvar <br> Edição
-              </button>
+              <button  mat-raised-button type="submit" class="button botao-salvar" >Salvar</button>
             </div>
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button type="submit" class="button botao-cadastro">Salvar <br> Edição
-              </button>
+              <button mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
                 Anterior
               </button>
@@ -762,6 +766,7 @@
               </button>
 
             </div>
+          </div>
 
 
 
