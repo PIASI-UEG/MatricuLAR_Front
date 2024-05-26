@@ -53,7 +53,7 @@ export class FormMatriculaComponent implements OnInit {
     innerWidth: number = window.innerWidth;
     hide = true;
     parentescos: string[] = ['PAI', 'MAE', 'AVO', 'BISAVO', 'TIO', 'TIA']; // Lista de opções de parentesco
-    nomeTitulo: string = "Dados da Criança";
+    nomeTitulo: string = "";
     guiaAtiva = 0;
     botaoNecessidadeClicado: boolean = false;
     enviado: boolean = false;
@@ -103,6 +103,7 @@ export class FormMatriculaComponent implements OnInit {
     private createForm() {
         //Dados da Criança
         this.formGroup = this.formBuilder.group({
+            aceiteInformacoes: [false, Validators.required],
             nomeCrianca: [null, Validators.required],
             cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
             dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
@@ -250,7 +251,7 @@ export class FormMatriculaComponent implements OnInit {
         }
     }
 
-    uploadFiles(dto: any, files: File[]){
+    uploadFiles(dto: any, files: File[]) {
         const formData: FormData = new FormData();
 
         formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
@@ -258,21 +259,25 @@ export class FormMatriculaComponent implements OnInit {
         files.forEach(file => {
             formData.append('files', file, file.name);
         });
-        const token = this.securityService.credential.accessToken
-        const headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
-        return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData,{headers}).subscribe(retorno =>{
-            if(this.securityService.isValid()){
-                this.router.navigate(["/matricula"]);
+
+        const token = this.securityService.credential.accessToken;
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+        return this.http.post<MatriculaDto>(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData, { headers }).subscribe(
+            retorno => {
+                if (this.securityService.isValid()) {
+                    this.router.navigate(["/matricula"]);
+                } else {
+                    this.router.navigate(["/"]);
+                }
+                this.confirmarAcao(retorno, this.tipoDeFormulario);
+                // console.log("as", retorno);
+            },
+            error => {
+                this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+                // console.log("erro", error)
             }
-            else {
-                this.router.navigate(["/"]);
-            }
-            this.confirmarAcao(retorno, this.tipoDeFormulario);
-            // console.log("as", retorno);
-        }, error => {
-            this.mensagens.confirmarErro(this.tipoDeFormulario, error);
-            // console.log("erro", error)
-        });
+        );
     }
 
     private realizarInclusao() {
@@ -500,14 +505,30 @@ export class FormMatriculaComponent implements OnInit {
     }
 
     alterarNomeTitulo(indice: number): void {
-        if (indice == 0) {
-            this.nomeTitulo = "Dados da Criança"
-        } else if (indice == 1) {
-            this.nomeTitulo = "Dados do Tutor(a)"
-        } else if (indice == 2) {
-            this.nomeTitulo = "Perguntas Culturais"
+        if (this.tipoDeFormulario === 'Cadastrar') {
+            // Mapeamento para o modo "Cadastrar"
+            if (indice === 0) {
+                this.nomeTitulo = "Informações Gerais";
+            } else if (indice === 1) {
+                this.nomeTitulo = "Dados da Criança";
+            } else if (indice === 2) {
+                this.nomeTitulo = "Dados do Tutor(a)";
+            } else if (indice === 3) {
+                this.nomeTitulo = "Perguntas Culturais";
+            } else {
+                this.nomeTitulo = "Anexar documentos";
+            }
         } else {
-            this.nomeTitulo = "Anexar documentos"
+            // Mapeamento para os modos "Editar" e "Validar"
+            if (indice === 0) {
+                this.nomeTitulo = "Dados da Criança";
+            } else if (indice === 1) {
+                this.nomeTitulo = "Dados do Tutor(a)";
+            } else if (indice === 2) {
+                this.nomeTitulo = "Perguntas Culturais";
+            } else {
+                this.nomeTitulo = "Anexar documentos";
+            }
         }
     }
 

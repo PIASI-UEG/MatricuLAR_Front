@@ -11,9 +11,45 @@
         <h2>{{this.nomeTitulo}}</h2>
         <div class="mat-tab-titulos">
             <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
+                <!-- Etapa 0  -->
+                <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR"
+                         [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
+                    <div class="conteudo-mat-tab">
+                        <h1>
+                            Antes de preencher o formulário, por favor, leia atentamente as informações sobre a matrícula.
+                        </h1>
+                        <p>TOME CONHECIMENTO DAS NORMAS ABAIXO ESTABELECIDAS:</p>
+                        <p>* O HORÁRIO DE CHEGADA DAS CRIANÇAS SERÁ DAS 7:00 H ÀS 8:00 H. NÃO SERÁ PERMITIDA A ENTRADA APÓS ESTE HORÁRIO.</p>
+                        <p>* O HORÁRIO DE SAÍDA DAS CRIANÇAS SERÁ ENTRE 16:30 H E 17:00 H. POR FAVOR, SEJA PONTUAL. CASO OCORRA ALGUM IMPREVISTO, AVISE À SECRETARIA PELO TELEFONE 3099-6423.</p>
+                        <p>* NÃO SERÁ PERMITIDA A ENTRADA DAS CRIANÇAS SEM AGENDA.</p>
+                        <p>* A ENTREGA DA CRIANÇA A TERCEIROS SÓ SERÁ PERMITIDA MEDIANTE AUTORIZAÇÃO DOS PAIS OU RESPONSÁVEIS.</p>
+                        <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS TRAZEREM SEUS FILHOS À INSTITUIÇÃO EM BOAS CONDIÇÕES DE HIGIENE E SAÚDE: UNHAS CORTADAS, ORELHAS LIMPAS, CABELOS LAVADOS E PENTEADOS, SEM PIOLHOS, EM BOM ESTADO DE SAÚDE, E COM O UNIFORME LIMPO.</p>
+                        <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS TRAZER A MOCHILA COM 3 (TRÊS) PEÇAS DE ROUPAS, SANDÁLIAS TIPO HAVAIANAS, TOALHAS (DE BANHO OU DE MÃO) COM NOME BORDADO.</p>
+                        <p>* A TOALHA SERÁ DEVOLVIDA SEMPRE QUE NECESSÁRIO, DEVENDO SER TRAZIDA LIMPA PARA USO NA INSTITUIÇÃO (PARA O BERÇÁRIO, TOALHA DE BANHO COM NOME BORDADO).</p>
+                        <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS COMUNICAR À INSTITUIÇÃO O MOTIVO DA AUSÊNCIA DA CRIANÇA APÓS TRÊS DIAS CONSECUTIVOS. CASO CONTRÁRIO, A CRIANÇA SERÁ DESLIGADA AUTOMATICAMENTE DA INSTITUIÇÃO.</p>
+                        <p>* O NÃO CUMPRIMENTO DAS NORMAS ESTABELECIDAS NESTE TERMO DE RESPONSABILIDADE RESULTARÁ EM ADVERTÊNCIA POR ESCRITO AOS PAIS OU RESPONSÁVEIS.</p>
+
+                        <mat-checkbox color="primary" formControlName="aceiteInformacoes">
+                            POR ESTAR CIENTE DAS NORMAS ACIMA ESTABELECIDAS, COMPROMETO-ME E RESPONSABILIZO-ME A CUMPRI-LAS.
+                        </mat-checkbox>
+                        <mat-error *ngIf="handleError('aceiteInformacoes', 'required')">Você deve concordar antes de continuar.</mat-error>
+
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+                            <button type="button" class="button-hidden"></button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
+                        </div>
+
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+                        </div>
+                    </div>
+                </mat-tab>
+
                 <!-- Etapa 1 -->
                 <mat-tab class="mat-tab-color" label="Criança"
-                         [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0" (click)="alterarNomeTitulo(0)">
+                         [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 1">
                     <div class="conteudo-mat-tab">
                         <mat-form-field>
                             <mat-label>Nome da criança</mat-label>
@@ -37,7 +73,7 @@
                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                 <mat-datepicker #dp3></mat-datepicker>
                                 <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
-                                <mat-error *ngIf="handleError('dataNascimento', 'idadeInvalida')">Idade máxima 5 e mínima 3</mat-error>
+<!--                                <mat-error *ngIf="handleError('dataNascimento', 'idadeInvalida')">Idade máxima 5 e mínima 3</mat-error>-->
                             </mat-form-field>
                         </div>
 
@@ -106,31 +142,28 @@
                         <!-- Campos da primeira etapa -->
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-                            <button type="button" class="button-hidden"></button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" class="button " (click)="goToNextStep(1)">Próxima <br> Etapa
-                            </button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
                         </div>
 
-                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                             *ngIf="this.verificarAlinhar()">
-                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
-                            </button>
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
+
                     </div>
 
                 </mat-tab>
 
 
                 <!-- Etapa 2 -->
-                <mat-tab label="Tutor(a)" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 1">
+                <mat-tab label="Tutor(a)" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2">
                     <div class="conteudo-mat-tab">
                         <div formArrayName="tutor">
                             <div *ngFor="let tutor of getTutoresControls(); let i = index;" [formGroupName]="i">
@@ -256,29 +289,22 @@
 
                             </div>
                         </div>
-
-                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                             *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
-                                Anterior
-                            </button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
                         </div>
 
-                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                             *ngIf="this.verificarAlinhar()">
-                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
-                                Anterior
-                            </button>
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
 
 
@@ -287,7 +313,7 @@
 
                 <!-- Etapa 3 -->
 
-                <mat-tab label="Perguntas" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2">
+                <mat-tab label="Perguntas" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 3">
                     <div class="conteudo-mat-tab">
                         <div fxLayout="column" fxLayoutAlign="center start">
                             <p>A criança já frequentou outra creche ?</p>
@@ -371,35 +397,30 @@
                             <mat-error *ngIf="handleError('rendaFamiliar', 'rendaInvalida')">Renda máxima de 2200</mat-error>
                         </mat-form-field>
 
-                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                             *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
-                                Anterior
-                            </button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
                         </div>
 
-                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                             *ngIf="this.verificarAlinhar()">
-                            <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
-                                Anterior
-                            </button>
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
+
 
                     </div>
                 </mat-tab>
 
                 <!-- Etapa 4 -->
-                <mat-tab label="Documentos" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 3">
+                <mat-tab label="Documentos" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 4">
                     <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Cadastrar'" >
                         <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
                             serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
@@ -701,29 +722,19 @@
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                              *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
-                                Etapa
-                                Anterior
-                            </button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
-                            <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula
-                            </button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+                            <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
                         </div>
 
-                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                             *ngIf="this.verificarAlinhar()">
-                            <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula
-                            </button>
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
-                                Anterior
-                            </button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
-
+                        <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                            <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
+
                     </div>
 
                     <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" >
@@ -745,26 +756,16 @@
                         </mat-table>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" *ngIf="!this.verificarAlinhar()" fxLayoutAlign="space-between center">
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
-                                Etapa
-                                Anterior
-                            </button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
-                            <button  mat-raised-button type="submit" class="button botao-salvar" >Salvar</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+                            <button  mat-raised-button type="submit" class="button botao-salvar" >Salvar <br>Matricula</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                              *ngIf="this.verificarAlinhar()">
+                            <button mat-raised-button type="button" *ngIf=" tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
-                                Anterior
-                            </button>
-                            <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                                    class="button botao-cancelar">Cancelar
-                            </button>
-
                         </div>
                     </div>
 
