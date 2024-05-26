@@ -7,7 +7,7 @@
           fxLayoutAlign="space-between center"
           fxFlex="1 1 auto"
     >
-        <h1>Nome da Criança: {{this.formGroup.get('nomeCrianca')?.value}}</h1>
+        <h1>{{this.formGroup.get('nomeCrianca')?.value}}</h1>
         <h2>{{this.nomeTitulo}}</h2>
         <div class="mat-tab-titulos">
             <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
