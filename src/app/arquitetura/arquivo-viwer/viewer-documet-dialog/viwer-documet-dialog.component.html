@@ -1,4 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="space-evenly center">
+
   <div *ngIf="this.isFileImage">
     <div class="toolbar">
       <button class="zoom-button" (click)="zoomIn()">+</button>
@@ -42,10 +43,24 @@
       [showScrollingButton]="false"
       [showSpreadButton]="false"
       [showPropertiesButton]="false"
-      [height]="'90vh'"
+      [height]="mudarAlinharDocHeight()"
       [mobileFriendlyZoom]="'true'"
       [textLayer]="true"
-      [ngStyle]="this.mudarAlinhar()" >
+      [ngStyle]="this.mudarAlinharDocWidth()" >
     </ngx-extended-pdf-viewer>
-  <button class="file-button-document " (click)="closeDialog()">Fechar</button>
+  <div *ngIf="naoTemArq" class="arquivo-inexistente" [ngStyle]="this.mudarAlinharImagem()"></div>
+  <div class="divBotoes" [fxLayout]="mudarAlinharBotoes()" fxLayoutAlign="space-between center"
+       *ngIf="!this.verificarAlinhar()">
+  <button class="file-button-document fechar" (click)="closeDialog()">Fechar</button>
+    <input *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" type="file" style="display: none" id="substituirArq" (change)="substituirArq($event)" #fileUpload>
+    <label *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" for="substituirArq" class="file-button-document substituir">Substituir</label>
+    <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" class="file-button-document salvar" (click)="salvarArq()">Salvar</button>
+  </div>
+  <div class="divBotoes" [fxLayout]="mudarAlinharBotoes()" fxLayoutAlign="space-between center"
+       *ngIf="this.verificarAlinhar()">
+    <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" class="file-button-document salvar" (click)="salvarArq()">Salvar</button>
+    <input  *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" type="file" style="display: none" id="substituirArqMenor" (change)="substituirArq($event)" #fileUpload>
+    <label *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" for="substituirArqMenor" class="file-button-document substituir">Substituir</label>
+    <button class="file-button-document fechar" (click)="closeDialog()">Fechar</button>
+  </div>
 </div>
