@@ -63,7 +63,7 @@ export class FormMatriculaComponent implements OnInit {
   public readonly FORM_INCLUIR = "Cadastrar";
   public readonly FORM_VALIDACACAO = "Validar";
   public readonly FORM_EDITAR = "Editar";
-  tipoDeFormuladorio: string = this.FORM_INCLUIR;
+  tipoDeFormulario: string = this.FORM_INCLUIR;
   colunasMostrar!: string[];
   protected readonly EnumDoc = EnumDoc;
   recebeBeneficio: string = "nao";
@@ -424,7 +424,7 @@ export class FormMatriculaComponent implements OnInit {
       const codigo = parseInt(paramId);
       this.matriculaService.matriculaControllerObterPorId({id: codigo}).subscribe(
         retorno => {
-          this.tipoDeFormuladorio = this.FORM_EDITAR;
+          this.tipoDeFormulario = this.FORM_EDITAR;
           this.codigo = retorno.id || -1;
           this.colunasMostrar = ['Tipo'];
           console.log(this.colunasMostrar);
@@ -698,7 +698,7 @@ export class FormMatriculaComponent implements OnInit {
 
   atribuirRecebeBeneficioAoListDocsSim(){
     this.recebeBeneficio = "sim";
-    if(this.tipoDeFormuladorio == "Cadastrar")
+    if(this.tipoDeFormulario == "Cadastrar")
     {
       this.formDocumentos.patchValue({
         recebeBeneficio: "sim"
@@ -711,7 +711,7 @@ export class FormMatriculaComponent implements OnInit {
 
   atribuirRecebeBeneficioAoListDocsNao(){
     this.recebeBeneficio = "nao";
-    if(this.tipoDeFormuladorio == "Cadastrar") {
+    if(this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         recebeBeneficio: "nao"
       });
@@ -721,7 +721,7 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   atribuirVeiculoAoListDocsSim(){
-    if(this.tipoDeFormuladorio == "Cadastrar") {
+    if(this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         veiculoProprio: "sim"
       });
@@ -730,7 +730,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
   atribuirVeiculoAoListDocsNao(){
-    if(this.tipoDeFormuladorio == "Cadastrar") {
+    if(this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         veiculoProprio: "nao"
       });
@@ -740,7 +740,7 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   atribuirCRASAoListDocsSim(){
-    if(this.tipoDeFormuladorio == "Cadastrar") {
+    if(this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         CRAS: "sim"
       });
@@ -749,7 +749,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
   atribuirCRASAoListDocsNao(){
-    if(this.tipoDeFormuladorio == "Cadastrar") {
+    if(this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         CRAS: "nao"
       });
@@ -884,7 +884,7 @@ export class FormMatriculaComponent implements OnInit {
     const param = this.route.snapshot.url.at(0)?.path;
     if(param == "validar"){
       console.log(param);
-      this.tipoDeFormuladorio = this.FORM_VALIDACACAO;
+      this.tipoDeFormulario = this.FORM_VALIDACACAO;
       this.colunasMostrar = ['Aceite','Tipo'];
     }
   }
@@ -893,7 +893,8 @@ export class FormMatriculaComponent implements OnInit {
     const config: MatDialogConfig = {
       data: {
         documentoEditarValidar: element,
-        matriculaService: this.matriculaService
+        matriculaService: this.matriculaService,
+        tipoDeFormulario: this.tipoDeFormulario
       }
     };
     this.dialog.open(ViwerDocumetDialogComponent, config);

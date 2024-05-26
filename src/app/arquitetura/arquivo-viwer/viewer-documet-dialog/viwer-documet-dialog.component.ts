@@ -21,7 +21,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
   public fileSRC!: string;
   public isFileImage!: boolean;
   public isFileDocument!: boolean;
-  public tipoDeFormuladorio: string = "Cadastrar";
+  public tipoDeFormulario: string = "Cadastrar";
   // edicao e validação
   public documentoEditarValidar!: DocumentoMatriculaDto;
   private matriculaService!: MatriculaControllerService;
@@ -29,6 +29,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
     dialog: this.dialog
   })
   flexDivAlinhar: string = 'row';
+  naoTemArq: boolean = false;
 
   public constructor(
     private dialogRef: MatDialogRef<ViwerDocumetDialogComponent>,
@@ -39,7 +40,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
       isFileImage: boolean
       isFileDocument: boolean
       documentoEditarValidar: DocumentoMatriculaDto
-      tipoDeFormuladorio: string
+      tipoDeFormulario: string
       matriculaService: MatriculaControllerService,
     }
   ) {
@@ -47,7 +48,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
     this.isFileImage = data.isFileImage;
     this.isFileDocument = data.isFileDocument;
     this.documentoEditarValidar = data.documentoEditarValidar
-    this.tipoDeFormuladorio = data.tipoDeFormuladorio
+    this.tipoDeFormulario = data.tipoDeFormulario || "Cadastrar"
     this.matriculaService = data.matriculaService
   }
 
@@ -58,39 +59,48 @@ export class ViwerDocumetDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.cd.detectChanges();
-    if (!this.documentoEditarValidar) {
-      console.error('documentoEditarValidar não está definido');
-      return;
-    }
 
-    if (this.tipoDeFormuladorio === 'Cadastrar') {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.fileSRC = this.makeURLFile(this.file);
+      this.naoTemArq = false;
     } else {
-      const document = this.documentoEditarValidar;
 
-      this.matriculaService.matriculaControllerObterDocumentoMatricula({body: document})
-        .subscribe(response => {
+      if (!this.documentoEditarValidar) {
+        this.mensagens.confirmarErro("Visualizar documento", "Esse documeno não existe na lista");
+        this.naoTemArq = true;
+        return;
+      } else if(!this.documentoEditarValidar.caminhoDocumento){
+        this.naoTemArq = true;
+        return;
+      } else {
+        const document = this.documentoEditarValidar;
 
-          const fileName = this.documentoEditarValidar.caminhoDocumento || 'arquivo_sem_nome';
-          const fileExtension = fileName.split('.').pop()?.toLowerCase();
+        this.matriculaService.matriculaControllerObterDocumentoMatricula({body: document})
+          .subscribe(response => {
+            this.naoTemArq = false;
+            const fileName = this.documentoEditarValidar.caminhoDocumento || 'arquivo_sem_nome';
+            const fileExtension = fileName.split('.').pop()?.toLowerCase();
 
-          if (fileExtension && ['jpg', 'jpeg', 'png'].includes(fileExtension)) {
-            this.isFileImage = true;
-            this.isFileDocument = false;
-          } else if (fileExtension && ['pdf'].includes(fileExtension)) {
-            this.isFileImage = false;
-            this.isFileDocument = true;
-          } else {
-            this.mensagens.confirmarErro("Visualizar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg, .png ou .pdf.");
-            return;
-          }
+            if (fileExtension && ['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+              this.isFileImage = true;
+              this.isFileDocument = false;
+            } else if (fileExtension && ['pdf'].includes(fileExtension)) {
+              this.isFileImage = false;
+              this.isFileDocument = true;
+            } else {
+              this.mensagens.confirmarErro("Visualizar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg, .png ou .pdf.");
+              return;
+            }
 
-          const file = new File([response], fileName, {type: response.type});
-          this.file = file;
-          this.fileSRC = this.makeURLFile(file);
-        }, error => {
-          this.mensagens.confirmarErro("Obter o documento", error);
-        });
+            const file = new File([response], fileName, {type: response.type});
+            this.file = file;
+            this.fileSRC = this.makeURLFile(file);
+
+          }, error => {
+            this.mensagens.confirmarErro("Obter o documento", error);
+          });
+      }
+
     }
     this.innerWidth = window.innerWidth;
   }
@@ -100,6 +110,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
   }
 
   substituirArq(event: any) {
+    this.naoTemArq = false;
     const file = event.target.files[0];
     const fileName = file.name;
     this.file = file;

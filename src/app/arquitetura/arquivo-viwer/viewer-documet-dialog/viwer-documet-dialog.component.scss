@@ -75,3 +75,17 @@
 .image-container img {
   transition: transform 0.3s ease-in-out;
 }
+
+.arquivo-inexistente {
+  background-image: url("/assets/fotos_documentos/documento_inexistente.png") ;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 230px 200px;
+  text-align:center;
+  align-items: center;
+  line-height: 35px;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
