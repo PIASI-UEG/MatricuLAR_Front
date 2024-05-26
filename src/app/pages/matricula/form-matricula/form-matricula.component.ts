@@ -88,6 +88,7 @@ export class FormMatriculaComponent implements OnInit {
   recebeBeneficio: string = "nao";
   listaDocumentosEditareValidar: DocumentoMatriculaDto[] = [];
   enumDocValues: { key: string, value: string }[] = [];
+  checkboxMarcado: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -122,6 +123,7 @@ export class FormMatriculaComponent implements OnInit {
   private createForm() {
       //Dados da Criança
       this.formGroup = this.formBuilder.group({
+          aceiteInformacoes: [false, Validators.required],
         nomeCrianca: [null, Validators.required],
         cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
         dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
@@ -559,11 +561,13 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   alterarNomeTitulo(indice: number): void {
-    if (indice == 0) {
-      this.nomeTitulo = "Dados da Criança"
+    if (indice == 0){
+        this.nomeTitulo = "Informações da Associação Sagrada Família"
     } else if (indice == 1) {
-      this.nomeTitulo = "Dados do Tutor(a)"
+      this.nomeTitulo = "Dados da Criança"
     } else if (indice == 2) {
+      this.nomeTitulo = "Dados do Tutor(a)"
+    } else if (indice == 3) {
       this.nomeTitulo = "Perguntas Culturais"
     } else {
       this.nomeTitulo = "Anexar documentos"
@@ -571,6 +575,7 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   alterarGuiaAtiva(indice: number): void {
+      this.alterarNomeTitulo(indice);
     this.guiaAtiva = indice;
   }
 
@@ -856,5 +861,12 @@ export class FormMatriculaComponent implements OnInit {
     };
     this.dialog.open(ViwerDocumetDialogComponent, config);
   }
+
+    verificarCheckboxMarcado() {
+        const aceiteInformacoesControl = this.formGroup.get('aceiteInformacoes');
+        if (aceiteInformacoesControl) {
+            this.checkboxMarcado = aceiteInformacoesControl.value;
+        }
+    }
 
 }

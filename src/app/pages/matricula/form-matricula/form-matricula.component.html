@@ -9,10 +9,41 @@
   >
     <h2>{{this.nomeTitulo}}</h2>
     <div class="mat-tab-titulos">
-      <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
-        <!-- Etapa 1 -->
+      <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva(0)">
+          <!-- Etapa 0  -->
+          <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormuladorio === FORM_INCLUIR" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0">
+              <div class="conteudo-mat-tab">
+                  <mat-label><h1>Antes de preencher o formulário, por favor, leia atentamente as informações sobre a matrícula.</h1></mat-label>
+                  <p>TOMO CONHECIMENTO DAS NORMAS ABAIXO ESTABELECIDAS:</p>
+                  <ul>
+                      <li>HORÁRIO DE CHEGADA DAS CRIANÇAS: 7:00h às 8:00h. Não será permitida a entrada após este horário.</li>
+                      <li>HORÁRIO DE SAÍDA DAS CRIANÇAS: 16:30h às 17:00h. Seja pontual. Em caso de imprevistos, avisar na secretaria pelo telefone 3099-6423.</li>
+                      <li>Não será permitida a entrada das crianças sem agenda.</li>
+                      <li>A entrega da criança a terceiros só será permitida mediante autorização dos pais ou responsáveis.</li>
+                      <li>É de responsabilidade dos pais ou responsáveis trazerem seus filhos à instituição em boas condições de higiene e saúde, unhas aparadas, orelhas limpas, cabelos lavados, penteados e sem piolhos, em bom estado de saúde, uniforme limpo.</li>
+                      <li>É responsabilidade dos pais ou responsáveis trazerem a mochila com 3 (três) peças de roupas, sandália tipo havaianas, toalhas de banho ou de mão com nome bordado.</li>
+                      <li>A toalha será devolvida sempre que necessário para trazê-las limpas para uso da associação (berçário: toalha de banho com nome bordado).</li>
+                      <li>É de responsabilidade dos pais ou responsáveis comunicar à instituição o motivo da ausência da criança após três dias consecutivos, caso contrário, a criança será desligada automaticamente da instituição.</li>
+                      <li>O não cumprimento das normas estabelecidas neste termo de responsabilidade implicará em advertência por escrito aos pais ou responsáveis.</li>
+                  </ul>
+                  <mat-checkbox color="primary" formControlName="aceiteInformacoes">
+                      POR ESTAR CIENTE DAS NORMAS ACIMA ESTABELECIDAS, COMPROMETO-ME E RESPONSABILIZO-ME A CUMPRI-LAS.
+                  </mat-checkbox>
+                  <mat-error *ngIf="formGroup.get('aceiteInformacoes')?.invalid && formGroup.get('aceiteInformacoes')?.touched">
+                      Você deve concordar antes de continuar.
+                  </mat-error>
+                  <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!verificarAlinhar()">
+                      <button mat-raised-button color="warn" type="button" (click)="mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+                      <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)" [disabled]="!formGroup.get('aceiteInformacoes')?.value">Próxima Etapa</button>
+
+                  </div>
+
+              </div>
+          </mat-tab>
+
+          <!-- Etapa 1 -->
         <mat-tab class="mat-tab-color" label="Criança"
-                 [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 0">
+                 [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 1">
           <div class="conteudo-mat-tab">
             <mat-form-field>
               <mat-label>Nome da criança</mat-label>
@@ -104,31 +135,31 @@
             </mat-form-field>
             <!-- Campos da primeira etapa -->
 
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                 *ngIf="!this.verificarAlinhar()">
-              <button type="button" class="button-hidden"></button>
-              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                      class="button botao-cancelar">Cancelar
-              </button>
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
-              </button>
-            </div>
+              <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                   *ngIf="!this.verificarAlinhar()">
+                  <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
+                      Anterior
+                  </button>
+                  <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                          class="button botao-cancelar">Cancelar
+                  </button>
+                  <button *ngIF="tipoDeFormuladorio" mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+              </div>
 
-            <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
-                 *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa
-              </button>
-              <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
-                      class="button botao-cancelar">Cancelar
-              </button>
-            </div>
+              <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
+                   *ngIf="this.verificarAlinhar()">
+                  <button mat-raised-button type="button" class="button" (click)="goToNextStep(1)">Próxima Etapa</button>
+                  <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
+                          class="button botao-cancelar">Cancelar
+                  </button>
+              </div>
           </div>
 
         </mat-tab>
 
 
         <!-- Etapa 2 -->
-        <mat-tab label="Tutor(a)" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 1">
+        <mat-tab label="Tutor(a)" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 2">
           <div class="conteudo-mat-tab">
             <div formArrayName="tutor">
               <div *ngFor="let tutor of getTutoresControls(); let i = index;" [formGroupName]="i">
@@ -257,19 +288,19 @@
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="!this.verificarAlinhar()">
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
                 Anterior
               </button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
             </div>
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(2)">Próxima Etapa</button>
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
                 Anterior
               </button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
@@ -283,7 +314,7 @@
 
         <!-- Etapa 3 -->
 
-        <mat-tab label="Perguntas" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 2">
+        <mat-tab label="Perguntas" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 3">
           <div class="conteudo-mat-tab">
             <div fxLayout="column" fxLayoutAlign="center start">
               <p>A criança já frequentou outra creche ?</p>
@@ -369,31 +400,32 @@
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="!this.verificarAlinhar()">
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
                 Anterior
               </button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(4)">Próxima Etapa</button>
             </div>
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="this.verificarAlinhar()">
-              <button mat-raised-button type="button" class="button" (click)="goToNextStep(3)">Próxima Etapa</button>
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa
+              <button mat-raised-button type="button" class="button" (click)="goToNextStep(4)">Próxima Etapa</button>
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
                 Anterior
               </button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
+
             </div>
 
           </div>
         </mat-tab>
 
         <!-- Etapa 4 -->
-        <mat-tab label="Documentos" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 3">
+        <mat-tab label="Documentos" [disabled]="tipoDeFormuladorio === 'Cadastrar' && guiaAtiva !== 4">
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormuladorio == 'Cadastrar'">
             <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
               serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
@@ -695,7 +727,7 @@
 
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="!this.verificarAlinhar()">
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(3)">
                 Etapa
                 Anterior
               </button>
@@ -710,7 +742,7 @@
                  *ngIf="this.verificarAlinhar()">
               <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula
               </button>
-              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
+              <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa
                 Anterior
               </button>
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
