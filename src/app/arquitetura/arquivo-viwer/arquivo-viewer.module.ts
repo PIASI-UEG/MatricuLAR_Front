@@ -9,6 +9,7 @@ import { ViwerDocumetDialogComponent } from './viewer-documet-dialog/viwer-docum
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {ImageModule} from "primeng/image";
 import {NgxImageZoomModule} from "ngx-image-zoom";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {NgxImageZoomModule} from "ngx-image-zoom";
     NgxExtendedPdfViewerModule,
     ImageModule,
     NgxImageZoomModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class ArquivoViewerModule {

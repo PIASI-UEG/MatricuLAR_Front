@@ -35,7 +35,6 @@
   height:50px !important;
   position: relative;
   border-radius: 10px 10px;
-  cursor: pointer;
   display: inline-flex;
   alignment-baseline: center;
   margin: 5px;
@@ -128,38 +127,59 @@ button-list{
   margin: 6px;
 }
 
-.tabela{
-  background-color:  #B2DFFF !important;
-  border-color:#b2e2ff !important;
+.conteudo-mat-tab {
+  padding: 20px;
+}
+
+.conteudo-mat-tab h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.conteudo-mat-tab p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.mat-checkbox {
+  margin-top: 20px;
+}
+
+.mat-error {
+  color: red;
+  font-size: 14px;
+
+.tabela {
+  background-color: #B2DFFF !important;
+  border-color: #b2e2ff !important;
   text-decoration-color: #F5F7FA !important;
 }
 
 .mat-column-Tipo {
-  width: 32px;
   border-right: 1px solid currentColor;
   padding-right: 24px;
   text-align: center;
+
 }
 
 
-th{
+mat-header-cell{
   border-color:#b2e2ff !important;
   color: black;
   user-select:none;
-  text-align: center !important;
   font-size: 20px !important;
 }
 
 .mat-mdc-row .mat-mdc-cell {
   cursor: pointer;
+  font-size: 16px;
 }
 
 .mat-mdc-row:hover .mat-mdc-cell {
   background-color: #b2e2ff;
 }
 
-.demo-row-is-clicked {
-  font-weight: bold;
+
 }
 
 

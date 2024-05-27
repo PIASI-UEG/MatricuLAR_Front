@@ -1,5 +1,10 @@
 /*@import "~@angular/material/prebuilt-themes/indigo-pink.css";*/
 
+h1{
+  text-align: center;
+  font-size: 25px;
+}
+
 h2{
   user-select:none;
   text-align: center;
@@ -115,6 +120,11 @@ h2{
 .botao-limpar{
   background-color: #FFFFFF !important;;
   color: #404040 !important;;
+}
+
+.botao-salvar{
+  background-color: #84cb9f !important;;
+  color: white !important;;
 }
 
 .botao-cancelar{

@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { PagePessoaDto } from '../models/page-pessoa-dto';
 import { Pageable } from '../models/pageable';
 import { PessoaDto } from '../models/pessoa-dto';
 import { SearchField } from '../models/search-field';
@@ -44,7 +43,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PessoaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerObterPorIdPath, 'get');
     if (params) {
@@ -58,7 +57,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PessoaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -76,10 +75,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PessoaDto> {
+): Observable<any> {
 
     return this.pessoaControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PessoaDto>) => r.body as PessoaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -102,7 +101,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PessoaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerAlterarPath, 'put');
     if (params) {
@@ -117,7 +116,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PessoaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -136,10 +135,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PessoaDto> {
+): Observable<any> {
 
     return this.pessoaControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PessoaDto>) => r.body as PessoaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -161,7 +160,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PessoaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerRemoverPath, 'delete');
     if (params) {
@@ -175,7 +174,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PessoaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -193,10 +192,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PessoaDto> {
+): Observable<any> {
 
     return this.pessoaControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PessoaDto>) => r.body as PessoaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -217,7 +216,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<PessoaDto>>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerListAllPath, 'get');
     if (params) {
@@ -230,7 +229,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<PessoaDto>>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -247,10 +246,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<PessoaDto>> {
+): Observable<any> {
 
     return this.pessoaControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<PessoaDto>>) => r.body as Array<PessoaDto>)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -272,7 +271,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PessoaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerIncluirPath, 'post');
     if (params) {
@@ -286,7 +285,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PessoaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -304,10 +303,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PessoaDto> {
+): Observable<any> {
 
     return this.pessoaControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PessoaDto>) => r.body as PessoaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -383,7 +382,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<PessoaDto>>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -397,7 +396,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<PessoaDto>>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -415,76 +414,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<PessoaDto>> {
+): Observable<any> {
 
     return this.pessoaControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<PessoaDto>>) => r.body as Array<PessoaDto>)
-    );
-  }
-
-  /**
-   * Path part for operation pessoaControllerSearchFieldsActionPage
-   */
-  static readonly PessoaControllerSearchFieldsActionPagePath = '/api/v1/pessoa/search-fields/page';
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `pessoaControllerSearchFieldsActionPage()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  pessoaControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<StrictHttpResponse<PagePessoaDto>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerSearchFieldsActionPagePath, 'post');
-    if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json',
-      context: context
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PagePessoaDto>;
-      })
-    );
-  }
-
-  /**
-   * Realiza a busca pelos valores dos campos informados
-   *
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `pessoaControllerSearchFieldsActionPage$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  pessoaControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
-  },
-  context?: HttpContext
-
-): Observable<PagePessoaDto> {
-
-    return this.pessoaControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PagePessoaDto>) => r.body as PagePessoaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -506,7 +439,7 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PagePessoaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, PessoaControllerService.PessoaControllerListAllPagePath, 'get');
     if (params) {
@@ -520,7 +453,7 @@ export class PessoaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PagePessoaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -538,10 +471,10 @@ export class PessoaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PagePessoaDto> {
+): Observable<any> {
 
     return this.pessoaControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PagePessoaDto>) => r.body as PagePessoaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
