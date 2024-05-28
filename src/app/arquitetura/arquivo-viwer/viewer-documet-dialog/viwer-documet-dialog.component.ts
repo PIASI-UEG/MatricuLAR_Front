@@ -140,7 +140,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
 
     const document = this.documentoEditarValidar;
     if (document.idMatricula && document.tipoDocumento) {
-      this.matriculaService.matriculaControllerUploadDocumento({
+      this.matriculaService.matriculaControllerAtualizaDocumentoMatricula({
         idMatricula: document.idMatricula,
         tipoDocumento: document.tipoDocumento,
         body: {multipartFile: this.file}

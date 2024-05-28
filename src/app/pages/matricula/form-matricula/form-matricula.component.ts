@@ -635,30 +635,22 @@ export class FormMatriculaComponent implements OnInit {
     const tutorFormArrayLength = tutorFormArray.length;
 
     if (formGroupTutor.get('casado')?.value || formGroupTutor.get('moraComConjuge')?.value) {
+
       if (tutorFormArrayLength == 1) {
         if(conjugue!= null)
         {
           this.adicionarCampoTutorPreenchido(conjugue);
-          if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
-            this.atualizarTabela(EnumDoc.CPF_TUTOR2);
-            this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
-            this.atualizarTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
-            this.atualizarTabela(EnumDoc.CONTRA_CHEQUE1T2);
-            this.atualizarTabela(EnumDoc.CONTRA_CHEQUE2T2);
-            this.atualizarTabela(EnumDoc.CONTRA_CHEQUE3T2);
-            console.log("TESTE", this.listaDocumentosEditareValidar)
-          }
           this.temConjugue = true;
         }else{
-          if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
           this.adicionarCampoTutor();
+          if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
+            console.log(this.listaDocumentosEditareValidar)
           this.atualizarTabela(EnumDoc.CPF_TUTOR2);
           this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
           this.atualizarTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
           this.atualizarTabela(EnumDoc.CONTRA_CHEQUE1T2);
           this.atualizarTabela(EnumDoc.CONTRA_CHEQUE2T2);
           this.atualizarTabela(EnumDoc.CONTRA_CHEQUE3T2);
-            console.log("TESTE", this.listaDocumentosEditareValidar)
           }
           this.temConjugue = true;
         }
@@ -671,7 +663,6 @@ export class FormMatriculaComponent implements OnInit {
       this.removerDaTabela(EnumDoc.CONTRA_CHEQUE1T2);
       this.removerDaTabela(EnumDoc.CONTRA_CHEQUE2T2);
       this.removerDaTabela(EnumDoc.CONTRA_CHEQUE3T2);
-      console.log("TESTE", this.listaDocumentosEditareValidar)
 
       this.temConjugue = false;
     }
@@ -745,9 +736,9 @@ export class FormMatriculaComponent implements OnInit {
 
   private criarDocumentoList(tipo: EnumDoc) {
     const documento: DocumentoMatriculaDto = {
-      aceito: false,
+      tipoDocumento: tipo,
       idMatricula: this.codigo,
-      tipoDocumento: tipo
+      aceito: false,
     };
     return documento;
   }
@@ -756,24 +747,20 @@ export class FormMatriculaComponent implements OnInit {
     this.show = false;
     const documento = this.criarDocumentoList(tipo);
     this.listaDocumentosEditareValidar.push(documento);
-    const copia = this.listaDocumentosEditareValidar;
-    this.listaDocumentosEditareValidar = [];
+
     setTimeout(() => {
       this.show = true;
-      this.listaDocumentosEditareValidar = copia;
       this.ordenarLista();
     }, 150);
-
   }
 
   removerDaTabela(tipo: string) {
     this.show = false;
+
     this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar.filter(documento => documento.tipoDocumento !== tipo);
-    const copia = this.listaDocumentosEditareValidar;
-    this.listaDocumentosEditareValidar = [];
+
     setTimeout(() => {
       this.show = true;
-      this.listaDocumentosEditareValidar = copia;
       this.ordenarLista();
     }, 150);
   }

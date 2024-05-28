@@ -241,6 +241,7 @@ export class Validacoes {
       formGroup.get('possuiBeneficiosDoGoverno')?.setErrors({'informeValorBeneficioGoverno': true});
       return {'informeValorBeneficioGoverno': true};
     }
+    formGroup.get('possuiBeneficiosDoGoverno')?.setErrors(null);
       return null;
   }
 
@@ -250,6 +251,7 @@ export class Validacoes {
       formGroup.get('possuiVeiculoProprio')?.setErrors({'informePossuiVeiculoProprio': true});
       return {'informePossuiVeiculoProprio': true};
     }
+    formGroup.get('possuiVeiculoProprio')?.setErrors(null);
     return null;
   }
 
@@ -259,6 +261,7 @@ export class Validacoes {
       formGroup.get('possuiCRAS')?.setErrors({'informePossuiCRAS': true});
       return {'informePossuiCRAS': true};
     }
+    formGroup.get('possuiCRAS')?.setErrors(null);
     return null;
   }
 
@@ -268,6 +271,7 @@ export class Validacoes {
       formGroup.get('declaroLieConcordo')?.setErrors({'marqueLieConcordo': true});
       return {'marqueLieConcordo': true};
     } else {
+      formGroup.get('declaroLieConcordo')?.setErrors(null);
       return null;
     }
   }
@@ -276,10 +280,20 @@ export class Validacoes {
   validarFotoCrianca(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[0]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocFoto': true});
+      currentErrors['insiraODocFoto'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraODocFoto': true};
     } else {
+      delete currentErrors['insiraODocFoto'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -288,10 +302,20 @@ export class Validacoes {
   validarCertidao(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[1]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocCertidao': true});
+      currentErrors['insiraODocCertidao'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraODocCertidao': true};
     } else {
+      delete currentErrors['insiraODocCertidao'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -300,10 +324,22 @@ export class Validacoes {
   validarCPFCrianca(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[2]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocCPFCrianca': true});
+      currentErrors['insiraODocCPFCrianca'] = true;
+      formGroup.setErrors(currentErrors);
+
       return {'insiraODocCPFCrianca': true};
     } else {
+      delete currentErrors['insiraODocCPFCrianca'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
+
       return null;
     }
   }
@@ -312,10 +348,21 @@ export class Validacoes {
   valdiarComprovanteEndereco(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[4]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocCompEnd': true});
+      currentErrors['insiraODocCompEnd'] = true;
+      formGroup.setErrors(currentErrors);
+
       return {'insiraODocCompEnd': true};
     } else {
+      delete currentErrors['insiraODocCompEnd'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -324,10 +371,22 @@ export class Validacoes {
   valdiarComprovanteMoradia(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[5]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocCompMora': true});
+      currentErrors['insiraODocCompMora'] = true;
+      formGroup.setErrors(currentErrors);
+
       return {'insiraODocCompMora': true};
     } else {
+      delete currentErrors['insiraODocCompMora'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
+
       return null;
     }
   }
@@ -336,10 +395,21 @@ export class Validacoes {
   validarCPFTutor(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[8]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocCPFTutor': true});
+      currentErrors['insiraODocCPFTutor'] = true;
+      formGroup.setErrors(currentErrors);
+
       return {'insiraODocCPFTutor': true};
     } else {
+      delete currentErrors['insiraODocCPFTutor'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -348,10 +418,20 @@ export class Validacoes {
   validarCPFConjugue(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[9] && formGroup.get('temconjugue')?.value) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocCPFConjugue': true});
+      currentErrors['insiraODocCPFConjugue'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraODocCPFConjugue': true};
     } else {
+      delete currentErrors['insiraODocCPFConjugue'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -360,10 +440,22 @@ export class Validacoes {
   validarCertidaoEstadoCivil(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[10]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraODocEstadoCivil': true});
+      currentErrors['insiraODocEstadoCivil'] = true;
+      formGroup.setErrors(currentErrors);
+
       return {'insiraODocEstadoCivil': true};
     } else {
+      delete currentErrors['insiraODocEstadoCivil'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
+
       return null;
     }
   }
@@ -372,10 +464,21 @@ export class Validacoes {
   validarCarteiraTrabalhoTutor(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[11]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraCarteiraDeTrabalhoTutor': true});
+      currentErrors['insiraCarteiraDeTrabalhoTutor'] = true;
+      formGroup.setErrors(currentErrors);
+
       return {'insiraCarteiraDeTrabalhoTutor': true};
     } else {
+      delete currentErrors['insiraCarteiraDeTrabalhoTutor'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -384,10 +487,20 @@ export class Validacoes {
   validarCarteiraTrabalhoConjugue(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
-    if (!copiaDocs[18]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraCarteiraDeTrabalhoConjugue': true});
+    const currentErrors = formGroup.errors || {};
+
+    if (!copiaDocs[18] && formGroup.get('temconjugue')?.value) {
+      currentErrors['insiraCarteiraDeTrabalhoConjugue'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraCarteiraDeTrabalhoConjugue': true};
     } else {
+      delete currentErrors['insiraCarteiraDeTrabalhoConjugue'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -396,10 +509,20 @@ export class Validacoes {
   validarCarteiraContraChequeTutor(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[12] || !copiaDocs[13] || !copiaDocs[14]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraContraChequesTutor': true});
+      currentErrors['insiraContraChequesTutor'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraContraChequesTutor': true};
     } else {
+      delete currentErrors['insiraContraChequesTutor'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -408,10 +531,20 @@ export class Validacoes {
   validarCarteiraContraChequeConjugue(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
-    if (!copiaDocs[15] || !copiaDocs[16] || !copiaDocs[17]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraContraChequesConjugue': true});
+    const currentErrors = formGroup.errors || {};
+
+    if ((!copiaDocs[15] || !copiaDocs[16] || !copiaDocs[17]) && formGroup.get('temconjugue')?.value) {
+      currentErrors['insiraContraChequesConjugue'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraContraChequesConjugue': true};
     } else {
+      delete currentErrors['insiraContraChequesConjugue'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -420,10 +553,21 @@ export class Validacoes {
   validarDeclaracaoEscolarTutor(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[19]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraDeclaracaoEscolarTutor': true});
+      currentErrors['insiraDeclaracaoEscolarTutor'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraDeclaracaoEscolarTutor': true};
     } else {
+
+      delete currentErrors['insiraDeclaracaoEscolarTutor'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -432,10 +576,19 @@ export class Validacoes {
   validarDeclaracaoEscolarConjugue(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
-    if (!copiaDocs[20]) {
-      formGroup.get('listaDocumentos')?.setErrors({'insiraDeclaracaoEscolarConjugue': true});
+    const currentErrors = formGroup.errors || {};
+    if (!copiaDocs[20] && formGroup.get('temconjugue')?.value) {
+      currentErrors['insiraDeclaracaoEscolarConjugue'] = true;
+      formGroup.setErrors(currentErrors);
       return {'insiraDeclaracaoEscolarConjugue': true};
     } else {
+      delete currentErrors['insiraDeclaracaoEscolarConjugue'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -444,10 +597,20 @@ export class Validacoes {
   validarComprovanteBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[6] && formGroup.get('recebeBeneficio')?.value === 'sim') {
-      formGroup.get('listaDocumentos')?.setErrors({'recebeBeneficioGoverno': true});
+      currentErrors['recebeBeneficioGoverno'] = true;
+      formGroup.setErrors(currentErrors);
       return {'recebeBeneficioGoverno': true};
     } else {
+      delete currentErrors['recebeBeneficioGoverno'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -456,10 +619,21 @@ export class Validacoes {
   validarVeiculoDocs(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[3] && formGroup.get('veiculoProprio')?.value === 'sim') {
-      formGroup.get('listaDocumentos')?.setErrors({'possuiVeiculoProprio': true});
+      currentErrors['possuiVeiculoProprio'] = true;
+      formGroup.setErrors(currentErrors);
       return {'possuiVeiculoProprio': true};
     } else {
+      delete currentErrors['possuiVeiculoProprio'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
+
       return null;
     }
   }
@@ -467,10 +641,20 @@ export class Validacoes {
   validarCRASDocs(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
     if (!copiaDocs[7] && formGroup.get('CRAS')?.value === 'sim') {
-      formGroup.get('listaDocumentos')?.setErrors({'possuiCRAS': true});
+      currentErrors['possuiCRAS'] = true;
+      formGroup.setErrors(currentErrors);
       return {'possuiCRAS': true};
     } else {
+      delete currentErrors['possuiCRAS'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
       return null;
     }
   }
@@ -513,12 +697,10 @@ export class Validacoes {
     const valor: string = control.value;
 
     if (!this.formGroupMatricula?.get('possuiNecessidadeEspecial')?.value) {
-      console.log("NULL")
       return null;
     }
 
     if (valor == null || valor == '') {
-      console.log("ERRO")
       return { 'campoNaoPreenchido': true };
     }
 
