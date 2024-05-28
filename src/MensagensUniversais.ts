@@ -94,4 +94,31 @@ export class MensagensUniversais {
       });
     }
   }
+
+    acaoLogin(mensagem: string, duracao: number = 2000): void {
+        if (this.dialog && this.router) {
+            const dialogRef = this.dialog.open(ConfirmationDialog, {
+                data: {
+                    titulo: 'CPF OU SENHA ESTÃO INCORRETOS !!',
+                    textoBotoes: {
+                        ok: 'OK',
+                    },
+                },
+                disableClose: true // Para que o usuário precise clicar no botão OK para fechar
+            });
+
+            dialogRef.afterOpened().subscribe(() => {
+                setTimeout(() => {
+                    dialogRef.close();
+                }, duracao);
+            });
+
+            dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
+                if (confirmed?.resultado && this.router && this.securityService?.isValid()) {
+                    this.securityService?.invalidate();
+                    this.router.navigate(['/acesso']);
+                }
+            });
+        }
+    }
 }
