@@ -188,7 +188,7 @@
 
                                     <mat-form-field>
                                         <mat-label>Data de Nascimento</mat-label>
-                                        <input matInput formControlName="dataNascimento" placeholder="Escolha uma data"
+                                        <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
                                                [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
                                         <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                         <mat-datepicker #dp3></mat-datepicker>

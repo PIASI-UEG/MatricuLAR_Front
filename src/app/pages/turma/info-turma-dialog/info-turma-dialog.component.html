@@ -18,16 +18,18 @@
         </mat-card-header>
 
         <mat-card-content>
-          <table >
-            <tr>
-              <th > Matricula </th>
-              <th > Aluno </th>
-            </tr>
-            <tr *ngFor="let aluno of alunosNaTurma">
-                <td > {{ aluno.nroMatricula }} </td>
-                <td > {{ aluno.nomeAluno }} </td>
-            </tr>
-          </table>
+          <mat-table [dataSource]="alunosDataSource">
+            <ng-container matColumnDef="nroMatricula">
+              <mat-header-cell *matHeaderCellDef> Matrícula </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nroMatricula}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nomeAluno">
+              <mat-header-cell *matHeaderCellDef> Criança </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nomeAluno}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="colunas"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: colunas;"></mat-row>
+          </mat-table>
         </mat-card-content>
       </mat-card>
 

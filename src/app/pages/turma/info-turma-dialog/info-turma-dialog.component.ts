@@ -7,6 +7,7 @@ import {TurmaDto} from "../../../api/models/turma-dto";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-info-turma-dialog',
@@ -17,6 +18,8 @@ export class InfoTurmaDialogComponent {
   turma?: TurmaDto;
   turmaID: number;
   alunosNaTurma: Array<MatriculaListagemDto> | undefined = [];
+  alunosDataSource : MatTableDataSource<MatriculaListagemDto> = new MatTableDataSource<MatriculaListagemDto>([]);
+  colunas: string[] = ['nroMatricula','nomeAluno'];
 
   constructor(
     public turmaService: TurmaControllerService,
@@ -39,7 +42,7 @@ export class InfoTurmaDialogComponent {
     this.turmaService.turmaControllerObterPorId({id: this.turmaID}).subscribe(
       (data) => {
         this.turma = data;
-        this.alunosNaTurma = data.alunos;
+        this.alunosDataSource.data = data.alunos || [];
         console.log(data)
       },
       (error) => {
