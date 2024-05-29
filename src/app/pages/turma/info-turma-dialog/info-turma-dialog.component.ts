@@ -59,4 +59,20 @@ export class InfoTurmaDialogComponent {
   onSubmit() {
     // Lógica de envio do formulário, se necessário
   }
+
+  formatTime(horaString: string): string {
+    // Verifique se a string de entrada tem 4 caracteres
+    if (horaString.length === 4) {
+      // Extraia as horas e minutos
+      const horas = horaString.substring(0, 2);
+      const minutos = horaString.substring(2);
+      // Adicione os dois pontos entre as horas e minutos
+      return `${horas}:${minutos}`;
+    } else {
+      // Retorne a string original se não tiver o formato correto
+      return horaString;
+    }
+  }
+
+
 }

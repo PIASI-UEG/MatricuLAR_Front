@@ -7,7 +7,7 @@
         <mat-card-content>
           <p>Ano da turma: {{turma?.ano}}</p>
           <p>Turno: {{turma?.turno}}</p>
-          <p>Horário de aula: {{turma?.horaInicio}} ás {{turma?.horaFim}}</p>
+          <p>Horário de aula: {{formatTime(turma?.horaInicio ?? '') }} ás {{formatTime(turma?.horaFim ?? '')}}</p>
           <p>Professora: {{turma?.nomeProfessor}}</p>
 
         </mat-card-content>

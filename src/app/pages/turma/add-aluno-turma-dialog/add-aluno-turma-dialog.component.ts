@@ -69,7 +69,7 @@ export class AddAlunoTurmaDialogComponent {
         this.router.navigate(["/turma"]);
       }, erro =>{
         console.log("Erro:"+erro);
-        //this.mensagens.confirmarErro(erro.message)
+        this.mensagens.confirmarErro('Adicionar criança na turma.', erro.message)
       })
   }
 
