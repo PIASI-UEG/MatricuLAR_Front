@@ -133,8 +133,8 @@ export class ListMatriculaComponent implements OnInit{
 
     }
 
-    imprimirTermodaMatricula(id: number, cpfTutor: string){
-        this.matriculaService.matriculaControllerGerarTermo({id: id, cpfTutor: cpfTutor}).subscribe(data=>{
+    imprimirTermodaMatricula(id: number, nomeTutor: string){
+        this.matriculaService.matriculaControllerGerarTermo({id: id, nomeTutor: nomeTutor}).subscribe(data=>{
             this.matricula = data;
             console.log(data);
             const caminhoTermo = "Termos-"+this.matricula.cpf+".pdf";
