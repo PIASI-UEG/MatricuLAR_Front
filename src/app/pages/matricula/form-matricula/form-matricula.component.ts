@@ -263,7 +263,12 @@ export class FormMatriculaComponent implements OnInit {
       formData.append('files', file, file.name);
     });
     const token = this.securityService.credential.accessToken
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
+    console.log("TOKENN:",token)
+    let headers = new HttpHeaders();
+    if (token != null && token != ""){
+      headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
+    }
+
     return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData,{headers}).subscribe(retorno =>{
       if(this.securityService.isValid()){
         this.router.navigate(["/matricula"]);
@@ -299,7 +304,7 @@ export class FormMatriculaComponent implements OnInit {
 
   private realizarEdicao() {
     const matricula: MatriculaDto = this.makeDTOMatricula();
-
+    console.log(matricula)
     this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno =>{
       if(this.tipoDeFormulario == 'Editar'){
         this.router.navigate(["/matricula"]);
