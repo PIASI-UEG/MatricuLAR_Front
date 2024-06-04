@@ -7,9 +7,12 @@ import {DateAdapter} from "@angular/material/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
-import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {
+  ConfirmationDialog,
+  ConfirmationDialogResult
+} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {NecessidadeEspecialDto} from "../../../api/models/necessidade-especial-dto";
-import {MatTabGroup} from "@angular/material/tabs";
+import {MatTabChangeEvent, MatTabGroup} from "@angular/material/tabs";
 import {TutorDto} from "../../../api/models/tutor-dto";
 import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
@@ -72,6 +75,8 @@ export class FormMatriculaComponent implements OnInit {
     recebeBeneficio: string = "nao";
     listaDocumentosEditareValidar: DocumentoMatriculaDto[] = [];
     show: boolean = true;
+    documentosSelecionados: DocumentoMatriculaDto[] = [];
+    mudouForm: boolean = true;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -82,7 +87,6 @@ export class FormMatriculaComponent implements OnInit {
         private dialog: MatDialog,
         private securityService: SecurityService,
         private matriculaService: MatriculaControllerService,
-        private sanitizer: DomSanitizer,
         private http:HttpClient
     ) {
         this._adapter.setLocale('pt-br');
@@ -98,9 +102,12 @@ export class FormMatriculaComponent implements OnInit {
         this.adicionarCampoTutor();
         this.tipoFormulario();
         this.prepararEdicao();
+        this.alterarNomeTitulo(0);
+
 
         this.validacoes.formGroupMatricula = this.formGroup;
         this.validacoes.formGroupDocsList = this.formDocumentos;
+      this.monitorarMudancas()
     }
 
     private createForm() {
@@ -311,6 +318,7 @@ export class FormMatriculaComponent implements OnInit {
     }, error => {
       this.mensagens.confirmarErro(this.tipoDeFormulario, error);
       console.log("erro", error)
+      this.mudouForm = false
     });
 
   }
@@ -535,6 +543,13 @@ export class FormMatriculaComponent implements OnInit {
     this.guiaAtiva = indice;
   }
 
+  onTabClick(event: MatTabChangeEvent): void {
+    if ((event.index === 3 && this.mudouForm) && (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar")) {
+      this.confirmarMudancas();
+    }
+    this.alterarNomeTitulo(event.index);
+  }
+
   goToStep(step: number) {
     // Método para navegar para uma etapa específica
     this.currentStep = step;
@@ -545,15 +560,52 @@ export class FormMatriculaComponent implements OnInit {
     if (indice >= 0 && indice < this.tabGroup._tabs.length) {
       this.tabGroup.selectedIndex = indice;
     }
+    if ((indice === 3 && this.mudouForm) && (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar")) {
+      this.confirmarMudancas();
+    }
+
     this.alterarNomeTitulo(indice)
   }
 
   goToPreviousStep(indice: number) {
-    // Lógica para voltar para a etapa anterior
+
     if (indice >= 0 && indice < this.tabGroup._tabs.length) {
       this.tabGroup.selectedIndex = indice;
     }
     this.alterarNomeTitulo(indice)
+  }
+
+  monitorarMudancas(): void {
+    if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
+      setTimeout(() => {
+        this.formGroup.valueChanges.subscribe(() => {
+          this.mudouForm = true;
+          console.log(this.mudouForm)
+        });
+      }, 1000);
+    }
+    this.mudouForm = false;
+  }
+
+  confirmarMudancas(){
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        titulo: 'Confirmar Alterações',
+        mensagem: 'Para editar os documentos\né necessário salvar\nas alterações feitas\nnos formulários.\nDeseja salvar agora?',
+        textoBotoes: {
+          ok: 'Sim',
+          cancel: 'Não',
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
+      if (confirmed?.resultado) {
+        this.realizarEdicao();
+      }else {
+        this.tabGroup.selectedIndex = 2;
+      }
+    });
   }
 
   criarCampoNecessidadeEspecial(): FormGroup {
@@ -889,10 +941,21 @@ export class FormMatriculaComponent implements OnInit {
       data: {
         documentoEditarValidar: element,
         matriculaService: this.matriculaService,
-        tipoDeFormulario: this.tipoDeFormulario
+        tipoDeFormulario: this.tipoDeFormulario,
+        listaDocumentos: this.listaDocumentosEditareValidar
       }
     };
-    this.dialog.open(ViwerDocumetDialogComponent, config);
+    const dialogRef = this.dialog.open(ViwerDocumetDialogComponent, config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.documentosSelecionados.push(element)
+      }
+    });
+  }
+
+  isSelected(element: any): boolean {
+    return this.documentosSelecionados.includes(element);
   }
 
   getEnumNames(docName: string): string | undefined {
@@ -904,6 +967,6 @@ export class FormMatriculaComponent implements OnInit {
         this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
             .filter(doc => doc.tipoDocumento !== undefined)
             .sort((a, b) => a.tipoDocumento!.localeCompare(b.tipoDocumento!));
-    }
+  }
 
 }

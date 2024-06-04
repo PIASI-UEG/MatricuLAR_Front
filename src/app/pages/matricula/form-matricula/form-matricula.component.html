@@ -10,7 +10,7 @@
         <h1>{{this.formGroup.get('nomeCrianca')?.value}}</h1>
         <h2>{{this.nomeTitulo}}</h2>
         <div class="mat-tab-titulos">
-            <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
+            <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" (selectedTabChange)="onTabClick($event)">
                 <!-- Etapa 0  -->
                 <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR"
                          [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
@@ -751,7 +751,10 @@
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: colunasMostrar;"></mat-row>
+                            <mat-row
+                              *matRowDef="let row; columns: colunasMostrar;"
+                              [ngClass]="{'selected-row': isSelected(row)}"
+                            ></mat-row>
 
                         </mat-table>
 

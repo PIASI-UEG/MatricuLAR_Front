@@ -10,6 +10,7 @@ import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {ImageModule} from "primeng/image";
 import {NgxImageZoomModule} from "ngx-image-zoom";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -19,17 +20,18 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
   exports: [
     UploadArquivoComponent
   ],
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    PdfViewerModule,
-    RouterLink,
-    FlexModule,
-    NgxExtendedPdfViewerModule,
-    ImageModule,
-    NgxImageZoomModule,
-    MatProgressSpinnerModule,
-  ]
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        PdfViewerModule,
+        RouterLink,
+        FlexModule,
+        NgxExtendedPdfViewerModule,
+        ImageModule,
+        NgxImageZoomModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+    ]
 })
 export class ArquivoViewerModule {
 

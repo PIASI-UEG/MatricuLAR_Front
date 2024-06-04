@@ -13,6 +13,7 @@ import { NecessidadeEspecialControllerService } from './services/necessidade-esp
 import { MatriculaControllerService } from './services/matricula-controller.service';
 import { InformacoesMatriculaControllerService } from './services/informacoes-matricula-controller.service';
 import { EnderecoControllerService } from './services/endereco-controller.service';
+import { ControlePeriodoMatriculaControllerService } from './services/controle-periodo-matricula-controller.service';
 import { AuthApiService } from './services/auth-api.service';
 import { AdvertenciaControllerService } from './services/advertencia-controller.service';
 
@@ -33,6 +34,7 @@ import { AdvertenciaControllerService } from './services/advertencia-controller.
     MatriculaControllerService,
     InformacoesMatriculaControllerService,
     EnderecoControllerService,
+    ControlePeriodoMatriculaControllerService,
     AuthApiService,
     AdvertenciaControllerService,
     ApiConfiguration
