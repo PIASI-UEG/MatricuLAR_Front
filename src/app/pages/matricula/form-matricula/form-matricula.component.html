@@ -741,19 +741,20 @@
                         <mat-table *ngIf="show"  [dataSource]="listaDocumentosEditareValidar" class="tabela">
 
                             <ng-container *ngIf="tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
-                                <mat-header-cell *matHeaderCellDef> Aceitar </mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef > Aceitar </mat-header-cell>
                                 <mat-cell *matCellDef="let element" > {{element.aceito}} </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Tipo">
+                            <ng-container matColumnDef="Tipo" >
                                 <mat-header-cell *matHeaderCellDef> Documentos </mat-header-cell>
-                                <mat-cell mat-cell *matCellDef="let element" (click)="openDialogPreviewExpanded(element)"> {{getEnumNames(element.tipoDocumento)}} </mat-cell>
+                                <mat-cell mat-cell *matCellDef="let element" (click)="openDialogPreviewExpanded(element.documentoMatricula)"> {{getEnumNames(element.documentoMatricula.tipoDocumento)}} </mat-cell>
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></mat-header-row>
                             <mat-row
                               *matRowDef="let row; columns: colunasMostrar;"
-                              [ngClass]="{'selected-row': isSelected(row)}"
+                              [ngClass]="{'selected-row': isSelected(row.documentoMatricula)}"
+                              [class.hidden]="row.oculto"
                             ></mat-row>
 
                         </mat-table>

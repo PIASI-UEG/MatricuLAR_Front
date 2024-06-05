@@ -27,6 +27,8 @@ import {ResponsavelDto} from "../../../api/models/responsavel-dto";
 import {EnderecoDto} from "../../../api/models/endereco-dto";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MatCheckbox} from "@angular/material/checkbox";
+import {Subscription} from "rxjs";
+import {DocumentoMatricula} from "./DocumentoMatricula";
 
 @Component({
     selector: 'app-form-matricula',
@@ -73,10 +75,12 @@ export class FormMatriculaComponent implements OnInit {
     colunasMostrar!: string[];
     protected readonly EnumDoc = EnumDoc;
     recebeBeneficio: string = "nao";
-    listaDocumentosEditareValidar: DocumentoMatriculaDto[] = [];
+    listaDocumentosEditareValidar: DocumentoMatricula[] = [];
     show: boolean = true;
     documentosSelecionados: DocumentoMatriculaDto[] = [];
     mudouForm: boolean = true;
+    formChangesSubscription!: Subscription;
+    verificarClickDocs: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -270,7 +274,6 @@ export class FormMatriculaComponent implements OnInit {
       formData.append('files', file, file.name);
     });
     const token = this.securityService.credential.accessToken
-    console.log("TOKENN:",token)
     let headers = new HttpHeaders();
     if (token != null && token != ""){
       headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
@@ -313,7 +316,10 @@ export class FormMatriculaComponent implements OnInit {
     const matricula: MatriculaDto = this.makeDTOMatricula();
     console.log(matricula)
     this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno =>{
-      if(this.tipoDeFormulario == 'Editar'){
+      if(this.verificarClickDocs) {
+        this.verificarClickDocs = false;
+      }
+      else if (this.tipoDeFormulario == 'Editar'){
         this.router.navigate(["/matricula"]);
       }
       else if(this.tipoDeFormulario == 'Validar'){
@@ -395,6 +401,18 @@ export class FormMatriculaComponent implements OnInit {
       tutorDTOList: valoresTutor
     };
 
+    if(this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar"){
+      const listaDocumentos: DocumentoMatriculaDto[] = [];
+
+      this.listaDocumentosEditareValidar.forEach(item => {
+        if (!item.oculto) {
+          listaDocumentos.push(item.documentoMatricula);
+        }
+      });
+
+      matriculaDtoPreenchido.documentoMatricula = listaDocumentos;
+    }
+
     return matriculaDtoPreenchido;
   }
 
@@ -454,10 +472,14 @@ export class FormMatriculaComponent implements OnInit {
           });
           //ate aqui preencher dados das matriculas nos inputs
 
-          // criar lista com os documentos que existem na matricula mostrando os que não existem
-          if(retorno.documentoMatricula){
-            this.listaDocumentosEditareValidar = retorno.documentoMatricula;
+          // criar lista com os documentos que existem na matricula e adiciona a propriedade de ocultar
+          if (retorno.documentoMatricula) {
+            this.listaDocumentosEditareValidar = retorno.documentoMatricula.map(documento => ({
+              documentoMatricula: documento,
+              oculto: false
+            }));
             this.ordenarLista();
+            console.log(this.listaDocumentosEditareValidar);
           }
 
 
@@ -582,14 +604,26 @@ export class FormMatriculaComponent implements OnInit {
 
   monitorarMudancas(): void {
     if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
+
+      if (this.formChangesSubscription) {
+        this.formChangesSubscription.unsubscribe();
+      }
+
       setTimeout(() => {
-        this.formGroup.valueChanges.subscribe(() => {
-          this.mudouForm = true;
-          console.log(this.mudouForm)
+        const initialFormValue = this.formGroup.getRawValue();
+
+        this.formChangesSubscription = this.formGroup.valueChanges.subscribe(() => {
+          const currentFormValue = this.formGroup.getRawValue();
+
+          this.mudouForm = !this.areFormsEqual(initialFormValue, currentFormValue);
         });
       }, 1000);
     }
     this.mudouForm = false;
+  }
+
+  areFormsEqual(form1: any, form2: any): boolean {
+    return JSON.stringify(form1) === JSON.stringify(form2);
   }
 
   confirmarMudancas(){
@@ -606,7 +640,11 @@ export class FormMatriculaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
       if (confirmed?.resultado) {
-        this.realizarEdicao();
+        if(this.formGroup.valid){
+          this.verificarClickDocs = true;
+          this.realizarEdicao();
+          this.monitorarMudancas();
+        }
       }else {
         this.tabGroup.selectedIndex = 2;
       }
@@ -817,28 +855,47 @@ export class FormMatriculaComponent implements OnInit {
       idMatricula: this.codigo,
       aceito: false,
     };
-    return documento;
+
+    const documentoMatricula: DocumentoMatricula = {
+      documentoMatricula: documento,
+      oculto: false
+    }
+
+    return documentoMatricula;
   }
 
   atualizarTabela(tipo: EnumDoc) {
     this.show = false;
-    const documento = this.criarDocumentoList(tipo);
-    this.listaDocumentosEditareValidar.push(documento);
 
+    const documentoExistenteIndex = this.listaDocumentosEditareValidar.findIndex(documento => documento.documentoMatricula.tipoDocumento === tipo);
+
+    if (documentoExistenteIndex !== -1) {
+      this.listaDocumentosEditareValidar[documentoExistenteIndex].oculto = false;
+    } else {
+      const novoDocumento = this.criarDocumentoList(tipo);
+      this.listaDocumentosEditareValidar.push(novoDocumento);
+    }
+    console.log(this.listaDocumentosEditareValidar)
     setTimeout(() => {
-      this.show = true;
       this.ordenarLista();
+      this.show = true;
     }, 150);
   }
 
   removerDaTabela(tipo: string) {
     this.show = false;
 
-    this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar.filter(documento => documento.tipoDocumento !== tipo);
+    this.listaDocumentosEditareValidar.forEach(documento => {
+      if (documento.documentoMatricula.tipoDocumento === tipo) {
+        documento.oculto = true;
+      }
+    });
+
+    console.log(this.listaDocumentosEditareValidar)
 
     setTimeout(() => {
-      this.show = true;
       this.ordenarLista();
+      this.show = true;
     }, 150);
   }
 
@@ -849,7 +906,7 @@ export class FormMatriculaComponent implements OnInit {
     if (tutorFormArrayLength > 1) {
       const formGroupConjugue: FormGroup = this.getTutorForm(1);
       formGroupConjugue.patchValue({
-        relacionamento: formGroupTutor.get('casado')?.value,
+        casado: formGroupTutor.get('casado')?.value,
         moraComConjuge: formGroupTutor.get('moraComConjuge')?.value,
       });
     }
@@ -970,8 +1027,8 @@ export class FormMatriculaComponent implements OnInit {
 
   ordenarLista(): void {
         this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
-            .filter(doc => doc.tipoDocumento !== undefined)
-            .sort((a, b) => a.tipoDocumento!.localeCompare(b.tipoDocumento!));
+            .filter(doc => doc.documentoMatricula.tipoDocumento !== undefined)
+            .sort((a, b) => a.documentoMatricula.tipoDocumento!.localeCompare(b.documentoMatricula.tipoDocumento!));
   }
 
 }
