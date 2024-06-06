@@ -193,6 +193,21 @@ export class ListMatriculaComponent implements OnInit{
     //         }
     //     )
     // }
+    public gerarPdfDados(id: number){
+      this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data=>{
+        this.matricula = data;
+        console.log(data);
+        const caminhoTermo = this.matricula.id+"_Dados-Matricula.pdf";
+        this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
+          .subscribe(response =>{
+            let blob:Blob = response
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = caminhoTermo;
+            downloadLink.click()
+          });
+      })
+    }
 
     private tipoListagem() {
         const param = this.route.snapshot.url.at(0)?.path;
