@@ -279,7 +279,7 @@ export class FormMatriculaComponent implements OnInit {
       headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
     }
 
-    return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData,{headers}).subscribe(retorno =>{
+    return this.http.post(this.matriculaService.rootUrl+'/api/v1/matricula/inclusao-com-docs', formData,{headers}).subscribe(retorno =>{
       if(this.securityService.isValid()){
         this.router.navigate(["/matricula"]);
       }

@@ -202,6 +202,65 @@ export class AdvertenciaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation advertenciaControllerAlterarAdvertencia
+   */
+  static readonly AdvertenciaControllerAlterarAdvertenciaPath = '/api/v1/advertencia/alterar-advertencia/{id-matricula}/{numero-advertencia}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `advertenciaControllerAlterarAdvertencia()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  advertenciaControllerAlterarAdvertencia$Response(params: {
+    'id-matricula': number;
+    'numero-advertencia': number;
+    body: AdvertenciaDto
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<AdvertenciaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerAlterarAdvertenciaPath, 'put');
+    if (params) {
+      rb.path('id-matricula', params['id-matricula'], {});
+      rb.path('numero-advertencia', params['numero-advertencia'], {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AdvertenciaDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `advertenciaControllerAlterarAdvertencia$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  advertenciaControllerAlterarAdvertencia(params: {
+    'id-matricula': number;
+    'numero-advertencia': number;
+    body: AdvertenciaDto
+  },
+  context?: HttpContext
+
+): Observable<AdvertenciaDto> {
+
+    return this.advertenciaControllerAlterarAdvertencia$Response(params,context).pipe(
+      map((r: StrictHttpResponse<AdvertenciaDto>) => r.body as AdvertenciaDto)
+    );
+  }
+
+  /**
    * Path part for operation advertenciaControllerListAll
    */
   static readonly AdvertenciaControllerListAllPath = '/api/v1/advertencia';
@@ -543,6 +602,62 @@ export class AdvertenciaControllerService extends BaseService {
 
     return this.advertenciaControllerListAllPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<PageAdvertenciaDto>) => r.body as PageAdvertenciaDto)
+    );
+  }
+
+  /**
+   * Path part for operation advertenciaControllerObterAdvertencia
+   */
+  static readonly AdvertenciaControllerObterAdvertenciaPath = '/api/v1/advertencia/obter-advertencia/{id-matricula}/{numero-advertencia}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `advertenciaControllerObterAdvertencia()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  advertenciaControllerObterAdvertencia$Response(params: {
+    'id-matricula': number;
+    'numero-advertencia': number;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<AdvertenciaDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, AdvertenciaControllerService.AdvertenciaControllerObterAdvertenciaPath, 'get');
+    if (params) {
+      rb.path('id-matricula', params['id-matricula'], {});
+      rb.path('numero-advertencia', params['numero-advertencia'], {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'blob',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AdvertenciaDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `advertenciaControllerObterAdvertencia$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  advertenciaControllerObterAdvertencia(params: {
+    'id-matricula': number;
+    'numero-advertencia': number;
+  },
+  context?: HttpContext
+
+): Observable<AdvertenciaDto> {
+
+    return this.advertenciaControllerObterAdvertencia$Response(params,context).pipe(
+      map((r: StrictHttpResponse<AdvertenciaDto>) => r.body as AdvertenciaDto)
     );
   }
 

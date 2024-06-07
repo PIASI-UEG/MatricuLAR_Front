@@ -985,6 +985,63 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation matriculaControllerGerarPdfDados
+   */
+  static readonly MatriculaControllerGerarPdfDadosPath = '/api/v1/matricula/dados/{id}';
+
+  /**
+   * Gera o pdf com os dados da matricula do aluno
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerGerarPdfDados()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerGerarPdfDados$Response(params: {
+    id: number;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<any>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerGerarPdfDadosPath, 'post');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  /**
+   * Gera o pdf com os dados da matricula do aluno
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerGerarPdfDados$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerGerarPdfDados(params: {
+    id: number;
+  },
+  context?: HttpContext
+
+): Observable<any> {
+
+    return this.matriculaControllerGerarPdfDados$Response(params,context).pipe(
+      map((r: StrictHttpResponse<any>) => r.body as any)
+    );
+  }
+
+  /**
    * Path part for operation matriculaControllerGetTermo
    */
   static readonly MatriculaControllerGetTermoPath = '/api/v1/matricula/termo/{caminhodoc}';
