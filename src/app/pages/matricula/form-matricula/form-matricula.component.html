@@ -68,8 +68,9 @@
 
                             <mat-form-field>
                                 <mat-label>Data de Nascimento</mat-label>
-                                <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
-                                       [matDatepicker]="dp3">
+                              <input type="hidden" formControlName="dataNascimento" [matDatepicker]="dp3" placeholder="Choose a date">
+                              <input matInput type="text" mask="d0/M0/0000" placeholder="Escolha uma data" [ngModel]="formGroup.get('dataNascimento')?.value | date : formGroup.get('dataNascimento')?.value !== null?'dd/MM/yyyy' : ''"
+                                     [ngModelOptions]="{standalone: true}" (change)='todate($event.target)' />
                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                 <mat-datepicker #dp3></mat-datepicker>
                                 <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>

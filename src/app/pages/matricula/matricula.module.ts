@@ -73,6 +73,7 @@ import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-adve
     PdfViewerModule,
     ArquivoViewerModule,
     MatListModule,
+    FormsModule,
   ],
 })
 export class MatriculaModule { }

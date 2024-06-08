@@ -14,6 +14,9 @@ import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmati
 import { MatriculaDto } from "../../../api/models/matricula-dto";
 import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
 import {AdvertenciaControllerService} from "../../../api/services/advertencia-controller.service";
+import {
+  matriculaControllerGetDocumentoMatricula
+} from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -233,4 +236,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
     fechar(): void {
         this.dialogRef.close();
     }
+
+  protected readonly matriculaControllerGetDocumentoMatricula = matriculaControllerGetDocumentoMatricula;
 }

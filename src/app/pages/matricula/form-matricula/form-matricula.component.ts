@@ -20,7 +20,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {MatriculaDto} from "../../../api/models/matricula-dto";
 import {EnumDoc, EnumDocDescriptions} from "../../../arquitetura/arquivo-viwer/EnumDoc";
 import {
-    ViwerDocumetDialogComponent
+  ViwerDocumetDialogComponent
 } from "../../../arquitetura/arquivo-viwer/viewer-documet-dialog/viwer-documet-dialog.component";
 import {InformacoesMatriculaDto} from "../../../api/models/informacoes-matricula-dto";
 import {ResponsavelDto} from "../../../api/models/responsavel-dto";
@@ -31,182 +31,182 @@ import {Subscription} from "rxjs";
 import {DocumentoMatricula} from "./DocumentoMatricula";
 
 @Component({
-    selector: 'app-form-matricula',
-    templateUrl: './form-matricula.component.html',
-    styleUrls: ['./form-matricula.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-form-matricula',
+  templateUrl: './form-matricula.component.html',
+  styleUrls: ['./form-matricula.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class FormMatriculaComponent implements OnInit {
-    @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
-    @ViewChild('aceiteInformacoes') aceiteInformacoes!: MatCheckbox;
+  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
+  @ViewChild('aceiteInformacoes') aceiteInformacoes!: MatCheckbox;
 
 
-    formGroup!: FormGroup;
-    formDocumentos!: FormGroup;
-    currentStep: number = 1; // Controla a etapa atual
-    codigo!: number;
-    mensagens: MensagensUniversais = new MensagensUniversais({
-        dialog: this.dialog,
-        router: this.router,
-        telaAtual: 'matricula',
-        securityService: this.securityService
+  formGroup!: FormGroup;
+  formDocumentos!: FormGroup;
+  currentStep: number = 1; // Controla a etapa atual
+  codigo!: number;
+  mensagens: MensagensUniversais = new MensagensUniversais({
+    dialog: this.dialog,
+    router: this.router,
+    telaAtual: 'matricula',
+    securityService: this.securityService
+  })
+  validacoes: Validacoes = new Validacoes();
+  minDate = new Date(1900, 0, 1);
+  maxDate = new Date(2008, 0, 0);
+  flexDivAlinhar: string = 'row';
+  flexDivAlinharElementosGrandes: string = 'row';
+  innerWidth: number = window.innerWidth;
+  hide = true;
+  parentescos: string[] = ['PAI', 'MAE', 'AVO', 'BISAVO', 'TIO', 'TIA']; // Lista de opções de parentesco
+  nomeTitulo: string = "";
+  guiaAtiva = 0;
+  botaoNecessidadeClicado: boolean = false;
+  enviado: boolean = false;
+  marcado: boolean = false;
+  // docs: File[] = [];
+  temConjugue: boolean = false;
+  conjugue: TutorDto | null = null;
+  public readonly FORM_INCLUIR = "Cadastrar";
+  public readonly FORM_VALIDACACAO = "Validar";
+  public readonly FORM_EDITAR = "Editar";
+  tipoDeFormulario: string = this.FORM_INCLUIR;
+  colunasMostrar!: string[];
+  protected readonly EnumDoc = EnumDoc;
+  recebeBeneficio: string = "nao";
+  listaDocumentosEditareValidar: DocumentoMatricula[] = [];
+  show: boolean = true;
+  documentosSelecionados: DocumentoMatriculaDto[] = [];
+  mudouForm: boolean = true;
+  formChangesSubscription!: Subscription;
+  verificarClickDocs: boolean = false;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private formBuilderDocs: FormBuilder,
+    private _adapter: DateAdapter<any>,
+    private router: Router,
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private securityService: SecurityService,
+    private matriculaService: MatriculaControllerService,
+    private http: HttpClient
+  ) {
+    this._adapter.setLocale('pt-br');
+  }
+
+  ngOnInit() {
+    this.innerWidth = window.innerWidth;
+    this._adapter.setLocale('pt-br');
+
+
+    this.createFormListaDocs();
+    this.createForm();
+    this.adicionarCampoTutor();
+    this.tipoFormulario();
+    this.prepararEdicao();
+    this.alterarNomeTitulo(0);
+
+
+    this.validacoes.formGroupMatricula = this.formGroup;
+    this.validacoes.formGroupDocsList = this.formDocumentos;
+    this.monitorarMudancas()
+  }
+
+  private createForm() {
+    //Dados da Criança
+    this.formGroup = this.formBuilder.group({
+      aceiteInformacoes: [false, Validators.required],
+      nomeCrianca: [null, Validators.required],
+      cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
+      dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
+      possuiNecessidadeEspecial: [false],
+      necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
+      cep: [null, [Validators.required, this.validacoes.validarCep]],
+      cidade: [null, Validators.required],
+      bairro: [null, Validators.required],
+      logradouro: [null, Validators.required],
+      complemento: [null, Validators.required],
+      //Dados Tutor - Etapa2
+      tutor: this.formBuilder.array<TutorDto>([]),
+      //Perguntas culturais - Etapa 3
+      frequentouOutraCreche: [null, Validators.required],
+      razaoSaida: [null],
+      tipoResidencia: [null, Validators.required],
+      valorAluguel: [null],
+      possuiBeneficiosDoGoverno: [null, Validators.required],
+      possuiVeiculoProprio: [null, Validators.required],
+      possuiCRAS: [null, Validators.required],
+      valorBeneficio: [null],
+      rendaFamiliar: [null, [Validators.required, this.validacoes.validarRenda]],
+      //Documentos - Etapa 4
+      // implementar anexar documentos no form
+      // declaro que li e concordo
+      declaroLieConcordo: false
+    }, {
+      validator: [this.validacoes.validarRazaoSaida,
+        this.validacoes.validarAluguel,
+        this.validacoes.validarBeneficio,
+        this.validacoes.validarFrequentou,
+        this.validacoes.validarBeneficioMarcado,
+        this.validacoes.validarDeclaroLiConcordo,
+        this.validacoes.validarVeiculoMarcado,
+        this.validacoes.validarCRASMarcado
+      ]
     })
-    validacoes: Validacoes = new Validacoes();
-    minDate = new Date(1900, 0, 1);
-    maxDate = new Date(2008, 0, 0);
-    flexDivAlinhar: string = 'row';
-    flexDivAlinharElementosGrandes: string = 'row';
-    innerWidth: number = window.innerWidth;
-    hide = true;
-    parentescos: string[] = ['PAI', 'MAE', 'AVO', 'BISAVO', 'TIO', 'TIA']; // Lista de opções de parentesco
-    nomeTitulo: string = "";
-    guiaAtiva = 0;
-    botaoNecessidadeClicado: boolean = false;
-    enviado: boolean = false;
-    marcado: boolean = false;
-    // docs: File[] = [];
-    temConjugue: boolean = false;
-    conjugue: TutorDto | null = null;
-    public readonly FORM_INCLUIR = "Cadastrar";
-    public readonly FORM_VALIDACACAO = "Validar";
-    public readonly FORM_EDITAR = "Editar";
-    tipoDeFormulario: string = this.FORM_INCLUIR;
-    colunasMostrar!: string[];
-    protected readonly EnumDoc = EnumDoc;
-    recebeBeneficio: string = "nao";
-    listaDocumentosEditareValidar: DocumentoMatricula[] = [];
-    show: boolean = true;
-    documentosSelecionados: DocumentoMatriculaDto[] = [];
-    mudouForm: boolean = true;
-    formChangesSubscription!: Subscription;
-    verificarClickDocs: boolean = false;
+  }
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private formBuilderDocs : FormBuilder,
-        private _adapter: DateAdapter<any>,
-        private router: Router,
-        private route: ActivatedRoute,
-        private dialog: MatDialog,
-        private securityService: SecurityService,
-        private matriculaService: MatriculaControllerService,
-        private http:HttpClient
-    ) {
-        this._adapter.setLocale('pt-br');
+  private createTutorFormGroup(conjugue: TutorDto | null): FormGroup {
+    if (conjugue != null) {
+      return this.formBuilder.group({
+        nomeTutor: [conjugue.nomeTutor, Validators.required],
+        //colocar
+        dataNascimento: [conjugue.dataNascimento, Validators.required],
+        cpf: [conjugue.cpf, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
+        vinculo: [conjugue.vinculo, Validators.required],
+        pessoaTelefone: [conjugue.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone]],
+        telefoneReserva: [conjugue.telefoneReserva, this.validacoes.validarTelefone],
+        profissao: [conjugue.profissao, Validators.required],
+        empresaNome: [conjugue.empresaNome, Validators.required],
+        empresaCnpj: [conjugue.empresaCnpj, this.validacoes.validarCnpj],
+        telefoneCelularEmpresarial: [conjugue.telefoneCelularEmpresarial, this.validacoes.validarTelefone],
+        //colocar
+        telefoneFixoEmpresarial: [conjugue.telefoneFixoEmpresarial, this.validacoes.validarTelefoneFixo],
+        casado: conjugue.casado,
+        moraComConjuge: conjugue.moraComConjuge,
+      }, {validator: this.validacoes.validarTelefonesEmpresariais})
+    } else {
+      return this.formBuilder.group({
+        nomeTutor: [null, Validators.required],
+        //colocar
+        dataNascimento: [null, Validators.required],
+        cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
+        vinculo: [null, Validators.required],
+        pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+        telefoneReserva: [null, this.validacoes.validarTelefone],
+        profissao: [null, Validators.required],
+        empresaNome: [null, Validators.required],
+        empresaCnpj: [null, this.validacoes.validarCnpj],
+        telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
+        //colocar
+        telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
+        casado: false,
+        moraComConjuge: false,
+      }, {validator: this.validacoes.validarTelefonesEmpresariais})
     }
-
-    ngOnInit() {
-        this.innerWidth = window.innerWidth;
-        this._adapter.setLocale('pt-br');
-
-
-        this.createFormListaDocs();
-        this.createForm();
-        this.adicionarCampoTutor();
-        this.tipoFormulario();
-        this.prepararEdicao();
-        this.alterarNomeTitulo(0);
-
-
-        this.validacoes.formGroupMatricula = this.formGroup;
-        this.validacoes.formGroupDocsList = this.formDocumentos;
-      this.monitorarMudancas()
-    }
-
-    private createForm() {
-        //Dados da Criança
-        this.formGroup = this.formBuilder.group({
-            aceiteInformacoes: [false, Validators.required],
-            nomeCrianca: [null, Validators.required],
-            cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
-            dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
-            possuiNecessidadeEspecial: [false],
-            necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
-            cep: [null, [Validators.required, this.validacoes.validarCep]],
-            cidade: [null, Validators.required],
-            bairro: [null, Validators.required],
-            logradouro: [null, Validators.required],
-            complemento: [null, Validators.required],
-            //Dados Tutor - Etapa2
-            tutor: this.formBuilder.array<TutorDto>([]),
-            //Perguntas culturais - Etapa 3
-            frequentouOutraCreche: [null, Validators.required],
-            razaoSaida: [null],
-            tipoResidencia: [null, Validators.required],
-            valorAluguel: [null],
-            possuiBeneficiosDoGoverno: [null, Validators.required],
-            possuiVeiculoProprio: [null, Validators.required],
-            possuiCRAS: [null, Validators.required],
-            valorBeneficio: [null],
-            rendaFamiliar: [null, [Validators.required, this.validacoes.validarRenda]],
-            //Documentos - Etapa 4
-            // implementar anexar documentos no form
-            // declaro que li e concordo
-            declaroLieConcordo: false
-        }, {
-            validator: [this.validacoes.validarRazaoSaida,
-                this.validacoes.validarAluguel,
-                this.validacoes.validarBeneficio,
-                this.validacoes.validarFrequentou,
-                this.validacoes.validarBeneficioMarcado,
-                this.validacoes.validarDeclaroLiConcordo,
-                this.validacoes.validarVeiculoMarcado,
-                this.validacoes.validarCRASMarcado
-            ]
-        })
-    }
-
-    private createTutorFormGroup(conjugue: TutorDto | null): FormGroup {
-        if(conjugue != null)
-        {
-            return this.formBuilder.group({
-                nomeTutor: [conjugue.nomeTutor, Validators.required],
-                //colocar
-                dataNascimento: [conjugue.dataNascimento, Validators.required],
-                cpf: [conjugue.cpf, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
-                vinculo: [conjugue.vinculo, Validators.required],
-                pessoaTelefone: [conjugue.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone]],
-                telefoneReserva: [conjugue.telefoneReserva, this.validacoes.validarTelefone],
-                profissao: [conjugue.profissao, Validators.required],
-                empresaNome: [conjugue.empresaNome, Validators.required],
-                empresaCnpj: [conjugue.empresaCnpj, this.validacoes.validarCnpj],
-                telefoneCelularEmpresarial: [conjugue.telefoneCelularEmpresarial, this.validacoes.validarTelefone],
-                //colocar
-                telefoneFixoEmpresarial: [conjugue.telefoneFixoEmpresarial, this.validacoes.validarTelefoneFixo],
-                casado: conjugue.casado,
-                moraComConjuge: conjugue.moraComConjuge,
-            }, {validator: this.validacoes.validarTelefonesEmpresariais})
-        }else {
-            return this.formBuilder.group({
-                nomeTutor: [null, Validators.required],
-                //colocar
-                dataNascimento: [null, Validators.required],
-                cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
-                vinculo: [null, Validators.required],
-                pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
-                telefoneReserva: [null, this.validacoes.validarTelefone],
-                profissao: [null, Validators.required],
-                empresaNome: [null, Validators.required],
-                empresaCnpj: [null, this.validacoes.validarCnpj],
-                telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
-                //colocar
-                telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
-                casado: false,
-                moraComConjuge: false,
-            }, {validator: this.validacoes.validarTelefonesEmpresariais})
-        }
   }
 
   private createFormListaDocs() {
 
     this.formDocumentos = this.formBuilder.group({
-      listaDocumentos: [[],[]],
+      listaDocumentos: [[], []],
       temconjugue: false,
       recebeBeneficio: null,
       veiculoProprio: null,
       CRAS: null
-    },{validator:
+    }, {
+      validator:
         [this.validacoes.validarFotoCrianca,
           this.validacoes.validarCertidao,
           this.validacoes.validarCPFCrianca,
@@ -224,7 +224,8 @@ export class FormMatriculaComponent implements OnInit {
           this.validacoes.validarComprovanteBeneficio,
           this.validacoes.validarVeiculoDocs,
           this.validacoes.validarCRASDocs
-        ] })
+        ]
+    })
   }
 
   public handleError = (controlName: string, errorName: string) => {
@@ -265,25 +266,34 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  uploadFiles(dto: any, files: File[]){
+  todate(event :EventTarget | null) {
+    const target1 = event as HTMLInputElement
+    const dateParts = target1.value.split("/");
+
+    // @ts-ignore
+    const dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+
+    this.formGroup.get('dataNascimento')?.setValue(dateObject);
+  }
+
+  uploadFiles(dto: any, files: File[]) {
     const formData: FormData = new FormData();
 
-    formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+    formData.append('dto', new Blob([JSON.stringify(dto)], {type: 'application/json'}));
 
     files.forEach(file => {
       formData.append('files', file, file.name);
     });
     const token = this.securityService.credential.accessToken
     let headers = new HttpHeaders();
-    if (token != null && token != ""){
+    if (token != null && token != "") {
       headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
     }
 
-    return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData,{headers}).subscribe(retorno =>{
-      if(this.securityService.isValid()){
+    return this.http.post(`http://localhost:8080/api/v1/matricula/inclusao-com-docs`, formData, {headers}).subscribe(retorno => {
+      if (this.securityService.isValid()) {
         this.router.navigate(["/matricula"]);
-      }
-      else {
+      } else {
         this.router.navigate(["/"]);
       }
       this.confirmarAcao(retorno, this.tipoDeFormulario);
@@ -301,7 +311,7 @@ export class FormMatriculaComponent implements OnInit {
 
     for (let i = 0; i < copiaDocs.length; i++) {
       if (typeof copiaDocs[i] === 'undefined') {
-        copiaDocs[i] = new File(["a"],"vazio.txt",{type: 'text/txt'});
+        copiaDocs[i] = new File(["a"], "vazio.txt", {type: 'text/txt'});
       }
     }
 
@@ -315,14 +325,12 @@ export class FormMatriculaComponent implements OnInit {
   private realizarEdicao() {
     const matricula: MatriculaDto = this.makeDTOMatricula();
     console.log(matricula)
-    this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno =>{
-      if(this.verificarClickDocs) {
+    this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno => {
+      if (this.verificarClickDocs) {
         this.verificarClickDocs = false;
-      }
-      else if (this.tipoDeFormulario == 'Editar'){
+      } else if (this.tipoDeFormulario == 'Editar') {
         this.router.navigate(["/matricula"]);
-      }
-      else if(this.tipoDeFormulario == 'Validar'){
+      } else if (this.tipoDeFormulario == 'Validar') {
         this.router.navigate(["/validar"]);
       }
       this.confirmarAcao(retorno, this.tipoDeFormulario);
@@ -334,7 +342,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
-  private makeDTOMatricula(): MatriculaDto{
+  private makeDTOMatricula(): MatriculaDto {
 
     const necessidadesEspeciaisArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     let valoresNecessidadesEspeciais: NecessidadeEspecialDto[] = [];
@@ -393,7 +401,7 @@ export class FormMatriculaComponent implements OnInit {
       cpf: this.formGroup.get('cpfCrianca')?.value,
       endereco: endereco,
       informacoesMatricula: infoMatricula,
-      nascimento:  this.formGroup.get('dataNascimento')?.value,
+      nascimento: this.formGroup.get('dataNascimento')?.value,
       necessidades: valoresNecessidadesEspeciais,
       nome: this.formGroup.get('nomeCrianca')?.value,
       responsaveis: responsaveis,
@@ -401,7 +409,7 @@ export class FormMatriculaComponent implements OnInit {
       tutorDTOList: valoresTutor
     };
 
-    if(this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar"){
+    if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
       const listaDocumentos: DocumentoMatriculaDto[] = [];
 
       this.listaDocumentosEditareValidar.forEach(item => {
@@ -453,7 +461,7 @@ export class FormMatriculaComponent implements OnInit {
             rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
           });
 
-          retorno.necessidades?.forEach((necessidadeEspecial: any, index:number) => {
+          retorno.necessidades?.forEach((necessidadeEspecial: any, index: number) => {
             this.adicionarCampoNecessidade(necessidadeEspecial)
           });
 
@@ -483,7 +491,7 @@ export class FormMatriculaComponent implements OnInit {
           }
 
 
-        },error => {
+        }, error => {
           this.mensagens.confirmarErro(this.FORM_EDITAR, error.message)
           console.log("erro", error);
         }
@@ -626,7 +634,7 @@ export class FormMatriculaComponent implements OnInit {
     return JSON.stringify(form1) === JSON.stringify(form2);
   }
 
-  confirmarMudancas(){
+  confirmarMudancas() {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Confirmar Alterações',
@@ -640,12 +648,12 @@ export class FormMatriculaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
       if (confirmed?.resultado) {
-        if(this.formGroup.valid){
+        if (this.formGroup.valid) {
           this.verificarClickDocs = true;
           this.realizarEdicao();
           this.monitorarMudancas();
         }
-      }else {
+      } else {
         this.tabGroup.selectedIndex = 2;
       }
     });
@@ -696,8 +704,7 @@ export class FormMatriculaComponent implements OnInit {
 
   adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-    if(necessidade != null)
-    {
+    if (necessidade != null) {
       formArray.push(this.adicionarNecessidadePreenchido(necessidade))
     } else {
       formArray.push(this.criarCampoNecessidadeEspecial());
@@ -752,13 +759,12 @@ export class FormMatriculaComponent implements OnInit {
     if (formGroupTutor.get('casado')?.value || formGroupTutor.get('moraComConjuge')?.value) {
 
       if (tutorFormArrayLength == 1) {
-        if(conjugue!= null)
-        {
+        if (conjugue != null) {
           this.adicionarCampoTutorPreenchido(conjugue);
           this.temConjugue = true;
-        }else{
+        } else {
           this.adicionarCampoTutor();
-          if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
+          if (this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar') {
             console.log(this.listaDocumentosEditareValidar)
             this.atualizarTabela(EnumDoc.CPF_TUTOR2);
             this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
@@ -787,64 +793,64 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
-  atribuirRecebeBeneficioAoListDocsSim(){
+  atribuirRecebeBeneficioAoListDocsSim() {
     this.recebeBeneficio = "sim";
-    if(this.tipoDeFormulario == "Cadastrar")
-    {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         recebeBeneficio: "sim"
       });
-    }
-    else{
+    } else {
       this.atualizarTabela(EnumDoc.COMPROVANTE_BOLSA_FAMILIA);
     }
   }
 
-  atribuirRecebeBeneficioAoListDocsNao(){
+  atribuirRecebeBeneficioAoListDocsNao() {
     this.recebeBeneficio = "nao";
-    if(this.tipoDeFormulario == "Cadastrar") {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         recebeBeneficio: "nao"
       });
-    }else {
+    } else {
       this.removerDaTabela(EnumDoc.COMPROVANTE_BOLSA_FAMILIA);
     }
   }
 
-  atribuirVeiculoAoListDocsSim(){
-    if(this.tipoDeFormulario == "Cadastrar") {
+  atribuirVeiculoAoListDocsSim() {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         veiculoProprio: "sim"
       });
-    }else {
+    } else {
       this.atualizarTabela(EnumDoc.DOCUMENTO_VEICULO);
     }
   }
-  atribuirVeiculoAoListDocsNao(){
-    if(this.tipoDeFormulario == "Cadastrar") {
+
+  atribuirVeiculoAoListDocsNao() {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         veiculoProprio: "nao"
       });
-    }else {
+    } else {
       this.removerDaTabela(EnumDoc.DOCUMENTO_VEICULO);
     }
   }
 
-  atribuirCRASAoListDocsSim(){
-    if(this.tipoDeFormulario == "Cadastrar") {
+  atribuirCRASAoListDocsSim() {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         CRAS: "sim"
       });
-    }else {
+    } else {
       this.atualizarTabela(EnumDoc.ENCAMINHAMENTO_CRAS);
     }
   }
-  atribuirCRASAoListDocsNao(){
-    if(this.tipoDeFormulario == "Cadastrar") {
+
+  atribuirCRASAoListDocsNao() {
+    if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
         CRAS: "nao"
       });
-    }else {
+    } else {
       this.removerDaTabela(EnumDoc.ENCAMINHAMENTO_CRAS);
     }
   }
@@ -913,7 +919,7 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   //lista de documentos que vem do outro componente
-  receberDadosDoFilho(dados: { doc: File , tipoDocumento: EnumDoc}) {
+  receberDadosDoFilho(dados: { doc: File, tipoDocumento: EnumDoc }) {
     const docs = this.formDocumentos.get('listaDocumentos');
     if (dados.doc && docs) {
       const novosDocs = docs.value.slice();
@@ -991,14 +997,14 @@ export class FormMatriculaComponent implements OnInit {
 
   private tipoFormulario() {
     const param = this.route.snapshot.url.at(0)?.path;
-    if(param == "validar"){
+    if (param == "validar") {
       console.log(param);
       this.tipoDeFormulario = this.FORM_VALIDACACAO;
-      this.colunasMostrar = ['Aceite','Tipo'];
+      this.colunasMostrar = ['Aceite', 'Tipo'];
     }
   }
 
-  openDialogPreviewExpanded(element: DocumentoMatriculaDto){
+  openDialogPreviewExpanded(element: DocumentoMatriculaDto) {
     const config: MatDialogConfig = {
       data: {
         documentoEditarValidar: element,
@@ -1026,9 +1032,9 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   ordenarLista(): void {
-        this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
-            .filter(doc => doc.documentoMatricula.tipoDocumento !== undefined)
-            .sort((a, b) => a.documentoMatricula.tipoDocumento!.localeCompare(b.documentoMatricula.tipoDocumento!));
+    this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
+      .filter(doc => doc.documentoMatricula.tipoDocumento !== undefined)
+      .sort((a, b) => a.documentoMatricula.tipoDocumento!.localeCompare(b.documentoMatricula.tipoDocumento!));
   }
 
 }

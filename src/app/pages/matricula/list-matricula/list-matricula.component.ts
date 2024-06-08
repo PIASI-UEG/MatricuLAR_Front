@@ -149,28 +149,32 @@ export class ListMatriculaComponent implements OnInit{
         })
     }
 
-    openDialog(matriculaDto: MatriculaDto) {
-        console.log(matriculaDto);
-        const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
-            {
+    openDialog(matriculaListagemDto: MatriculaListagemDto) {
+        console.log(matriculaListagemDto);
+        if(matriculaListagemDto.nroMatricula){
+          this.matriculaService.matriculaControllerObterPorId({id: matriculaListagemDto.nroMatricula}).subscribe(data =>{
+            const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
+              {
                 data:
-                    {
-                        matricula: matriculaDto
-                    }
-            })
-        dialogRef.afterClosed().subscribe(() => {
+                  {
+                    matricula: data
+                  }
+              })
+            dialogRef.afterClosed().subscribe(() => {
                 this.buscarDados()
-            }
-        )
+              }
+            )
+          })
+        }
     }
 
-    openDialogTest(matriculaDto: MatriculaDto) {
-        console.log(matriculaDto);
+    openDialogTest(matriculaListagemDto: MatriculaListagemDto) {
+        console.log(matriculaListagemDto);
         const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
             {
                 data:
                     {
-                        id: matriculaDto.id
+                        id: matriculaListagemDto.nroMatricula
                     }
             })
         dialogRef.afterClosed().subscribe(() => {
