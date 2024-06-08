@@ -109,7 +109,7 @@
                         <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                             <mat-form-field>
                                 <mat-label>CEP</mat-label>
-                                <input matInput formControlName="cep" mask="00.000-000" placeholder="00.000-000">
+                                <input matInput formControlName="cep" mask="00.000-000" placeholder="00.000-000" (blur)="buscarCEP(formGroup.get('cep')!.value)">
                                 <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
                                 <mat-error *ngIf="handleError('cep', 'cepInvalido')">CEP Inválido</mat-error>
                               <mat-error *ngIf="handleError('cep', 'maxlength')">Limite 8 caracteres</mat-error>

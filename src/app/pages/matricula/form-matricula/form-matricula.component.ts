@@ -1046,4 +1046,27 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+    buscarCEP(cep: string) {
+        this.http.get<any>(`https://brasilapi.com.br/api/cep/v1/${cep}`)
+            .subscribe(
+                (data) => {
+                    const cidadeControl = this.formGroup.get('cidade');
+                    const bairroControl = this.formGroup.get('bairro');
+                    const logradouroControl = this.formGroup.get('logradouro');
+
+                    if (cidadeControl && bairroControl && logradouroControl) {
+                        cidadeControl.setValue(data.city);
+                        bairroControl.setValue(data.neighborhood);
+                        logradouroControl.setValue(data.street);
+                    } else {
+                        console.error('Um ou mais controles do formulário são nulos.');
+                    }
+                },
+                (error) => {
+                    console.error('Erro ao buscar CEP:', error);
+                }
+            );
+    }
+
+
 }
