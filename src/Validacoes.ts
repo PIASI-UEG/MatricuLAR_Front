@@ -8,6 +8,11 @@ export class Validacoes {
   public formGroupDocsList ?: FormGroup;
   public tipoform?: string;
 
+  customPatterns = {
+      'S': { pattern: new RegExp('[a-zA-ZÀ-ÖØ-öø-ÿ ]') },
+      'A': { pattern: new RegExp('[a-zA-Z0-9À-ÖØ-öø-ÿ ]') },
+      'N': { pattern: new RegExp('[0-9]') }
+  };
   validarIdadeCrianca(control: AbstractControl): { [key: string]: any } | null {
     const dataNascimento: Date = control.value;
 

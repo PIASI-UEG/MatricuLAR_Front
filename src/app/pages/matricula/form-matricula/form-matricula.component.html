@@ -53,7 +53,7 @@
                     <div class="conteudo-mat-tab">
                         <mat-form-field>
                             <mat-label>Nome da criança</mat-label>
-                            <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança" maxlength="200" mask="S*">
+                            <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança" maxlength="200" mask="S*"  [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
                           <mat-error *ngIf="handleError('nomeCrianca', 'maxlength')">Limete 200 caracteres</mat-error>
                         </mat-form-field>
@@ -70,7 +70,7 @@
 
                             <mat-form-field>
                                 <mat-label>Data de Nascimento</mat-label>
-                                <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
+                                <input matInput readonly formControlName="dataNascimento" placeholder="Selecione a Data"
                                        [matDatepicker]="dp3" [max]="maxDateCrianca" [min]="minDateCrianca">
                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                 <mat-datepicker #dp3></mat-datepicker>
@@ -90,7 +90,7 @@
                                     <mat-form-field>
                                         <mat-label>Necessidade especial</mat-label>
                                         <input matInput formControlName="titulo"
-                                               placeholder="EX: alergia, medicamentos, alimentação" mask="S*" maxlength="50">
+                                               placeholder="EX: alergia, medicamentos, alimentação" mask="S*" maxlength="50"  [patterns]="validacoes.customPatterns">
                                         <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('campoNaoPreenchido')"> Desmarque ou preencha para continuar</mat-error>
                                       <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('maxlength')"> Limite 50 caracteres</mat-error>
                                     </mat-form-field>
@@ -117,7 +117,7 @@
 
                             <mat-form-field>
                                 <mat-label>Cidade</mat-label>
-                                <input matInput formControlName="cidade" placeholder="Digite o nome da cidade" maxlength="250" mask="A*" >
+                                <input matInput formControlName="cidade" placeholder="Digite o nome da cidade" maxlength="250" mask="S*" [patterns]="validacoes.customPatterns">
                                 <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
                               <mat-error *ngIf="handleError('cidade', 'maxlength')">Limite 250 caracteres</mat-error>
                             </mat-form-field>
@@ -125,21 +125,21 @@
 
                         <mat-form-field>
                             <mat-label>Bairro</mat-label>
-                            <input matInput formControlName="bairro" placeholder="Digite o nome do bairro" maxlength="250" mask="A*">
+                            <input matInput formControlName="bairro" placeholder="Digite o nome do bairro" maxlength="250" mask="A*" [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
                             <mat-error *ngIf="handleError('bairro', 'maxlength')">Limite 250 caracteres</mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
                             <mat-label>Logradouro</mat-label>
-                            <input matInput formControlName="logradouro" placeholder="Digite o nome da rua" maxlength="250" mask="A*">
+                            <input matInput formControlName="logradouro" placeholder="Digite o nome da rua" maxlength="250" mask="A*" [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('logradouro', 'required')">Campo Obrigatório</mat-error>
                           <mat-error *ngIf="handleError('logradouro', 'maxlength')">Limite 250 caracteres</mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
                             <mat-label>Complemento</mat-label>
-                            <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento...." maxlength="250" mask="A*">
+                            <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento...." maxlength="250" mask="A*" [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
                           <mat-error *ngIf="handleError('complemento', 'maxlength')">Limite 250 caracteres</mat-error>
                         </mat-form-field>
@@ -177,7 +177,7 @@
                                 </ng-container>
                                 <mat-form-field>
                                     <mat-label>Nome</mat-label>
-                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor" maxlength="200" mask="S*">
+                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
                                     <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
                                   <mat-error *ngIf="handleErrorTutor('nomeTutor', 'maxlength', i)">Limete 200 caracteres</mat-error>
                                 </mat-form-field>
@@ -240,7 +240,7 @@
 
                                 <mat-form-field>
                                     <mat-label>Nome da empresa</mat-label>
-                                    <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa" maxlength="100" mask="S*">
+                                    <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa" maxlength="100" mask="S*" [patterns]="validacoes.customPatterns">
                                     <mat-error *ngIf="handleErrorTutor('empresaNome', 'required', i)">Campo Obrigatório</mat-error>
                                   <mat-error *ngIf="handleErrorTutor('empresaNome', 'maxlength', i)">Limite 100 caracteres</mat-error>
                                 </mat-form-field>
@@ -248,7 +248,7 @@
                                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                                     <mat-form-field>
                                         <mat-label>Profissão</mat-label>
-                                        <input matInput formControlName="profissao" placeholder="Digte o nome da profissão" maxlength="50" mask="S*">
+                                        <input matInput formControlName="profissao" placeholder="Digte o nome da profissão" maxlength="50" mask="S*" [patterns]="validacoes.customPatterns">
                                         <mat-error *ngIf="handleErrorTutor('profissao', 'required', i)">Campo Obrigatório
                                       </mat-error>
                                       <mat-error *ngIf="handleErrorTutor('profissao', 'maxlength', i)">Limite 50 caracteres</mat-error>
@@ -340,7 +340,7 @@
 
                             <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
                                 <mat-label>Por qual razão saiu?</mat-label>
-                                <input matInput formControlName="razaoSaida" placeholder="Informe detalhes" maxlength="200" mask="S*">
+                                <input matInput formControlName="razaoSaida" placeholder="Informe detalhes" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
                                 <mat-error *ngIf="handleErrorForm('informeRazaoSaida')">Informe a razão da saída</mat-error>
                               <mat-error *ngIf="handleError('razaoSaida', 'maxlength')">Limite 200 caracteres</mat-error>
                             </mat-form-field>
