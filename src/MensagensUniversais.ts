@@ -33,10 +33,10 @@ export class MensagensUniversais {
     if(this.dialog) {
       const dialogRef = this.dialog.open(ConfirmationDialog, {
         data: {
-          titulo: 'ERRO!!!',
+          titulo: 'ERRO!',
           mensagem: `Erro ao ${acao}! ` + erro,
           textoBotoes: {
-            ok: 'Confirmar',
+            ok: 'OK',
           },
         },
       });
