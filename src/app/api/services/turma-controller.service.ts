@@ -491,7 +491,7 @@ export class TurmaControllerService extends BaseService {
   /**
    * Path part for operation turmaControllerAdicionaUmAluno
    */
-  static readonly TurmaControllerAdicionaUmAlunoPath = '/api/v1/turma/adicionaUmAluno';
+  static readonly TurmaControllerAdicionaUmAlunoPath = '/api/v1/turma/adiciona-um-aluno';
 
   /**
    * Busca a quantidade de registros
@@ -551,7 +551,7 @@ export class TurmaControllerService extends BaseService {
   /**
    * Path part for operation turmaControllerAdicionaAlunos
    */
-  static readonly TurmaControllerAdicionaAlunosPath = '/api/v1/turma/adicionaAlunos';
+  static readonly TurmaControllerAdicionaAlunosPath = '/api/v1/turma/adiciona-alunos';
 
   /**
    * Busca a quantidade de registros

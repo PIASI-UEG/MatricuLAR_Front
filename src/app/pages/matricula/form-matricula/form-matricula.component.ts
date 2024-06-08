@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, HostListener, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {MensagensUniversais} from "../../../../MensagensUniversais";
@@ -41,7 +41,6 @@ export class FormMatriculaComponent implements OnInit {
     @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
     @ViewChild('aceiteInformacoes') aceiteInformacoes!: MatCheckbox;
 
-
     formGroup!: FormGroup;
     formDocumentos!: FormGroup;
     currentStep: number = 1; // Controla a etapa atual
@@ -54,7 +53,10 @@ export class FormMatriculaComponent implements OnInit {
     })
     validacoes: Validacoes = new Validacoes();
     minDate = new Date(1900, 0, 1);
-    maxDate = new Date(2008, 0, 0);
+    today = new Date();
+    maxDate = new Date(this.today.getFullYear() - 18, this.today.getMonth(), this.today.getDate());
+    minDateCrianca = new Date(this.today.getFullYear() - 5, this.today.getMonth(), this.today.getDate());
+    maxDateCrianca = new Date(this.today.getFullYear() - 3, this.today.getMonth(), this.today.getDate());
     flexDivAlinhar: string = 'row';
     flexDivAlinharElementosGrandes: string = 'row';
     innerWidth: number = window.innerWidth;
@@ -111,28 +113,29 @@ export class FormMatriculaComponent implements OnInit {
 
         this.validacoes.formGroupMatricula = this.formGroup;
         this.validacoes.formGroupDocsList = this.formDocumentos;
-      this.monitorarMudancas()
+        this.validacoes.tipoform = this.tipoDeFormulario;
+        this.monitorarMudancas()
     }
 
     private createForm() {
         //Dados da Criança
         this.formGroup = this.formBuilder.group({
             aceiteInformacoes: [false, Validators.required],
-            nomeCrianca: [null, Validators.required],
-            cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
+            nomeCrianca: [null, [Validators.required, Validators.maxLength(200)]],
+            cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
             dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
             possuiNecessidadeEspecial: [false],
             necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
-            cep: [null, [Validators.required, this.validacoes.validarCep]],
-            cidade: [null, Validators.required],
-            bairro: [null, Validators.required],
-            logradouro: [null, Validators.required],
-            complemento: [null, Validators.required],
+            cep: [null, [Validators.required, this.validacoes.validarCep, Validators.maxLength(8)]],
+            cidade: [null, [Validators.required, Validators.maxLength(250)]],
+            bairro: [null, [Validators.required, Validators.maxLength(250)]],
+            logradouro: [null, [Validators.required, Validators.maxLength(250)]],
+            complemento: [null, [Validators.required, Validators.maxLength(250)]],
             //Dados Tutor - Etapa2
             tutor: this.formBuilder.array<TutorDto>([]),
             //Perguntas culturais - Etapa 3
             frequentouOutraCreche: [null, Validators.required],
-            razaoSaida: [null],
+            razaoSaida: [null,[Validators.maxLength(200)]],
             tipoResidencia: [null, Validators.required],
             valorAluguel: [null],
             possuiBeneficiosDoGoverno: [null, Validators.required],
@@ -161,37 +164,37 @@ export class FormMatriculaComponent implements OnInit {
         if(conjugue != null)
         {
             return this.formBuilder.group({
-                nomeTutor: [conjugue.nomeTutor, Validators.required],
+                nomeTutor: [conjugue.nomeTutor, [Validators.required, Validators.maxLength(200)]],
                 //colocar
                 dataNascimento: [conjugue.dataNascimento, Validators.required],
-                cpf: [conjugue.cpf, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
+                cpf: [conjugue.cpf, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
                 vinculo: [conjugue.vinculo, Validators.required],
-                pessoaTelefone: [conjugue.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone]],
-                telefoneReserva: [conjugue.telefoneReserva, this.validacoes.validarTelefone],
-                profissao: [conjugue.profissao, Validators.required],
-                empresaNome: [conjugue.empresaNome, Validators.required],
-                empresaCnpj: [conjugue.empresaCnpj, this.validacoes.validarCnpj],
-                telefoneCelularEmpresarial: [conjugue.telefoneCelularEmpresarial, this.validacoes.validarTelefone],
+                pessoaTelefone: [conjugue.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
+                telefoneReserva: [conjugue.telefoneReserva, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
+                profissao: [conjugue.profissao, [Validators.required, Validators.maxLength(50)]],
+                empresaNome: [conjugue.empresaNome, [Validators.required, Validators.maxLength(100)]],
+                empresaCnpj: [conjugue.empresaCnpj, [this.validacoes.validarCnpj, Validators.maxLength(14)]],
+                telefoneCelularEmpresarial: [conjugue.telefoneCelularEmpresarial, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
                 //colocar
-                telefoneFixoEmpresarial: [conjugue.telefoneFixoEmpresarial, this.validacoes.validarTelefoneFixo],
+                telefoneFixoEmpresarial: [conjugue.telefoneFixoEmpresarial, [this.validacoes.validarTelefoneFixo, Validators.maxLength(10)]],
                 casado: conjugue.casado,
                 moraComConjuge: conjugue.moraComConjuge,
             }, {validator: this.validacoes.validarTelefonesEmpresariais})
         }else {
             return this.formBuilder.group({
-                nomeTutor: [null, Validators.required],
+                nomeTutor: [null, [Validators.required, Validators.maxLength(200)]],
                 //colocar
                 dataNascimento: [null, Validators.required],
-                cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf]],
+                cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
                 vinculo: [null, Validators.required],
-                pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
-                telefoneReserva: [null, this.validacoes.validarTelefone],
-                profissao: [null, Validators.required],
-                empresaNome: [null, Validators.required],
-                empresaCnpj: [null, this.validacoes.validarCnpj],
-                telefoneCelularEmpresarial: [null, this.validacoes.validarTelefone],
+                pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
+                telefoneReserva: [null, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
+                profissao: [null, [Validators.required, Validators.maxLength(50)]],
+                empresaNome: [null, [Validators.required, Validators.maxLength(100)]],
+                empresaCnpj: [null, [this.validacoes.validarCnpj, Validators.maxLength(14)]],
+                telefoneCelularEmpresarial: [null, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
                 //colocar
-                telefoneFixoEmpresarial: [null, this.validacoes.validarTelefoneFixo],
+                telefoneFixoEmpresarial: [null, [this.validacoes.validarTelefoneFixo, Validators.maxLength(10)]],
                 casado: false,
                 moraComConjuge: false,
             }, {validator: this.validacoes.validarTelefonesEmpresariais})
@@ -422,11 +425,14 @@ export class FormMatriculaComponent implements OnInit {
       const codigo = parseInt(paramId);
       this.matriculaService.matriculaControllerObterPorId({id: codigo}).subscribe(
         retorno => {
-          this.tipoDeFormulario = this.FORM_EDITAR;
+          if(this.tipoDeFormulario != 'Validar')
+          {
+            this.tipoDeFormulario = this.FORM_EDITAR;
+            this.colunasMostrar = ['Tipo'];
+          }
+
           this.codigo = retorno.id || -1;
-          this.colunasMostrar = ['Tipo'];
-          console.log(this.colunasMostrar);
-          console.log(retorno)
+
 
           this.formGroup.patchValue({
             nomeCrianca: retorno.nome,
@@ -643,7 +649,7 @@ export class FormMatriculaComponent implements OnInit {
         if(this.formGroup.valid){
           this.verificarClickDocs = true;
           this.realizarEdicao();
-          this.monitorarMudancas();
+
         }
       }else {
         this.tabGroup.selectedIndex = 2;
@@ -653,13 +659,13 @@ export class FormMatriculaComponent implements OnInit {
 
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
-      titulo: [null, this.validacoes.validarNecessidadeEspecial]
+      titulo: [null, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50)]]
     });
   }
 
   adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
     return this.formBuilder.group({
-      titulo: [necessidade.titulo, this.validacoes.validarNecessidadeEspecial]
+      titulo: [necessidade.titulo, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50)]]
     });
   }
 
@@ -756,10 +762,15 @@ export class FormMatriculaComponent implements OnInit {
         {
           this.adicionarCampoTutorPreenchido(conjugue);
           this.temConjugue = true;
+          this.atualizarTabela(EnumDoc.CPF_TUTOR2);
+          this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
+          this.atualizarTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
+          this.atualizarTabela(EnumDoc.CONTRA_CHEQUE1T2);
+          this.atualizarTabela(EnumDoc.CONTRA_CHEQUE2T2);
+          this.atualizarTabela(EnumDoc.CONTRA_CHEQUE3T2);
         }else{
           this.adicionarCampoTutor();
           if(this.tipoDeFormulario == 'Validar' || this.tipoDeFormulario == 'Editar'){
-            console.log(this.listaDocumentosEditareValidar)
             this.atualizarTabela(EnumDoc.CPF_TUTOR2);
             this.atualizarTabela(EnumDoc.DECLARACAO_ESCOLART2);
             this.atualizarTabela(EnumDoc.COMPROVANTE_TRABALHO_T2);
@@ -992,7 +1003,6 @@ export class FormMatriculaComponent implements OnInit {
   private tipoFormulario() {
     const param = this.route.snapshot.url.at(0)?.path;
     if(param == "validar"){
-      console.log(param);
       this.tipoDeFormulario = this.FORM_VALIDACACAO;
       this.colunasMostrar = ['Aceite','Tipo'];
     }
@@ -1029,6 +1039,13 @@ export class FormMatriculaComponent implements OnInit {
         this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
             .filter(doc => doc.documentoMatricula.tipoDocumento !== undefined)
             .sort((a, b) => a.documentoMatricula.tipoDocumento!.localeCompare(b.documentoMatricula.tipoDocumento!));
+  }
+
+  onAceitoChange(element: any) {
+    const documento = this.listaDocumentosEditareValidar.find(doc => doc.documentoMatricula.tipoDocumento === element.documentoMatricula.tipoDocumento);
+    if (documento) {
+      documento.documentoMatricula.aceito = !documento.documentoMatricula.aceito;
+    }
   }
 
 }
