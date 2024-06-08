@@ -268,34 +268,33 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  uploadFiles(dto: any, files: File[]){
-    const formData: FormData = new FormData();
+    uploadFiles(dto: any, files: File[]) {
+        const formData: FormData = new FormData();
 
-    formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+        formData.append('dto', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
 
-    files.forEach(file => {
-      formData.append('files', file, file.name);
-    });
-    const token = this.securityService.credential.accessToken
-    let headers = new HttpHeaders();
-    if (token != null && token != ""){
-      headers = new HttpHeaders().set('Authorization', 'Bearer ${token}');
+        files.forEach(file => {
+            formData.append('files', file, file.name);
+        });
+
+        const token = this.securityService.credential.accessToken;
+        let headers = new HttpHeaders();
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        return this.http.post<MatriculaDto>(`${this.matriculaService.rootUrl}/api/v1/matricula/inclusao-com-docs`, formData, { headers })
+            .subscribe(retorno => {
+                if (this.securityService.isValid()) {
+                    this.router.navigate(['/matricula']);
+                } else {
+                    this.router.navigate(['/']);
+                }
+                this.confirmarAcao(retorno, this.tipoDeFormulario);
+            }, error => {
+                this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+            });
     }
-
-    return this.http.post(this.matriculaService.rootUrl+'/api/v1/matricula/inclusao-com-docs', formData,{headers}).subscribe(retorno =>{
-      if(this.securityService.isValid()){
-        this.router.navigate(["/matricula"]);
-      }
-      else {
-        this.router.navigate(["/"]);
-      }
-      this.confirmarAcao(retorno, this.tipoDeFormulario);
-      // console.log("as", retorno);
-    }, error => {
-      this.mensagens.confirmarErro(this.tipoDeFormulario, error);
-      // console.log("erro", error)
-    });
-  }
 
   private realizarInclusao() {
     const docs = this.formDocumentos.get('listaDocumentos');
@@ -583,6 +582,11 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   goToNextStep(indice: number) {
+      // Logica CheckBox Informações gerais
+      if(!this.aceiteInformacoes.checked){
+          this.marcado = true;
+          return;
+      }
     // Lógica para avançar para a próxima etapa
     if (indice >= 0 && indice < this.tabGroup._tabs.length) {
       this.tabGroup.selectedIndex = indice;

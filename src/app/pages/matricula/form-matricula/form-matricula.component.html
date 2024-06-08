@@ -329,7 +329,7 @@
                 <mat-tab label="Perguntas" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 3">
                     <div class="conteudo-mat-tab">
                         <div fxLayout="column" fxLayoutAlign="center start">
-                            <p>A criança já frequentou outra creche ?</p>
+                            <p>A criança já frequentou outra creche ou associação ?</p>
                             <mat-radio-group color="primary" formControlName="frequentouOutraCreche">
                                 <mat-error *ngIf="handleErrorForm('informeValorFrequentou') && this.enviado">Marque uma opção
                                 </mat-error>
@@ -437,7 +437,7 @@
                 <mat-tab label="Documentos" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 4">
                     <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Cadastrar'" >
                         <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
-                            serão informados dados de alto peso na avaliação para aceitar a criança na creche, informe imagens nítidas
+                            serão informados dados de alto peso na avaliação para aceitar a criança na Associação Sagrada Família, informe imagens nítidas
                             e
                             de qualidade para facilitar o procedimento.</p>
 
