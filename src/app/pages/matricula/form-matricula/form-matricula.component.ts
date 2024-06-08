@@ -419,83 +419,77 @@ export class FormMatriculaComponent implements OnInit {
     return matriculaDtoPreenchido;
   }
 
-  private prepararEdicao() {
-    const paramId = this.route.snapshot.paramMap.get('id');
-    if (paramId) {
-      const codigo = parseInt(paramId);
-      this.matriculaService.matriculaControllerObterPorId({id: codigo}).subscribe(
-        retorno => {
-          if(this.tipoDeFormulario != 'Validar')
-          {
-            this.tipoDeFormulario = this.FORM_EDITAR;
-            this.colunasMostrar = ['Tipo'];
-          }
+    private prepararEdicao() {
+        const paramId = this.route.snapshot.paramMap.get('id');
+        if (paramId) {
+            const codigo = parseInt(paramId);
+            this.matriculaService.matriculaControllerObterPorId({ id: codigo }).subscribe(
+                retorno => {
+                    if (this.tipoDeFormulario != 'Validar') {
+                        this.tipoDeFormulario = this.FORM_EDITAR;
+                        this.colunasMostrar = ['Tipo'];
+                    }
 
-          this.codigo = retorno.id || -1;
+                    this.codigo = retorno.id || -1;
 
+                    this.formGroup.patchValue({
+                        nomeCrianca: retorno.nome,
+                        cpfCrianca: retorno.cpf,
+                        dataNascimento: retorno.nascimento,
+                        possuiNecessidadeEspecial: !!retorno.necessidades?.length,
+                        necessidadesEspeciais: retorno.necessidades,
+                        cep: retorno.endereco?.cep,
+                        cidade: retorno.endereco?.cidade,
+                        bairro: retorno.endereco?.bairro,
+                        logradouro: retorno.endereco?.logradouro,
+                        complemento: retorno.endereco?.complemento,
+                        // Dados Tutor - Etapa 2
+                        tutor: retorno.tutorDTOList,
+                        // Perguntas culturais - Etapa 3
+                        frequentouOutraCreche: retorno.informacoesMatricula?.frequentouOutraCreche === true ? 'sim' : 'nao',
+                        razaoSaida: retorno.informacoesMatricula?.razaoSaida,
+                        tipoResidencia: retorno.informacoesMatricula?.tipoResidencia,
+                        valorAluguel: retorno.informacoesMatricula?.valorAluguel,
+                        possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno === true ? 'sim' : 'nao',
+                        possuiVeiculoProprio: retorno.informacoesMatricula?.possuiVeiculoProprio === true ? 'sim' : 'nao',
+                        possuiCRAS: retorno.informacoesMatricula?.possuiEcaminhamentoCRAS === true ? 'sim' : 'nao',
+                        valorBeneficio: retorno.informacoesMatricula?.valorBeneficio,
+                        rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
+                    });
 
-          this.formGroup.patchValue({
-            nomeCrianca: retorno.nome,
-            cpfCrianca: retorno.cpf,
-            dataNascimento: retorno.nascimento,
-            possuiNecessidadeEspecial: !!retorno.necessidades?.length,
-            necessidadesEspeciais: retorno.necessidades,
-            cep: retorno.endereco?.cep,
-            cidade: retorno.endereco?.cidade,
-            bairro: retorno.endereco?.bairro,
-            logradouro: retorno.endereco?.logradouro,
-            complemento: retorno.endereco?.complemento,
-            //Dados Tutor - Etapa2
-            tutor: retorno.tutorDTOList,
-            //Perguntas culturais - Etapa 3
-            frequentouOutraCreche: retorno.informacoesMatricula?.frequentouOutraCreche === true ? 'sim' : 'nao',
-            razaoSaida: retorno.informacoesMatricula?.razaoSaida,
-            tipoResidencia: retorno.informacoesMatricula?.tipoResidencia,
-            valorAluguel: retorno.informacoesMatricula?.valorAluguel,
-            possuiBeneficiosDoGoverno: retorno.informacoesMatricula?.possuiBeneficiosDoGoverno === true ? 'sim' : 'nao',
-            possuiVeiculoProprio: retorno.informacoesMatricula?.possuiVeiculoProprio === true ? 'sim' : 'nao',
-            possuiCRAS: retorno.informacoesMatricula?.possuiEcaminhamentoCRAS === true ? 'sim' : 'nao',
-            valorBeneficio: retorno.informacoesMatricula?.valorBeneficio,
-            rendaFamiliar: retorno.informacoesMatricula?.rendaFamiliar,
-          });
+                    retorno.necessidades?.forEach((necessidadeEspecial: any, index: number) => {
+                        this.adicionarCampoNecessidade(necessidadeEspecial);
+                    });
 
-          retorno.necessidades?.forEach((necessidadeEspecial: any, index:number) => {
-            this.adicionarCampoNecessidade(necessidadeEspecial)
-          });
+                    retorno.tutorDTOList?.forEach((tutor: any, index: number) => {
+                        if (index === 0 && retorno.responsaveis) {
+                            tutor.vinculo = retorno.responsaveis[index].vinculo;
+                            const tutorControl = this.getTutorForm(index);
+                            tutorControl.patchValue(tutor);
+                            console.log("TuTOR 1", tutor);
+                        } else if (index === 1 && retorno.responsaveis) {
+                            tutor.vinculo = retorno.responsaveis[index].vinculo;
+                            this.conjugue = tutor;
+                            this.adicionarConjugue(0, this.conjugue);
+                        }
+                    });
 
-          // pega o vinculo em responsavel
-          retorno.tutorDTOList?.forEach((tutor: any, index: number) => {
-            if (index === 0 && retorno.responsaveis) {
-              tutor.vinculo = retorno.responsaveis[index].vinculo;
-              const tutorControl = this.getTutorForm(index);
-              tutorControl.patchValue(tutor);
-              console.log("TuTOR 1", tutor)
-            } else if (index === 1 && retorno.responsaveis) {
-              tutor.vinculo = retorno.responsaveis[index].vinculo;
-              this.conjugue = tutor;
-              this.adicionarConjugue(0, this.conjugue);
-            }
-          });
-          //ate aqui preencher dados das matriculas nos inputs
-
-          // criar lista com os documentos que existem na matricula e adiciona a propriedade de ocultar
-          if (retorno.documentoMatricula) {
-            this.listaDocumentosEditareValidar = retorno.documentoMatricula.map(documento => ({
-              documentoMatricula: documento,
-              oculto: false
-            }));
-            this.ordenarLista();
-            console.log(this.listaDocumentosEditareValidar);
-          }
-
-
-        },error => {
-          this.mensagens.confirmarErro(this.FORM_EDITAR, error.message)
-          console.log("erro", error);
+                    if (retorno.documentoMatricula) {
+                        this.listaDocumentosEditareValidar = retorno.documentoMatricula.map((documento: DocumentoMatriculaDto) => ({
+                            documentoMatricula: documento,
+                            oculto: false
+                        }));
+                        this.ordenarLista();
+                        console.log(this.listaDocumentosEditareValidar);
+                    }
+                },
+                error => {
+                    this.mensagens.confirmarErro(this.FORM_EDITAR, error.message);
+                    console.log("erro", error);
+                }
+            );
         }
-      )
     }
-  }
 
 
   confirmarAcao(matricula: MatriculaDto, acao: string) {
