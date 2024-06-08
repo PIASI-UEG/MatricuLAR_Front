@@ -10,7 +10,7 @@
         <h1>{{this.formGroup.get('nomeCrianca')?.value}}</h1>
         <h2>{{this.nomeTitulo}}</h2>
         <div class="mat-tab-titulos">
-            <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)">
+            <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" (selectedTabChange)="onTabClick($event)">
                 <!-- Etapa 0  -->
                 <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR"
                          [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
@@ -53,8 +53,9 @@
                     <div class="conteudo-mat-tab">
                         <mat-form-field>
                             <mat-label>Nome da criança</mat-label>
-                            <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança">
+                            <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança" maxlength="200" mask="S*">
                             <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleError('nomeCrianca', 'maxlength')">Limete 200 caracteres</mat-error>
                         </mat-form-field>
 
                         <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
@@ -64,12 +65,13 @@
                                 <mat-error *ngIf="handleError('cpfCrianca', 'required')">Campo Obrigatório</mat-error>
                                 <mat-error *ngIf="handleError('cpfCrianca', 'cpfInvalido')">CPF Inválido</mat-error>
                                 <mat-error *ngIf="handleError('cpfCrianca', 'cpfsIguais')">CPF Já informado</mat-error>
+                              <mat-error *ngIf="handleError('cpfCrianca', 'maxlength')">Limite 11 números</mat-error>
                             </mat-form-field>
 
                             <mat-form-field>
                                 <mat-label>Data de Nascimento</mat-label>
                                 <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
-                                       [matDatepicker]="dp3">
+                                       [matDatepicker]="dp3" [max]="maxDateCrianca" [min]="minDateCrianca">
                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                 <mat-datepicker #dp3></mat-datepicker>
                                 <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
@@ -88,12 +90,9 @@
                                     <mat-form-field>
                                         <mat-label>Necessidade especial</mat-label>
                                         <input matInput formControlName="titulo"
-                                               placeholder="EX: alergia, medicamentos, alimentação">
-                                        <mat-error
-                                                *ngIf="getNecessidadeEspecialControl(i)?.hasError('campoNaoPreenchido')">
-                                            Desmarque ou preencha para
-                                            continuar
-                                        </mat-error>
+                                               placeholder="EX: alergia, medicamentos, alimentação" mask="S*" maxlength="50">
+                                        <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('campoNaoPreenchido')"> Desmarque ou preencha para continuar</mat-error>
+                                      <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('maxlength')"> Limite 50 caracteres</mat-error>
                                     </mat-form-field>
 
                                     <button mat-icon-button (click)="removerCampoNecessidade(i)">
@@ -113,31 +112,36 @@
                                 <input matInput formControlName="cep" mask="00.000-000" placeholder="00.000-000">
                                 <mat-error *ngIf="handleError('cep', 'required')">Campo Obrigatório</mat-error>
                                 <mat-error *ngIf="handleError('cep', 'cepInvalido')">CEP Inválido</mat-error>
+                              <mat-error *ngIf="handleError('cep', 'maxlength')">Limite 8 caracteres</mat-error>
                             </mat-form-field>
 
                             <mat-form-field>
                                 <mat-label>Cidade</mat-label>
-                                <input matInput formControlName="cidade" placeholder="Digite o nome da cidade">
+                                <input matInput formControlName="cidade" placeholder="Digite o nome da cidade" maxlength="250" mask="A*" >
                                 <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
+                              <mat-error *ngIf="handleError('cidade', 'maxlength')">Limite 250 caracteres</mat-error>
                             </mat-form-field>
                         </div>
 
                         <mat-form-field>
                             <mat-label>Bairro</mat-label>
-                            <input matInput formControlName="bairro" placeholder="Digite o nome do bairro">
+                            <input matInput formControlName="bairro" placeholder="Digite o nome do bairro" maxlength="250" mask="A*">
                             <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
+                            <mat-error *ngIf="handleError('bairro', 'maxlength')">Limite 250 caracteres</mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
                             <mat-label>Logradouro</mat-label>
-                            <input matInput formControlName="logradouro" placeholder="Digite o nome da rua">
+                            <input matInput formControlName="logradouro" placeholder="Digite o nome da rua" maxlength="250" mask="A*">
                             <mat-error *ngIf="handleError('logradouro', 'required')">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleError('logradouro', 'maxlength')">Limite 250 caracteres</mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
                             <mat-label>Complemento</mat-label>
-                            <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento....">
+                            <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento...." maxlength="250" mask="A*">
                             <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleError('complemento', 'maxlength')">Limite 250 caracteres</mat-error>
                         </mat-form-field>
                         <!-- Campos da primeira etapa -->
 
@@ -150,9 +154,9 @@
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
                             <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
@@ -173,8 +177,9 @@
                                 </ng-container>
                                 <mat-form-field>
                                     <mat-label>Nome</mat-label>
-                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor">
+                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor" maxlength="200" mask="S*">
                                     <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
+                                  <mat-error *ngIf="handleErrorTutor('nomeTutor', 'maxlength', i)">Limete 200 caracteres</mat-error>
                                 </mat-form-field>
 
                                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
@@ -184,11 +189,12 @@
                                         <mat-error *ngIf="handleErrorTutor('cpf', 'required', i)">Campo Obrigatório</mat-error>
                                         <mat-error *ngIf="handleErrorTutor('cpf', 'cpfInvalido', i)">CPF Inválido</mat-error>
                                         <mat-error *ngIf="handleErrorTutor('cpf', 'cpfsIguais', i)">CPF Já informado.</mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('cpf', 'maxlength', i)">Limite 11 números</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field>
                                         <mat-label>Data de Nascimento</mat-label>
-                                        <input matInput formControlName="dataNascimento" placeholder="Escolha uma data"
+                                        <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
                                                [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
                                         <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                         <mat-datepicker #dp3></mat-datepicker>
@@ -215,33 +221,37 @@
                                         <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'required', i)">Campo Obrigatório</mat-error>
                                         <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
                                         </mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'maxlength', i)">Limite 11 números</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field>
                                         <mat-label>Telefone Reserva</mat-label>
                                         <input matInput mask="(00) 0 0000-0000" formControlName="telefoneReserva"
                                                placeholder="(00) 0 0000-0000">
-                                        <mat-error *ngIf="handleErrorTutor('pessoaTelefone', 'telefoneInvalido', i)">Telefone Inválido
+                                        <mat-error *ngIf="handleErrorTutor('telefoneReserva', 'telefoneInvalido', i)">Telefone Inválido
                                         </mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('telefoneReserva', 'maxlength', i)">Limite 11 números</mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxLayout="center" class="linha-horizontal"></div>
                                 <h2> Dados da empresa </h2>
-                                <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na creche.</p>
+                                <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na associação.</p>
 
                                 <mat-form-field>
                                     <mat-label>Nome da empresa</mat-label>
-                                    <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa">
+                                    <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa" maxlength="100" mask="S*">
                                     <mat-error *ngIf="handleErrorTutor('empresaNome', 'required', i)">Campo Obrigatório</mat-error>
+                                  <mat-error *ngIf="handleErrorTutor('empresaNome', 'maxlength', i)">Limite 100 caracteres</mat-error>
                                 </mat-form-field>
 
                                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
                                     <mat-form-field>
                                         <mat-label>Profissão</mat-label>
-                                        <input matInput formControlName="profissao" placeholder="Digte o nome da profissão">
+                                        <input matInput formControlName="profissao" placeholder="Digte o nome da profissão" maxlength="50" mask="S*">
                                         <mat-error *ngIf="handleErrorTutor('profissao', 'required', i)">Campo Obrigatório
-                                        </mat-error>
+                                      </mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('profissao', 'maxlength', i)">Limite 50 caracteres</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field>
@@ -249,6 +259,7 @@
                                         <input matInput formControlName="empresaCnpj" mask="00.000.000/0000-00"
                                                placeholder="00.000.000/0000-00">
                                         <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'cnpjInvalido', i)">CNPJ Inválido</mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('empresaCnpj', 'maxlength', i)">Limite 14 números</mat-error>
                                     </mat-form-field>
                                 </div>
 
@@ -260,6 +271,7 @@
                                         <mat-error *ngIf="handleErrorTutor('telefoneCelularEmpresarial', 'telefoneInvalido', i)">Telefone
                                             Inválido
                                         </mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('telefoneCelularEmpresarial', 'maxlength', i)">Limite 11 números</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field>
@@ -269,6 +281,7 @@
                                         <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'telefoneInvalido', i)">Telefone
                                             Inválido
                                         </mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('telefoneFixoEmpresarial', 'maxlength', i)">Limite 10 números</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <mat-error class="alinhar-erro"
@@ -299,10 +312,10 @@
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
                             <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
                             <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
@@ -327,8 +340,9 @@
 
                             <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
                                 <mat-label>Por qual razão saiu?</mat-label>
-                                <input matInput formControlName="razaoSaida" placeholder="Informe detalhes">
+                                <input matInput formControlName="razaoSaida" placeholder="Informe detalhes" maxlength="200" mask="S*">
                                 <mat-error *ngIf="handleErrorForm('informeRazaoSaida')">Informe a razão da saída</mat-error>
+                              <mat-error *ngIf="handleError('razaoSaida', 'maxlength')">Limite 200 caracteres</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -407,10 +421,10 @@
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
                             <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
@@ -740,32 +754,39 @@
                     <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" >
                         <mat-table *ngIf="show"  [dataSource]="listaDocumentosEditareValidar" class="tabela">
 
-                            <ng-container *ngIf="tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
-                                <mat-header-cell *matHeaderCellDef> Aceitar </mat-header-cell>
-                                <mat-cell *matCellDef="let element" > {{element.aceito}} </mat-cell>
+                            <ng-container *ngIf="this.tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
+                                <mat-header-cell *matHeaderCellDef class="aceite-column">Aceitar</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="aceite-column"> {{element.aceito}}
+                                  <mat-checkbox color="primary" [checked]="element.aceito" (change)="onAceitoChange(element)"></mat-checkbox>
+                                </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Tipo">
+                            <ng-container matColumnDef="Tipo" >
                                 <mat-header-cell *matHeaderCellDef> Documentos </mat-header-cell>
-                                <mat-cell mat-cell *matCellDef="let element" (click)="openDialogPreviewExpanded(element)"> {{getEnumNames(element.tipoDocumento)}} </mat-cell>
+                                <mat-cell mat-cell *matCellDef="let element" (click)="openDialogPreviewExpanded(element.documentoMatricula)"> {{getEnumNames(element.documentoMatricula.tipoDocumento)}} </mat-cell>
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: colunasMostrar;"></mat-row>
+                            <mat-row
+                              *matRowDef="let row; columns: colunasMostrar;"
+                              [ngClass]="{'selected-row': isSelected(row.documentoMatricula)}"
+                              [class.hidden]="row.oculto"
+                            ></mat-row>
 
                         </mat-table>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" *ngIf="!this.verificarAlinhar()" fxLayoutAlign="space-between center">
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button"  class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-                            <button  mat-raised-button type="submit" class="button botao-salvar" >Salvar <br>Matricula</button>
+                            <button  mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar <br>Matricula</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                              *ngIf="this.verificarAlinhar()">
-                            <button mat-raised-button type="button" *ngIf=" tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'">Aceitar</button>
+                            <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-                            <button mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                         </div>
                     </div>
 

@@ -60,17 +60,16 @@ export class AddAlunoTurmaDialogComponent {
 
   private realizarInclusao() {
     console.log("Dados:",this.formGroup.value);
-    let aluno: Array<number> = [];
-    aluno[0] = this.aluno?.id || -1;
+    let aluno: number = this.aluno?.id || -1;
     const turmaID: number = this.formGroup.get('turmaID')?.value;
-    this.turmaService.turmaControllerAdicionaAlunos({idTurma: turmaID, body: aluno})
+    this.turmaService.turmaControllerAdicionaUmAluno({idTurma: turmaID, idAluno: aluno})
       .subscribe( retorno =>{
         console.log("Retorno Add aluno turma:",retorno);
         this.confirmarAcao(retorno);
         this.router.navigate(["/turma"]);
       }, erro =>{
         console.log("Erro:"+erro);
-        //this.mensagens.confirmarErro(erro.message)
+        this.mensagens.confirmarErro('Adicionar criança na turma.', erro.message)
       })
   }
 

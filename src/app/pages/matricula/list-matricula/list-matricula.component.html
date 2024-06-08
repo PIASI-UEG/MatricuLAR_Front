@@ -68,19 +68,22 @@
               <button mat-menu-item (click)="openDialogTest(element)">
                 <mat-icon>add</mat-icon>Adicionar Na Turma
               </button>
-              <button mat-menu-item [routerLink]="['/matricula',element.id]">
+              <button mat-menu-item [routerLink]="['/matricula',element.nroMatricula]">
                 <mat-icon>edit</mat-icon>Editar
               </button>
               <button mat-menu-item (click)="confirmarExcluir(element)">
                 <mat-icon>delete_forever</mat-icon>Excluir
               </button>
+              <button mat-menu-item (click)="gerarPdfDados(element.nroMatricula)">
+                <mat-icon>account_circle</mat-icon>Gerar pdf com os dados
+              </button>
                 <button mat-menu-item [matMenuTriggerFor]="tutores" >
                     <mat-icon>print</mat-icon>Gerar Termo de Matrícula
                 </button>
               <mat-menu #tutores="matMenu">
-                <button mat-menu-item *ngFor="let tutor of element.responsaveis" (click)="imprimirTermodaMatricula(element.id, tutor.cpfResponsavel)">
+                <button mat-menu-item *ngFor="let responsavel of element.nomeResponsaveis" (click)="imprimirTermodaMatricula(element.nroMatricula, responsavel)">
                   <mat-icon>person</mat-icon>
-                  {{tutor.nomeResponsavel}}
+                  {{responsavel}}
                 </button>
               </mat-menu>
             </mat-menu>

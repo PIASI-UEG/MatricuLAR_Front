@@ -121,7 +121,7 @@ export class AuthApiService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+): Observable<StrictHttpResponse<CredencialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, AuthApiService.LoginPath, 'post');
     if (params) {
@@ -135,7 +135,7 @@ export class AuthApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<CredencialDto>>;
+        return r as StrictHttpResponse<CredencialDto>;
       })
     );
   }
@@ -153,10 +153,10 @@ export class AuthApiService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<CredencialDto>> {
+): Observable<CredencialDto> {
 
     return this.login$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<CredencialDto>>) => r.body as Array<CredencialDto>)
+      map((r: StrictHttpResponse<CredencialDto>) => r.body as CredencialDto)
     );
   }
 
@@ -388,7 +388,7 @@ export class AuthApiService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<CredencialDto>>> {
+): Observable<StrictHttpResponse<CredencialDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, AuthApiService.GetInfoByTokenPath, 'get');
     if (params) {
@@ -402,7 +402,7 @@ export class AuthApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<CredencialDto>>;
+        return r as StrictHttpResponse<CredencialDto>;
       })
     );
   }
@@ -424,10 +424,10 @@ export class AuthApiService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<CredencialDto>> {
+): Observable<CredencialDto> {
 
     return this.getInfoByToken$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<CredencialDto>>) => r.body as Array<CredencialDto>)
+      map((r: StrictHttpResponse<CredencialDto>) => r.body as CredencialDto)
     );
   }
 

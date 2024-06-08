@@ -30,6 +30,8 @@ export class ViwerDocumetDialogComponent implements OnInit {
   })
   flexDivAlinhar: string = 'row';
   naoTemArq: boolean = false;
+  listaDocumentosEditareValidar!: DocumentoMatriculaDto[];
+  mudouArq = false;
 
   public constructor(
     private dialogRef: MatDialogRef<ViwerDocumetDialogComponent>,
@@ -42,6 +44,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
       documentoEditarValidar: DocumentoMatriculaDto
       tipoDeFormulario: string
       matriculaService: MatriculaControllerService,
+      listaDocumentos: DocumentoMatriculaDto[]
     }
   ) {
     this.file = data.file;
@@ -50,6 +53,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
     this.documentoEditarValidar = data.documentoEditarValidar
     this.tipoDeFormulario = data.tipoDeFormulario || "Cadastrar"
     this.matriculaService = data.matriculaService
+    this.listaDocumentosEditareValidar = data.listaDocumentos
   }
 
   private makeURLFile(file: any) {
@@ -106,7 +110,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.mudouArq);
   }
 
   substituirArq(event: any) {
@@ -137,19 +141,39 @@ export class ViwerDocumetDialogComponent implements OnInit {
   }
 
   salvarArq() {
-
     const document = this.documentoEditarValidar;
-    if (document.idMatricula && document.tipoDocumento) {
+    if(this.documentoEditarValidar.caminhoDocumento)
+    {
+      if (document.idMatricula && document.tipoDocumento) {
+        this.documentoEditarValidar.caminhoDocumento = this.file.name;
+        this.matriculaService.matriculaControllerAtualizaDocumentoMatricula({
+          idMatricula: document.idMatricula,
+          tipoDocumento: document.tipoDocumento,
+          body: {multipartFile: this.file}
+        }).subscribe(response => {
+          this.mudouArq = true;
+          this.closeDialog();
+          this.confirmarAcao(response, "Salvar documento");
+        }, error => {
+          this.mensagens.confirmarErro("Salvar documento", error);
+        });
+      }
+    }else {
+      this.documentoEditarValidar.caminhoDocumento = this.file.name;
+      if (document.idMatricula && document.tipoDocumento) {
       this.matriculaService.matriculaControllerUploadDocumento({
         idMatricula: document.idMatricula,
         tipoDocumento: document.tipoDocumento,
         body: {multipartFile: this.file}
       }).subscribe(response => {
-          this.closeDialog();
-          this.confirmarAcao(response, "Salvar documento");
+        this.mudouArq = true;
+        this.closeDialog();
+        this.confirmarAcao(response, "Salvar documento");
       }, error => {
         this.mensagens.confirmarErro("Salvar documento", error);
       });
+
+      }
     }
   }
 
@@ -288,6 +312,21 @@ export class ViwerDocumetDialogComponent implements OnInit {
   onPointerUp(event: PointerEvent) {
     event.preventDefault();
     this.isDragging = false;
+  }
+
+  downloadFile() {
+    const blob = new Blob([this.file], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = this.file.name;
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    window.URL.revokeObjectURL(url);
   }
 
 }

@@ -148,6 +148,7 @@ button-list{
 .mat-error {
   color: red;
   font-size: 14px;
+}
 
 .tabela {
   background-color: #B2DFFF !important;
@@ -162,12 +163,11 @@ button-list{
 
 }
 
-
 mat-header-cell{
   border-color:#b2e2ff !important;
   color: black;
   user-select:none;
-  font-size: 20px !important;
+  font-size: 15px !important;
 }
 
 .mat-mdc-row .mat-mdc-cell {
@@ -179,8 +179,24 @@ mat-header-cell{
   background-color: #b2e2ff;
 }
 
-
+.selected-row .mat-mdc-cell{
+  background-color: #84cb9f !important;
+  color: white;
 }
+
+.hidden {
+  display: none;
+}
+
+.aceite-column {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+}
+
+
+
+
 
 
 

@@ -1,13 +1,13 @@
-<div class="formMov">
+<div class="">
     <ng-container >
-      <mat-card class="mat-card-expanded">
+      <mat-card class="">
         <mat-card-header>
           <mat-card-title>{{turma?.titulo}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p>Ano da turma: {{turma?.ano}}</p>
           <p>Turno: {{turma?.turno}}</p>
-          <p>Horário de aula: {{turma?.horaInicio}} ás {{turma?.horaFim}}</p>
+          <p>Horário de aula: {{formatTime(turma?.horaInicio ?? '') }} ás {{formatTime(turma?.horaFim ?? '')}}</p>
           <p>Professora: {{turma?.nomeProfessor}}</p>
 
         </mat-card-content>
@@ -18,16 +18,18 @@
         </mat-card-header>
 
         <mat-card-content>
-          <table >
-            <tr>
-              <th > Matricula </th>
-              <th > Aluno </th>
-            </tr>
-            <tr *ngFor="let aluno of alunosNaTurma">
-                <td > {{ aluno.nroMatricula }} </td>
-                <td > {{ aluno.nomeAluno }} </td>
-            </tr>
-          </table>
+          <mat-table [dataSource]="alunosDataSource">
+            <ng-container matColumnDef="nroMatricula">
+              <mat-header-cell *matHeaderCellDef> Matrícula </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nroMatricula}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nomeAluno">
+              <mat-header-cell *matHeaderCellDef> Criança </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nomeAluno}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="colunas"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: colunas;"></mat-row>
+          </mat-table>
         </mat-card-content>
       </mat-card>
 

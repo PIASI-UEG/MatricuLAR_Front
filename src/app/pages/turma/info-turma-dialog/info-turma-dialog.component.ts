@@ -7,6 +7,7 @@ import {TurmaDto} from "../../../api/models/turma-dto";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-info-turma-dialog',
@@ -17,6 +18,8 @@ export class InfoTurmaDialogComponent {
   turma?: TurmaDto;
   turmaID: number;
   alunosNaTurma: Array<MatriculaListagemDto> | undefined = [];
+  alunosDataSource : MatTableDataSource<MatriculaListagemDto> = new MatTableDataSource<MatriculaListagemDto>([]);
+  colunas: string[] = ['nroMatricula','nomeAluno'];
 
   constructor(
     public turmaService: TurmaControllerService,
@@ -39,7 +42,7 @@ export class InfoTurmaDialogComponent {
     this.turmaService.turmaControllerObterPorId({id: this.turmaID}).subscribe(
       (data) => {
         this.turma = data;
-        this.alunosNaTurma = data.alunos;
+        this.alunosDataSource.data = data.alunos || [];
         console.log(data)
       },
       (error) => {
@@ -56,4 +59,20 @@ export class InfoTurmaDialogComponent {
   onSubmit() {
     // Lógica de envio do formulário, se necessário
   }
+
+  formatTime(horaString: string): string {
+    // Verifique se a string de entrada tem 4 caracteres
+    if (horaString.length === 4) {
+      // Extraia as horas e minutos
+      const horas = horaString.substring(0, 2);
+      const minutos = horaString.substring(2);
+      // Adicione os dois pontos entre as horas e minutos
+      return `${horas}:${minutos}`;
+    } else {
+      // Retorne a string original se não tiver o formato correto
+      return horaString;
+    }
+  }
+
+
 }
