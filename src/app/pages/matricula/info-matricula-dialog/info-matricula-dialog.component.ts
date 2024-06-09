@@ -43,7 +43,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
-        this.matriculaId = data.nroMatricula;
+        this.matriculaId = data.id;
     }
 
     ngOnInit(): void {

@@ -158,7 +158,7 @@ export class ListMatriculaComponent implements OnInit{
                         id: matriculaDto.nroMatricula
                     }
             })
-        dialogRef.afterClosed().subscribe(() => {
+          dialogRef.afterClosed().subscribe(() => {
                 this.buscarDados()
             }
         )
