@@ -155,7 +155,7 @@ export class ListMatriculaComponent implements OnInit{
             {
                 data:
                     {
-                        id: matriculaDto.nroMatricula
+                        nroMatricula: matriculaDto.nroMatricula
                     }
             })
           dialogRef.afterClosed().subscribe(() => {

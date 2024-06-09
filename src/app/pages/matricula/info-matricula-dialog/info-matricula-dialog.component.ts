@@ -20,7 +20,7 @@ import {AdvertenciaControllerService} from "../../../api/services/advertencia-co
     templateUrl: './info-matricula-dialog.component.html',
     styleUrls: ['./info-matricula-dialog.component.scss']
 })
-export class InfoMatriculaDialogComponent implements OnInit {
+export class InfoMatriculaDialogComponent{
     matriculaVisualiza?: MatriculaVisualizarDto;
     matriculaId: number;
     formGroup!: FormGroup;

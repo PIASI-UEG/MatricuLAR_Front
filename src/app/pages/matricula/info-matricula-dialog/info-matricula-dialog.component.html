@@ -11,10 +11,10 @@
                         <mat-card-title>Dados do Aluno</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p><strong>Nome do Aluno:</strong>{{matriculaVisualiza?.nomeAluno}}</p>
-                        <p><strong>CPF do Aluno:</strong> </p>
-                        <p><strong>Data de Nascimento:</strong> </p>
-                        <p><strong>Status do Aluno:</strong> </p>
+                        <p><strong>Nome do Aluno:</strong> {{matriculaVisualiza?.nomeAluno}}</p>
+                        <p><strong>CPF do Aluno:</strong> {{matriculaVisualiza?.cpfAluno}}</p>
+                        <p><strong>Data de Nascimento:</strong> {{matriculaVisualiza?.nascimento}}</p>
+                        <p><strong>Status do Aluno:</strong> {{matriculaVisualiza?.statusAluno}}</p>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -24,16 +24,22 @@
                 <mat-card-title>Tutores</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <p><strong>Tutor:</strong> </p>
-                <p><strong>Telefone do Tutor:</strong> </p>
+                <p><strong>Tutor:</strong> {{matriculaVisualiza?.tutoresNomes}}</p>
+                <p><strong>Telefone do Tutor:</strong> {{matriculaVisualiza?.tutoresTelefone}}</p>
             </mat-card-content>
             <mat-card-header>
                 <mat-card-title>Responsáveis</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <p><strong>Responsáveis Permitidos:</strong> </p>
+                <p><strong>Responsáveis Permitidos:</strong> {{matriculaVisualiza?.responsaveisNome}}</p>
             </mat-card-content>
             <p></p>
+            <mat-card-header>
+                <mat-card-title>Necessidades Especiais</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p><strong>Necessidades Cadastradas:</strong> {{matriculaVisualiza?.necessidadesEspeciais}}</p>
+            </mat-card-content>
             <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
                 Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
             </mat-checkbox>
