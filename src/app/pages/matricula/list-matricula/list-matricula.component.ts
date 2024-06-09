@@ -149,7 +149,7 @@ export class ListMatriculaComponent implements OnInit{
         })
     }
 
-    openDialog(matriculaDto: MatriculaDto) {
+    openDialog(matriculaDto: MatriculaListagemDto) {
         console.log(matriculaDto);
         const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
             {
@@ -164,13 +164,13 @@ export class ListMatriculaComponent implements OnInit{
         )
     }
 
-    openDialogTest(matriculaDto: MatriculaDto) {
+    openDialogTest(matriculaDto: MatriculaListagemDto) {
         console.log(matriculaDto);
         const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
             {
                 data:
                     {
-                        id: matriculaDto.id
+                        id: matriculaDto.nroMatricula
                     }
             })
         dialogRef.afterClosed().subscribe(() => {
