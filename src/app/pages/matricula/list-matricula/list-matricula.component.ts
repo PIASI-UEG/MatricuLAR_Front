@@ -82,9 +82,9 @@ export class ListMatriculaComponent implements OnInit{
         this.matriculaListaDataSource.data = $event;
     }
 
-    remover(listaMatricula: MatriculaDto) {
+    remover(listaMatricula: MatriculaListagemDto) {
         console.log(listaMatricula)
-        this.matriculaService.matriculaControllerRemover({id: listaMatricula.id || 0})
+        this.matriculaService.matriculaControllerRemover({id: listaMatricula.nroMatricula || 0})
             .subscribe(
                 retorno => {
                     this.buscarDados();
@@ -97,11 +97,11 @@ export class ListMatriculaComponent implements OnInit{
     }
 
 
-    confirmarExcluir(listaMatricula: MatriculaDto) {
+    confirmarExcluir(listaMatricula: MatriculaListagemDto) {
         const dialogRef = this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: 'Confirmar?',
-                mensagem: `A exclusão de: ${listaMatricula.nome} (ID: ${listaMatricula.id})?`,
+                mensagem: `A exclusão de: ${listaMatricula.nomeAluno} (ID: ${listaMatricula.nroMatricula})?`,
                 textoBotoes: {
                     ok: 'Confirmar',
                     cancel: 'Cancelar',
@@ -155,7 +155,7 @@ export class ListMatriculaComponent implements OnInit{
             {
                 data:
                     {
-                        matricula: matriculaDto
+                        id: matriculaDto.nroMatricula
                     }
             })
         dialogRef.afterClosed().subscribe(() => {

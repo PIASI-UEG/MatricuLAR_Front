@@ -21,20 +21,11 @@ import {AdvertenciaControllerService} from "../../../api/services/advertencia-co
     styleUrls: ['./info-matricula-dialog.component.scss']
 })
 export class InfoMatriculaDialogComponent implements OnInit {
-    matricula: MatriculaVisualizarDto[] = [];
-    matriculaId?: number;
+    matriculaVisualiza?: MatriculaVisualizarDto;
+    matriculaId: number;
     formGroup!: FormGroup;
-    dados: any;
-    caminhoImagem: string = '';
-    nomeAluno: string = '';
-    cpfAluno: string = '';
-    nascimento: string = '';
-    statusAluno: string = '';
-    tutoresNomes: string[] = [];
-    tutoresTelefone: string[] = [];
-    responsaveisNome: string[] = [];
     botaoNecessidadeClicado: boolean = false;
-    aluno?: MatriculaDto;
+    matricula?: MatriculaDto;
     advertenciasAluno: Array<AdvertenciaDto> | undefined;
 
     constructor(
@@ -52,13 +43,11 @@ export class InfoMatriculaDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
-        this.dados = data;
         this.matriculaId = data.nroMatricula;
     }
 
     ngOnInit(): void {
         this.createForm();
-        this.buscarDados();
         this.visualizacao();
     }
 
@@ -69,52 +58,21 @@ export class InfoMatriculaDialogComponent implements OnInit {
         });
     }
 
-    private buscarDados() {
-        if (this.matriculaId !== undefined) {
-            this.matriculas.matriculaControllerObterPorId({ id: this.matriculaId }).subscribe(data => {
-                this.aluno = data;
-            });
-        } else {
-            console.error('matriculaId is undefined');
-        }
-    }
-
     private visualizacao() {
-        const matricula = this.dados.matricula;
-
-        if (!matricula) {
-            console.error('Dados da matrícula não fornecidos');
-            this.snackBar.open('Dados da matrícula não fornecidos', 'Fechar', {
-                duration: 3000,
-            });
-            this.fechar();
-            return;
-        }
-        this.matriculaId = matricula.id;
-
-        if (this.matriculaId !== undefined) {
-            this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
-                (response: MatriculaVisualizarDto) => {
-                    this.caminhoImagem = response.caminhoImagem ?? '';
-                    this.nomeAluno = response.nomeAluno ?? '';
-                    this.cpfAluno = response.cpfAluno ?? '';
-                    this.nascimento = response.nascimento ?? '';
-                    this.statusAluno = response.statusAluno ?? '';
-                    this.tutoresNomes = response.tutoresNomes ?? [];
-                    this.tutoresTelefone = response.tutoresTelefone ?? [];
-                    this.responsaveisNome = response.responsaveisNome ?? [];
-                },
-                (error) => {
-                    console.error('Erro ao obter os dados da matrícula:', error);
-                    this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
-                        duration: 3000,
-                    });
+        this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
+            (data) => {
+                this.matriculaVisualiza = data;
+                console.log(data)
+            },
+            (error) => {
+                console.error('Erro ao obter os dados da matrícula:', error);
+                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
+                    duration: 3000,
+                });
                     this.fechar();
                 }
             );
-        } else {
-            console.error('matriculaId is undefined');
-        }
+
     }
 
     openDialogAdvertencia() {
@@ -128,7 +86,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         dialogRefAdvertencia.afterClosed().subscribe(result => {
             if (result === this.fechar()) {
                 this.dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
-                    data: this.dados
+                    data: this.matriculaId
                 });
             }
         });
@@ -188,7 +146,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
         const necessidadesEspeciais: NecessidadeEspecialDto[] = formArray.value.map((necessidade: NecessidadeEspecialDto) => ({
             ...necessidade,
-            idMatricula: this.aluno?.id
+            idMatricula: this.matricula?.id
         }));
 
         necessidadesEspeciais.forEach(necessidadeEspecial => {
