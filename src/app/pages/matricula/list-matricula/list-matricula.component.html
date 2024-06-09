@@ -62,10 +62,10 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #acoes="matMenu">
-              <button mat-menu-item (click)="openDialog(element)">
+              <button mat-menu-item (click)="openDialog(element.nroMatricula)">
                 <mat-icon>visibility</mat-icon>Vizualizar Matricula
               </button>
-              <button mat-menu-item (click)="openDialogTest(element)">
+              <button mat-menu-item (click)="openDialogTest(element.nroMatricula)">
                 <mat-icon>add</mat-icon>Adicionar Na Turma
               </button>
               <button mat-menu-item [routerLink]="['/matricula',element.nroMatricula]">

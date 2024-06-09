@@ -18,6 +18,7 @@ import data = DevExpress.data;
 import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
 import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-advertencia-dialog.component";
 import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
+import {MatriculaVisualizarDto} from "../../../api/models/matricula-visualizar-dto";
 
 @Component({
     selector: 'app-list-matricula',
@@ -150,27 +151,25 @@ export class ListMatriculaComponent implements OnInit{
     }
 
     openDialog(matriculaDto: MatriculaListagemDto) {
-        console.log(matriculaDto);
-        const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
-            {
-                data:
-                    {
-                      id: matriculaDto.nroMatricula
-                    }
-            })
-        dialogRef.afterClosed().subscribe(() => {
-                this.buscarDados()
-            }
-        )
+      console.log(matriculaDto);
+      const dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
+        data: {
+          nroMtricula: matriculaDto.nroMatricula
+        }
+      })
+      dialogRef.afterClosed().subscribe(() => {
+        this.buscarDados();
+      });
     }
 
-    openDialogTest(matriculaDto: MatriculaListagemDto) {
+
+  openDialogTest(matriculaDto: MatriculaListagemDto) {
         console.log(matriculaDto);
         const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
             {
                 data:
                     {
-                        id: matriculaDto.nroMatricula
+                        nroMatricula: matriculaDto.nroMatricula
                     }
             })
         dialogRef.afterClosed().subscribe(() => {
