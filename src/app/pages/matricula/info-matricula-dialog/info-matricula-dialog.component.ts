@@ -12,187 +12,177 @@ import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial
 import { NecessidadeEspecialControllerService } from "../../../api/services/necessidade-especial-controller.service";
 import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
-import { AdvertenciaDto } from "../../../api/models/advertencia-dto";
-import { AdvertenciaControllerService } from "../../../api/services/advertencia-controller.service";
+import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
+import {AdvertenciaControllerService} from "../../../api/services/advertencia-controller.service";
 
 @Component({
-  selector: 'app-info-matricula-dialog',
-  templateUrl: './info-matricula-dialog.component.html',
-  styleUrls: ['./info-matricula-dialog.component.scss']
+    selector: 'app-info-matricula-dialog',
+    templateUrl: './info-matricula-dialog.component.html',
+    styleUrls: ['./info-matricula-dialog.component.scss']
 })
 export class InfoMatriculaDialogComponent implements OnInit {
-  matricula: MatriculaVisualizarDto[] = [];
-  matriculaId?: number;
-  formGroup!: FormGroup;
-  dados: any;
-  caminhoImagem: string = '';
-  nomeAluno: string = '';
-  cpfAluno: string = '';
-  nascimento: string = '';
-  statusAluno: string = '';
-  tutoresNomes: string[] = [];
-  tutoresTelefone: string[] = [];
-  responsaveisNome: string[] = [];
-  botaoNecessidadeClicado: boolean = false;
-  aluno?: MatriculaDto;
-  advertenciasAluno: Array<AdvertenciaDto> | undefined;
+    matricula: MatriculaVisualizarDto[] = [];
+    matriculaId?: number;
+    formGroup!: FormGroup;
+    dados: any;
+    caminhoImagem: string = '';
+    nomeAluno: string = '';
+    cpfAluno: string = '';
+    nascimento: string = '';
+    statusAluno: string = '';
+    tutoresNomes: string[] = [];
+    tutoresTelefone: string[] = [];
+    responsaveisNome: string[] = [];
+    botaoNecessidadeClicado: boolean = false;
+    aluno?: MatriculaDto;
+    advertenciasAluno: Array<AdvertenciaDto> | undefined;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private _adapter: DateAdapter<any>,
-    private matriculas: MatriculaControllerService,
-    private advertenciaService: AdvertenciaControllerService,
-    private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
-    private dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
-    private securityService: SecurityService,
-    private necessidadeEspecialService: NecessidadeEspecialControllerService,
-    @Inject(MAT_DIALOG_DATA) data: any
-  ) {
-    this._adapter.setLocale('pt-br');
-    this.matriculaId = data.nroMatricula;
-  }
-
-  ngOnInit(): void {
-    this.createForm();
-    this.buscarDados();
-    this.visualizacao();
-  }
-
-  createForm() {
-    this.formGroup = this.formBuilder.group({
-      possuiNecessidadeEspecial: [false],
-      necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([])
-    });
-  }
-
-  private buscarDados() {
-    if (this.matriculaId !== undefined) {
-      console.log('Fetching data for matriculaId:', this.matriculaId);
-      this.matriculas.matriculaControllerObterPorId({ id: this.matriculaId }).subscribe(
-        data => {
-          console.log('Dados bem sucedidos:', data);
-          this.aluno = data;
-        },
-        error => {
-          console.error('Erros nos dados:', error);
-          this.snackBar.open('Erro ao obter dados da matrícula', 'Fechar', {
-            duration: 3000,
-          });
-        }
-      );
-    } else {
-      console.error('matriculaId is undefined');
-    }
-  }
-
-  private visualizacao() {
-    const matricula = this.matriculaId;
-
-    if (!matricula) {
-      console.error('Dados da matrícula não fornecidos');
-      this.snackBar.open('Dados da matrícula não fornecidos', 'Fechar', {
-        duration: 3000,
-      });
-      this.fechar();
-      return;
+    constructor(
+        private formBuilder: FormBuilder,
+        private _adapter: DateAdapter<any>,
+        private matriculas: MatriculaControllerService,
+        private advertenciaService: AdvertenciaControllerService,
+        private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
+        private dialog: MatDialog,
+        private router: Router,
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar,
+        private securityService: SecurityService,
+        private necessidadeEspecialService: NecessidadeEspecialControllerService,
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+        this._adapter.setLocale('pt-br');
+        this.dados = data;
+        this.matriculaId = data.nroMatricula;
     }
 
-    if (this.matriculaId !== undefined) {
-      console.log(' visualiza matricula:', this.matriculaId);
-      this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
-        (data: MatriculaVisualizarDto) => {
-          console.log('Visualiza matricula:', data);
-          this.caminhoImagem = data.caminhoImagem ?? '';
-          this.nomeAluno = data.nomeAluno ?? '';
-          this.cpfAluno = data.cpfAluno ?? '';
-          this.nascimento = data.nascimento ?? '';
-          this.statusAluno = data.statusAluno ?? '';
-          this.tutoresNomes = data.tutoresNomes ?? [];
-          this.tutoresTelefone = data.tutoresTelefone ?? [];
-          this.responsaveisNome = data.responsaveisNome ?? [];
-        },
-        error => {
-          console.error('Erro ao obter os dados da matrícula:', error);
-          this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
-            duration: 3000,
-          });
-          this.fechar();
-        }
-      );
-    } else {
-      console.error('matriculaId is undefined');
+    ngOnInit(): void {
+        this.createForm();
+        this.buscarDados();
+        this.visualizacao();
     }
-  }
 
-  openDialogAdvertencia() {
-    this.dialogRef.close();
-    const dialogRefAdvertencia = this.dialog.open(AddAdvertenciaDialogComponent, {
-      data: {
-        id: this.matriculaId
-      }
-    });
-
-    dialogRefAdvertencia.afterClosed().subscribe(result => {
-      if (result === this.fechar()) {
-        this.dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
-          data: this.dados
+    createForm() {
+        this.formGroup = this.formBuilder.group({
+            possuiNecessidadeEspecial: [false],
+            necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([])
         });
-      }
-    });
-  }
-
-  criarCampoNecessidadeEspecial(): FormGroup {
-    return this.formBuilder.group({
-      titulo: [null, Validators.required]
-    });
-  }
-
-  adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
-    return this.formBuilder.group({
-      titulo: [necessidade.titulo, Validators.required]
-    });
-  }
-
-  firstClickNecessidades(): boolean {
-    if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-      return true;
-    } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
-      this.adicionarCampoNecessidade(null);
-      this.botaoNecessidadeClicado = true;
-      return true;
-    } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-      return true;
     }
-    this.botaoNecessidadeClicado = false;
-    return false;
-  }
 
-  adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
-    const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-    if (necessidade != null) {
-      formArray.push(this.adicionarNecessidadePreenchido(necessidade));
-    } else {
-      formArray.push(this.criarCampoNecessidadeEspecial());
+    private buscarDados() {
+        if (this.matriculaId !== undefined) {
+            this.matriculas.matriculaControllerObterPorId({ id: this.matriculaId }).subscribe(data => {
+                this.aluno = data;
+            });
+        } else {
+            console.error('matriculaId is undefined');
+        }
     }
-  }
 
-  removerCampoNecessidade(index: number): void {
-    const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-    formArray.removeAt(index);
-  }
+    private visualizacao() {
+        const matricula = this.dados.matricula;
 
-  getNecessidadesEspeciaisControls(): AbstractControl[] {
-    const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-    return formArray.controls;
-  }
+        if (!matricula) {
+            console.error('Dados da matrícula não fornecidos');
+            this.snackBar.open('Dados da matrícula não fornecidos', 'Fechar', {
+                duration: 3000,
+            });
+            this.fechar();
+            return;
+        }
+        this.matriculaId = matricula.id;
 
-  getNecessidadeEspecialControl(index: number): AbstractControl {
-    const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-    return formArray.at(index)?.get('titulo') as AbstractControl;
-  }
+        if (this.matriculaId !== undefined) {
+            this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
+                (response: MatriculaVisualizarDto) => {
+                    this.caminhoImagem = response.caminhoImagem ?? '';
+                    this.nomeAluno = response.nomeAluno ?? '';
+                    this.cpfAluno = response.cpfAluno ?? '';
+                    this.nascimento = response.nascimento ?? '';
+                    this.statusAluno = response.statusAluno ?? '';
+                    this.tutoresNomes = response.tutoresNomes ?? [];
+                    this.tutoresTelefone = response.tutoresTelefone ?? [];
+                    this.responsaveisNome = response.responsaveisNome ?? [];
+                },
+                (error) => {
+                    console.error('Erro ao obter os dados da matrícula:', error);
+                    this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
+                        duration: 3000,
+                    });
+                    this.fechar();
+                }
+            );
+        } else {
+            console.error('matriculaId is undefined');
+        }
+    }
+
+    openDialogAdvertencia() {
+        this.dialogRef.close();
+        const dialogRefAdvertencia = this.dialog.open(AddAdvertenciaDialogComponent, {
+            data: {
+                id: this.matriculaId
+            }
+        });
+
+        dialogRefAdvertencia.afterClosed().subscribe(result => {
+            if (result === this.fechar()) {
+                this.dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: this.dados
+                });
+            }
+        });
+    }
+
+    criarCampoNecessidadeEspecial(): FormGroup {
+        return this.formBuilder.group({
+            titulo: [null, Validators.required]
+        });
+    }
+
+    adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
+        return this.formBuilder.group({
+            titulo: [necessidade.titulo, Validators.required]
+        });
+    }
+
+    firstClickNecessidades(): boolean {
+        if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
+            return true;
+        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
+            this.adicionarCampoNecessidade(null);
+            this.botaoNecessidadeClicado = true;
+            return true;
+        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
+            return true;
+        }
+        this.botaoNecessidadeClicado = false;
+        return false;
+    }
+
+    adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        if (necessidade != null) {
+            formArray.push(this.adicionarNecessidadePreenchido(necessidade));
+        } else {
+            formArray.push(this.criarCampoNecessidadeEspecial());
+        }
+    }
+
+    removerCampoNecessidade(index: number): void {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        formArray.removeAt(index);
+    }
+
+    getNecessidadesEspeciaisControls(): AbstractControl[] {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        return formArray.controls;
+    }
+
+    getNecessidadeEspecialControl(index: number): AbstractControl {
+        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
+        return formArray.at(index)?.get('titulo') as AbstractControl;
+    }
 
     private realizarInclusao() {
         const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;

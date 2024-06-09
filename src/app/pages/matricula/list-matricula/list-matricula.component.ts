@@ -18,7 +18,6 @@ import data = DevExpress.data;
 import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
 import {AddAdvertenciaDialogComponent} from "../add-advertencia-dialog/add-advertencia-dialog.component";
 import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
-import {MatriculaVisualizarDto} from "../../../api/models/matricula-visualizar-dto";
 
 @Component({
     selector: 'app-list-matricula',
@@ -83,9 +82,9 @@ export class ListMatriculaComponent implements OnInit{
         this.matriculaListaDataSource.data = $event;
     }
 
-    remover(listaMatricula: MatriculaListagemDto) {
+    remover(listaMatricula: MatriculaDto) {
         console.log(listaMatricula)
-        this.matriculaService.matriculaControllerRemover({id: listaMatricula.nroMatricula || 0})
+        this.matriculaService.matriculaControllerRemover({id: listaMatricula.id || 0})
             .subscribe(
                 retorno => {
                     this.buscarDados();
@@ -98,11 +97,11 @@ export class ListMatriculaComponent implements OnInit{
     }
 
 
-    confirmarExcluir(listaMatricula: MatriculaListagemDto) {
+    confirmarExcluir(listaMatricula: MatriculaDto) {
         const dialogRef = this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: 'Confirmar?',
-                mensagem: `A exclusão de: ${listaMatricula.nomeAluno} (ID: ${listaMatricula.nroMatricula})?`,
+                mensagem: `A exclusão de: ${listaMatricula.nome} (ID: ${listaMatricula.id})?`,
                 textoBotoes: {
                     ok: 'Confirmar',
                     cancel: 'Cancelar',
@@ -151,25 +150,27 @@ export class ListMatriculaComponent implements OnInit{
     }
 
     openDialog(matriculaDto: MatriculaListagemDto) {
-      console.log(matriculaDto);
-      const dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
-        data: {
-          nroMtricula: matriculaDto.nroMatricula
-        }
-      })
-      dialogRef.afterClosed().subscribe(() => {
-        this.buscarDados();
-      });
+        console.log(matriculaDto);
+        const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
+            {
+                data:
+                    {
+                        matricula: matriculaDto
+                    }
+            })
+        dialogRef.afterClosed().subscribe(() => {
+                this.buscarDados()
+            }
+        )
     }
 
-
-  openDialogTest(matriculaDto: MatriculaListagemDto) {
+    openDialogTest(matriculaDto: MatriculaListagemDto) {
         console.log(matriculaDto);
         const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
             {
                 data:
                     {
-                        nroMatricula: matriculaDto.nroMatricula
+                        id: matriculaDto.nroMatricula
                     }
             })
         dialogRef.afterClosed().subscribe(() => {
@@ -193,19 +194,19 @@ export class ListMatriculaComponent implements OnInit{
     //     )
     // }
     public gerarPdfDados(id: number){
-      this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data=>{
-        this.matricula = data;
-        console.log(data);
-        const caminhoTermo = this.matricula.id+"_Dados-Matricula.pdf";
-        this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
-          .subscribe(response =>{
-            let blob:Blob = response
-            let downloadLink = document.createElement('a');
-            downloadLink.href = window.URL.createObjectURL(blob);
-            downloadLink.download = caminhoTermo;
-            downloadLink.click()
-          });
-      })
+        this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data=>{
+            this.matricula = data;
+            console.log(data);
+            const caminhoTermo = this.matricula.id+"_Dados-Matricula.pdf";
+            this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
+                .subscribe(response =>{
+                    let blob:Blob = response
+                    let downloadLink = document.createElement('a');
+                    downloadLink.href = window.URL.createObjectURL(blob);
+                    downloadLink.download = caminhoTermo;
+                    downloadLink.click()
+                });
+        })
     }
 
     private tipoListagem() {
