@@ -16,11 +16,9 @@ import { AdvertenciaDto } from "../../../api/models/advertencia-dto";
 import { AdvertenciaControllerService } from "../../../api/services/advertencia-controller.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatriculaListagemDto } from "../../../api/models/matricula-listagem-dto";
-import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
-import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
-import {
-    MatriculaControllerGetDocumentoMatricula$Params
-} from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
+import { DocumentoMatriculaDto } from "../../../api/models/documento-matricula-dto";
+import { EnumDoc } from "../../../arquitetura/arquivo-viwer/EnumDoc";
+import { MatriculaControllerGetDocumentoMatricula$Params } from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -64,16 +62,12 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
             (data) => {
                 this.matriculaVisualiza = data;
-                console.log(data);
                 if (data.caminhoImagem) {
                     this.matriculaVisualiza.caminhoImagem = data.caminhoImagem;
                 }
             },
             (error) => {
-                console.error('Erro ao obter os dados da matrícula:', error);
-                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
-                    duration: 3000,
-                });
+                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', { duration: 3000 });
                 this.fechar();
             }
         );
@@ -93,12 +87,9 @@ export class InfoMatriculaDialogComponent implements OnInit {
         if (documento.tipoDocumento === EnumDoc.FOTO_CRIANCA) {
             this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: documento }).subscribe(
                 (response: Blob) => {
-                    // Aqui você pode converter o Blob em uma URL para a imagem
                     const reader = new FileReader();
                     reader.onloadend = () => {
-                        const caminhoImagem = reader.result as string;
-                        console.log("Caminho da imagem:", caminhoImagem);
-                        this.caminhoDocumento = caminhoImagem;
+                        this.caminhoDocumento = reader.result as string;
                     };
                     reader.readAsDataURL(response);
                 },
@@ -109,8 +100,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
         }
     }
 
-
-
     createForm() {
         this.formGroup = this.formBuilder.group({
             possuiNecessidadeEspecial: [false],
@@ -118,20 +107,16 @@ export class InfoMatriculaDialogComponent implements OnInit {
         });
     }
 
-
-
     openDialogAdvertencia() {
         this.dialogRef.close();
         const dialogRefAdvertencia = this.dialog.open(AddAdvertenciaDialogComponent, {
-            data: {
-                id: this.matriculaId
-            }
+            data: { id: this.matriculaId }
         });
 
         dialogRefAdvertencia.afterClosed().subscribe(result => {
-            if (result === this.fechar()) {
-                this.dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
-                    data: this.matriculaId
+            if (result) {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
                 });
             }
         });
@@ -198,28 +183,22 @@ export class InfoMatriculaDialogComponent implements OnInit {
             this.necessidadeEspecialService.necessidadeEspecialControllerIncluir({ body: necessidadeEspecial })
                 .subscribe(
                     retorno => {
-                        console.log("Retorno do servidor:", retorno);
                         this.confirmarAcao();
                         this.router.navigate(["/matricula"]);
                     },
                     erro => {
-                        console.error("Erro ao incluir necessidade especial:", erro);
-                        this.snackBar.open('Erro ao incluir necessidade especial', 'Fechar', {
-                            duration: 3000,
-                        });
+                        this.snackBar.open('Erro ao incluir necessidade especial', 'Fechar', { duration: 3000 });
                     }
                 );
         });
     }
 
     confirmarAcao() {
-        const dialogRef = this.dialog.open(ConfirmationDialog, {
+        this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: 'Necessidades Registradas!',
-                mensagem: `Necessidade Incluida Com Sucesso!!`,
-                textoBotoes: {
-                    ok: 'Confirmar',
-                },
+                mensagem: 'Necessidade Incluída Com Sucesso!!',
+                textoBotoes: { ok: 'Confirmar' }
             },
         });
     }

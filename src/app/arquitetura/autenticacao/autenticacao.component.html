@@ -1,4 +1,5 @@
 <div class="tela-inteira">
+    <h1><strong>Entrar</strong></h1>
     <img src="/assets/fotos_login/imagem3_cantosuperior_esquerdo.png" class="imagem-lateral canto-superior-esquerdo">
     <img src="/assets/fotos_login/imgem3_cantosuperior_direito.png" class="imagem-lateral canto-superior-direito">
     <img src="/assets/fotos_login/imagem2_crianca2.png" class="imagem-lateral lado-direito">
@@ -7,41 +8,29 @@
     <div class="container-login">
         <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
             <div class="login-content">
-                <h1><strong>Entrar</strong></h1>
                 <mat-form-field>
                     <mat-label>CPF</mat-label>
                     <input matInput formControlName="login" mask="000.000.000-00" placeholder="000.000.000-00">
                     <mat-error *ngIf="handleError('login', 'required')">O CPF é Obrigatório</mat-error>
                     <mat-error *ngIf="handleError('login', 'cpfInvalido')">O CPF está Inválido</mat-error>
                 </mat-form-field>
-
-<!--                <div *ngIf="codigo == null" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >-->
-                    <mat-form-field>
-                        <mat-label>Senha</mat-label>
-                        <input matInput type="password" formControlName="senha" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">
-                        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button>
-                        <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">A Senha é obrigatória</mat-error>
-                    </mat-form-field>
-
+                <mat-form-field>
+                    <mat-label>Senha</mat-label>
+                    <input matInput type="password" formControlName="senha" placeholder="Digite a senha" [type]="hide ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="formGroup.get('senha')?.hasError('required')">A Senha é obrigatória</mat-error>
+                </mat-form-field>
                 <button class="button" type="submit" title="Entrar">
                     <span>Entrar</span>
                 </button>
-              <!--
-              <div class="esqueceu-senha">
-                <a href="/esqueceu-senha" class="link_esqueceu-senha">Esqueceu a senha?</a>
-              </div>
-              -->
-
                 <div class="esqueceu-senha">
-                    <a href="/" class="link_esqueceu-senha" >Página Inicial</a>
+                    <a href="/" class="link_esqueceu-senha">Página Inicial</a>
                 </div>
-
-              <div class="esqueceu-senha">
-                <a  class="link_esqueceu-senha" (click)="openDialog()">Esqueceu a senha?</a>
-              </div>
-
+                <div class="esqueceu-senha">
+                    <a class="link_esqueceu-senha" (click)="openDialog()">Esqueceu a senha?</a>
+                </div>
             </div>
         </form>
     </div>

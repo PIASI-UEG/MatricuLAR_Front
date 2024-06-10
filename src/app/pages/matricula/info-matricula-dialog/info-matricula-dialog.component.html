@@ -33,6 +33,9 @@
             <mat-card-content>
                 <p><strong>Responsáveis Permitidos:</strong> {{ matriculaVisualiza?.responsaveisNome }}</p>
             </mat-card-content>
+            <mat-card-content>
+                <p><strong>Necessidades Cadastradas:</strong> {{ matriculaVisualiza?.necessidadesEspeciais }}</p>
+            </mat-card-content>
             <p></p>
             <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
                 Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
@@ -59,7 +62,7 @@
                 </div>
             </ng-container>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-raised-button type="submit" class="button botao-cadastro">Salvar</button>
+                <button mat-raised-button type="submit" class="button botao-salvar" >Salvar</button>
             </div>
             <mat-card-header>
                 <mat-card-title>Advertências</mat-card-title>
@@ -76,7 +79,7 @@
         <p></p>
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
-            <button mat-raised-button type="button" class="button " (click)="openDialogAdvertencia()">Advertência</button>
+            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()">Advertência</button>
             <button mat-raised-button type="button" class="button botao-cadastro">Imprimir Matrícula</button>
         </div>
     </form>
