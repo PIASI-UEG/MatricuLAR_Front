@@ -12,26 +12,35 @@ import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial
 import { NecessidadeEspecialControllerService } from "../../../api/services/necessidade-especial-controller.service";
 import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
-import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
-import {AdvertenciaControllerService} from "../../../api/services/advertencia-controller.service";
+import { AdvertenciaDto } from "../../../api/models/advertencia-dto";
+import { AdvertenciaControllerService } from "../../../api/services/advertencia-controller.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatriculaListagemDto } from "../../../api/models/matricula-listagem-dto";
+import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
+import {EnumDoc} from "../../../arquitetura/arquivo-viwer/EnumDoc";
+import {
+    MatriculaControllerGetDocumentoMatricula$Params
+} from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
 
 @Component({
     selector: 'app-info-matricula-dialog',
     templateUrl: './info-matricula-dialog.component.html',
     styleUrls: ['./info-matricula-dialog.component.scss']
 })
-export class InfoMatriculaDialogComponent{
+export class InfoMatriculaDialogComponent implements OnInit {
     matriculaVisualiza?: MatriculaVisualizarDto;
     matriculaId: number;
     formGroup!: FormGroup;
     botaoNecessidadeClicado: boolean = false;
     matricula?: MatriculaDto;
     advertenciasAluno: Array<AdvertenciaDto> | undefined;
+    colunas: string[] = ['tutoresNomes', 'tutoresTelefone'];
+    caminhoDocumento!: string;
 
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
-        private matriculas: MatriculaControllerService,
+        private matriculaService: MatriculaControllerService,
         private advertenciaService: AdvertenciaControllerService,
         private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
         private dialog: MatDialog,
@@ -51,6 +60,57 @@ export class InfoMatriculaDialogComponent{
         this.visualizacao();
     }
 
+    private visualizacao() {
+        this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
+            (data) => {
+                this.matriculaVisualiza = data;
+                console.log(data);
+                if (data.caminhoImagem) {
+                    this.matriculaVisualiza.caminhoImagem = data.caminhoImagem;
+                }
+            },
+            (error) => {
+                console.error('Erro ao obter os dados da matrícula:', error);
+                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
+                    duration: 3000,
+                });
+                this.fechar();
+            }
+        );
+    }
+
+    receberDadosDoFilho(dados: { doc: File, tipoDocumento: EnumDoc }) {
+        if (dados.doc) {
+            const documentoMatricula: DocumentoMatriculaDto = {
+                idMatricula: this.matriculaId,
+                tipoDocumento: dados.tipoDocumento
+            };
+            this.buscarCaminhoImagem(documentoMatricula);
+        }
+    }
+
+    private buscarCaminhoImagem(documento: DocumentoMatriculaDto) {
+        if (documento.tipoDocumento === EnumDoc.FOTO_CRIANCA) {
+            this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: documento }).subscribe(
+                (response: Blob) => {
+                    // Aqui você pode converter o Blob em uma URL para a imagem
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const caminhoImagem = reader.result as string;
+                        console.log("Caminho da imagem:", caminhoImagem);
+                        this.caminhoDocumento = caminhoImagem;
+                    };
+                    reader.readAsDataURL(response);
+                },
+                (error) => {
+                    console.error('Erro ao obter o caminho da imagem:', error);
+                }
+            );
+        }
+    }
+
+
+
     createForm() {
         this.formGroup = this.formBuilder.group({
             possuiNecessidadeEspecial: [false],
@@ -58,22 +118,7 @@ export class InfoMatriculaDialogComponent{
         });
     }
 
-    private visualizacao() {
-        this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
-            (data) => {
-                this.matriculaVisualiza = data;
-                console.log(data)
-            },
-            (error) => {
-                console.error('Erro ao obter os dados da matrícula:', error);
-                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
-                    duration: 3000,
-                });
-                    this.fechar();
-                }
-            );
 
-    }
 
     openDialogAdvertencia() {
         this.dialogRef.close();
@@ -178,7 +223,6 @@ export class InfoMatriculaDialogComponent{
             },
         });
     }
-
 
     onSubmit() {
         if (this.formGroup.valid) {
