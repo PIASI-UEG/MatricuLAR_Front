@@ -168,7 +168,7 @@ export class FormFuncionarioComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Cadastro!',
-        mensagem: `Ação de ${acao} dados: ${usuarioDto.pessoaNome} (ID: ${usuarioDto.pessoaCpf}) realizada com sucesso!`,
+        mensagem: `Ação de ${acao} dados: ${usuarioDto.pessoaNome} realizada com sucesso!`,
         textoBotoes: {
           ok: 'Confirmar',
         },

@@ -22,7 +22,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class AutenticacaoComponent implements OnInit {
   formGroup!: FormGroup;
-  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar: this.snackBar})
+  mensagens: MensagensUniversais = new MensagensUniversais({
+      dialog: this.dialog,
+      router: this.router,
+      securityService: this.securityService
+  })
     hide = true;
 
 
@@ -84,7 +88,7 @@ export class AutenticacaoComponent implements OnInit {
         this.router.navigate(['/painel']);
       }, error => {
         console.log('erro', error);
-        this.mensagens.showMensagemSimples(error.message,10000);
+        this.mensagens.acaoLogin(error.message,10000);
       });
     }
   }

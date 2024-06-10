@@ -6,7 +6,13 @@ export class Validacoes {
 
   public formGroupMatricula ?: FormGroup;
   public formGroupDocsList ?: FormGroup;
+  public tipoform?: string;
 
+  customPatterns = {
+      'S': { pattern: new RegExp('[a-zA-ZÀ-ÖØ-öø-ÿ ]') },
+      'A': { pattern: new RegExp('[a-zA-Z0-9À-ÖØ-öø-ÿ ]') },
+      'N': { pattern: new RegExp('[0-9]') }
+  };
   validarIdadeCrianca(control: AbstractControl): { [key: string]: any } | null {
     const dataNascimento: Date = control.value;
 
@@ -266,15 +272,15 @@ export class Validacoes {
   }
 
   // form de perguntas validacao se marcou beneficio governo
-  validarDeclaroLiConcordo(formGroup: FormGroup): { [key: string]: any } | null {
-    if (formGroup.get('declaroLieConcordo')?.value === false) {
+  validarDeclaroLiConcordo = (formGroup: FormGroup): { [key: string]: any } | null => {
+    if (formGroup.get('declaroLieConcordo')?.value === false && this.tipoform == 'Cadastrar') {
       formGroup.get('declaroLieConcordo')?.setErrors({'marqueLieConcordo': true});
       return {'marqueLieConcordo': true};
     } else {
       formGroup.get('declaroLieConcordo')?.setErrors(null);
       return null;
     }
-  }
+  };
 
   //validar se inseriu foto criança
   validarFotoCrianca(formGroup: FormGroup): { [key: string]: any } | null {

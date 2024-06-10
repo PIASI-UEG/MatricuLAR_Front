@@ -12,11 +12,13 @@ import { NecessidadeEspecialDto } from "../../../api/models/necessidade-especial
 import { NecessidadeEspecialControllerService } from "../../../api/services/necessidade-especial-controller.service";
 import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
-import {AdvertenciaDto} from "../../../api/models/advertencia-dto";
-import {AdvertenciaControllerService} from "../../../api/services/advertencia-controller.service";
-import {
-  matriculaControllerGetDocumentoMatricula
-} from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
+import { AdvertenciaDto } from "../../../api/models/advertencia-dto";
+import { AdvertenciaControllerService } from "../../../api/services/advertencia-controller.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatriculaListagemDto } from "../../../api/models/matricula-listagem-dto";
+import { DocumentoMatriculaDto } from "../../../api/models/documento-matricula-dto";
+import { EnumDoc } from "../../../arquitetura/arquivo-viwer/EnumDoc";
+import { MatriculaControllerGetDocumentoMatricula$Params } from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -24,26 +26,19 @@ import {
     styleUrls: ['./info-matricula-dialog.component.scss']
 })
 export class InfoMatriculaDialogComponent implements OnInit {
-    matricula: MatriculaVisualizarDto[] = [];
-    matriculaId?: number;
+    matriculaVisualiza?: MatriculaVisualizarDto;
+    matriculaId: number;
     formGroup!: FormGroup;
-    dados: any;
-    caminhoImagem: string = '';
-    nomeAluno: string = '';
-    cpfAluno: string = '';
-    nascimento: string = '';
-    statusAluno: string = '';
-    tutoresNomes: string[] = [];
-    tutoresTelefone: string[] = [];
-    responsaveisNome: string[] = [];
     botaoNecessidadeClicado: boolean = false;
-    aluno?: MatriculaDto;
+    matricula?: MatriculaDto;
     advertenciasAluno: Array<AdvertenciaDto> | undefined;
+    colunas: string[] = ['tutoresNomes', 'tutoresTelefone'];
+    caminhoDocumento!: string;
 
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
-        private matriculas: MatriculaControllerService,
+        private matriculaService: MatriculaControllerService,
         private advertenciaService: AdvertenciaControllerService,
         private dialogRef: MatDialogRef<InfoMatriculaDialogComponent>,
         private dialog: MatDialog,
@@ -55,14 +50,54 @@ export class InfoMatriculaDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
-        this.dados = data;
         this.matriculaId = data.id;
     }
 
     ngOnInit(): void {
         this.createForm();
-        this.buscarDados();
         this.visualizacao();
+    }
+
+    private visualizacao() {
+        this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
+            (data) => {
+                this.matriculaVisualiza = data;
+                if (data.caminhoImagem) {
+                    this.matriculaVisualiza.caminhoImagem = data.caminhoImagem;
+                }
+            },
+            (error) => {
+                this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', { duration: 3000 });
+                this.fechar();
+            }
+        );
+    }
+
+    receberDadosDoFilho(dados: { doc: File, tipoDocumento: EnumDoc }) {
+        if (dados.doc) {
+            const documentoMatricula: DocumentoMatriculaDto = {
+                idMatricula: this.matriculaId,
+                tipoDocumento: dados.tipoDocumento
+            };
+            this.buscarCaminhoImagem(documentoMatricula);
+        }
+    }
+
+    private buscarCaminhoImagem(documento: DocumentoMatriculaDto) {
+        if (documento.tipoDocumento === EnumDoc.FOTO_CRIANCA) {
+            this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: documento }).subscribe(
+                (response: Blob) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        this.caminhoDocumento = reader.result as string;
+                    };
+                    reader.readAsDataURL(response);
+                },
+                (error) => {
+                    console.error('Erro ao obter o caminho da imagem:', error);
+                }
+            );
+        }
     }
 
     createForm() {
@@ -72,66 +107,16 @@ export class InfoMatriculaDialogComponent implements OnInit {
         });
     }
 
-    private buscarDados() {
-        if (this.matriculaId !== undefined) {
-            this.matriculas.matriculaControllerObterPorId({ id: this.matriculaId }).subscribe(data => {
-                this.aluno = data;
-            });
-        } else {
-            console.error('matriculaId is undefined');
-        }
-    }
-
-    private visualizacao() {
-        const matricula = this.dados.matricula;
-
-        if (!matricula) {
-            console.error('Dados da matrícula não fornecidos');
-            this.snackBar.open('Dados da matrícula não fornecidos', 'Fechar', {
-                duration: 3000,
-            });
-            this.fechar();
-            return;
-        }
-        this.matriculaId = matricula.id;
-
-        if (this.matriculaId !== undefined) {
-            this.matriculas.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
-                (response: MatriculaVisualizarDto) => {
-                    this.caminhoImagem = response.caminhoImagem ?? '';
-                    this.nomeAluno = response.nomeAluno ?? '';
-                    this.cpfAluno = response.cpfAluno ?? '';
-                    this.nascimento = response.nascimento ?? '';
-                    this.statusAluno = response.statusAluno ?? '';
-                    this.tutoresNomes = response.tutoresNomes ?? [];
-                    this.tutoresTelefone = response.tutoresTelefone ?? [];
-                    this.responsaveisNome = response.responsaveisNome ?? [];
-                },
-                (error) => {
-                    console.error('Erro ao obter os dados da matrícula:', error);
-                    this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', {
-                        duration: 3000,
-                    });
-                    this.fechar();
-                }
-            );
-        } else {
-            console.error('matriculaId is undefined');
-        }
-    }
-
     openDialogAdvertencia() {
         this.dialogRef.close();
         const dialogRefAdvertencia = this.dialog.open(AddAdvertenciaDialogComponent, {
-            data: {
-                id: this.matriculaId
-            }
+            data: { id: this.matriculaId }
         });
 
         dialogRefAdvertencia.afterClosed().subscribe(result => {
-            if (result === this.fechar()) {
-                this.dialogRef = this.dialog.open(InfoMatriculaDialogComponent, {
-                    data: this.dados
+            if (result) {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
                 });
             }
         });
@@ -191,39 +176,32 @@ export class InfoMatriculaDialogComponent implements OnInit {
         const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
         const necessidadesEspeciais: NecessidadeEspecialDto[] = formArray.value.map((necessidade: NecessidadeEspecialDto) => ({
             ...necessidade,
-            idMatricula: this.aluno?.id
+            idMatricula: this.matricula?.id
         }));
 
         necessidadesEspeciais.forEach(necessidadeEspecial => {
             this.necessidadeEspecialService.necessidadeEspecialControllerIncluir({ body: necessidadeEspecial })
                 .subscribe(
                     retorno => {
-                        console.log("Retorno do servidor:", retorno);
                         this.confirmarAcao();
                         this.router.navigate(["/matricula"]);
                     },
                     erro => {
-                        console.error("Erro ao incluir necessidade especial:", erro);
-                        this.snackBar.open('Erro ao incluir necessidade especial', 'Fechar', {
-                            duration: 3000,
-                        });
+                        this.snackBar.open('Erro ao incluir necessidade especial', 'Fechar', { duration: 3000 });
                     }
                 );
         });
     }
 
     confirmarAcao() {
-        const dialogRef = this.dialog.open(ConfirmationDialog, {
+        this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: 'Necessidades Registradas!',
-                mensagem: `Necessidade Incluida Com Sucesso!!`,
-                textoBotoes: {
-                    ok: 'Confirmar',
-                },
+                mensagem: 'Necessidade Incluída Com Sucesso!!',
+                textoBotoes: { ok: 'Confirmar' }
             },
         });
     }
-
 
     onSubmit() {
         if (this.formGroup.valid) {
@@ -236,6 +214,4 @@ export class InfoMatriculaDialogComponent implements OnInit {
     fechar(): void {
         this.dialogRef.close();
     }
-
-  protected readonly matriculaControllerGetDocumentoMatricula = matriculaControllerGetDocumentoMatricula;
 }

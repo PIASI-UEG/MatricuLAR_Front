@@ -11,14 +11,12 @@ h2{
 }
 
 .formPadrao {
-  border: 3px solid #B2DFFF;
-  border-radius: 5px;
-  background-color:  #F5F7FA;
-  padding: 2%;
-  width: 98%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2%;
+    border: 3px solid #B2DFFF;
+    border-radius: 5px;
+    background-color: #F5F7FA;
+    padding: 2%;
+    width: 100%;
+    margin: 2% auto;
 }
 
 .form {
@@ -62,24 +60,33 @@ h2{
     align-items: flex-start;
 }
 
-@media (max-width: 1500px) {
+
+/*RESPONSIVIDADE FORMULARIO*/
+@media (min-width: 1500px) {
   .formPadrao {
-    width: 70%;
-    padding: 3%;
+    width: 92%;
+    padding: 6%;
   }
 }
 
-@media (max-width: 900px) {
+@media (min-width: 1200px) {
+    .formPadrao {
+        width: 94%;
+        padding: 5%;
+    }
+}
+
+@media (min-width: 900px) {
   .formPadrao {
-    width: 85%;
+    width: 96%;
     padding: 4%;
   }
 }
 
-@media (max-width: 700px) {
+@media (min-width: 700px) {
   .formPadrao {
-    width: 100%;
-    padding: 6%;
+    width: 98%;
+    padding: 3%;
   }
 }
 

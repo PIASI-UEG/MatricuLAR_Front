@@ -145,6 +145,10 @@ app-loader-dialog{
   width: 100%!important;
 }
 
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: #4b9fcf!important;
+}
+
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';

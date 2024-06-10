@@ -2,8 +2,8 @@
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
         <h1><strong>Dados da Matrícula</strong></h1>
         <div class="card-container">
-            <div class="imagem-card">
-                <img src="{{caminhoImagem ? caminhoImagem : 'assets/logos/foto-crianca.png' }}" alt="Imagem" class="imagem">
+            <div *ngIf="matriculaVisualiza && matriculaVisualiza.caminhoImagem" class="imagem-card">
+                {{matriculaVisualiza.caminhoImagem}}
             </div>
             <div class="content-container">
                 <mat-card class="matricula-card">
@@ -11,10 +11,10 @@
                         <mat-card-title>Dados do Aluno</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p><strong>Nome do Aluno:</strong> {{ nomeAluno }}</p>
-                        <p><strong>CPF do Aluno:</strong> {{ cpfAluno }}</p>
-                        <p><strong>Data de Nascimento:</strong> {{ nascimento }}</p>
-                        <p><strong>Status do Aluno:</strong> {{ statusAluno }}</p>
+                        <p><strong>Nome do Aluno:</strong> {{ matriculaVisualiza?.nomeAluno }}</p>
+                        <p><strong>CPF do Aluno:</strong> {{ matriculaVisualiza?.cpfAluno }}</p>
+                        <p><strong>Data de Nascimento:</strong> {{ matriculaVisualiza?.nascimento }}</p>
+                        <p><strong>Status do Aluno:</strong> {{ matriculaVisualiza?.statusAluno }}</p>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -24,14 +24,17 @@
                 <mat-card-title>Tutores</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <p><strong>Tutor:</strong> {{tutoresNomes}}</p>
-                <p><strong>Telefone do Tutor:</strong> {{ tutoresTelefone }}</p>
+                <p><strong>Tutor:</strong> {{ matriculaVisualiza?.tutoresNomes }}</p>
+                <p><strong>Telefone do Tutor:</strong> {{ matriculaVisualiza?.tutoresTelefone }}</p>
             </mat-card-content>
             <mat-card-header>
                 <mat-card-title>Responsáveis</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <p><strong>Responsáveis Permitidos:</strong> {{responsaveisNome}}</p>
+                <p><strong>Responsáveis Permitidos:</strong> {{ matriculaVisualiza?.responsaveisNome }}</p>
+            </mat-card-content>
+            <mat-card-content>
+                <p><strong>Necessidades Cadastradas:</strong> {{ matriculaVisualiza?.necessidadesEspeciais }}</p>
             </mat-card-content>
             <p></p>
             <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
@@ -59,7 +62,7 @@
                 </div>
             </ng-container>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-raised-button type="submit" class="button botao-cadastro">Salvar</button>
+                <button mat-raised-button type="submit" class="button botao-salvar" >Salvar</button>
             </div>
             <mat-card-header>
                 <mat-card-title>Advertências</mat-card-title>
@@ -76,7 +79,7 @@
         <p></p>
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
-            <button mat-raised-button type="button" class="button " (click)="openDialogAdvertencia()">Advertência</button>
+            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()">Advertência</button>
             <button mat-raised-button type="button" class="button botao-cadastro">Imprimir Matrícula</button>
         </div>
     </form>

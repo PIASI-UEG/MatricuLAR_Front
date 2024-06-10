@@ -82,9 +82,9 @@ export class ListMatriculaComponent implements OnInit{
         this.matriculaListaDataSource.data = $event;
     }
 
-    remover(listaMatricula: MatriculaDto) {
+    remover(listaMatricula: MatriculaListagemDto) {
         console.log(listaMatricula)
-        this.matriculaService.matriculaControllerRemover({id: listaMatricula.id || 0})
+        this.matriculaService.matriculaControllerRemover({id: listaMatricula.nroMatricula || 0})
             .subscribe(
                 retorno => {
                     this.buscarDados();
@@ -97,11 +97,11 @@ export class ListMatriculaComponent implements OnInit{
     }
 
 
-    confirmarExcluir(listaMatricula: MatriculaDto) {
+    confirmarExcluir(listaMatricula: MatriculaListagemDto) {
         const dialogRef = this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: 'Confirmar?',
-                mensagem: `A exclusão de: ${listaMatricula.nome} (ID: ${listaMatricula.id})?`,
+                mensagem: `A exclusão de: ${listaMatricula.nomeAluno} (ID: ${listaMatricula.nroMatricula})?`,
                 textoBotoes: {
                     ok: 'Confirmar',
                     cancel: 'Cancelar',
@@ -149,32 +149,28 @@ export class ListMatriculaComponent implements OnInit{
         })
     }
 
-    openDialog(matriculaListagemDto: MatriculaListagemDto) {
-        console.log(matriculaListagemDto);
-        if(matriculaListagemDto.nroMatricula){
-          this.matriculaService.matriculaControllerObterPorId({id: matriculaListagemDto.nroMatricula}).subscribe(data =>{
-            const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
-              {
+    openDialog(matriculaDto: MatriculaListagemDto) {
+        console.log(matriculaDto);
+        const dialogRef = this.dialog.open(InfoMatriculaDialogComponent,
+            {
                 data:
-                  {
-                    matricula: data
-                  }
-              })
-            dialogRef.afterClosed().subscribe(() => {
+                    {
+                        id: matriculaDto.nroMatricula
+                    }
+            })
+          dialogRef.afterClosed().subscribe(() => {
                 this.buscarDados()
-              }
-            )
-          })
-        }
+            }
+        )
     }
 
-    openDialogTest(matriculaListagemDto: MatriculaListagemDto) {
-        console.log(matriculaListagemDto);
+    openDialogTest(matriculaDto: MatriculaListagemDto) {
+        console.log(matriculaDto);
         const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
             {
                 data:
                     {
-                        id: matriculaListagemDto.nroMatricula
+                        id: matriculaDto.nroMatricula
                     }
             })
         dialogRef.afterClosed().subscribe(() => {
@@ -198,19 +194,19 @@ export class ListMatriculaComponent implements OnInit{
     //     )
     // }
     public gerarPdfDados(id: number){
-      this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data=>{
-        this.matricula = data;
-        console.log(data);
-        const caminhoTermo = this.matricula.id+"_Dados-Matricula.pdf";
-        this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
-          .subscribe(response =>{
-            let blob:Blob = response
-            let downloadLink = document.createElement('a');
-            downloadLink.href = window.URL.createObjectURL(blob);
-            downloadLink.download = caminhoTermo;
-            downloadLink.click()
-          });
-      })
+        this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data=>{
+            this.matricula = data;
+            console.log(data);
+            const caminhoTermo = this.matricula.id+"_Dados-Matricula.pdf";
+            this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
+                .subscribe(response =>{
+                    let blob:Blob = response
+                    let downloadLink = document.createElement('a');
+                    downloadLink.href = window.URL.createObjectURL(blob);
+                    downloadLink.download = caminhoTermo;
+                    downloadLink.click()
+                });
+        })
     }
 
     private tipoListagem() {
