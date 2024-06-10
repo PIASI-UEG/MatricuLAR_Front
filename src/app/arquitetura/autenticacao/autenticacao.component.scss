@@ -124,7 +124,7 @@ h1 {
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .canto-superior-direito,
   .canto-superior-esquerdo,
   .lado-direito,
@@ -139,7 +139,7 @@ h1 {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
   .canto-superior-direito,
   .canto-superior-esquerdo,
   .lado-direito,
@@ -151,6 +151,26 @@ h1 {
   }
   .container-login {
     margin-top: 35%;
+  }
+}
+
+//telas maiores reposnividade
+@media (min-width: 2000px) {
+  .imagem-lateral {
+    max-width: 500px;
+    max-height: 500px;
+  }
+
+  .canto-superior-direito,
+  .canto-superior-esquerdo {
+    max-width: 1200px;
+    max-height: 600px;
+  }
+
+  .lado-direito,
+  .lado-esquerdo {
+    max-width: 500px;
+    max-height: 500px;
   }
 }
 
@@ -208,3 +228,5 @@ h1 {
 .link_esqueceu-senha:active {
   color: black;
 }
+
+
