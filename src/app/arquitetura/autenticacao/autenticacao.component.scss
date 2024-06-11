@@ -53,15 +53,20 @@
   height: auto;
   margin-right: auto;
   margin-left: auto;
+
 }
 
-h1 {
+.title-login {
+  margin-bottom: 50px;
+}
+
+
+h1{
   user-select: none;
   position: fixed;
   top: 35%;
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 10px;
   font-size: 24px;
 }
 
