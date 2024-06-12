@@ -62,6 +62,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
             (data) => {
                 this.matriculaVisualiza = data;
+                this.advertenciasAluno = data.advertencias;
+                console.log(data)
                 if (data.caminhoImagem) {
                     this.matriculaVisualiza.caminhoImagem = data.caminhoImagem;
                 }
