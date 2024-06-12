@@ -70,7 +70,7 @@
 
                             <mat-form-field>
                                 <mat-label>Data de Nascimento</mat-label>
-                                <input matInput readonly formControlName="dataNascimento" placeholder="Selecione a Data"
+                                <input matInput onfocus="(this.type='date')" onblur="(this.type='text')" formControlName="dataNascimento" placeholder="Selecione a Data"
                                        [matDatepicker]="dp3" [max]="maxDateCrianca" [min]="minDateCrianca">
                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                 <mat-datepicker #dp3></mat-datepicker>
@@ -194,7 +194,8 @@
 
                                     <mat-form-field>
                                         <mat-label>Data de Nascimento</mat-label>
-                                        <input matInput readonly formControlName="dataNascimento" placeholder="Escolha uma data"
+                                        <input matInput onfocus="(this.type='date')" onblur="(this.type='text')"
+                                               formControlName="dataNascimento" placeholder="Escolha uma data"
                                                [matDatepicker]="dp3" [min]="minDate" [max]="maxDate">
                                         <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                         <mat-datepicker #dp3></mat-datepicker>
