@@ -12,28 +12,21 @@
         <div class="mat-tab-titulos">
             <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" (selectedTabChange)="onTabClick($event)">
                 <!-- Etapa 0  -->
-                <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR"
-                         [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
+                <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
                     <div class="conteudo-mat-tab">
-                        <h1>
-                            Antes de preencher o formulário, por favor, leia atentamente as informações sobre a matrícula.
-                        </h1>
-                        <p>TOME CONHECIMENTO DAS NORMAS ABAIXO ESTABELECIDAS:</p>
-                        <p>* O HORÁRIO DE CHEGADA DAS CRIANÇAS SERÁ DAS 7:00 H ÀS 8:00 H. NÃO SERÁ PERMITIDA A ENTRADA APÓS ESTE HORÁRIO.</p>
-                        <p>* O HORÁRIO DE SAÍDA DAS CRIANÇAS SERÁ ENTRE 16:30 H E 17:00 H. POR FAVOR, SEJA PONTUAL. CASO OCORRA ALGUM IMPREVISTO, AVISE À SECRETARIA PELO TELEFONE 3099-6423.</p>
-                        <p>* NÃO SERÁ PERMITIDA A ENTRADA DAS CRIANÇAS SEM AGENDA.</p>
-                        <p>* A ENTREGA DA CRIANÇA A TERCEIROS SÓ SERÁ PERMITIDA MEDIANTE AUTORIZAÇÃO DOS PAIS OU RESPONSÁVEIS.</p>
-                        <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS TRAZEREM SEUS FILHOS À INSTITUIÇÃO EM BOAS CONDIÇÕES DE HIGIENE E SAÚDE: UNHAS CORTADAS, ORELHAS LIMPAS, CABELOS LAVADOS E PENTEADOS, SEM PIOLHOS, EM BOM ESTADO DE SAÚDE, E COM O UNIFORME LIMPO.</p>
-                        <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS TRAZER A MOCHILA COM 3 (TRÊS) PEÇAS DE ROUPAS, SANDÁLIAS TIPO HAVAIANAS, TOALHAS (DE BANHO OU DE MÃO) COM NOME BORDADO.</p>
-                        <p>* A TOALHA SERÁ DEVOLVIDA SEMPRE QUE NECESSÁRIO, DEVENDO SER TRAZIDA LIMPA PARA USO NA INSTITUIÇÃO (PARA O BERÇÁRIO, TOALHA DE BANHO COM NOME BORDADO).</p>
-                        <p>* É RESPONSABILIDADE DOS PAIS OU RESPONSÁVEIS COMUNICAR À INSTITUIÇÃO O MOTIVO DA AUSÊNCIA DA CRIANÇA APÓS TRÊS DIAS CONSECUTIVOS. CASO CONTRÁRIO, A CRIANÇA SERÁ DESLIGADA AUTOMATICAMENTE DA INSTITUIÇÃO.</p>
-                        <p>* O NÃO CUMPRIMENTO DAS NORMAS ESTABELECIDAS NESTE TERMO DE RESPONSABILIDADE RESULTARÁ EM ADVERTÊNCIA POR ESCRITO AOS PAIS OU RESPONSÁVEIS.</p>
 
+                        <h1 class="subtitulo">ANTES DE PREENCHER O FORMULÁRIO, POR FAVOR, <br>LEIA ATENTAMENTE AS INFORMAÇÕES SOBRE A MATRÍCULA.</h1>
+                        <p class="destaque">TOME CONHECIMENTO DAS NORMAS ABAIXO ESTABELECIDAS:</p>
+                        <ul class="normas">
+                            <li>O HORÁRIO DE CHEGADA DAS CRIANÇAS SERÁ DAS 7:00 H ÀS 7:30 H. NÃO SERÁ PERMITIDA A ENTRADA APÓS ESTE HORÁRIO.</li>
+                            <li>O HORÁRIO DE SAÍDA DAS CRIANÇAS SERÁ ENTRE 16:30 H E 17:00 H. POR FAVOR, SEJA PONTUAL. CASO OCORRA ALGUM IMPREVISTO, AVISE À SECRETARIA PELO TELEFONE 3099-6423.</li>
+                        </ul>
                         <mat-checkbox #aceiteInformacoes color="primary" formControlName="aceiteInformacoes">
                             POR ESTAR CIENTE DAS NORMAS ACIMA ESTABELECIDAS, COMPROMETO-ME E RESPONSABILIZO-ME A CUMPRI-LAS.
                         </mat-checkbox>
                         <mat-error *ngIf="handleErrorForm('aceiteAsInformacoes')">Por favor, leia e marque para continuar.</mat-error>
 
+                        <!-- Botões -->
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
                             <button type="button" class="button-hidden"></button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
@@ -75,7 +68,7 @@
                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                 <mat-datepicker #dp3></mat-datepicker>
                                 <mat-error *ngIf="handleError('dataNascimento', 'required')">Campo Obrigatório</mat-error>
-<!--                                <mat-error *ngIf="handleError('dataNascimento', 'idadeInvalida')">Idade máxima 5 e mínima 3</mat-error>-->
+                                <mat-error *ngIf="handleError('dataNascimento', 'idadeInvalida')">Idade máxima 5 e mínima 1</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -176,8 +169,9 @@
                                     <h2> Dados do Cônjuge </h2>
                                 </ng-container>
                                 <mat-form-field>
-                                    <mat-label>Nome</mat-label>
-                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do responsável legal" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
+
+                                    <mat-label>Nome do Responsável</mat-label>
+                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do  responsável legal da criança" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
                                     <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
                                   <mat-error *ngIf="handleErrorTutor('nomeTutor', 'maxlength', i)">Limete 200 caracteres</mat-error>
                                 </mat-form-field>
@@ -237,7 +231,7 @@
 
                                 <div fxLayout="center" class="linha-horizontal"></div>
                                 <h2> Dados da empresa </h2>
-                                <p> Caso todos os responsáveis legais não tenham emprego a criança não poderá se matricular na associação.</p>
+                                <p> Caso todos os Responsáveis Legais não tenham emprego a criança não poderá ser matricular na associação sagrada familia.</p>
 
                                 <mat-form-field>
                                     <mat-label>Nome da empresa</mat-label>
@@ -358,9 +352,12 @@
                             <mat-error *ngIf="handleError('tipoResidencia', 'required')">Campo Obrigatório</mat-error>
                         </mat-form-field>
 
+                        <mat-label *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'"> Valor do aluguel</mat-label>
                         <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
-                            <mat-label>Valor do aluguel</mat-label>
-                            <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
+                            <div class="input-simbolo">
+                                <span class="simbolo-dinheiro">R$</span>
+                                <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
+                            </div>
                             <mat-error *ngIf="handleErrorForm('informeValorAluguel')">Informe o valor do Aluguel</mat-error>
                         </mat-form-field>
 
@@ -375,10 +372,13 @@
                                 </mat-radio-button>
                             </mat-radio-group>
 
+                            <mat-label *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">  Valor do benefício</mat-label>
                             <mat-form-field *ngIf="formGroup.get('possuiBeneficiosDoGoverno')?.value === 'sim'">
-                                <mat-label>Valor do benefício</mat-label>
-                                <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator=","
-                                       placeholder="0,00">
+                                <div class="input-simbolo">
+                                    <span class="simbolo-dinheiro">R$</span>
+                                    <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator=","
+                                           placeholder="0,00">
+                                </div>
                                 <mat-error *ngIf="handleError('valorBeneficio','informeValorBeneficio')">Informe o valor do Benefício</mat-error>
                             </mat-form-field>
                         </div>
@@ -406,8 +406,11 @@
                         <p>Qual a renda familiar?</p>
                         <mat-form-field>
                             <mat-label>Renda familiar</mat-label>
+                            <div class="input-simbolo">
+                            <span class="simbolo-dinheiro">R$</span>
                             <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator=","
                                    placeholder="0,00">
+                            </div>
                             <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
                         </mat-form-field>
 

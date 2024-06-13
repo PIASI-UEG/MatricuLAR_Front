@@ -200,6 +200,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   -webkit-appearance: none;
 }
 
+.simbolo-dinheiro{
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.input-simbolo{
+  position:relative;
+  padding-left: 30px;
+}
+
 
 
 
