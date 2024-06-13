@@ -30,10 +30,9 @@ export class InfoMatriculaDialogComponent implements OnInit {
     matriculaId: number;
     formGroup!: FormGroup;
     botaoNecessidadeClicado: boolean = false;
-    matricula?: MatriculaDto;
+    matricula!: MatriculaDto;
     colunas: string[] = ['tutoresNomes', 'tutoresTelefone'];
     caminhoDocumento!: string;
-
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
@@ -214,4 +213,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
     fechar(): void {
         this.dialogRef.close();
     }
+
+
 }

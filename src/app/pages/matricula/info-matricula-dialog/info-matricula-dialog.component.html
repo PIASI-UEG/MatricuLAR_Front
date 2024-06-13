@@ -21,21 +21,34 @@
         </div>
         <mat-card class="container-card">
             <mat-card-header>
-                <mat-card-title>Tutores</mat-card-title>
+                <mat-card-title>Responsáveis Legais</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <p><strong>Tutor:</strong> {{ matriculaVisualiza?.tutoresNomes }}</p>
-                <p><strong>Telefone do Tutor:</strong> {{ matriculaVisualiza?.tutoresTelefone }}</p>
+                <p><strong>Responsáveis:</strong></p>
+                <ul>
+                    <li *ngFor="let nome of matriculaVisualiza?.tutoresNomes">{{ nome }}</li>
+                </ul>
+                <p><strong>Telefones dos Responsáveis:</strong></p>
+                <ul>
+                    <li *ngFor="let telefone of matriculaVisualiza?.tutoresTelefone">{{ telefone }}</li>
+                </ul>
             </mat-card-content>
             <mat-card-header>
-                <mat-card-title>Responsáveis</mat-card-title>
+                <mat-card-title>Autorizados a Buscar</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <p><strong>Responsáveis Permitidos:</strong> {{ matriculaVisualiza?.responsaveisNome }}</p>
+                <p><strong>Pessoas Autorizadas:</strong></p>
+                <ul>
+                    <li *ngFor="let responsavel of matriculaVisualiza?.responsaveisNome">{{ responsavel }}</li>
+                </ul>
             </mat-card-content>
             <mat-card-content>
-                <p><strong>Necessidades Cadastradas:</strong></p>
-                <p *ngFor="let necessidade of matriculaVisualiza?.necessidades">{{ necessidade.titulo }}</p>
+                <p><strong>Necessidades Especiais:</strong></p>
+                <ul>
+                    <li *ngFor="let necessidade of matriculaVisualiza?.necessidades">
+                        {{ necessidade.titulo }}
+                    </li>
+                </ul>
             </mat-card-content>
             <p></p>
             <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
@@ -46,7 +59,7 @@
                 <div formArrayName="necessidadesEspeciais">
                     <div fxLayout="row" fxLayoutAlign="center" *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
                         <mat-form-field>
-                            <mat-label>Necessidade especial</mat-label>
+                            <mat-label>Necessidade Especial</mat-label>
                             <input matInput formControlName="titulo" placeholder="EX: alergia, medicamentos, alimentação">
                             <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && formGroup.get('possuiNecessidadeEspecial')?.value">
                                 Desmarque ou preencha para continuar
@@ -65,23 +78,25 @@
             <div fxLayout="row" fxLayoutAlign="center center">
                 <button mat-raised-button type="submit" class="button botao-salvar" >Salvar</button>
             </div>
-            <mat-card-header>
-                <mat-card-title>Advertências</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div *ngFor="let advertencia of matriculaVisualiza?.advertencias">
-                    <h3>{{advertencia.titulo}}</h3>
-                    <h3>Descrição</h3>
-                    <p>{{advertencia.descricao}}</p>
-                </div>
-            </mat-card-content>
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Advertências</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <ul>
+                    <strong>Título</strong>
+                    <li *ngFor="let advertencia of matriculaVisualiza?.advertencias">{{ advertencia.titulo }}</li>
+                    <strong>Descrição</strong>
+                    <li *ngFor="let advertencia of matriculaVisualiza?.advertencias">{{ advertencia.descricao}}</li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
         </mat-card>
         <p></p>
         <p></p>
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
             <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()">Advertência</button>
-            <button mat-raised-button type="button" class="button botao-cadastro">Imprimir Matrícula</button>
         </div>
     </form>
 </div>
