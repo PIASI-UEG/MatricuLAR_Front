@@ -15,7 +15,7 @@
         <mat-error *ngIf="handleError('email', 'email')">E-mail Inválido</mat-error>
       </mat-form-field>
 
-      <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
+      <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
         <button mat-raised-button color="warn" type="button" class="button botao-cancelar" (click)="fechar()">Cancelar</button>
         <button  mat-raised-button type="submit" class="button" >Recuperar</button>
       </div>

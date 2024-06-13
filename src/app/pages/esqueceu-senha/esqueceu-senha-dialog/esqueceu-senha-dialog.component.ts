@@ -40,9 +40,9 @@ export class EsqueceuSenhaDialogComponent implements OnInit {
         return this.flexDivAlinhar = "row";
     }
 
-    verificarAlinhar() {
-        return this.flexDivAlinhar === "column";
-    }
+    // verificarAlinhar() {
+    //     return this.flexDivAlinhar === "column";
+    // }
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {

@@ -14,3 +14,29 @@
   border: red;
   max-width: 90%;
 }
+
+.btn-mov {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+}
+
+.btn-mov button {
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+@media (max-width: 768px) {
+  .btn-mov button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-mov button {
+    font-size: 12px;
+    padding: 6px 12px; 
+  }
+}
