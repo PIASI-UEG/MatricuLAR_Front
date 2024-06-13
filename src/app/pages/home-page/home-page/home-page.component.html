@@ -8,20 +8,75 @@
     <link href="https://unpkg.com/@angular/material/prebuilt-themes/indigo-pink.css" rel="stylesheet">
 
     <style>
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 5px 5px 8px rgba(9, 9, 9, 0.7);
+        }
+
+        h1, h2 {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        mat-carousel {
+            margin-bottom: 20px;
+        }
+
+        mat-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        p {
+            text-align: justify;
+        }
+
+        a {
+            color: black;
+        }
+
         .imagem-home1 img {
             max-width: 100%;
             max-height: 450px;
             display: block;
             margin: 0 auto;
         }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin: 20px 0;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-
     <h1>Associação Sagrada Família</h1>
-
 
     <ngb-carousel>
         <ng-template ngbSlide>
@@ -65,10 +120,14 @@
     <ul>
         <li>Endereço: <a href="https://www.google.com/maps/place/Creche+Sagrada+Fam%C3%ADlia/@-16.2789316,-48.9744024,15z/data=!4m6!3m5!1s0x935ea4822878f04d:0x8cc15aafd0b3804!8m2!3d-16.2789316!4d-48.9744024!16s%2Fg%2F1w6r9c5p?entry=ttu">
             RUA RIO VERDE QD 69 LT 02 VILA JAIARA, Anápolis, GO, Brazil</a></li>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15319.44098925695!2d-48.9744024!3d-16.2789316!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ea4822878f04d%3A0x8cc15aafd0b3804!2sCreche%20Sagrada%20Fam%C3%ADlia!5e0!3m2!1spt-BR!2sbr!4v1715987580763!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <li>
+            <div class="iframe-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15319.44098925695!2d-48.9744024!3d-16.2789316!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935ea4822878f04d%3A0x8cc15aafd0b3804!2sCreche%20Sagrada%20Fam%C3%ADlia!5e0!3m2!1spt-BR!2sbr!4v1715987580763!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </li>
         <li>Telefone: (62) 3099-6423</li>
         <li>Email: Associacao.sagradafamilia@hotmail.com</li>
-        <li>Intagram: <a href="https://www.instagram.com/sagradafamiliaanps/">Associação Sagrada Família</a></li>
+        <li>Instagram: <a href="https://www.instagram.com/sagradafamiliaanps/">Associação Sagrada Família</a></li>
         <li>Facebook: <a href="https://www.facebook.com/sagradafamiliaanps/?locale=pt_BR">Associação Sagrada Família</a></li>
     </ul>
 

@@ -1,11 +1,9 @@
-@import '../../../../styles.scss';
-
-.matGeral{
+.matGeral {
   width: 90%;
   height: 300px;
 }
 
-.meuMatCard{
+.meuMatCard {
   width: 200px;
   height: 150px;
 }
@@ -54,4 +52,36 @@
   font-size: 2em;
   font-weight: bold;
   color: #007bff;
+}
+
+/* Media Queries para melhorar a responsividade */
+@media (max-width: 768px) {
+  .painel {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .numero {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .painel {
+    margin: 10px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .numero {
+    font-size: 1.2em;
+  }
 }

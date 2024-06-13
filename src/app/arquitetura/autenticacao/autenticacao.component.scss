@@ -1,12 +1,13 @@
 @import '../../../StyleForms.css';
 
-.tela-inteira{
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    display: flex;
-    justify-content: center
+.tela-inteira {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .imagem-lateral {
@@ -22,12 +23,12 @@
   top: -150px;
 }
 
-.canto-superior-direito{
-  right:-270px;
+.canto-superior-direito {
+  right: -270px;
 }
 
 .canto-superior-esquerdo {
-  left:-270px;
+  left: -270px;
 }
 
 .lado-direito {
@@ -43,8 +44,8 @@
 }
 
 .logo {
-  position: absolute;
-  top: 10%;
+  position: fixed;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
@@ -52,25 +53,33 @@
   height: auto;
   margin-right: auto;
   margin-left: auto;
+
 }
 
+.title-login {
+  margin-bottom: 50px;
+}
+
+
 h1{
-  user-select:none;
-  position: relative;
+  user-select: none;
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
 }
 
 .container-login {
   width: 350px;
   padding-bottom: 20px;
-  margin-top: 12%;
+  margin-top: 10%;
   margin-right: auto;
   margin-left: auto;
   display: flex;
   flex-direction: row;
   place-content: center;
   align-items: center;
-  //border: 5px solid #4AB0D9;
-  //border-radius: 50px 50px;
   background-color: white;
   max-width: 90%;
 }
@@ -79,14 +88,14 @@ h1{
   .canto-superior-direito,
   .canto-superior-esquerdo,
   .lado-direito,
-  .lado-esquerdo{
+  .lado-esquerdo {
     display: none;
   }
-  .logo{
+  .logo {
     width: 50%;
   }
-  .container{
-    margin-top: 18%;
+  .container-login {
+    margin-top: 15%;
   }
 }
 
@@ -94,14 +103,14 @@ h1{
   .canto-superior-direito,
   .canto-superior-esquerdo,
   .lado-direito,
-  .lado-esquerdo{
+  .lado-esquerdo {
     display: none;
   }
-  .logo{
+  .logo {
     width: 60%;
   }
-  .container{
-    margin-top: 21%;
+  .container-login {
+    margin-top: 18%;
   }
 }
 
@@ -109,44 +118,64 @@ h1{
   .canto-superior-direito,
   .canto-superior-esquerdo,
   .lado-direito,
-  .lado-esquerdo{
+  .lado-esquerdo {
     display: none;
   }
-  .logo{
+  .logo {
     width: 70%;
   }
-  .container {
-    margin-top: 26%;
+  .container-login {
+    margin-top: 22%;
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .canto-superior-direito,
   .canto-superior-esquerdo,
   .lado-direito,
-  .lado-esquerdo{
+  .lado-esquerdo {
     display: none;
   }
-  .logo{
+  .logo {
     width: 80%;
   }
-  .container {
+  .container-login {
+    margin-top: 28%;
+  }
+}
+
+@media (max-width: 480px) {
+  .canto-superior-direito,
+  .canto-superior-esquerdo,
+  .lado-direito,
+  .lado-esquerdo {
+    display: none;
+  }
+  .logo {
+    width: 90%;
+  }
+  .container-login {
     margin-top: 35%;
   }
 }
 
-@media (max-width: 500px) {
+//telas maiores reposnividade
+@media (min-width: 2000px) {
+  .imagem-lateral {
+    max-width: 500px;
+    max-height: 500px;
+  }
+
   .canto-superior-direito,
-  .canto-superior-esquerdo,
+  .canto-superior-esquerdo {
+    max-width: 1200px;
+    max-height: 600px;
+  }
+
   .lado-direito,
-  .lado-esquerdo{
-    display: none;
-  }
-  .logo{
-    width: 90%;
-  }
-  .container {
-    margin-top: 40%;
+  .lado-esquerdo {
+    max-width: 500px;
+    max-height: 500px;
   }
 }
 
@@ -159,7 +188,6 @@ h1{
 .imagem-lateral.esquerda {
   background-image: url("/assets/fotos_login/imagem2_crianca2.png");
 }
-
 
 .login-content {
   font-family: DM Roboto, sans-serif;
@@ -205,3 +233,5 @@ h1{
 .link_esqueceu-senha:active {
   color: black;
 }
+
+

@@ -1,6 +1,5 @@
 @import '../../../../StyleForms.css';
 
-
 .imagem-card {
   width: 25%;
   margin-right: 10px;
@@ -16,12 +15,12 @@
   width: 65%;
 }
 
-.card-container{
+.card-container {
   margin-bottom: 20px;
   text-align: left;
 }
 
-.container-card, .matricula-card{
+.container-card, .matricula-card {
   border: 3px solid #B2DFFF;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -30,6 +29,11 @@
 
 .btn-mov {
   margin-top: 20px;
+}
+
+.botao-advertencia {
+  padding: 0 28px;
+  font-size: 13px;
 }
 
 @media (max-width: 959px) {
