@@ -186,8 +186,8 @@ export class FormMatriculaComponent implements OnInit {
       maxlength: "Quantidade máxima de caracteres ultrapassada.",
       cpfInvalido: "O CPF do responsável legal ou do cônjuge é inválido.",
       cpfsIguais: "O CPF já foi utilizado.",
-      telefoneInvalido: "O telefone informado em responsável legal ou do cônjuge é inválido.",
-      cnpjInvalido: "O CNPJ da empresa informado em responsável legal ou do cônjuge é inválido.",
+      telefoneInvalido: "O telefone informado é inválido.",
+      cnpjInvalido: "O CNPJ da empresa informado é inválido.",
       informeUmTelefoneEmpresarial: "Informe pelo menos um número de contato empresarial em responsável legal e(ou) cônjuge"
     },{
       formName: this.NOME_GUIA_TAB_PERGUNTAS,
@@ -216,7 +216,7 @@ export class FormMatriculaComponent implements OnInit {
       insiraContraChequesConjugue: "Informar os três últimos contracheques do cônjuge.",
       insiraDeclaracaoEscolarTutor: "Informar a declaração escolar do tutor.",
       insiraDeclaracaoEscolarConjugue: "Informar a declaração escolar do cônjuge.",
-      recebeBeneficioGoverno: "Informar a o comrpovante de benefício do governo.",
+      recebeBeneficioGoverno: "Informar o comrpovante de benefício do governo.",
       possuiVeiculoProprio: "Informar o documento do veículo.",
       possuiCRAS: "Informar o encaminhamento do CRAS.",
     }
