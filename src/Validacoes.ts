@@ -378,51 +378,6 @@ export class Validacoes {
     }
   }
 
-  //validar se inseriu CPF tutor
-  validarCPFTutor(formGroup: FormGroup): { [key: string]: any } | null {
-    const docs = formGroup.get('listaDocumentos');
-    const copiaDocs = docs?.value.slice();
-    const currentErrors = formGroup.errors || {};
-
-    if (!copiaDocs[8]) {
-      currentErrors['insiraODocCPFTutor'] = true;
-      formGroup.setErrors(currentErrors);
-
-      return {'insiraODocCPFTutor': true};
-    } else {
-      delete currentErrors['insiraODocCPFTutor'];
-
-      if (Object.keys(currentErrors).length === 0) {
-        formGroup.setErrors(null);
-      } else {
-        formGroup.setErrors(currentErrors);
-      }
-      return null;
-    }
-  }
-
-  //validar se inseriu CPF conjugue
-  validarCPFConjugue(formGroup: FormGroup): { [key: string]: any } | null {
-    const docs = formGroup.get('listaDocumentos');
-    const copiaDocs = docs?.value.slice();
-    const currentErrors = formGroup.errors || {};
-
-    if (!copiaDocs[9] && formGroup.get('temconjugue')?.value) {
-      currentErrors['insiraODocCPFConjugue'] = true;
-      formGroup.setErrors(currentErrors);
-      return {'insiraODocCPFConjugue': true};
-    } else {
-      delete currentErrors['insiraODocCPFConjugue'];
-
-      if (Object.keys(currentErrors).length === 0) {
-        formGroup.setErrors(null);
-      } else {
-        formGroup.setErrors(currentErrors);
-      }
-      return null;
-    }
-  }
-
   //validar se inseriu Certidão Estado Civil
   validarCertidaoEstadoCivil(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');

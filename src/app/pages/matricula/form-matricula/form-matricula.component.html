@@ -534,8 +534,6 @@
                                                         [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
                                                         [enumDocPai]="EnumDoc.CPF_TUTOR1"
                                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-                                    <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFTutor') && this.enviado">Documento obrigatótio
-                                    </mat-error>
                                 </div>
                                 <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                                     <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
@@ -543,9 +541,6 @@
                                                         [idBotaoInputImagemPreview]="'docCPFConjugueIDPreview'"
                                                         [enumDocPai]="EnumDoc.CPF_TUTOR2"
                                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-                                    <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFConjugue') && this.enviado">Documento
-                                        obrigatótio
-                                    </mat-error>
                                 </div>
                             </div>
 

@@ -29,14 +29,15 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {Subscription} from "rxjs";
 import {DocumentoMatricula} from "./DocumentoMatricula";
-import {TranslationError} from "../../../core/erros-dialog/TranslationErros";
-import {TranslationField} from "../../../core/erros-dialog/TranslationFields";
-import {ErrosControl} from "../../../core/erros-dialog/ErrosControls";
-import {ErrosForm} from "../../../core/erros-dialog/ErrosForm";
+
 import {ErrosDialogComponent} from "../../../core/erros-dialog/erros-dialog.component";
 import {
     necessidadeEspecialControllerAlterar
 } from "../../../api/fn/necessidade-especial-controller/necessidade-especial-controller-alterar";
+import {TranslationField} from "../../../core/erros-dialog/TranslationFields";
+import {TranslationError} from "../../../core/erros-dialog/TranslationErros";
+import {ErrosForm} from "../../../core/erros-dialog/ErrosForm";
+import {ErrosControl} from "../../../core/erros-dialog/ErrosControls";
 
 @Component({
     selector: 'app-form-matricula',
@@ -354,8 +355,6 @@ export class FormMatriculaComponent implements OnInit {
           this.validacoes.validarCPFCrianca,
           this.validacoes.valdiarComprovanteEndereco,
           this.validacoes.valdiarComprovanteMoradia,
-          this.validacoes.validarCPFTutor,
-          this.validacoes.validarCPFConjugue,
           this.validacoes.validarCertidaoEstadoCivil,
           this.validacoes.validarCarteiraTrabalhoTutor,
           this.validacoes.validarCarteiraTrabalhoConjugue,
