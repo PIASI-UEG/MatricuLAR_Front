@@ -60,9 +60,10 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
             (data) => {
                 this.matriculaVisualiza = data;
-                console.log(data)
+
+                // Verifica se há caminho de imagem definido
                 if (data.caminhoImagem) {
-                    this.matriculaVisualiza.caminhoImagem = data.caminhoImagem;
+                    this.buscarCaminhoImagem(data.caminhoImagem);
                 }
             },
             (error) => {
@@ -72,32 +73,21 @@ export class InfoMatriculaDialogComponent implements OnInit {
         );
     }
 
-    receberDadosDoFilho(dados: { doc: File, tipoDocumento: EnumDoc }) {
-        if (dados.doc) {
-            const documentoMatricula: DocumentoMatriculaDto = {
-                idMatricula: this.matriculaId,
-                tipoDocumento: dados.tipoDocumento
-            };
-            this.buscarCaminhoImagem(documentoMatricula);
-        }
+    private buscarCaminhoImagem(caminhoImagem: string) {
+        this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: { idMatricula: this.matriculaId, tipoDocumento: EnumDoc.FOTO_CRIANCA } }).subscribe(
+            (response: Blob) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    this.caminhoDocumento = reader.result as string;
+                };
+                reader.readAsDataURL(response);
+            },
+            (error) => {
+                console.error('Erro ao obter o caminho da imagem:', error);
+            }
+        );
     }
 
-    private buscarCaminhoImagem(documento: DocumentoMatriculaDto) {
-        if (documento.tipoDocumento === EnumDoc.FOTO_CRIANCA) {
-            this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: documento }).subscribe(
-                (response: Blob) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        this.caminhoDocumento = reader.result as string;
-                    };
-                    reader.readAsDataURL(response);
-                },
-                (error) => {
-                    console.error('Erro ao obter o caminho da imagem:', error);
-                }
-            );
-        }
-    }
 
     createForm() {
         this.formGroup = this.formBuilder.group({

@@ -3,7 +3,7 @@
         <h1><strong>Dados da Matrícula</strong></h1>
         <div class="card-container">
             <div *ngIf="matriculaVisualiza && matriculaVisualiza.caminhoImagem" class="imagem-card">
-                {{matriculaVisualiza.caminhoImagem}}
+                <img [src]="caminhoDocumento" alt="Foto da criança">
             </div>
             <div class="content-container">
                 <mat-card class="matricula-card">
@@ -92,7 +92,6 @@
                 </mat-card-content>
             </mat-card>
         </mat-card>
-        <p></p>
         <p></p>
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
