@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Erros no Formulário</h1>
+<mat-dialog-content class="dialog-content">
+  <div *ngFor="let form of translatedErrors">
+    <h3>{{ form.formName }}</h3>
+    <ul>
+      <li *ngFor="let error of form.erros">{{ error }}<br></li>
+    </ul>
+  </div>
+</mat-dialog-content>
+<div fxLayout="column" fxLayoutAlign="space-evenly center">
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close class="button-fechar">Fechar</button>
+</mat-dialog-actions>
+</div>

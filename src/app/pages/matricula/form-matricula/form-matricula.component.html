@@ -32,7 +32,7 @@
                         <mat-checkbox #aceiteInformacoes color="primary" formControlName="aceiteInformacoes">
                             POR ESTAR CIENTE DAS NORMAS ACIMA ESTABELECIDAS, COMPROMETO-ME E RESPONSABILIZO-ME A CUMPRI-LAS.
                         </mat-checkbox>
-                        <mat-error *ngIf="!aceiteInformacoes.checked && marcado">Por favor, leia e marque para continuar.</mat-error>
+                        <mat-error *ngIf="handleErrorForm('aceiteAsInformacoes')">Por favor, leia e marque para continuar.</mat-error>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
                             <button type="button" class="button-hidden"></button>
@@ -285,7 +285,7 @@
                                     </mat-form-field>
                                 </div>
                                 <mat-error class="alinhar-erro"
-                                           *ngIf="handleErrorFormTutor('informeUmTelefoneEmpresarial', i) && this.enviado">
+                                           *ngIf="handleErrorFormTutor('informeUmTelefoneEmpresarial', i)">
                                     Informe pelo menos um telefone empresarial.
                                 </mat-error>
 
@@ -341,7 +341,7 @@
                             <mat-form-field *ngIf="formGroup.get('frequentouOutraCreche')?.value === 'sim'">
                                 <mat-label>Por qual razão saiu?</mat-label>
                                 <input matInput formControlName="razaoSaida" placeholder="Informe detalhes" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
-                                <mat-error *ngIf="handleErrorForm('informeRazaoSaida')">Informe a razão da saída</mat-error>
+                                <mat-error *ngIf="handleError('razaoSaida','informeRazaoSaida')">Informe a razão da saída</mat-error>
                               <mat-error *ngIf="handleError('razaoSaida', 'maxlength')">Limite 200 caracteres</mat-error>
                             </mat-form-field>
                         </div>
@@ -378,7 +378,7 @@
                                 <mat-label>Valor do benefício</mat-label>
                                 <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator=","
                                        placeholder="0,00">
-                                <mat-error *ngIf="handleErrorForm('informeValorBeneficio')">Informe o valor do Benefício</mat-error>
+                                <mat-error *ngIf="handleError('valorBeneficio','informeValorBeneficio')">Informe o valor do Benefício</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -408,7 +408,6 @@
                             <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator=","
                                    placeholder="0,00">
                             <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
-                            <mat-error *ngIf="handleError('rendaFamiliar', 'rendaInvalida')">Renda máxima de 2200</mat-error>
                         </mat-form-field>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">

@@ -40,6 +40,7 @@ import {PainelModule} from "./pages/painel/painel.module";
 import {ImprimirTermoModule} from "./pages/imprimir-termo/imprimir-termo.module";
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module";
+import { ErrosDialogComponent } from './core/erros-dialog/erros-dialog.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module"
     HomeComponent,
     LoaderDialogComponent,
     ConfirmationDialog,
+    ErrosDialogComponent,
   ],
   imports: [
     BrowserModule,

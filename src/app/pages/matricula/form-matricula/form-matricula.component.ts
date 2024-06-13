@@ -29,6 +29,14 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {Subscription} from "rxjs";
 import {DocumentoMatricula} from "./DocumentoMatricula";
+import {TranslationError} from "../../../core/erros-dialog/TranslationErros";
+import {TranslationField} from "../../../core/erros-dialog/TranslationFields";
+import {ErrosControl} from "../../../core/erros-dialog/ErrosControls";
+import {ErrosForm} from "../../../core/erros-dialog/ErrosForm";
+import {ErrosDialogComponent} from "../../../core/erros-dialog/erros-dialog.component";
+import {
+    necessidadeEspecialControllerAlterar
+} from "../../../api/fn/necessidade-especial-controller/necessidade-especial-controller-alterar";
 
 @Component({
     selector: 'app-form-matricula',
@@ -83,8 +91,137 @@ export class FormMatriculaComponent implements OnInit {
     mudouForm: boolean = true;
     formChangesSubscription!: Subscription;
     verificarClickDocs: boolean = false;
+    public readonly NOME_GUIA_TAB_INFORMACOES = "Informações Gerais";
+    public readonly NOME_GUIA_TAB_CRIANCA = "Dados da Criança";
+    public readonly NOME_GUIA_TAB_TUTOR = "Dados dos Responsáveis Legais";
+    public readonly NOME_GUIA_TAB_PERGUNTAS = "Perguntas Culturais";
+    public readonly NOME_GUIA_TAB_DOCUMENTOS = "Anexar documentos";
 
-    constructor(
+    trnaslationFields: TranslationField[] = [
+      {
+        formName: this.NOME_GUIA_TAB_CRIANCA,
+        aceiteInformacoes: "Aceitar as condições",
+        nomeCrianca: "Nome da criança",
+        cpfCrianca: "CPF da criança",
+        dataNascimento: "Data de nascimento da criança",
+        cep:"CEP",
+        cidade: "Cidade",
+        bairro: "Bairro",
+        logradouro: "Logradouro",
+        complemento: "Complemento do endereço",
+        titulo: "Nome necessidade especial",
+      },
+      {
+        formName: this.NOME_GUIA_TAB_TUTOR,
+        nomeTutor: "Nome do responsável legal",
+        dataNascimento: "Data de nascimento do responsável legal",
+        cpf: "CPF do responsável legal",
+        vinculo: "Vínculo do responsável legal",
+        pessoaTelefone: "Telefone do responsável legal",
+        telefoneReserva: "Telefone reserva do responsável legal",
+        profissao: "Profissão do responsável legal",
+        empresaNome: "Nome da empresa do responsável legal",
+        empresaCnpj: "CNPJ da empresa do responsável legal",
+        telefoneCelularEmpresarial: "Celular da empresa do responsável legal",
+        telefoneFixoEmpresarial: "Telefone fixo da empresa do responsável legal",
+        "tutor[0].0.nomeTutor": "Nome do responsável legal",
+        "tutor[0].0.cpf": "CPF do responsável legal",
+        "tutor[0].0.dataNascimento":"Data de nascimento do responsável legal",
+        "tutor[0].0.vinculo": "Vínculo do responsável legal",
+        "tutor[0].0.pessoaTelefone": "Telefone do responsável legal",
+        "tutor[0].0.telefoneReserva": "Telefone reserva do responsável legal",
+        "tutor[0].0.profissao": "Profissão do responsável legal",
+        "tutor[0].0.empresaNome": "Nome da empresa do responsável legal",
+        "tutor[0].0.empresaCnpj": "CNPJ da empresa do responsável legal",
+        "tutor[0].0.telefoneCelularEmpresarial": "Celular da empresa do responsável legal",
+        "tutor[0].0.telefoneFixoEmpresarial": "Telefone fixo da empresa do responsável legal",
+        "tutor[1].1.nomeTutor": "Nome do cônjuge",
+        "tutor[1].1.cpf": "CPF do cônjuge",
+        "tutor[1].1.dataNascimento":"Data de nascimento do cônjuge",
+        "tutor[1].1.vinculo": "Vínculo do cônjuge",
+        "tutor[1].1.pessoaTelefone": "Telefone do cônjuge",
+        "tutor[1].1.telefoneReserva": "Telefone reserva do cônjuge",
+        "tutor[1].1.profissao": "Profissão do cônjuge",
+        "tutor[1].1.empresaNome": "Nome da empresa do cônjuge",
+        "tutor[1].1.empresaCnpj": "CNPJ da empresa do cônjuge",
+        "tutor[1].1.telefoneCelularEmpresarial": "Celular da empresa do cônjuge",
+        "tutor[1].1.telefoneFixoEmpresarial": "Telefone fixo da empresa do cônjuge",
+      },
+      {
+        formName: this.NOME_GUIA_TAB_PERGUNTAS,
+        frequentouOutraCreche: "Frequentou outra associação ou creche",
+        razaoSaida: "Informe o motivo da criança sair",
+        tipoResidencia: "Tipo de residência",
+        valorAluguel: "Valor do aluguel",
+        possuiBeneficiosDoGoverno: "Possui benefício",
+        valorBeneficio: "Valor do benefício",
+        possuiVeiculoProprio: "Possui veículo próprio",
+        possuiCRAS: "Possui encaminhamento do CRAS",
+        rendaFamiliar: "Renda familiar",
+      },
+      {
+        formName: this.NOME_GUIA_TAB_DOCUMENTOS,
+        declaroLieConcordo: "Aceitar as condições"
+      }
+    ]
+
+  translationErros : TranslationError[] = [
+    {
+      formName: this.NOME_GUIA_TAB_INFORMACOES,
+      aceiteAsInformacoes: "Marque que leu as informações iniciais."
+    },
+    {
+      formName: this.NOME_GUIA_TAB_CRIANCA,
+      required: "Campo obrigatório.",
+      maxlength: "Quantidade máxima de caracteres ultrapassada.",
+      cpfInvalido: "O CPF da criança é inválido",
+      cpfsIguais: "O CPF da criança já foi utilizado em responsável legal ou cônjuge.",
+      idadeInvalida: "A criança precisa ter entre 1 e 5 anos.",
+      cepInvalido: "O CEP é inválido.",
+      campoNaoPreenchido: "Desmarque a opção possui necessidades especiais ou preencha o campo para continuar.",
+    },{
+      formName: this.NOME_GUIA_TAB_TUTOR,
+      required: "Campo obrigatório.",
+      maxlength: "Quantidade máxima de caracteres ultrapassada.",
+      cpfInvalido: "O CPF do responsável legal ou do cônjuge é inválido.",
+      cpfsIguais: "O CPF já foi utilizado.",
+      telefoneInvalido: "O telefone informado em responsável legal ou do cônjuge é inválido.",
+      cnpjInvalido: "O CNPJ da empresa informado em responsável legal ou do cônjuge é inválido.",
+      informeUmTelefoneEmpresarial: "Informe pelo menos um número de contato empresarial em responsável legal e(ou) cônjuge"
+    },{
+      formName: this.NOME_GUIA_TAB_PERGUNTAS,
+      required: "Campo obrigatório.",
+      informeRazaoSaida: "Escreva o motivo pelo qual a criança saiu da associação ou creche anterior.",
+      informeValorAluguel: "Escreva o valor do aluguel pago atualmente.",
+      informeValorBeneficio: "Escreva o valor do benefício recebido do governo.",
+      informeValorFrequentou: "Marque uma opção em frequentou outra creche.",
+      informeValorBeneficioGoverno: "Marque uma opção em recebe benefício do governo.",
+      informePossuiVeiculoProprio: "Marque uma opção em possui veículo próprio.",
+      informePossuiCRAS: "Marque uma opção em possui encaminhamento do CRAS.",
+    },{
+      formName: this.NOME_GUIA_TAB_DOCUMENTOS,
+      marqueLieConcordo: "Aceite os termos para finalizar.",
+      insiraODocFoto: "Insira a foto da criança.",
+      insiraODocCertidao: "Insira a certidão de nascimento da criança.",
+      insiraODocCPFCrianca: "Insira o CPF da criança.",
+      insiraODocCompEnd: "Insira o comprovante de endereço.",
+      insiraODocCompMora: "Insira o comprovante de moradia.",
+      insiraODocCPFTutor: "Insira o CPF do tutor.",
+      insiraODocCPFConjugue: "Insira o CPF do cônjuge.",
+      insiraODocEstadoCivil: "Insira a certidão de estado civil.",
+      insiraCarteiraDeTrabalhoTutor: "Insira o certificado de trabalho do tutor.",
+      insiraCarteiraDeTrabalhoConjugue: "Insira o certificado de trabalho do cônjuge.",
+      insiraContraChequesTutor: "Informar os três últimos contracheques do tutor.",
+      insiraContraChequesConjugue: "Informar os três últimos contracheques do cônjuge.",
+      insiraDeclaracaoEscolarTutor: "Informar a declaração escolar do tutor.",
+      insiraDeclaracaoEscolarConjugue: "Informar a declaração escolar do cônjuge.",
+      recebeBeneficioGoverno: "Informar a o comrpovante de benefício do governo.",
+      possuiVeiculoProprio: "Informar o documento do veículo.",
+      possuiCRAS: "Informar o encaminhamento do CRAS.",
+    }
+  ]
+
+  constructor(
         private formBuilder: FormBuilder,
         private formBuilderDocs : FormBuilder,
         private _adapter: DateAdapter<any>,
@@ -134,28 +271,30 @@ export class FormMatriculaComponent implements OnInit {
             //Dados Tutor - Etapa2
             tutor: this.formBuilder.array<TutorDto>([]),
             //Perguntas culturais - Etapa 3
-            frequentouOutraCreche: [null, Validators.required],
+            frequentouOutraCreche: [null],
             razaoSaida: [null,[Validators.maxLength(200)]],
             tipoResidencia: [null, Validators.required],
             valorAluguel: [null],
-            possuiBeneficiosDoGoverno: [null, Validators.required],
-            possuiVeiculoProprio: [null, Validators.required],
-            possuiCRAS: [null, Validators.required],
+            possuiBeneficiosDoGoverno: [null],
+            possuiVeiculoProprio: [null],
+            possuiCRAS: [null],
             valorBeneficio: [null],
-            rendaFamiliar: [null, [Validators.required, this.validacoes.validarRenda]],
+            rendaFamiliar: [null, [Validators.required]],
             //Documentos - Etapa 4
             // implementar anexar documentos no form
             // declaro que li e concordo
             declaroLieConcordo: false
         }, {
-            validator: [this.validacoes.validarRazaoSaida,
+            validator: [
+                this.validacoes.validarRazaoSaida,
                 this.validacoes.validarAluguel,
                 this.validacoes.validarBeneficio,
                 this.validacoes.validarFrequentou,
                 this.validacoes.validarBeneficioMarcado,
                 this.validacoes.validarDeclaroLiConcordo,
                 this.validacoes.validarVeiculoMarcado,
-                this.validacoes.validarCRASMarcado
+                this.validacoes.validarCRASMarcado,
+                this.validacoes.validarInformacoesIniciais
             ]
         })
     }
@@ -266,7 +405,42 @@ export class FormMatriculaComponent implements OnInit {
         this.realizarEdicao();
       }
     }
+
+    const errosControls = this.getAllErrorsInControls();
+    const errosFormsAll = this.getAllErrosInForms();
+
+      const config: MatDialogConfig = {
+      data: {
+        errosControls: errosControls,
+        errosForms: errosFormsAll,
+        trnaslationfield: this.trnaslationFields,
+        trnaslationerror: this.translationErros,
+      }
+    };
+    const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+
+    console.log("errosForms", errosFormsAll)// tipo ErrosForm[]
+    console.log("errosControls", errosControls)// tipo ErrosControl[]
   }
+
+    private getAllErrosInForms() {
+        const errosFormsGeral = this.getFormFieldValidationErrors(this.formGroup);
+        const errosFormsTutor = this.getFormFieldValidationErrors(this.getTutorForm(0));
+        const errosFormsDocumentos = this.getFormFieldValidationErrors(this.formDocumentos);
+
+        let errosFormsAll = [...errosFormsGeral, ...errosFormsTutor, ...errosFormsDocumentos];
+
+        if (this.temConjugue) {
+            const errosFormsConjuge = this.getFormFieldValidationErrors(this.getTutorForm(1));
+            errosFormsAll = [...errosFormsAll, ...errosFormsConjuge];
+        }
+        return errosFormsAll;
+    }
+
+    private getAllErrorsInControls() {
+        const errosControls = this.getControlValidationErrors(this.formGroup);
+        return errosControls;
+    }
 
     uploadFiles(dto: any, files: File[]) {
         const formData: FormData = new FormData();
@@ -399,7 +573,6 @@ export class FormMatriculaComponent implements OnInit {
       necessidades: valoresNecessidadesEspeciais,
       nome: this.formGroup.get('nomeCrianca')?.value,
       responsaveis: responsaveis,
-      status: 'ATIVO',
       tutorDTOList: valoresTutor
     };
 
@@ -541,26 +714,26 @@ export class FormMatriculaComponent implements OnInit {
     if (this.tipoDeFormulario === 'Cadastrar') {
       // Mapeamento para o modo "Cadastrar"
       if (indice === 0) {
-        this.nomeTitulo = "Informações Gerais";
+        this.nomeTitulo = this.NOME_GUIA_TAB_INFORMACOES;
       } else if (indice === 1) {
-        this.nomeTitulo = "Dados da Criança";
+        this.nomeTitulo = this.NOME_GUIA_TAB_CRIANCA;
       } else if (indice === 2) {
-        this.nomeTitulo = "Dados do Tutor(a)";
+        this.nomeTitulo = this.NOME_GUIA_TAB_TUTOR;
       } else if (indice === 3) {
-        this.nomeTitulo = "Perguntas Culturais";
+        this.nomeTitulo = this.NOME_GUIA_TAB_PERGUNTAS;
       } else {
-        this.nomeTitulo = "Anexar documentos";
+        this.nomeTitulo = this.NOME_GUIA_TAB_DOCUMENTOS;
       }
     } else {
       // Mapeamento para os modos "Editar" e "Validar"
       if (indice === 0) {
-        this.nomeTitulo = "Dados da Criança";
+        this.nomeTitulo = this.NOME_GUIA_TAB_CRIANCA;
       } else if (indice === 1) {
-        this.nomeTitulo = "Dados do Tutor(a)";
+        this.nomeTitulo = this.NOME_GUIA_TAB_TUTOR;
       } else if (indice === 2) {
-        this.nomeTitulo = "Perguntas Culturais";
+        this.nomeTitulo = this.NOME_GUIA_TAB_PERGUNTAS;
       } else {
-        this.nomeTitulo = "Anexar documentos";
+        this.nomeTitulo = this.NOME_GUIA_TAB_DOCUMENTOS;
       }
     }
   }
@@ -582,12 +755,97 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   goToNextStep(indice: number) {
-      // Logica CheckBox Informações gerais
-      if(!this.aceiteInformacoes.checked){
-          this.marcado = true;
+
+
+    if(this.nomeTitulo == this.NOME_GUIA_TAB_INFORMACOES && this.formGroup.get("aceiteInformacoes")?.value === false)
+    {
+        const errosControls = this.getAllErrorsInControls();
+        const errosFormsAll = this.getAllErrosInForms();
+
+        const config: MatDialogConfig = {
+            data: {
+                errosControls: errosControls,
+                errosForms: errosFormsAll,
+                trnaslationfield: this.trnaslationFields,
+                trnaslationerror: this.translationErros,
+                formName: this.NOME_GUIA_TAB_INFORMACOES
+            }
+        };
+        const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+
+      return;
+    } else if ((this.verificaErroNecessidadeEspecial() ||
+              this.formGroup.get("nomeCrianca")?.invalid ||
+              this.formGroup.get("cpfCrianca")?.invalid ||
+              this.formGroup.get("dataNascimento")?.invalid ||
+              this.formGroup.get("cep")?.invalid ||
+              this.formGroup.get("cidade")?.invalid ||
+              this.formGroup.get("bairro")?.invalid ||
+              this.formGroup.get("logradouro")?.invalid ||
+              this.formGroup.get("complemento")?.invalid) &&
+              this.nomeTitulo == this.NOME_GUIA_TAB_CRIANCA)
+    {
+        const errosControls = this.getAllErrorsInControls();
+        const errosFormsAll = this.getAllErrosInForms();
+
+        const config: MatDialogConfig = {
+            data: {
+                errosControls: errosControls,
+                errosForms: errosFormsAll,
+                trnaslationfield: this.trnaslationFields,
+                trnaslationerror: this.translationErros,
+                formName: this.NOME_GUIA_TAB_CRIANCA
+            }
+        };
+        const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+
+        return;
+    } else if(this.verificarErrosEmFormArrayTutor() &&
+              this.nomeTitulo == this.NOME_GUIA_TAB_TUTOR) {
+          const errosControls = this.getAllErrorsInControls();
+          const errosFormsAll = this.getAllErrosInForms();
+
+          const config: MatDialogConfig = {
+              data: {
+                  errosControls: errosControls,
+                  errosForms: errosFormsAll,
+                  trnaslationfield: this.trnaslationFields,
+                  trnaslationerror: this.translationErros,
+                  formName: this.NOME_GUIA_TAB_TUTOR
+              }
+          };
+          const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+
           return;
-      }
-    // Lógica para avançar para a próxima etapa
+
+      } else  if ((this.formGroup.get("tipoResidencia")?.invalid ||
+            this.formGroup.get("razaoSaida")?.invalid ||
+            this.formGroup.hasError("informeRazaoSaida") ||
+            this.formGroup.hasError("informeValorAluguel") ||
+            this.formGroup.hasError("informeValorBeneficio") ||
+            this.formGroup.hasError("informePossuiVeiculoProprio") ||
+            this.formGroup.hasError("informeValorFrequentou") ||
+            this.formGroup.hasError("informeValorBeneficioGoverno") ||
+            this.formGroup.hasError("informePossuiCRAS") ) &&
+            this.nomeTitulo == this.NOME_GUIA_TAB_PERGUNTAS) {
+
+        const errosControls = this.getAllErrorsInControls();
+        const errosFormsAll = this.getAllErrosInForms();
+
+        const config: MatDialogConfig = {
+            data: {
+                errosControls: errosControls,
+                errosForms: errosFormsAll,
+                trnaslationfield: this.trnaslationFields,
+                trnaslationerror: this.translationErros,
+                formName: this.NOME_GUIA_TAB_PERGUNTAS
+            }
+        };
+        const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+
+        return;
+    }
+
     if (indice >= 0 && indice < this.tabGroup._tabs.length) {
       this.tabGroup.selectedIndex = indice;
     }
@@ -598,7 +856,53 @@ export class FormMatriculaComponent implements OnInit {
     this.alterarNomeTitulo(indice)
   }
 
-  goToPreviousStep(indice: number) {
+    private verificarErrosEmFormArrayTutor() {
+        const formGroup = this.getTutorForm(0);
+        let temErro = false;
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
+
+            if (control && control.invalid) {
+                temErro = true
+            }
+        });
+
+        if(formGroup.invalid)
+        {
+            temErro = true
+        }
+
+        if (this.temConjugue) {
+            const formGroup = this.getTutorForm(1);
+            Object.keys(formGroup.controls).forEach(key => {
+                const control = formGroup.get(key);
+
+                if (control && control.invalid) {
+                    temErro = true
+                }
+            });
+
+            if(formGroup.invalid)
+            {
+                temErro = true
+            }
+        }
+
+        return temErro;
+    }
+
+    private verificaErroNecessidadeEspecial() {
+        const controls = this.getNecessidadesEspeciaisControls();
+        let temErrosNecessidade = false;
+        controls.forEach(control => {
+            if (control.errors && Object.keys(control.errors).length > 0) {
+                temErrosNecessidade = true;
+            }
+        });
+        return temErrosNecessidade;
+    }
+
+    goToPreviousStep(indice: number) {
 
     if (indice >= 0 && indice < this.tabGroup._tabs.length) {
       this.tabGroup.selectedIndex = indice;
@@ -1068,5 +1372,59 @@ export class FormMatriculaComponent implements OnInit {
             );
     }
 
+    getControlValidationErrors(form: FormGroup): ErrosControl[] {
+        const result: ErrosControl[] = [];
+
+        const recursiveGetErrors = (controls: { [key: string]: AbstractControl }, parentKey: string = '') => {
+            Object.keys(controls).forEach(key => {
+                const control = controls[key];
+                let fullKey: string;
+                if(key == "titulo")
+                {
+                  fullKey = parentKey ? `${key}` : key; // Constrói a chave completa
+                }
+                else{
+                  fullKey = parentKey ? `${parentKey}.${key}` : key; // Constrói a chave completa
+                }
+
+
+                if (control instanceof FormGroup) {
+                    recursiveGetErrors(control.controls, fullKey);
+                } else if (control instanceof FormArray) {
+                    if (key === 'necessidadesEspeciais') {
+                        control.controls.forEach((ctrl, index) => {
+                            // Para o FormArray 'necessidadesEspeciais', utilize uma lógica especial
+                            recursiveGetErrors({ [index]: ctrl });
+                        });
+                    } else {
+                        control.controls.forEach((ctrl, index) => {
+                            recursiveGetErrors({ [index]: ctrl }, `${fullKey}[${index}]`);
+                        });
+                    }
+                } else if (control.errors) {
+                    Object.keys(control.errors).forEach(errorKey => {
+                        result.push({ fieldName: fullKey, erros: errorKey });
+                    });
+                }
+            });
+        };
+
+        recursiveGetErrors(form.controls);
+        return result;
+    }
+
+
+  getFormFieldValidationErrors(form: FormGroup): ErrosForm[] {
+    const result: ErrosForm[] = [];
+    const formErrors = form.errors;
+
+    if (formErrors) {
+      Object.keys(formErrors).forEach(errorKey => {
+        result.push({ erros: errorKey });
+      });
+    }
+
+    return result;
+  }
 
 }

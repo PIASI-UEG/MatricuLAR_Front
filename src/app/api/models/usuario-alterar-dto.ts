@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface UsuarioAlterarDto {
-  cargo?: 'ADMIN' | 'SECRETARIA' | 'COORDENADORA';
+  cargo?: 'ADMIN' | 'SECRETARIA' | 'DIRETORA' | 'COORDENADORA';
   email?: string;
   id?: number;
   idUsuarioRequisicao?: number;

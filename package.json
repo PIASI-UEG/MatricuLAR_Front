@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@aboudard/bootstrap-schematics": "^1.1.2",
     "@angular/animations": "^16.0.0",
     "@angular/cdk": "^16.0.0",
     "@angular/common": "^16.0.0",

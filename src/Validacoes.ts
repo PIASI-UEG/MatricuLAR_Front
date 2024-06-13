@@ -38,18 +38,6 @@ export class Validacoes {
     }
   }
 
-  validarRenda(control: AbstractControl): { [key: string]: any } | null {
-    const salario: number = control.value;
-
-    const salarioMaximo = 2200;
-
-    if (salario <= salarioMaximo) {
-      return null;
-    } else {
-      return { 'rendaInvalida': true };
-    }
-  }
-
   validarEmail(control: AbstractControl): { [key: string]: any } | null {
     const email: string = control.value;
     //npm install class-validator --save
@@ -193,91 +181,84 @@ export class Validacoes {
       (campo1 == null && campo2 == null) ||
       (campo1 == null && campo2 == '') ||
       (campo1 == '' && campo2 == null)) {
-      formGroup.setErrors({'informeUmTelefoneEmpresarial': true});
       return {'informeUmTelefoneEmpresarial': true};
     }
     return null;
   }
 
   // form de pereguntas validacao de razao saida
-  validarRazaoSaida(formGroup: FormGroup): { [key: string]: any } | null {
+  validarRazaoSaida(formGroup: FormGroup) {
     if (formGroup.get('frequentouOutraCreche')?.value === "sim" && !formGroup.get('razaoSaida')?.value) {
       formGroup.get('razaoSaida')?.setErrors({'informeRazaoSaida': true});
-      return {'informeRazaoSaida': true};
     } else {
       formGroup.get('razaoSaida')?.setErrors(null);
-      return null;
     }
   }
 
   // form de perguntas validacao de preco aluguel
-  validarAluguel(formGroup: FormGroup): { [key: string]: any } | null {
+  validarAluguel(formGroup: FormGroup){
     if (formGroup.get('tipoResidencia')?.value === "alugado" && !formGroup.get('valorAluguel')?.value) {
       formGroup.get('valorAluguel')?.setErrors({'informeValorAluguel': true});
-      return {'informeValorAluguel': true};
     } else {
       formGroup.get('valorAluguel')?.setErrors(null);
-      return null;
     }
   }
 
   // form de perguntas validacao de beneficio
-  validarBeneficio(formGroup: FormGroup): { [key: string]: any } | null {
+  validarBeneficio(formGroup: FormGroup) {
     if (formGroup.get('possuiBeneficiosDoGoverno')?.value === "sim" && !formGroup.get('valorBeneficio')?.value) {
       formGroup.get('valorBeneficio')?.setErrors({'informeValorBeneficio': true});
-      return {'informeValorBeneficio': true};
-    }
+    } else {
       formGroup.get('valorBeneficio')?.setErrors(null);
-      return null;
+    }
   }
 
   // form de perguntas validacao se marcou frequentou outra creche
   validarFrequentou(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('frequentouOutraCreche')?.value === null) {
-      formGroup.get('frequentouOutraCreche')?.setErrors({'informeValorFrequentou': true});
       return {'informeValorFrequentou': true};
     }
-      formGroup.get('frequentouOutraCreche')?.setErrors(null);
       return null;
   }
 
   // form de perguntas validacao se marcou beneficio governo
   validarBeneficioMarcado(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('possuiBeneficiosDoGoverno')?.value === null) {
-      formGroup.get('possuiBeneficiosDoGoverno')?.setErrors({'informeValorBeneficioGoverno': true});
       return {'informeValorBeneficioGoverno': true};
     }
-    formGroup.get('possuiBeneficiosDoGoverno')?.setErrors(null);
       return null;
   }
 
   // validar se marcou a opção de veiculo
   validarVeiculoMarcado(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('possuiVeiculoProprio')?.value === null) {
-      formGroup.get('possuiVeiculoProprio')?.setErrors({'informePossuiVeiculoProprio': true});
       return {'informePossuiVeiculoProprio': true};
     }
-    formGroup.get('possuiVeiculoProprio')?.setErrors(null);
     return null;
   }
 
   // validar se marcou a opção de veiculo
   validarCRASMarcado(formGroup: FormGroup): { [key: string]: any } | null {
     if (formGroup.get('possuiCRAS')?.value === null) {
-      formGroup.get('possuiCRAS')?.setErrors({'informePossuiCRAS': true});
       return {'informePossuiCRAS': true};
     }
-    formGroup.get('possuiCRAS')?.setErrors(null);
     return null;
   }
 
   // form de perguntas validacao se marcou beneficio governo
   validarDeclaroLiConcordo = (formGroup: FormGroup): { [key: string]: any } | null => {
     if (formGroup.get('declaroLieConcordo')?.value === false && this.tipoform == 'Cadastrar') {
-      formGroup.get('declaroLieConcordo')?.setErrors({'marqueLieConcordo': true});
       return {'marqueLieConcordo': true};
     } else {
-      formGroup.get('declaroLieConcordo')?.setErrors(null);
+      return null;
+    }
+  };
+
+  // form de perguntas validacao se marcou beneficio governo
+  validarInformacoesIniciais = (formGroup: FormGroup): { [key: string]: any } | null => {
+    if (formGroup.get('aceiteInformacoes')?.value === false && this.tipoform == 'Cadastrar') {
+      return {'aceiteAsInformacoes': true};
+    } else {
       return null;
     }
   };

@@ -1,0 +1,27 @@
+.dialog-content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.button-fechar {
+  color: white ;
+  text-align:center;
+  align-items: center;
+  width: 200px ;
+  line-height: 35px;
+  height: 35px ;
+  font-family: DM Roboto, sans-serif;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px 10px;
+  cursor: pointer;
+  margin: 20px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
+  background:#FF7676 ;
+}
