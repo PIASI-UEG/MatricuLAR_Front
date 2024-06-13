@@ -31,7 +31,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
     formGroup!: FormGroup;
     botaoNecessidadeClicado: boolean = false;
     matricula?: MatriculaDto;
-    advertenciasAluno: Array<AdvertenciaDto> | undefined;
     colunas: string[] = ['tutoresNomes', 'tutoresTelefone'];
     caminhoDocumento!: string;
 
@@ -62,7 +61,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
             (data) => {
                 this.matriculaVisualiza = data;
-                this.advertenciasAluno = data.advertencias;
                 console.log(data)
                 if (data.caminhoImagem) {
                     this.matriculaVisualiza.caminhoImagem = data.caminhoImagem;

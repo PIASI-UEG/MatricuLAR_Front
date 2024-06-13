@@ -34,7 +34,8 @@
                 <p><strong>Responsáveis Permitidos:</strong> {{ matriculaVisualiza?.responsaveisNome }}</p>
             </mat-card-content>
             <mat-card-content>
-                <p><strong>Necessidades Cadastradas:</strong> {{ matriculaVisualiza?.necessidades }}</p>
+                <p><strong>Necessidades Cadastradas:</strong></p>
+                <p *ngFor="let necessidade of matriculaVisualiza?.necessidades">{{ necessidade.titulo }}</p>
             </mat-card-content>
             <p></p>
             <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
@@ -68,7 +69,7 @@
                 <mat-card-title>Advertências</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div *ngFor="let advertencia of advertenciasAluno">
+                <div *ngFor="let advertencia of matriculaVisualiza?.advertencias">
                     <h3>{{advertencia.titulo}}</h3>
                     <h3>Descrição</h3>
                     <p>{{advertencia.descricao}}</p>
