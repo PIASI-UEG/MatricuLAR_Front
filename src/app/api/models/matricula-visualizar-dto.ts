@@ -7,7 +7,7 @@ export interface MatriculaVisualizarDto {
   caminhoImagem?: string;
   cpfAluno?: string;
   nascimento?: string;
-  necessidadesEspeciais?: Array<NecessidadeEspecialDto>;
+  necessidades?: Array<NecessidadeEspecialDto>;
   nomeAluno?: string;
   responsaveisNome?: Array<string>;
   statusAluno?: string;

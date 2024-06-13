@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { PageTurmaDto } from '../models/page-turma-dto';
 import { Pageable } from '../models/pageable';
 import { SearchField } from '../models/search-field';
 import { SearchFieldValue } from '../models/search-field-value';
@@ -44,7 +43,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<TurmaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerObterPorIdPath, 'get');
     if (params) {
@@ -58,7 +57,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<TurmaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -76,10 +75,10 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<TurmaDto> {
+): Observable<any> {
 
     return this.turmaControllerObterPorId$Response(params,context).pipe(
-      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -102,7 +101,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<TurmaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerAlterarPath, 'put');
     if (params) {
@@ -117,7 +116,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<TurmaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -136,10 +135,10 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<TurmaDto> {
+): Observable<any> {
 
     return this.turmaControllerAlterar$Response(params,context).pipe(
-      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -161,7 +160,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<TurmaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerRemoverPath, 'delete');
     if (params) {
@@ -175,7 +174,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<TurmaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -193,10 +192,10 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<TurmaDto> {
+): Observable<any> {
 
     return this.turmaControllerRemover$Response(params,context).pipe(
-      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -217,7 +216,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<TurmaDto>>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerListAllPath, 'get');
     if (params) {
@@ -230,7 +229,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<TurmaDto>>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -247,10 +246,10 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<TurmaDto>> {
+): Observable<any> {
 
     return this.turmaControllerListAll$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<TurmaDto>>) => r.body as Array<TurmaDto>)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -272,7 +271,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<TurmaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerIncluirPath, 'post');
     if (params) {
@@ -286,7 +285,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<TurmaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -304,10 +303,10 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<TurmaDto> {
+): Observable<any> {
 
     return this.turmaControllerIncluir$Response(params,context).pipe(
-      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
@@ -383,7 +382,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<Array<TurmaDto>>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerSearchFieldsActionPath, 'post');
     if (params) {
@@ -397,7 +396,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<TurmaDto>>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -415,41 +414,37 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<Array<TurmaDto>> {
+): Observable<any> {
 
     return this.turmaControllerSearchFieldsAction$Response(params,context).pipe(
-      map((r: StrictHttpResponse<Array<TurmaDto>>) => r.body as Array<TurmaDto>)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
   /**
-   * Path part for operation turmaControllerSearchFieldsActionPage
+   * Path part for operation turmaControllerRemoveAlunosTurma
    */
-  static readonly TurmaControllerSearchFieldsActionPagePath = '/api/v1/turma/search-fields/page';
+  static readonly TurmaControllerRemoveAlunosTurmaPath = '/api/v1/turma/remove-alunos/{idTurma}';
 
   /**
-   * Realiza a busca pelos valores dos campos informados
+   * Remove alunos da turma
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `turmaControllerSearchFieldsActionPage()` instead.
+   * To access only the response body, use `turmaControllerRemoveAlunosTurma()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerSearchFieldsActionPage$Response(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
+  turmaControllerRemoveAlunosTurma$Response(params: {
+    idTurma: number;
+    body: Array<number>
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PageTurmaDto>> {
+): Observable<StrictHttpResponse<TurmaDto>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerSearchFieldsActionPagePath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerRemoveAlunosTurmaPath, 'post');
     if (params) {
-      rb.query('page', params.page, {});
-      rb.query('size', params.size, {});
-      rb.query('sort', params.sort, {});
+      rb.path('idTurma', params.idTurma, {});
       rb.body(params.body, 'application/json');
     }
 
@@ -460,31 +455,29 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageTurmaDto>;
+        return r as StrictHttpResponse<TurmaDto>;
       })
     );
   }
 
   /**
-   * Realiza a busca pelos valores dos campos informados
+   * Remove alunos da turma
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `turmaControllerSearchFieldsActionPage$Response()` instead.
+   * To access the full response (for headers, for example), `turmaControllerRemoveAlunosTurma$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  turmaControllerSearchFieldsActionPage(params: {
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
-    body: Array<SearchFieldValue>
+  turmaControllerRemoveAlunosTurma(params: {
+    idTurma: number;
+    body: Array<number>
   },
   context?: HttpContext
 
-): Observable<PageTurmaDto> {
+): Observable<TurmaDto> {
 
-    return this.turmaControllerSearchFieldsActionPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageTurmaDto>) => r.body as PageTurmaDto)
+    return this.turmaControllerRemoveAlunosTurma$Response(params,context).pipe(
+      map((r: StrictHttpResponse<TurmaDto>) => r.body as TurmaDto)
     );
   }
 
@@ -680,7 +673,7 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<StrictHttpResponse<PageTurmaDto>> {
+): Observable<StrictHttpResponse<any>> {
 
     const rb = new RequestBuilder(this.rootUrl, TurmaControllerService.TurmaControllerListAllPagePath, 'get');
     if (params) {
@@ -694,7 +687,7 @@ export class TurmaControllerService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PageTurmaDto>;
+        return r as StrictHttpResponse<any>;
       })
     );
   }
@@ -712,10 +705,10 @@ export class TurmaControllerService extends BaseService {
   },
   context?: HttpContext
 
-): Observable<PageTurmaDto> {
+): Observable<any> {
 
     return this.turmaControllerListAllPage$Response(params,context).pipe(
-      map((r: StrictHttpResponse<PageTurmaDto>) => r.body as PageTurmaDto)
+      map((r: StrictHttpResponse<any>) => r.body as any)
     );
   }
 
