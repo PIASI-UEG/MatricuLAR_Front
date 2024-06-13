@@ -6,6 +6,7 @@
 .meuMatCard {
   width: 200px;
   height: 150px;
+  color: #d7e9fa;
 }
 
 .painel {
@@ -13,11 +14,12 @@
   justify-content: space-around;
   margin: 20px;
   flex-wrap: wrap;
+  background-color: #ebf0f1;
 }
 
 .card {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background-color: #F5F7FA;
+  border: 1px solid #b2e2ff;
   border-radius: 5px;
   width: 500px;
   padding: 10px;
@@ -51,7 +53,7 @@
 .numero {
   font-size: 2em;
   font-weight: bold;
-  color: #007bff;
+  color: #89cff0;
 }
 
 /* Media Queries para melhorar a responsividade */
