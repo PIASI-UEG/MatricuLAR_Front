@@ -167,7 +167,7 @@
 
 
                 <!-- Etapa 2 -->
-                <mat-tab label="Tutor(a)" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2">
+                <mat-tab label="Responsável Legal" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2">
                     <div class="conteudo-mat-tab">
                         <div formArrayName="tutor">
                             <div *ngFor="let tutor of getTutoresControls(); let i = index;" [formGroupName]="i">
@@ -177,7 +177,7 @@
                                 </ng-container>
                                 <mat-form-field>
                                     <mat-label>Nome</mat-label>
-                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do tutor" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
+                                    <input matInput formControlName="nomeTutor" placeholder="Digite o nome do responsável legal" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
                                     <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
                                   <mat-error *ngIf="handleErrorTutor('nomeTutor', 'maxlength', i)">Limete 200 caracteres</mat-error>
                                 </mat-form-field>
@@ -237,7 +237,7 @@
 
                                 <div fxLayout="center" class="linha-horizontal"></div>
                                 <h2> Dados da empresa </h2>
-                                <p> Caso todos os tutores não tenham emprego a criança não poderá se matricular na associação.</p>
+                                <p> Caso todos os responsáveis legais não tenham emprego a criança não poderá se matricular na associação.</p>
 
                                 <mat-form-field>
                                     <mat-label>Nome da empresa</mat-label>
@@ -529,7 +529,7 @@
                                 anteriormente:</strong><br></mat-label>
                             <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
                                 <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
-                                    <mat-label class="titulo-doc"><strong>Tutor</strong> <br></mat-label>
+                                    <mat-label class="titulo-doc"><strong>Responsável Legal</strong> <br></mat-label>
                                     <app-upload-arquivo [idBotaoInputImagem]="'docCPFTutorID'"
                                                         [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
                                                         [enumDocPai]="EnumDoc.CPF_TUTOR1"
@@ -570,7 +570,7 @@
                                 responsáveis legais cadastrados anteriormente:</strong><br></mat-label>
                             <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
                                 <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
-                                    <mat-label class="titulo-doc"><strong>Tutor</strong>
+                                    <mat-label class="titulo-doc"><strong>Responsável Legal</strong>
                                         <br></mat-label>
                                     <app-upload-arquivo [idBotaoInputImagem]="'docCarteiraTutorID'"
                                                         [idBotaoInputImagemPreview]="'docCarteiraTutorIDPreview'"
@@ -601,7 +601,7 @@
                                 cadastrados anteriormente:</strong> <br></mat-label>
                             <div fxLayout="column" fxLayoutAlign="space-evenly center">
                                 <div fxLayout="column" fxLayoutAlign="space-evenly center">
-                                    <mat-label class="titulo-doc"><strong>Tutor</strong><br></mat-label>
+                                    <mat-label class="titulo-doc"><strong>Responsável Legal</strong><br></mat-label>
                                     <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
                                         <app-upload-arquivo class="espaco-docs"
                                                             [idBotaoInputImagem]="'docContraChueque1TID'"
@@ -673,7 +673,7 @@
                                 cadastrados anteriormente:</strong> <br></mat-label>
                             <div [fxLayout]="mudarAlinharElementosGrandes()" fxLayoutAlign="space-evenly center">
                                 <div class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
-                                    <mat-label class="titulo-doc"><strong>Tutor</strong> <br></mat-label>
+                                    <mat-label class="titulo-doc"><strong>Responsável Legal</strong> <br></mat-label>
                                     <app-upload-arquivo [idBotaoInputImagem]="'docEscolarTutorID'"
                                                         [idBotaoInputImagemPreview]="'docEscolarTutorIDPreview'"
                                                         [enumDocPai]="EnumDoc.DECLARACAO_ESCOLART1"
