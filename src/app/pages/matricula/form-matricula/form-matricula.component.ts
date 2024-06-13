@@ -820,6 +820,7 @@ export class FormMatriculaComponent implements OnInit {
 
       } else  if ((this.formGroup.get("tipoResidencia")?.invalid ||
             this.formGroup.get("razaoSaida")?.invalid ||
+            this.formGroup.get("rendaFamiliar")?.invalid ||
             this.formGroup.hasError("informeRazaoSaida") ||
             this.formGroup.hasError("informeValorAluguel") ||
             this.formGroup.hasError("informeValorBeneficio") ||
