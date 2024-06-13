@@ -28,7 +28,7 @@ export class Validacoes {
       idade--;
     }
 
-    const idadeMinima = 3;
+    const idadeMinima = 1;
     const idadeMaxima = 5;
 
     if (idade >= idadeMinima && idade <= idadeMaxima) {

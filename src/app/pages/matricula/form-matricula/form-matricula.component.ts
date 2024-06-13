@@ -64,7 +64,7 @@ export class FormMatriculaComponent implements OnInit {
     today = new Date();
     maxDate = new Date(this.today.getFullYear() - 18, this.today.getMonth(), this.today.getDate());
     minDateCrianca = new Date(this.today.getFullYear() - 5, this.today.getMonth(), this.today.getDate());
-    maxDateCrianca = new Date(this.today.getFullYear() - 3, this.today.getMonth(), this.today.getDate());
+    maxDateCrianca = new Date(this.today.getFullYear() - 1, this.today.getMonth(), this.today.getDate());
     flexDivAlinhar: string = 'row';
     flexDivAlinharElementosGrandes: string = 'row';
     innerWidth: number = window.innerWidth;
