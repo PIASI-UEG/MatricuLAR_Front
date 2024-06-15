@@ -10,9 +10,9 @@ import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 })
 export class HomePageComponent {
     images = [
-        'assets/fotos_home/imagem1-home.jpeg',
-        'assets/fotos_home/imagem2-home.jpeg',
-        'assets/fotos_home/imagem3-home.jpeg'
+        'assets/fotos_home/imagem2_home.jpg',
+        'assets/fotos_home/imagem3-home.jpeg',
+        'assets/fotos_home/imagem4_home.jpg'
     ];
 
     constructor(config: NgbCarouselConfig) {
