@@ -184,7 +184,7 @@ export class FormMatriculaComponent implements OnInit {
       formName: this.NOME_GUIA_TAB_TUTOR,
       required: "Campo obrigatório.",
       maxlength: "Quantidade máxima de caracteres ultrapassada.",
-      cpfInvalido: "O CPF do responsável legal ou do cônjuge é inválido.",
+      cpfInvalido: "O CPF é inválido.",
       cpfsIguais: "O CPF já foi utilizado.",
       telefoneInvalido: "O telefone informado é inválido.",
       cnpjInvalido: "O CNPJ da empresa informado é inválido.",
@@ -252,7 +252,11 @@ export class FormMatriculaComponent implements OnInit {
         this.validacoes.formGroupMatricula = this.formGroup;
         this.validacoes.formGroupDocsList = this.formDocumentos;
         this.validacoes.tipoform = this.tipoDeFormulario;
+        this.validacoes.securityservice = this.securityService;
+
+      setTimeout(() => {
         this.monitorarMudancas()
+      }, 500);
     }
 
     private createForm() {
@@ -395,37 +399,55 @@ export class FormMatriculaComponent implements OnInit {
   onSubmit() {
     this.enviado = true;
 
-    if (this.codigo != null || (this.formGroup.valid && this.formDocumentos.valid)) {
-      if (!this.codigo) {
-        this.atribuirConjugueRelacionamento();
-        this.realizarInclusao();
-      } else {
+    if (this.formGroup.valid && this.formDocumentos.valid) {
+      this.atribuirConjugueRelacionamento();
+      this.realizarInclusao();
+    } else if (this.codigo){
+      if (this.formGroup.valid) {
         this.atribuirConjugueRelacionamento();
         this.realizarEdicao();
       }
-    }
+      else {
+        const errosControls = this.getAllErrorsInControls();
+        const errosFormsAll = this.getAllErrosInForms();
 
-    const errosControls = this.getAllErrorsInControls();
-    const errosFormsAll = this.getAllErrosInForms();
+        const config: MatDialogConfig = {
+          data: {
+            errosControls: errosControls,
+            errosForms: errosFormsAll,
+            trnaslationfield: this.trnaslationFields,
+            trnaslationerror: this.translationErros,
+          }
+        };
+        const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+
+      }
+    }
+    else {
+      const errosControls = this.getAllErrorsInControls();
+      const errosFormsAll = this.getAllErrosInForms();
 
       const config: MatDialogConfig = {
-      data: {
-        errosControls: errosControls,
-        errosForms: errosFormsAll,
-        trnaslationfield: this.trnaslationFields,
-        trnaslationerror: this.translationErros,
-      }
-    };
-    const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+        data: {
+          errosControls: errosControls,
+          errosForms: errosFormsAll,
+          trnaslationfield: this.trnaslationFields,
+          trnaslationerror: this.translationErros,
+        }
+      };
+      const dialogRef = this.dialog.open(ErrosDialogComponent, config);
 
-    console.log("errosForms", errosFormsAll)// tipo ErrosForm[]
-    console.log("errosControls", errosControls)// tipo ErrosControl[]
+     }
   }
 
     private getAllErrosInForms() {
+        let errosFormsDocumentos: ErrosForm[] = [];
         const errosFormsGeral = this.getFormFieldValidationErrors(this.formGroup);
         const errosFormsTutor = this.getFormFieldValidationErrors(this.getTutorForm(0));
-        const errosFormsDocumentos = this.getFormFieldValidationErrors(this.formDocumentos);
+
+        if (this.tipoDeFormulario === "Cadastrar") {
+          errosFormsDocumentos = this.getFormFieldValidationErrors(this.formDocumentos);
+        }
 
         let errosFormsAll = [...errosFormsGeral, ...errosFormsTutor, ...errosFormsDocumentos];
 
@@ -498,9 +520,9 @@ export class FormMatriculaComponent implements OnInit {
         this.router.navigate(["/matricula"]);
       }
       else if(this.tipoDeFormulario == 'Validar'){
-        this.router.navigate(["/validar"]);
+        this.router.navigate(["/matricula/validar"]);
       }
-      this.confirmarAcao(retorno, this.tipoDeFormulario);
+      this.confirmarAcao(retorno, this.FORM_EDITAR);
     }, error => {
       this.mensagens.confirmarErro(this.tipoDeFormulario, error);
       console.log("erro", error)
@@ -709,8 +731,12 @@ export class FormMatriculaComponent implements OnInit {
     this.innerWidth = window.innerWidth;
   }
 
+  securityServiceisValid(){
+    return this.securityService.isValid()
+  }
+
   alterarNomeTitulo(indice: number): void {
-    if (this.tipoDeFormulario === 'Cadastrar') {
+    if (this.tipoDeFormulario === 'Cadastrar' && !this.securityService.isValid()) {
       // Mapeamento para o modo "Cadastrar"
       if (indice === 0) {
         this.nomeTitulo = this.NOME_GUIA_TAB_INFORMACOES;
@@ -756,7 +782,7 @@ export class FormMatriculaComponent implements OnInit {
   goToNextStep(indice: number) {
 
 
-    if(this.nomeTitulo == this.NOME_GUIA_TAB_INFORMACOES && this.formGroup.get("aceiteInformacoes")?.value === false)
+    if(this.nomeTitulo == this.NOME_GUIA_TAB_INFORMACOES && this.formGroup.get("aceiteInformacoes")?.value === false  && !this.securityService.isValid())
     {
         const errosControls = this.getAllErrorsInControls();
         const errosFormsAll = this.getAllErrosInForms();
@@ -782,7 +808,7 @@ export class FormMatriculaComponent implements OnInit {
               this.formGroup.get("bairro")?.invalid ||
               this.formGroup.get("logradouro")?.invalid ||
               this.formGroup.get("complemento")?.invalid) &&
-              this.nomeTitulo == this.NOME_GUIA_TAB_CRIANCA)
+              (this.nomeTitulo == this.NOME_GUIA_TAB_CRIANCA  && !this.securityService.isValid()))
     {
         const errosControls = this.getAllErrorsInControls();
         const errosFormsAll = this.getAllErrosInForms();
@@ -800,7 +826,7 @@ export class FormMatriculaComponent implements OnInit {
 
         return;
     } else if(this.verificarErrosEmFormArrayTutor() &&
-              this.nomeTitulo == this.NOME_GUIA_TAB_TUTOR) {
+              this.nomeTitulo == this.NOME_GUIA_TAB_TUTOR  && !this.securityService.isValid()) {
           const errosControls = this.getAllErrorsInControls();
           const errosFormsAll = this.getAllErrosInForms();
 
@@ -827,7 +853,7 @@ export class FormMatriculaComponent implements OnInit {
             this.formGroup.hasError("informeValorFrequentou") ||
             this.formGroup.hasError("informeValorBeneficioGoverno") ||
             this.formGroup.hasError("informePossuiCRAS") ) &&
-            this.nomeTitulo == this.NOME_GUIA_TAB_PERGUNTAS) {
+            (this.nomeTitulo == this.NOME_GUIA_TAB_PERGUNTAS  && !this.securityService.isValid())) {
 
         const errosControls = this.getAllErrorsInControls();
         const errosFormsAll = this.getAllErrosInForms();
@@ -845,12 +871,15 @@ export class FormMatriculaComponent implements OnInit {
 
         return;
     }
-
-    if (indice >= 0 && indice < this.tabGroup._tabs.length) {
-      this.tabGroup.selectedIndex = indice;
-    }
+    console.log("TIPO FORM", this.tipoDeFormulario);
+    console.log("MUDOU FORM", this.mudouForm);
     if ((indice === 3 && this.mudouForm) && (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar")) {
       this.confirmarMudancas();
+    }
+    else{
+      if (indice >= 0 && indice < this.tabGroup._tabs.length) {
+        this.tabGroup.selectedIndex = indice;
+      }
     }
 
     this.alterarNomeTitulo(indice)
@@ -911,6 +940,7 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   monitorarMudancas(): void {
+
     if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
 
       if (this.formChangesSubscription) {
@@ -922,7 +952,6 @@ export class FormMatriculaComponent implements OnInit {
 
         this.formChangesSubscription = this.formGroup.valueChanges.subscribe(() => {
           const currentFormValue = this.formGroup.getRawValue();
-
           this.mudouForm = !this.areFormsEqual(initialFormValue, currentFormValue);
         });
       }, 1000);
@@ -951,6 +980,20 @@ export class FormMatriculaComponent implements OnInit {
         if(this.formGroup.valid){
           this.verificarClickDocs = true;
           this.realizarEdicao();
+          this.monitorarMudancas();
+        } else {
+          const errosControls = this.getAllErrorsInControls();
+          const errosFormsAll = this.getAllErrosInForms();
+
+          const config: MatDialogConfig = {
+            data: {
+              errosControls: errosControls,
+              errosForms: errosFormsAll,
+              trnaslationfield: this.trnaslationFields,
+              trnaslationerror: this.translationErros,
+            }
+          };
+          const dialogRef = this.dialog.open(ErrosDialogComponent, config);
 
         }
       }else {

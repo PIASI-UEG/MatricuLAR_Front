@@ -12,7 +12,7 @@
         <div class="mat-tab-titulos">
             <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)" (selectedTabChange)="onTabClick($event)">
                 <!-- Etapa 0  -->
-                <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
+                <mat-tab class="mat-tab-color" label="Informações Gerais" *ngIf="tipoDeFormulario === FORM_INCLUIR && !securityServiceisValid()" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
                     <div class="conteudo-mat-tab">
 
                         <h1 class="subtitulo">ANTES DE PREENCHER O FORMULÁRIO, POR FAVOR, <br>LEIA ATENTAMENTE AS INFORMAÇÕES SOBRE A MATRÍCULA.</h1>
@@ -42,7 +42,7 @@
 
                 <!-- Etapa 1 -->
                 <mat-tab class="mat-tab-color" label="Criança"
-                         [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 1">
+                         [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 1 && !securityServiceisValid()">
                     <div class="conteudo-mat-tab">
                         <mat-form-field>
                             <mat-label>Nome da criança</mat-label>
@@ -139,17 +139,18 @@
                         <!-- Campos da primeira etapa -->
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                            <button type="button" class="button-hidden" *ngIf="securityServiceisValid()"></button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
-                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'  && !securityServiceisValid()"  class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar' && securityServiceisValid()" class="button" (click)="goToNextStep(1)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
@@ -160,7 +161,7 @@
 
 
                 <!-- Etapa 2 -->
-                <mat-tab label="Responsável Legal" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2">
+                <mat-tab label="Responsável Legal" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2  && !securityServiceisValid()">
                     <div class="conteudo-mat-tab">
                         <div formArrayName="tutor">
                             <div *ngFor="let tutor of getTutoresControls(); let i = index;" [formGroupName]="i">
@@ -298,19 +299,19 @@
                             </div>
                         </div>
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
-                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                          <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button" (click)="goToNextStep(2)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()"  class="button botao-voltar" (click)="goToPreviousStep(0)">Etapa Anterior</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
@@ -321,7 +322,7 @@
 
                 <!-- Etapa 3 -->
 
-                <mat-tab label="Perguntas" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 3">
+                <mat-tab label="Perguntas" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 3  && !securityServiceisValid()">
                     <div class="conteudo-mat-tab">
                         <div fxLayout="column" fxLayoutAlign="center start">
                             <p>A criança já frequentou outra creche ou associação ?</p>
@@ -415,19 +416,19 @@
                         </mat-form-field>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
-                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
-                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
+                          <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button" (click)="goToNextStep(4)">Próxima <br> Etapa</button>
+                          <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button" (click)="goToNextStep(3)">Próxima <br> Etapa</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(1)">Etapa Anterior</button>
                             <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button type="submit" class="button botao-salvar">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
@@ -437,7 +438,7 @@
                 </mat-tab>
 
                 <!-- Etapa 4 -->
-                <mat-tab label="Documentos" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 4">
+                <mat-tab label="Documentos" [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 4  && !securityServiceisValid()">
                     <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Cadastrar'" >
                         <p>É de extrema importância o cuidado para mandar os documentos nesta etapa da pré-matricula, pois aqui
                             serão informados dados de alto peso na avaliação para aceitar a criança na Associação Sagrada Família, informe imagens nítidas
@@ -732,16 +733,16 @@
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                              *ngIf="!this.verificarAlinhar()">
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
                             <button mat-raised-button type="submit" class="button botao-cadastro">Finalizar <br> pré-matrícula</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa Anterior</button>
-                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario !== 'Cadastrar'" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="tipoDeFormulario === 'Cadastrar' && !securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(3)">Etapa Anterior</button>
+                            <button mat-raised-button type="button" *ngIf="securityServiceisValid()" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                         </div>
 
@@ -774,12 +775,13 @@
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" *ngIf="!this.verificarAlinhar()" fxLayoutAlign="space-between center">
                             <button mat-raised-button type="button"  class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
-                            <button  mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar <br>Matricula</button>
+                            <button  mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar</button>
+                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'">Validar</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                              *ngIf="this.verificarAlinhar()">
-                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'">Aceitar</button>
+                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'">Validar</button>
                             <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
