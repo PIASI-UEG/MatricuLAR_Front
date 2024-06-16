@@ -1,12 +1,14 @@
 import {AbstractControl, FormArray, FormGroup} from "@angular/forms";
 import {isEmail} from "class-validator";
 import {cpf} from "cpf-cnpj-validator";
+import {SecurityService} from "./app/arquitetura/security/security.service";
 
 export class Validacoes {
 
   public formGroupMatricula ?: FormGroup;
   public formGroupDocsList ?: FormGroup;
   public tipoform?: string;
+  public securityservice?: SecurityService;
 
   customPatterns = {
       'S': { pattern: new RegExp('[a-zA-ZÀ-ÖØ-öø-ÿ ]') },
@@ -247,7 +249,7 @@ export class Validacoes {
 
   // form de perguntas validacao se marcou beneficio governo
   validarDeclaroLiConcordo = (formGroup: FormGroup): { [key: string]: any } | null => {
-    if (formGroup.get('declaroLieConcordo')?.value === false && this.tipoform == 'Cadastrar') {
+    if (formGroup.get('declaroLieConcordo')?.value === false && this.tipoform == 'Cadastrar' && !this.securityservice?.isValid()) {
       return {'marqueLieConcordo': true};
     } else {
       return null;
@@ -256,7 +258,7 @@ export class Validacoes {
 
   // form de perguntas validacao se marcou beneficio governo
   validarInformacoesIniciais = (formGroup: FormGroup): { [key: string]: any } | null => {
-    if (formGroup.get('aceiteInformacoes')?.value === false && this.tipoform == 'Cadastrar') {
+    if (formGroup.get('aceiteInformacoes')?.value === false && this.tipoform == 'Cadastrar' && !this.securityservice?.isValid()) {
       return {'aceiteAsInformacoes': true};
     } else {
       return null;
