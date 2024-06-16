@@ -126,7 +126,6 @@ export class FormFuncionarioComponent implements OnInit {
 
   private realizarInclusao(){
     this.atribuirUsuarioForm();
-    console.log("Dados:",this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
     this.usuarioService.usuarioControllerIncluir({body: usuario})
       .subscribe( retorno =>{
@@ -134,7 +133,6 @@ export class FormFuncionarioComponent implements OnInit {
         this.confirmarAcao(retorno, this.ACAO_INCLUIR);
         this.router.navigate(["/funcionario"]);
       }, erro =>{
-        console.log("Erro:"+erro);
         this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
       })
   }
@@ -149,16 +147,13 @@ export class FormFuncionarioComponent implements OnInit {
     const paramId = this.route.snapshot.paramMap.get('id');
     if (paramId){
       const codigo = parseInt(paramId);
-      console.log("codigo usuario", this.codigo);
       this.usuarioService.usuarioControllerObterPorId({id: codigo}).subscribe(
         retorno => {
           this.acao = this.ACAO_EDITAR;
-          console.log("retorno", retorno);
           this.codigo = retorno.id || -1;
           this.formGroup.patchValue(retorno);
         },error => {
           this.mensagens.confirmarErro(this.ACAO_EDITAR, error.message)
-          console.log("erro", error);
         }
       )
     }

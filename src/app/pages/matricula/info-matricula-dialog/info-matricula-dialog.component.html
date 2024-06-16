@@ -1,5 +1,5 @@
 <div class="formMov">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form" fxFlex="1 1 auto">
+    <form [formGroup]="formGroup" class="form" fxFlex="1 1 auto">
         <h1><strong>Dados da Matrícula</strong></h1>
         <div class="card-container">
             <div *ngIf="matriculaVisualiza && matriculaVisualiza.caminhoImagem" class="imagem-card">
@@ -12,90 +12,78 @@
                     </mat-card-header>
                     <mat-card-content>
                         <p><strong>Nome do Aluno:</strong> {{ matriculaVisualiza?.nomeAluno }}</p>
-                        <p><strong>CPF do Aluno:</strong> {{ matriculaVisualiza?.cpfAluno }}</p>
+                        <p><strong>CPF do Aluno:</strong> {{ matriculaVisualiza?.cpfAluno}}</p>
                         <p><strong>Data de Nascimento:</strong> {{ matriculaVisualiza?.nascimento }}</p>
                         <p><strong>Status do Aluno:</strong> {{ matriculaVisualiza?.statusAluno }}</p>
                     </mat-card-content>
                 </mat-card>
             </div>
         </div>
-        <mat-card class="container-card">
-            <mat-card-header>
-                <mat-card-title>Responsáveis Legais</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <p><strong>Responsáveis:</strong></p>
-                <ul>
-                    <li *ngFor="let nome of matriculaVisualiza?.tutoresNomes">{{ nome }}</li>
-                </ul>
-                <p><strong>Telefones dos Responsáveis:</strong></p>
-                <ul>
-                    <li *ngFor="let telefone of matriculaVisualiza?.tutoresTelefone">{{ telefone }}</li>
-                </ul>
-            </mat-card-content>
-            <mat-card-header>
-                <mat-card-title>Autorizados a Buscar</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <p><strong>Pessoas Autorizadas:</strong></p>
-                <ul>
-                    <li *ngFor="let responsavel of matriculaVisualiza?.responsaveisNome">{{ responsavel }}</li>
-                </ul>
-            </mat-card-content>
-            <mat-card-content>
-                <p><strong>Necessidades Especiais:</strong></p>
-                <ul>
-                    <li *ngFor="let necessidade of matriculaVisualiza?.necessidades">
-                        {{ necessidade.titulo }}
-                    </li>
-                </ul>
-            </mat-card-content>
-            <p></p>
-            <mat-checkbox color="primary" formControlName="possuiNecessidadeEspecial">
-                Possui necessidades especiais? <br> EX: alergia, medicamentos, alimentação
-            </mat-checkbox>
-            <p></p>
-            <ng-container *ngIf="firstClickNecessidades()">
-                <div formArrayName="necessidadesEspeciais">
-                    <div fxLayout="row" fxLayoutAlign="center" *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
-                        <mat-form-field>
-                            <mat-label>Necessidade Especial</mat-label>
-                            <input matInput formControlName="titulo" placeholder="EX: alergia, medicamentos, alimentação">
-                            <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required') && formGroup.get('possuiNecessidadeEspecial')?.value">
-                                Desmarque ou preencha para continuar
-                            </mat-error>
-                        </mat-form-field>
-                        <button mat-icon-button (click)="removerCampoNecessidade(i)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-                    <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade(null)">
-                        <mat-icon>add</mat-icon>
-                        Adicionar necessidade
-                    </button>
-                </div>
-            </ng-container>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-raised-button type="submit" class="button botao-salvar" >Salvar</button>
-            </div>
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>Advertências</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <ul>
-                    <strong>Título</strong>
-                    <li *ngFor="let advertencia of matriculaVisualiza?.advertencias">{{ advertencia.titulo }}</li>
-                    <strong>Descrição</strong>
-                    <li *ngFor="let advertencia of matriculaVisualiza?.advertencias">{{ advertencia.descricao}}</li>
-                    </ul>
-                </mat-card-content>
-            </mat-card>
-        </mat-card>
-        <p></p>
+        <div>
+            <h3><b>Informações dos Responsáveis</b></h3>
+            <mat-table  [dataSource]="matriculaDataSource" class="mat-elevation-z8" style="margin-bottom: 20px;">
+                <ng-container matColumnDef="tutoresNomes">
+                    <mat-header-cell *matHeaderCellDef> Responsáveis </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.tutoresNomes.join(', ') }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tutoresTelefone">
+                    <mat-header-cell *matHeaderCellDef> Telefones </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+            <span *ngFor="let telefone of element.tutoresTelefone; let last = last">
+                {{ telefone | mask: '(00) 0000-0000' }}{{ !last ? ', ' : '' }}
+            </span>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="colunasTutores"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: colunasTutores;"></mat-row>
+            </mat-table>
+
+            <h3><b>Informações dos Responsáveis Autorizados</b></h3>
+            <mat-table [dataSource]="matriculaDataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="responsaveisNome">
+                    <mat-header-cell *matHeaderCellDef> Responsáveis Autorizados</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.responsaveisNome.join(', ') }} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="colunasResponsaveis"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: colunasResponsaveis;"></mat-row>
+            </mat-table>
+
+            <h3><b>Informações das Necessidades</b></h3>
+            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.necessidades" [dataSource]="matriculaVisualiza.necessidades" class="mat-elevation-z8">
+                <ng-container matColumnDef="titulo">
+                    <mat-header-cell *matHeaderCellDef> Necessidade Especial</mat-header-cell>
+                    <mat-cell *matCellDef="let necessidade"> {{ necessidade.titulo }} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="colunasNecessidadesEspeciais"></mat-header-row>
+                <mat-row *matRowDef="let necessidade; columns: colunasNecessidadesEspeciais;"></mat-row>
+            </mat-table>
+
+            <h3><b>Informações das Advertências</b></h3>
+            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.advertencias" [dataSource]="matriculaVisualiza.advertencias" class="mat-elevation-z8">
+                <ng-container matColumnDef="titulo">
+                    <mat-header-cell *matHeaderCellDef> Título da Advertência </mat-header-cell>
+                    <mat-cell *matCellDef="let advertencia"> {{ advertencia.titulo }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="descricao">
+                    <mat-header-cell *matHeaderCellDef> Descrição da Advertência </mat-header-cell>
+                    <mat-cell *matCellDef="let advertencia"> {{ advertencia.descricao }} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="colunasAdvertencia"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: colunasAdvertencia;"></mat-row>
+            </mat-table>
+        </div>
+
+
+
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
-            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()">Advertência</button>
+            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()">+Advertência</button>
+            <button mat-raised-button type="button" class="button botao-necessidade" (click)="openDialogNecessidade()">+Necessidades<br>Especiais</button>
         </div>
     </form>
 </div>

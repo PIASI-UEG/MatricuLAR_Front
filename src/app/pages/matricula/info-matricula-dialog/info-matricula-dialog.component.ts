@@ -31,7 +31,12 @@ export class InfoMatriculaDialogComponent implements OnInit {
     formGroup!: FormGroup;
     botaoNecessidadeClicado: boolean = false;
     matricula!: MatriculaDto;
-    colunas: string[] = ['tutoresNomes', 'tutoresTelefone'];
+    matriculaDataSource: MatTableDataSource<MatriculaVisualizarDto> = new MatTableDataSource<MatriculaVisualizarDto>([])
+    colunasTutores: string[] = ['tutoresNomes', 'tutoresTelefone'];
+    colunasResponsaveis: string[] = ['responsaveisNome'];
+    colunasNecessidadesEspeciais: string[] = ['titulo'];
+    colunasAdvertencia: string[] = ['titulo', 'descricao'];
+
     caminhoDocumento!: string;
     constructor(
         private formBuilder: FormBuilder,
@@ -58,13 +63,27 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
     private visualizacao() {
         this.matriculaService.matriculaControllerGetMatriculaVisualizar({ IdMatricula: this.matriculaId }).subscribe(
-            (data) => {
+            (data: MatriculaVisualizarDto) => {
                 this.matriculaVisualiza = data;
 
                 // Verifica se há caminho de imagem definido
                 if (data.caminhoImagem) {
                     this.buscarCaminhoImagem(data.caminhoImagem);
                 }
+
+                const tutoresNomesArray = data.tutoresNomes || [];
+                const tutoresTelefoneArray = data.tutoresTelefone || [];
+                const responsaveisAutorizadosNomeArray = data.responsaveisNome || [];
+                const necessidadeEspecialArray = data.necessidades || [];
+                const advertenciasArray = data.advertencias || [];
+
+                this.matriculaDataSource.data = [{
+                    tutoresNomes: tutoresNomesArray,
+                    tutoresTelefone: tutoresTelefoneArray,
+                    responsaveisNome: responsaveisAutorizadosNomeArray,
+                    advertencias: advertenciasArray
+                }];
+
             },
             (error) => {
                 this.snackBar.open('Erro ao obter os dados da matrícula', 'Fechar', { duration: 3000 });
@@ -72,6 +91,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         );
     }
+
+
 
     private buscarCaminhoImagem(caminhoImagem: string) {
         this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: { idMatricula: this.matriculaId, tipoDocumento: EnumDoc.FOTO_CRIANCA } }).subscribe(
@@ -111,93 +132,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
         });
     }
 
-    criarCampoNecessidadeEspecial(): FormGroup {
-        return this.formBuilder.group({
-            titulo: [null, Validators.required]
-        });
-    }
-
-    adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
-        return this.formBuilder.group({
-            titulo: [necessidade.titulo, Validators.required]
-        });
-    }
-
-    firstClickNecessidades(): boolean {
-        if (this.botaoNecessidadeClicado && this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-            return true;
-        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value && !this.formGroup.get('necessidadesEspeciais')?.value.length) {
-            this.adicionarCampoNecessidade(null);
-            this.botaoNecessidadeClicado = true;
-            return true;
-        } else if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-            return true;
-        }
-        this.botaoNecessidadeClicado = false;
-        return false;
-    }
-
-    adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
-        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-        if (necessidade != null) {
-            formArray.push(this.adicionarNecessidadePreenchido(necessidade));
-        } else {
-            formArray.push(this.criarCampoNecessidadeEspecial());
-        }
-    }
-
-    removerCampoNecessidade(index: number): void {
-        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-        formArray.removeAt(index);
-    }
-
-    getNecessidadesEspeciaisControls(): AbstractControl[] {
-        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-        return formArray.controls;
-    }
-
-    getNecessidadeEspecialControl(index: number): AbstractControl {
-        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-        return formArray.at(index)?.get('titulo') as AbstractControl;
-    }
-
-    private realizarInclusao() {
-        const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
-        const necessidadesEspeciais: NecessidadeEspecialDto[] = formArray.value.map((necessidade: NecessidadeEspecialDto) => ({
-            ...necessidade,
-            idMatricula: this.matricula?.id
-        }));
-
-        necessidadesEspeciais.forEach(necessidadeEspecial => {
-            this.necessidadeEspecialService.necessidadeEspecialControllerIncluir({ body: necessidadeEspecial })
-                .subscribe(
-                    retorno => {
-                        this.confirmarAcao();
-                        this.router.navigate(["/matricula"]);
-                    },
-                    erro => {
-                        this.snackBar.open('Erro ao incluir necessidade especial', 'Fechar', { duration: 3000 });
-                    }
-                );
-        });
-    }
-
-    confirmarAcao() {
-        this.dialog.open(ConfirmationDialog, {
-            data: {
-                titulo: 'Necessidades Registradas!',
-                mensagem: 'Necessidade Incluída Com Sucesso!!',
-                textoBotoes: { ok: 'Confirmar' }
-            },
-        });
-    }
-
-    onSubmit() {
-        if (this.formGroup.valid) {
-            if (this.formGroup.get('possuiNecessidadeEspecial')?.value) {
-                this.realizarInclusao();
-            }
-        }
+    openDialogNecessidade(){
+        
     }
 
     fechar(): void {
