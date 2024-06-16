@@ -1,8 +1,8 @@
 @import '../../../../StyleForms.css';
 
 .imagem-card {
-  width:26%;
-  margin-right: 10px;
+  width:100%;
+  margin-bottom: 10px;
   border-radius: 10px;
   border: 3px solid #B2DFFF;
 }
@@ -12,7 +12,9 @@
 }
 
 .content-container {
-  width: 68%;
+  width: 100%;
+  margin-right:0;
+
 }
 
 .card-container {
@@ -33,23 +35,87 @@
 
 .botao-advertencia {
   padding: 0 28px;
-  font-size: 13px;
-}
-
-@media (max-width: 959px) {
-  .imagem-card, .content-container {
-    width: 100%;
-    margin-right: 0;
-  }
+  font-size: 12px;
 }
 
 @media (max-width: 999px) {
   .button {
-    width: 180px !important;
-    height: 50px !important;
-    margin-bottom: 40px;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    font-size: 14px;
   }
 }
+
+@media (min-width: 1000px) {
+  .button {
+    width: auto;
+    height: 50px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsaveis-table,
+  .autorizados-table,
+  .necessidades-table,
+  .advertencias-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .mat-header-row,
+  .mat-row {
+    display: block;
+  }
+
+  .mat-cell,
+  .mat-header-cell {
+    text-align: left;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mat-header-cell {
+    font-weight: bold;
+  }
+
+  .mat-cell {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  .imagem-card,
+  .content-container {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .imagem-card {
+    margin-bottom: 10px;
+  }
+}
+
+
+@media (min-width: 768px) { /* Ajuste para telas maiores, por exemplo */
+  .card-container {
+    display: flex;
+    align-items: flex-start; /* Alinha os itens ao topo */
+    justify-content: space-between; /* Espaço entre os elementos */
+  }
+
+  .imagem-card {
+    width: 30%; /* Largura da imagem */
+    margin-right: 20px; /* Espaçamento entre imagem e conteúdo */
+  }
+
+  .content-container {
+    width: 65%; /* Largura do conteúdo */
+    margin-right: 0;
+  }
+}
+
 
 img{
   border-radius: 7.5px;

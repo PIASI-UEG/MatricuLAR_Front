@@ -8,7 +8,7 @@
             <div class="content-container">
                 <mat-card class="matricula-card">
                     <mat-card-header>
-                        <mat-card-title>Dados do Aluno</mat-card-title>
+                        <mat-card-title>Dados da Criança</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
                         <p><strong>Nome do Aluno:</strong> {{ matriculaVisualiza?.nomeAluno }}</p>
@@ -21,7 +21,7 @@
         </div>
         <div>
             <h3><b>Informações dos Responsáveis</b></h3>
-            <mat-table  [dataSource]="matriculaDataSource" class="mat-elevation-z8" style="margin-bottom: 20px;">
+            <mat-table  [dataSource]="matriculaDataSource" class="responsaveis-table mat-elevation-z8" style="margin-bottom: 20px;">
                 <ng-container matColumnDef="tutoresNomes">
                     <mat-header-cell *matHeaderCellDef> Responsáveis </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{ element.tutoresNomes.join(', ') }} </mat-cell>
@@ -41,7 +41,7 @@
             </mat-table>
 
             <h3><b>Informações dos Responsáveis Autorizados</b></h3>
-            <mat-table [dataSource]="matriculaDataSource" class="mat-elevation-z8">
+            <mat-table [dataSource]="matriculaDataSource" class="autorizados-table mat-elevation-z8">
                 <ng-container matColumnDef="responsaveisNome">
                     <mat-header-cell *matHeaderCellDef> Responsáveis Autorizados</mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{ element.responsaveisNome.join(', ') }} </mat-cell>
@@ -51,7 +51,7 @@
             </mat-table>
 
             <h3><b>Informações das Necessidades</b></h3>
-            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.necessidades" [dataSource]="matriculaVisualiza.necessidades" class="mat-elevation-z8">
+            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.necessidades" [dataSource]="matriculaVisualiza.necessidades" class="necessidades-table mat-elevation-z8">
                 <ng-container matColumnDef="titulo">
                     <mat-header-cell *matHeaderCellDef> Necessidade Especial</mat-header-cell>
                     <mat-cell *matCellDef="let necessidade"> {{ necessidade.titulo }} </mat-cell>
@@ -62,7 +62,7 @@
             </mat-table>
 
             <h3><b>Informações das Advertências</b></h3>
-            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.advertencias" [dataSource]="matriculaVisualiza.advertencias" class="mat-elevation-z8">
+            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.advertencias" [dataSource]="matriculaVisualiza.advertencias" class="advertencias-table mat-elevation-z8">
                 <ng-container matColumnDef="titulo">
                     <mat-header-cell *matHeaderCellDef> Título da Advertência </mat-header-cell>
                     <mat-cell *matCellDef="let advertencia"> {{ advertencia.titulo }} </mat-cell>
@@ -82,8 +82,8 @@
 
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
-            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()">+Advertência</button>
-            <button mat-raised-button type="button" class="button botao-necessidade" (click)="openDialogNecessidade()">+Necessidades<br>Especiais</button>
+            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()"> +Advertência</button>
+            <button mat-raised-button type="button" class="button botao-necessidade" (click)="openDialogNecessidade()"> +Necessidades<br>Especiais</button>
         </div>
     </form>
 </div>
