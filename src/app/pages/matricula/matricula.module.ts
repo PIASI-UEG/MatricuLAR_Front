@@ -33,6 +33,7 @@ import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matri
 import {ArquivoViewerModule} from "../../arquitetura/arquivo-viwer/arquivo-viewer.module";
 import {MatListModule} from "@angular/material/list";
 import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-advertencia-dialog.component';
+import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especial-dialog/add-necessidade-especial-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-adve
     HomeMatriculaComponent,
     ListMatriculaComponent,
     InfoMatriculaDialogComponent,
-    AddAdvertenciaDialogComponent
+    AddAdvertenciaDialogComponent,
+    AddNecessidadeEspecialDialogComponent
   ],
     imports: [
         CommonModule,

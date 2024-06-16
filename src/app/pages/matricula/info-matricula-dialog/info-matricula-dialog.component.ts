@@ -19,6 +19,9 @@ import { MatriculaListagemDto } from "../../../api/models/matricula-listagem-dto
 import { DocumentoMatriculaDto } from "../../../api/models/documento-matricula-dto";
 import { EnumDoc } from "../../../arquitetura/arquivo-viwer/EnumDoc";
 import { MatriculaControllerGetDocumentoMatricula$Params } from "../../../api/fn/matricula-controller/matricula-controller-get-documento-matricula";
+import {
+    AddNecessidadeEspecialDialogComponent
+} from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -133,7 +136,18 @@ export class InfoMatriculaDialogComponent implements OnInit {
     }
 
     openDialogNecessidade(){
-        
+        this.dialogRef.close();
+        const dialogRefAdvertencia = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
+            data: { id: this.matriculaId }
+        });
+
+        dialogRefAdvertencia.afterClosed().subscribe(result => {
+            if (result) {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
+            }
+        });
     }
 
     fechar(): void {

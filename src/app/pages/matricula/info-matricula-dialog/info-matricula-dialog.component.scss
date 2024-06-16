@@ -35,7 +35,7 @@
 
 .botao-advertencia {
   padding: 0 28px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 @media (max-width: 999px) {
@@ -95,24 +95,33 @@
   .imagem-card {
     margin-bottom: 10px;
   }
+  .botao-advertencia, .botao-necessidade, .botao-cancelar{
+    padding: 0 20px;
+    font-size: 8px;
+  }
+
 }
 
 
-@media (min-width: 768px) { /* Ajuste para telas maiores, por exemplo */
+@media (min-width: 768px) {
   .card-container {
     display: flex;
-    align-items: flex-start; /* Alinha os itens ao topo */
-    justify-content: space-between; /* Espaço entre os elementos */
+    align-items: flex-start;
+    justify-content: space-between;
   }
 
   .imagem-card {
-    width: 30%; /* Largura da imagem */
-    margin-right: 20px; /* Espaçamento entre imagem e conteúdo */
+    width: 30%;
+    margin-right: 20px;
   }
 
   .content-container {
-    width: 65%; /* Largura do conteúdo */
+    width: 65%;
     margin-right: 0;
+  }
+  .botao-advertencia, .botao-necessidade, .botao-cancelar {
+    padding: 0 26px;
+    font-size: 12px;
   }
 }
 
