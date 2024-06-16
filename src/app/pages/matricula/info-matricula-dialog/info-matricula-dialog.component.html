@@ -54,7 +54,7 @@
             <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.necessidades" [dataSource]="matriculaVisualiza.necessidades" class="necessidades-table mat-elevation-z8">
                 <ng-container matColumnDef="titulo">
                     <mat-header-cell *matHeaderCellDef> Necessidade Especial</mat-header-cell>
-                    <mat-cell *matCellDef="let necessidade"> {{ necessidade.titulo }} </mat-cell>
+                    <mat-cell *matCellDef="let necessidades"> {{ necessidades.titulo }} </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="colunasNecessidadesEspeciais"></mat-header-row>

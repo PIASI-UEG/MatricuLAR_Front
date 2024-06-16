@@ -1,1 +1,49 @@
-<p>add-necessidade-especial-dialog works!</p>
+<div class="formMov">
+    <ng-container>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Lançar Necessidade Especial para criança</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Aluno: {{aluno?.nome}}</p>
+                <p>Data de nascimento: {{aluno?.nascimento}}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Preencha detalhes da Necessidade Especial</mat-card-title>
+            </mat-card-header>
+            <form
+                    [formGroup]="formGroup"
+                    (ngSubmit)="onSubmit()"
+                    class="form" fxFlex="1 1 auto"
+            >
+                <div formArrayName="necessidadesEspeciais">
+                    <div fxLayout="row" fxLayoutAlign="center" *ngFor="let campo of getNecessidadesEspeciaisControls(); let i = index;" [formGroupName]="i">
+                        <mat-form-field>
+                            <mat-label>Necessidade Especial</mat-label>
+                            <input matInput formControlName="titulo" placeholder="EX: alergia, medicamentos, alimentação">
+                            <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('required')">
+                                Preencha para continuar
+                            </mat-error>
+                        </mat-form-field>
+                        <button mat-icon-button (click)="removerCampoNecessidade(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    <button mat-button type="button" class="button-necessidade" (click)="adicionarCampoNecessidade(null)">
+                        <mat-icon>add</mat-icon>
+                        Adicionar necessidade
+                    </button>
+                </div>
+                <div  fxLayout="row" fxLayoutAlign="space-between center">
+                    <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+                    <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">
+                        Limpar
+                    </button>
+                    <button mat-raised-button color="primary" type="submit" class="button botao-salvar">Salvar</button>
+                </div>
+            </form>
+        </mat-card>
+    </ng-container>
+</div>
