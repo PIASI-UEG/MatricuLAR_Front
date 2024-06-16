@@ -628,7 +628,7 @@ export class FormMatriculaComponent implements OnInit {
                     this.formGroup.patchValue({
                         nomeCrianca: retorno.nome,
                         cpfCrianca: retorno.cpf,
-                        dataNascimento: retorno.nascimento,
+                        dataNascimento: new Date(retorno.nascimento+"T00:00"),
                         possuiNecessidadeEspecial: !!retorno.necessidades?.length,
                         necessidadesEspeciais: retorno.necessidades,
                         cep: retorno.endereco?.cep,
@@ -657,6 +657,7 @@ export class FormMatriculaComponent implements OnInit {
                     retorno.tutorDTOList?.forEach((tutor: any, index: number) => {
                         if (index === 0 && retorno.responsaveis) {
                             tutor.vinculo = retorno.responsaveis[index].vinculo;
+                            tutor.dataNascimento = new Date(tutor.dataNascimento+"T00:00")
                             const tutorControl = this.getTutorForm(index);
                             tutorControl.patchValue(tutor);
                             console.log("TuTOR 1", tutor);

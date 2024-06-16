@@ -12,6 +12,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MessageService} from "../../message/message.service";
 import {map} from "rxjs/operators";
 import {ISearchFieldDataObject} from "../../../api/models/i-search-field-data-object";
+import {toNumber} from "lodash";
 
 @Component({
   selector: 'app-search-component',
@@ -71,6 +72,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
     if(!this.formGroup.valid) return;
     let fieldSearchValue = this.getFieldSearchValue();
     fieldSearchValue =  typeof fieldSearchValue === 'string' ? fieldSearchValue : fieldSearchValue.id;
+    this.getFieldSearchParameter().name == "id" ? fieldSearchValue =  toNumber(fieldSearchValue) : "";
     this.searchFieldsActionMethod({body: [
         { name: this.getFieldSearchParameter().name,
           searchType:  this.getFieldSearchConditionKey(),
@@ -133,6 +135,10 @@ export class SearchComponent implements AfterViewInit, OnInit{
         this.configureSearchFieldsList(method);
       }
     });
+    allMethodNames.forEach((method: any) => {
+      if (method.endsWith('SearchFieldsActionMatriculaListagemDto')){
+        this.configureSearchFieldAction(method);
+      }})
   }
 
   private configureSearchFieldsList(method: any) {

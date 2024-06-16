@@ -65,7 +65,7 @@ export class ListMatriculaComponent implements OnInit{
             this.matriculaService.matriculaControllerListarMatriculasListagemPorStatus({statusMatricula:"AGUARDANDO_ACEITE"}).subscribe(data => {
                 this.matriculaListaDataSource.data = data || [];
                 this.pageSlice = this.matriculaListaDataSource.data;
-                //this.qtdRegistros = data.totalElements || 0;
+                // this.qtdRegistros = data.totalElements || 0;
             })}
         else{
 
@@ -79,6 +79,7 @@ export class ListMatriculaComponent implements OnInit{
     }
 
     showResult($event: any[]) {
+        console.log($event)
         this.matriculaListaDataSource.data = $event;
     }
 
