@@ -13,6 +13,8 @@ import {MessageService} from "../../message/message.service";
 import {map} from "rxjs/operators";
 import {ISearchFieldDataObject} from "../../../api/models/i-search-field-data-object";
 import {toNumber} from "lodash";
+import {MensagensUniversais} from "../../../../MensagensUniversais";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-search-component',
@@ -24,6 +26,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
   @Input() controller: any;
   @Output()
   onSearchResult: EventEmitter<any[]> = new EventEmitter<any[]>();
+  mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar:this.snackBar})
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
 
@@ -51,6 +54,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
     private formBuilder: FormBuilder,
     private _adapter: DateAdapter<any>,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private messageService: MessageService
   ) {
     this.createForm();
@@ -79,7 +83,10 @@ export class SearchComponent implements AfterViewInit, OnInit{
           type: this.getFieldSearchParameter().type,
           value: fieldSearchValue}]}).subscribe(value => {
       this.onSearchResult.emit(value);
-    },() => this.onSearchResult.emit([]) );
+    }, error => {
+            console.log(error)
+            this.mensagens.showMensagemSimples("A busca não encontrou nenhum registro");
+    })
 
   }
 
