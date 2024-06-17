@@ -87,14 +87,13 @@ export class AddNecessidadeEspecialDialogComponent {
     private makeDTONecessidadeEspecial(): NecessidadeEspecialDto[] {
         const necessidadesEspeciaisArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
         return necessidadesEspeciaisArray.value.map((necessidade: any) => ({
-            id: this.aluno?.id,
+            matriculaId: this.aluno?.id,
             titulo: necessidade.titulo
         }));
     }
 
     private realizarInclusao() {
         const necessidadesEspeciais: NecessidadeEspecialDto[] = this.makeDTONecessidadeEspecial();
-
         necessidadesEspeciais.forEach(necessidadeEspecialDto => {
             this.necessidadeService.necessidadeEspecialControllerIncluir({ body: necessidadeEspecialDto })
                 .subscribe(retorno => {
