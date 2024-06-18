@@ -87,7 +87,6 @@ export class AutenticacaoComponent implements OnInit {
         this.securityService.init(user);
         this.router.navigate(['/painel']);
       }, error => {
-        console.log('erro', error);
         this.mensagens.acaoLogin(error.message,10000);
       });
     }
@@ -98,7 +97,6 @@ export class AutenticacaoComponent implements OnInit {
     };
 
   openDialog(): void {
-    console.log("ok");
     const dialogRef = this.dialog.open(EsqueceuSenhaDialogComponent,
       {
         data:

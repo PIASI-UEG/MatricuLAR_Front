@@ -6,6 +6,10 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dial
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SecurityService } from "../../../arquitetura/security/security.service";
 import { RedefinirSenhaDto } from "../../../api/models/redefinir-senha-dto";
+import {
+    ConfirmationDialog,
+    ConfirmationDialogResult
+} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
     selector: 'app-esqueceu-senha-dialog',
@@ -75,21 +79,42 @@ export class EsqueceuSenhaDialogComponent implements OnInit {
             email: email
         };
         this.usuarioController.usuarioControllerRedefinirSenha({ body: verifica }).subscribe(() => {
-            console.log('Solicitação de redefinição de senha enviada com sucesso.');
-            this.mostrarMensagem('A senha foi enviada para o seu e-mail.', 'success');
+            this.mostrarMensagem('A senha foi enviada para o seu e-mail.', 'success', 5000);
             this.router.navigate(["/acesso/login"]);
         }, error => {
-            console.error('Erro ao enviar solicitação de redefinição de senha:', error);
             this.mostrarMensagem('CPF ou E-mail não cadastrado no sistema. Por favor, verifique o CPF e E-mail e informe novamente', 'error');
         });
     }
 
-    mostrarMensagem(mensagem: string, tipo: 'success' | 'error'): void {
-        this.snackBar.open(mensagem, '', {
-            duration:3000,
-            panelClass: tipo === 'success' ? ['success-snackbar'] : ['error-snackbar']
+    mostrarMensagem(mensagem: string, tipo: 'success' | 'error', duracao?: number): void {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: tipo === 'success' ? 'Sucesso' : 'Erro',
+                mensagem: mensagem,
+                textoBotoes: {
+                    ok: 'OK',
+                },
+            },
+            disableClose: true
+        });
+
+        if (tipo === 'success' && duracao) {
+            dialogRef.afterOpened().subscribe(() => {
+                setTimeout(() => {
+                    dialogRef.close();
+                }, duracao);
+            });
+        }
+
+        dialogRef.afterClosed().subscribe((confirmed: ConfirmationDialogResult) => {
+            if (tipo === 'success') {
+                this.fechar();
+            }else{
+                dialogRef.afterOpened()
+            }
         });
     }
+
 
     fechar(): void {
         this.dialogRef.close();

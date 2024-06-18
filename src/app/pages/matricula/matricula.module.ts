@@ -15,7 +15,7 @@ import {MatTableModule} from "@angular/material/table";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {IConfig, NgxMaskDirective} from "ngx-mask";
+import {IConfig, NgxMaskDirective, NgxMaskPipe} from "ngx-mask";
 import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -33,6 +33,7 @@ import { InfoMatriculaDialogComponent } from './info-matricula-dialog/info-matri
 import {ArquivoViewerModule} from "../../arquitetura/arquivo-viwer/arquivo-viewer.module";
 import {MatListModule} from "@angular/material/list";
 import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-advertencia-dialog.component';
+import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especial-dialog/add-necessidade-especial-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-adve
     HomeMatriculaComponent,
     ListMatriculaComponent,
     InfoMatriculaDialogComponent,
-    AddAdvertenciaDialogComponent
+    AddAdvertenciaDialogComponent,
+    AddNecessidadeEspecialDialogComponent
   ],
     imports: [
         CommonModule,
@@ -74,6 +76,7 @@ import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-adve
         ArquivoViewerModule,
         MatListModule,
         FormsModule,
+        NgxMaskPipe,
     ],
 })
 export class MatriculaModule { }
