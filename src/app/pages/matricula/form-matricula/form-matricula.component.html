@@ -406,7 +406,6 @@
 
                         <p>Qual a renda familiar?</p>
                         <mat-form-field>
-                            <mat-label>Renda familiar</mat-label>
                             <div class="input-simbolo">
                             <span class="simbolo-dinheiro">R$</span>
                             <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator=","
@@ -536,6 +535,9 @@
                                                         [idBotaoInputImagemPreview]="'docCPFTutorIDPreview'"
                                                         [enumDocPai]="EnumDoc.CPF_TUTOR1"
                                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFTutor') && this.enviado">Documento obrigatótio
+                                  </mat-error>
+
                                 </div>
                                 <div *ngIf="this.temConjugue" class="espaco-docs" fxLayout="column" fxLayoutAlign="space-evenly center">
                                     <mat-label class="titulo-doc"><strong>Cônjuge</strong> <br></mat-label>
@@ -543,6 +545,8 @@
                                                         [idBotaoInputImagemPreview]="'docCPFConjugueIDPreview'"
                                                         [enumDocPai]="EnumDoc.CPF_TUTOR2"
                                                         (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
+                                  <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFConjugue') && this.enviado">Documento obrigatótio
+                                  </mat-error>
                                 </div>
                             </div>
 
@@ -710,7 +714,7 @@
                             <div fxLayout="center" class="linha-horizontal-docs"></div>
                             <!--              // colocar aqui uma validacao se possui conjugue e aparecer outro campo&ndash;&gt;-->
 
-                            <mat-label class="titulo-doc"><strong>Ratifico serem verdadeiras as informações prestadas, e afirmo
+                            <mat-label class="titulo-doc" *ngIf="!securityServiceisValid()" ><strong>Ratifico serem verdadeiras as informações prestadas, e afirmo
                                 estar
                                 ciente de que, qualquer omissão de
                                 informação ou apresentação de declaração, dados ou documentos falsos e/ou divergentes a fim de
@@ -726,7 +730,7 @@
 
                         <mat-error *ngIf="handleErrorForm('marqueLieConcordo') && this.enviado">Leia e marque para continuar
                         </mat-error>
-                        <mat-checkbox color="primary" formControlName="declaroLieConcordo">
+                        <mat-checkbox color="primary" formControlName="declaroLieConcordo" *ngIf="!securityServiceisValid()">
                             Declaro que li e concordo
                         </mat-checkbox>
 
@@ -776,12 +780,12 @@
                             <button mat-raised-button type="button"  class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
                             <button  mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar</button>
-                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'">Validar</button>
+                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'" (click)="validar()" >Validar</button>
                         </div>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                              *ngIf="this.verificarAlinhar()">
-                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'">Validar</button>
+                          <button mat-raised-button type="button" class="button " *ngIf="tipoDeFormulario == 'Validar'" (click)="validar()">Validar</button>
                             <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa Anterior</button>
                             <button mat-raised-button type="submit" class="button botao-salvar" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">Salvar</button>
                             <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>

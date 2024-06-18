@@ -309,19 +309,43 @@ export class Validacoes {
     }
   }
 
-  //validar se inseriu CPF criança
-  validarCPFCrianca(formGroup: FormGroup): { [key: string]: any } | null {
+  //validar se inseriu CPF responsavel legal
+  validarCPFTutor(formGroup: FormGroup): { [key: string]: any } | null {
     const docs = formGroup.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
     const currentErrors = formGroup.errors || {};
 
-    if (!copiaDocs[2]) {
-      currentErrors['insiraODocCPFCrianca'] = true;
+    if (!copiaDocs[8]) {
+      currentErrors['insiraODocCPFTutor'] = true;
       formGroup.setErrors(currentErrors);
 
-      return {'insiraODocCPFCrianca': true};
+      return {'insiraODocCPFTutor': true};
     } else {
-      delete currentErrors['insiraODocCPFCrianca'];
+      delete currentErrors['insiraODocCPFTutor'];
+
+      if (Object.keys(currentErrors).length === 0) {
+        formGroup.setErrors(null);
+      } else {
+        formGroup.setErrors(currentErrors);
+      }
+
+      return null;
+    }
+  }
+
+  //validar se inseriu CPF Conjuge
+  validarCPFConjugue(formGroup: FormGroup): { [key: string]: any } | null {
+    const docs = formGroup.get('listaDocumentos');
+    const copiaDocs = docs?.value.slice();
+    const currentErrors = formGroup.errors || {};
+
+    if (!copiaDocs[9] && formGroup.get('temconjugue')?.value) {
+      currentErrors['insiraODocCPFConjugue'] = true;
+      formGroup.setErrors(currentErrors);
+
+      return {'insiraODocCPFConjugue': true};
+    } else {
+      delete currentErrors['insiraODocCPFConjugue'];
 
       if (Object.keys(currentErrors).length === 0) {
         formGroup.setErrors(null);

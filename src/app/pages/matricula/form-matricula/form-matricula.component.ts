@@ -38,6 +38,7 @@ import {TranslationField} from "../../../core/erros-dialog/TranslationFields";
 import {TranslationError} from "../../../core/erros-dialog/TranslationErros";
 import {ErrosForm} from "../../../core/erros-dialog/ErrosForm";
 import {ErrosControl} from "../../../core/erros-dialog/ErrosControls";
+import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
 
 @Component({
     selector: 'app-form-matricula',
@@ -356,7 +357,8 @@ export class FormMatriculaComponent implements OnInit {
     },{validator:
         [this.validacoes.validarFotoCrianca,
           this.validacoes.validarCertidao,
-          this.validacoes.validarCPFCrianca,
+          this.validacoes.validarCPFTutor,
+          this.validacoes.validarCPFConjugue,
           this.validacoes.valdiarComprovanteEndereco,
           this.validacoes.valdiarComprovanteMoradia,
           this.validacoes.validarCertidaoEstadoCivil,
@@ -586,16 +588,34 @@ export class FormMatriculaComponent implements OnInit {
       logradouro: this.formGroup.get('logradouro')?.value
     }
 
-    const matriculaDtoPreenchido: MatriculaDto = {
-      cpf: this.formGroup.get('cpfCrianca')?.value,
-      endereco: endereco,
-      informacoesMatricula: infoMatricula,
-      nascimento:  this.formGroup.get('dataNascimento')?.value,
-      necessidades: valoresNecessidadesEspeciais,
-      nome: this.formGroup.get('nomeCrianca')?.value,
-      responsaveis: responsaveis,
-      tutorDTOList: valoresTutor
-    };
+    let matriculaDtoPreenchido!: MatriculaDto;
+
+    if(this.tipoDeFormulario === "Validar")
+    {
+      matriculaDtoPreenchido = {
+        id: this.codigo,
+        cpf: this.formGroup.get('cpfCrianca')?.value,
+        endereco: endereco,
+        informacoesMatricula: infoMatricula,
+        nascimento:  this.formGroup.get('dataNascimento')?.value,
+        necessidades: valoresNecessidadesEspeciais,
+        nome: this.formGroup.get('nomeCrianca')?.value,
+        responsaveis: responsaveis,
+        tutorDTOList: valoresTutor
+      };
+    }
+    else {
+      matriculaDtoPreenchido = {
+        cpf: this.formGroup.get('cpfCrianca')?.value,
+        endereco: endereco,
+        informacoesMatricula: infoMatricula,
+        nascimento:  this.formGroup.get('dataNascimento')?.value,
+        necessidades: valoresNecessidadesEspeciais,
+        nome: this.formGroup.get('nomeCrianca')?.value,
+        responsaveis: responsaveis,
+        tutorDTOList: valoresTutor
+      };
+    }
 
     if(this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar"){
       const listaDocumentos: DocumentoMatriculaDto[] = [];
@@ -605,6 +625,8 @@ export class FormMatriculaComponent implements OnInit {
           listaDocumentos.push(item.documentoMatricula);
         }
       });
+
+
 
       matriculaDtoPreenchido.documentoMatricula = listaDocumentos;
     }
@@ -995,6 +1017,7 @@ export class FormMatriculaComponent implements OnInit {
             }
           };
           const dialogRef = this.dialog.open(ErrosDialogComponent, config);
+          this.tabGroup.selectedIndex = 2;
 
         }
       }else {
@@ -1469,6 +1492,34 @@ export class FormMatriculaComponent implements OnInit {
     }
 
     return result;
+  }
+
+  validar(){
+    const matriculaDTO = this.makeDTOMatricula();
+    console.log("COMPLETO", matriculaDTO)
+    console.log(matriculaDTO.documentoMatricula)
+    this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
+      const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
+        {
+          data:
+            {
+              id: retorno.id,
+            }
+        })
+      dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
+          if(confirmed){
+            this.confirmarAcao(retorno, "Incluir na turma e validar")
+          }
+          else{
+            this.confirmarAcao(retorno, this.tipoDeFormulario)
+          }
+          this.router.navigate(['/matricula/validar']);
+      }
+      )
+    }, error => {
+      this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+    });
+
   }
 
 }
