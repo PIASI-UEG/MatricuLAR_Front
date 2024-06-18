@@ -200,6 +200,7 @@ export class FormMatriculaComponent implements OnInit {
       informeValorBeneficioGoverno: "Marque uma opção em recebe benefício do governo.",
       informePossuiVeiculoProprio: "Marque uma opção em possui veículo próprio.",
       informePossuiCRAS: "Marque uma opção em possui encaminhamento do CRAS.",
+      maxlength: "Valor máximo de R$ 999.999,00"
     },{
       formName: this.NOME_GUIA_TAB_DOCUMENTOS,
       marqueLieConcordo: "Aceite os termos para finalizar.",
@@ -280,12 +281,12 @@ export class FormMatriculaComponent implements OnInit {
             frequentouOutraCreche: [null],
             razaoSaida: [null,[Validators.maxLength(200)]],
             tipoResidencia: [null, Validators.required],
-            valorAluguel: [null],
+            valorAluguel: [null, Validators.maxLength(8)],
             possuiBeneficiosDoGoverno: [null],
             possuiVeiculoProprio: [null],
             possuiCRAS: [null],
-            valorBeneficio: [null],
-            rendaFamiliar: [null, [Validators.required]],
+            valorBeneficio: [null, Validators.maxLength(8)],
+            rendaFamiliar: [null, [Validators.required, Validators.maxLength(8)]],
             //Documentos - Etapa 4
             // implementar anexar documentos no form
             // declaro que li e concordo

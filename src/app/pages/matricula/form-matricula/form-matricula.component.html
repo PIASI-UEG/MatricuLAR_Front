@@ -357,9 +357,10 @@
                         <mat-form-field *ngIf="formGroup.get('tipoResidencia')?.value === 'alugado'">
                             <div class="input-simbolo">
                                 <span class="simbolo-dinheiro">R$</span>
-                                <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00">
+                                <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00" maxlength="10">
                             </div>
                             <mat-error *ngIf="handleErrorForm('informeValorAluguel')">Informe o valor do Aluguel</mat-error>
+                          <mat-error *ngIf="handleError('valorAluguel', 'maxLength')">Valor máximo de R$ 999.999,00</mat-error>
                         </mat-form-field>
 
                         <div fxLayout="column" fxLayoutAlign="center start">
@@ -378,9 +379,10 @@
                                 <div class="input-simbolo">
                                     <span class="simbolo-dinheiro">R$</span>
                                     <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator=","
-                                           placeholder="0,00">
+                                           placeholder="0,00" maxlength="10">
                                 </div>
                                 <mat-error *ngIf="handleError('valorBeneficio','informeValorBeneficio')">Informe o valor do Benefício</mat-error>
+                              <mat-error *ngIf="handleError('valorBeneficio', 'maxLength')">Valor máximo de R$ 999.999,00</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -409,9 +411,10 @@
                             <div class="input-simbolo">
                             <span class="simbolo-dinheiro">R$</span>
                             <input matInput formControlName="rendaFamiliar" mask="separator.2" decimalSeparator=","
-                                   placeholder="0,00">
+                                   placeholder="0,00" maxlength="10">
                             </div>
                             <mat-error *ngIf="handleError('rendaFamiliar', 'required')">Campo Obrigatório</mat-error>
+                          <mat-error *ngIf="handleError('rendaFamiliar', 'maxLength')">Valor máximo de R$ 999.999,00</mat-error>
                         </mat-form-field>
 
                         <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
