@@ -4,7 +4,7 @@ RewriteBase /
 RewriteRule ^ index \ .html $ - [L]
 RewriteCond% {REQUEST_FILENAME}! -F
 RewriteCond% {REQUEST_FILENAME}! -D
-RewriteRule /index.html [L]
+RewriteRule. /index.html [L]
 
 # Force https. Descomentar para producao
 #RewriteCond %{HTTPS} off
