@@ -55,10 +55,17 @@ export class ListMatriculaComponent implements OnInit{
     }
 
     onPageChange(event: PageEvent){
-      this.matriculaService.matriculaControllerListAllPageMatriculaListagemDto({offset: event.pageIndex, pageSize:event.pageSize, statusMatricula:"ATIVO"})
-        .subscribe(data =>{
-          this.matriculaListaDataSource.data = data;
-        })
+      if(this.tipoDeListagem != "Validar"){
+        this.matriculaService.matriculaControllerListAllPageMatriculaListagemDto({offset: event.pageIndex, pageSize:event.pageSize, statusMatricula:"ATIVO"})
+          .subscribe(data =>{
+            this.matriculaListaDataSource.data = data;
+          })
+      } else {
+        this.matriculaService.matriculaControllerListAllPageMatriculaListagemDto({offset: event.pageIndex, pageSize:event.pageSize, statusMatricula:"AGUARDANDO_ACEITE"})
+          .subscribe(data =>{
+            this.matriculaListaDataSource.data = data;
+          })
+      }
     }
 
 
