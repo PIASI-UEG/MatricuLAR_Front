@@ -41,6 +41,7 @@ import {ImprimirTermoModule} from "./pages/imprimir-termo/imprimir-termo.module"
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import {EsqueceuSenhaModule} from "./pages/esqueceu-senha/esqueceu-senha.module";
 import { ErrosDialogComponent } from './core/erros-dialog/erros-dialog.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 @NgModule({
@@ -110,6 +111,7 @@ import { ErrosDialogComponent } from './core/erros-dialog/erros-dialog.component
       useClass: SecurityInterceptor,
       multi: true
     },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })
