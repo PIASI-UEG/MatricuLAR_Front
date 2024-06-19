@@ -55,7 +55,10 @@ export class ListMatriculaComponent implements OnInit{
     }
 
     onPageChange(event: PageEvent){
-
+      this.matriculaService.matriculaControllerListAllPageMatriculaListagemDto({offset: event.pageIndex, pageSize:event.pageSize, statusMatricula:"ATIVO"})
+        .subscribe(data =>{
+          this.matriculaListaDataSource.data = data;
+        })
     }
 
 
@@ -65,14 +68,18 @@ export class ListMatriculaComponent implements OnInit{
             this.matriculaService.matriculaControllerListarMatriculasListagemPorStatus({statusMatricula:"AGUARDANDO_ACEITE"}).subscribe(data => {
                 this.matriculaListaDataSource.data = data || [];
                 this.pageSlice = this.matriculaListaDataSource.data;
-                // this.qtdRegistros = data.totalElements || 0;
+                this.matriculaService.matriculaControllerQuantidadeMatriculasPorStatus({statusMatricula: "AGUARDANDO_ACEITE"}).subscribe(data =>{
+                  this.qtdRegistros = data;
+                });
             })}
         else{
 
             this.matriculaService.matriculaControllerListAllPageMatriculaListagemDto({offset: 0, pageSize: 5,statusMatricula: "ATIVO" }).subscribe(data => {
                 this.matriculaListaDataSource.data = data || [];
                 this.pageSlice = this.matriculaListaDataSource.data;
-                // this.qtdRegistros = data.totalElements || 0;
+              this.matriculaService.matriculaControllerQuantidadeMatriculasPorStatus({statusMatricula: "ATIVO"}).subscribe(data =>{
+                this.qtdRegistros = data;
+              });
                 // console.log(data.content);
             })
         }
