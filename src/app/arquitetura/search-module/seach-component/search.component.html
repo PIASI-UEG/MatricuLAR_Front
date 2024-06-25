@@ -12,31 +12,18 @@
       </mat-select>
       <mat-error validationMessage></mat-error>
     </mat-form-field>
-<!--    <mat-form-field >-->
-<!--      <mat-label>Condição</mat-label>-->
-<!--      <mat-select formControlName="searchConditionKey" >-->
-<!--        <mat-option *ngFor="let parameter of searchConditionKeys" [value]="parameter">{{SearchType[parameter]}} </mat-option>-->
-<!--      </mat-select>-->
-<!--      <mat-error validationMessage></mat-error>-->
-<!--    </mat-form-field>-->
-    <mat-form-field *ngIf="!showFieldSearch" class="busca">
+    <mat-form-field *ngIf="!isEnum()" class="busca">
       <mat-label>Busca</mat-label>
       <input matInput placeholder="Informe o valor da busca" title="Busca"
              formControlName="searchValue" name="nome"  required maxlength="50"
       >
       <mat-error validationMessage ></mat-error>
     </mat-form-field>
-    <mat-form-field   *ngIf="showFieldSearch" class="busca">
+    <mat-form-field *ngIf="isEnum()" class="busca">
       <mat-label>Busca</mat-label>
-      <input type="text"
-             placeholder="Digite para filtrar"
-             aria-label="Busca"
-             matInput
-             formControlName="searchValue"
-             [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getSearchValueDescription">
-        <mat-option *ngFor="let option of searchParameterFiltered | async" [value]="option">{{option.description}}</mat-option>
-      </mat-autocomplete>
+      <mat-select formControlName="searchValue" placeholder="Selecione uma opção">
+        <mat-option *ngFor="let value of enum" [value]="value[0]">{{value[1]}}</mat-option>
+      </mat-select>
       <mat-error validationMessage></mat-error>
     </mat-form-field>
       <button mat-raised-button class="button" (click)="search()" type="submit">Buscar</button>

@@ -12,7 +12,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MessageService} from "../../message/message.service";
 import {map} from "rxjs/operators";
 import {ISearchFieldDataObject} from "../../../api/models/i-search-field-data-object";
-import {toNumber} from "lodash";
+import {forEach, toNumber} from "lodash";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -29,6 +29,10 @@ export class SearchComponent implements AfterViewInit, OnInit{
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, snackBar:this.snackBar})
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
+  statusValor: [string, string][] = [["A","Ativo"],["AR","Aguardando Renovação"],["I", "Inativo"]];
+  cargos: [string, string][] = [["Administrador","Administrador"],["Secretaria","Secretária"],["Diretora", "Diretora"],["Coordenadora","Coordenadora"]];
+  turnos: [string, string][] = [["Matutino","Matutino"],["Vespertino","Vespertino"],["Integral", "Integral"]];
+  enum!: [string, string][];
 
 
   searchFieldsActionMethod!: (params: {body: Array<SearchFieldValue>})
@@ -39,6 +43,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
   formGroup!: FormGroup;
 
   searchFieldsParamters: SearchField[] = [];
+  status!: SearchField;
 
   /*searchValue: string = '';
   searchParameter!: SearchField;
@@ -175,6 +180,23 @@ export class SearchComponent implements AfterViewInit, OnInit{
   get showFieldSearch(): boolean {
     let b = !!this.formGroup.controls['searchParameter']?.value?.valueList;
     return b
+  };
+
+  isEnum(): boolean{
+    let b = this.formGroup.controls['searchParameter']?.value;
+    if(b){
+      if(b.name=="status"){
+        this.enum = this.statusValor;
+      }
+      if(b.name=="cargo"){
+        this.enum = this.cargos;
+      }
+      if(b.name=="turno"){
+        this.enum = this.turnos;
+      }
+      return b.type!="Long" && b.type!="String" && b.type!="Int";
+    }
+    return false;
   };
 
   searchAll() {
