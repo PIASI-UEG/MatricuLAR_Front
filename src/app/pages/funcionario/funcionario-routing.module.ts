@@ -26,6 +26,6 @@ export const funcionarioRoutes: Routes = [
       }
     ],
     canActivate: [SecurityGuard],
-    data: {security: {roles: ['A', 'C']}}
+    data: {security: {roles: ['ROLE_A', 'ROLE_C', 'ROLE_D']}}
   }
 ];

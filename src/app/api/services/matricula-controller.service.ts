@@ -372,6 +372,56 @@ export class MatriculaControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao
+   */
+  static readonly MatriculaControllerMudaStatusTodasMatriculasAguardandoRenovacaoPath = '/api/v1/matricula/todas-aguardando-renovacao';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao$Response(params?: {
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<void>> {
+
+    const rb = new RequestBuilder(this.rootUrl, MatriculaControllerService.MatriculaControllerMudaStatusTodasMatriculasAguardandoRenovacaoPath, 'post');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: '*/*',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao(params?: {
+  },
+  context?: HttpContext
+
+): Observable<void> {
+
+    return this.matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao$Response(params,context).pipe(
+      map((r: StrictHttpResponse<void>) => r.body as void)
+    );
+  }
+
+  /**
    * Path part for operation matriculaControllerGerarTermo
    */
   static readonly MatriculaControllerGerarTermoPath = '/api/v1/matricula/termo/{id}';

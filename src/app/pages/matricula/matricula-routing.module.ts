@@ -16,13 +16,13 @@ export const matriculaRoutes: Routes = [
         path: "",
         component: ListMatriculaComponent,
         canActivate: [SecurityGuard],
-        data: {security: {roles: ['A', 'C','S']}}
+        data: {security: {roles: ['ROLE_A', 'ROLE_C', 'ROLE_D', 'ROLE_S']}}
       },
       {
         path: "validar",
         component: ListMatriculaComponent,
         canActivate: [SecurityGuard],
-        data: {security: {roles: ['A', 'C','S']}}
+        data: {security: {roles: ['ROLE_A', 'ROLE_C', 'ROLE_D', 'ROLE_S']}}
       },
       {
         path: "novo",
@@ -32,13 +32,13 @@ export const matriculaRoutes: Routes = [
         path: ":id",
         component: FormMatriculaComponent,
         canActivate: [SecurityGuard],
-        data: {security: {roles: ['A', 'C','S']}}
+        data: {security: {roles: ['ROLE_A', 'ROLE_C', 'ROLE_D', 'ROLE_S']}}
       },
       {
         path: "validar/:id",
         component: FormMatriculaComponent,
         canActivate: [SecurityGuard],
-        data: {security: {roles: ['A', 'C','S']}}
+        data: {security: {roles: ['ROLE_A', 'ROLE_C', 'ROLE_D', 'ROLE_S']}}
       },
     ]
   }
