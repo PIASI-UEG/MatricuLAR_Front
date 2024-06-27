@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Injectable, OnInit, ViewChild} from '@angular/core';
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {MatSidenav} from "@angular/material/sidenav";
 import {BreakpointObserver} from "@angular/cdk/layout";
@@ -17,6 +17,7 @@ import {MensagensUniversais} from "../../../MensagensUniversais";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
@@ -91,6 +92,5 @@ export class HomeComponent implements OnInit {
   isActive(url: string){
       return this.route === url;
   }
-
 
 }

@@ -22,16 +22,16 @@
         <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel" [ngClass]="{'active-link': isActive('/painel')}"> Painel
             <mat-icon>home</mat-icon>
         </button>
-        <button *ngIf="securityService.isValid()"title="Validações de Matrículas" mat-button class="menu-button" routerLink="/matricula/validar" [ngClass]="{'active-link': isActive('/matricula/validar')}"> Validações
+        <button *ngIf="securityService.isValid() && !securityService.hasRoles('ROLE_S') "title="Validações de Matrículas" mat-button class="menu-button" routerLink="/matricula/validar" [ngClass]="{'active-link': isActive('/matricula/validar')}"> Validações
             <mat-icon>check_circle</mat-icon>
         </button>
         <button *ngIf="securityService.isValid()"title="Matrículas"  mat-button class="menu-button" routerLink="/matricula" [ngClass]="{'active-link': isActive('/matricula')}">
             <mat-icon>face</mat-icon> Matrículas
         </button>
-        <button *ngIf="securityService.isValid()"title="Turmas"  mat-button class="menu-button" routerLink="/turma" [ngClass]="{'active-link': isActive('/turma')}">
+        <button *ngIf="securityService.isValid() " title="Turmas"  mat-button class="menu-button" routerLink="/turma" [ngClass]="{'active-link': isActive('/turma')}">
             <mat-icon>airline_seat_recline_normal</mat-icon> Turmas
         </button>
-        <button *ngIf="securityService.isValid()"title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario" [ngClass]="{'active-link': isActive('/funcionario')}">
+        <button *ngIf="securityService.isValid() && !securityService.hasRoles('ROLE_S')" title="Funcionários"  mat-button class="menu-button" routerLink="/funcionario" [ngClass]="{'active-link': isActive('/funcionario')}">
             <mat-icon>supervisor_account</mat-icon>Funcionários
         </button>
         <mat-divider></mat-divider>
