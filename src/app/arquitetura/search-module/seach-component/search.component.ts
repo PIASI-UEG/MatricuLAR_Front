@@ -30,7 +30,7 @@ export class SearchComponent implements AfterViewInit, OnInit{
   innerWidth: number = window.innerWidth;
   flexDivAlinhar: string = 'row';
   statusValor: [string, string][] = [["A","Ativo"],["AR","Aguardando Renovação"],["I", "Inativo"]];
-  cargos: [string, string][] = [["Administrador","Administrador"],["Secretaria","Secretária"],["Diretora", "Diretora"],["Coordenadora","Coordenadora"]];
+  cargos: [string, string][] = [["ROLE_A","Administrador"],["ROLE_S","Secretária"],["ROLE_D", "Diretora"],["ROLE_C","Coordenadora"]];
   turnos: [string, string][] = [["Matutino","Matutino"],["Vespertino","Vespertino"],["Integral", "Integral"]];
   enum!: [string, string][];
 
