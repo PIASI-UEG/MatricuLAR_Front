@@ -240,7 +240,7 @@
 
                                 <div fxLayout="center" class="linha-horizontal"></div>
                                 <h2> Dados da empresa </h2>
-                                <p> Caso todos os Responsáveis Legais não tenham emprego a criança não poderá ser matricular na associação sagrada familia.</p>
+                                <p> Caso nenhum dos Responsáveis Legais não tenham emprego a criança não poderá ser matricular na associação sagrada familia.</p>
 
                                 <mat-form-field>
                                     <mat-label>Nome da empresa</mat-label>
@@ -487,7 +487,7 @@
                                                 [idBotaoInputImagemPreview]="'cpfCriancaIDPreview'"
                                                 [enumDocPai]="EnumDoc.CPF_CRIANCA"
                                                 (enviarDados)="receberDadosDoFilho($event)"></app-upload-arquivo>
-                            <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFCrianca') && this.enviado">Documento obrigatótio
+                            <mat-error *ngIf="handleErrorFormDocs('insiraODocCPFCrianca') && this.enviado">Documento não é obrigatótio
                             </mat-error>
 
                             <div fxLayout="center" class="linha-horizontal-docs"></div>
