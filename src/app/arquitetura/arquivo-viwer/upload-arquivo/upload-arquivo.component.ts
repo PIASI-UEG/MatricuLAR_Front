@@ -1,15 +1,7 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
-import {DocumentoMatriculaDto} from "../../../api/models/documento-matricula-dto";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {EnumDoc} from "../EnumDoc";
-import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
-import {async} from "@angular/core/testing";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ViwerDocumetDialogComponent} from "../viewer-documet-dialog/viwer-documet-dialog.component";
-import {FormBuilder} from "@angular/forms";
-import {DateAdapter} from "@angular/material/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {SecurityService} from "../../security/security.service";
-import {DomSanitizer} from "@angular/platform-browser";
 import {MensagensUniversais} from "../../../../MensagensUniversais";
 
 @Component({
@@ -44,14 +36,25 @@ export class UploadArquivoComponent{
     blob = file;
     this.file = file;
     const extensoesSuportadas = ['.jpg', '.jpeg', '.pdf', '.png'];
+    const extensoesSuportadasFotoCrianca = ['.jpg', '.jpeg', '.png'];
 
     if (file) {
 
       const fileExtension = fileName.split('.').pop()?.toLowerCase();
-      if (extensoesSuportadas.indexOf('.' + fileExtension) === -1) {
-        this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg , .png ou .pdf.")
-        return;
+      if(this.enumDocPai == EnumDoc.FOTO_CRIANCA)
+      {
+        if (extensoesSuportadasFotoCrianca.indexOf('.' + fileExtension) === -1) {
+          this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, para a foto da criança selecione um arquivo .jpg, .jpeg ou .png.")
+          return;
+        }
       }
+      else{
+        if (extensoesSuportadas.indexOf('.' + fileExtension) === -1) {
+          this.mensagens.confirmarErro("Enviar documento", "Extensão de arquivo inválida. Por favor, selecione um arquivo .jpg, .jpeg, .png ou .pdf.")
+          return;
+        }
+      }
+
 
 
       this.selectedFile = this.makeURLFile(file);
