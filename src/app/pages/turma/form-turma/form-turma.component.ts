@@ -123,18 +123,18 @@ export class FormTurmaComponent {
 
   }
 
-    confirmarAcao(turmaDTO: TurmaDto, nome: string) {
+    confirmarAcao(turmaDTO: TurmaDto, acao: string) {
         let titulo = 'Cadastro!';
-        if (nome === this.ACAO_INCLUIR) {
+        if (acao === this.ACAO_INCLUIR) {
             titulo = 'Cadastro realizado!';
-        } else if (nome === this.ACAO_EDITAR) {
+        } else if (acao === this.ACAO_EDITAR) {
             titulo = 'Edição realizada!';
         }
 
         const dialogRef = this.dialog.open(ConfirmationDialog, {
             data: {
                 titulo: titulo,
-                mensagem: `Ação de ${nome} dados: ${turmaDTO.titulo} realizada com sucesso!`,
+                mensagem: `Ação de ${acao} dados: ${turmaDTO.titulo} realizada com sucesso!`,
                 textoBotoes: {
                     ok: 'Confirmar',
                 },
