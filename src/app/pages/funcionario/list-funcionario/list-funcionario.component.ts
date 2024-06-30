@@ -33,7 +33,8 @@ export class ListFuncionarioComponent implements OnInit {
     public usuarioService: UsuarioControllerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private router: Router,
   ){
   }
 
@@ -62,22 +63,33 @@ export class ListFuncionarioComponent implements OnInit {
     this.usuarioListaDataSource.data = $event;
   }
 
-  remover(usuarioDto: UsuarioDto) {
-    // console.log("Removido", usuarioDto.id);
-    this.usuarioService.usuarioControllerRemover({ id: usuarioDto.id || 0})
-      .subscribe(
-        retorno => {
-          this.buscarDados();
-          this.mensagens.showMensagemSimples("Excluído com sucesso!");
-          // console.log("Exclusão:", retorno);
-        },error => {
-          this.mensagens.confirmarErro("Excluir", error.message)
+    remover(usuarioDto: UsuarioDto) {
+        const currentUser = this.securityService.credential.user;
+        const isPermissao = this.securityService.hasRoles(['ROLE_A', 'ROLE_D']);
+
+        if (!isPermissao && currentUser && usuarioDto.pessoaCpf !== currentUser.login) {
+            this.mensagens.confirmarErro("Excluir", "Você não pode excluir outro usuário.");
+            return;
         }
-      );
-  }
+
+        this.usuarioService.usuarioControllerRemover({ id: usuarioDto.id || 0 })
+            .subscribe(
+                retorno => {
+                    this.buscarDados();
+                    this.mensagens.showMensagemSimples("Excluído com sucesso!");
+                    if (currentUser && usuarioDto.pessoaCpf === currentUser.login) {
+                        this.securityService.invalidate();
+                        this.router.navigate(['/acesso']);
+                    }
+                },
+                error => {
+                    this.mensagens.confirmarErro("Excluir", error.message);
+                }
+            );
+    }
 
 
-  confirmarExcluir(usuarioDto: UsuarioDto) {
+    confirmarExcluir(usuarioDto: UsuarioDto) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'Confirmar?',
