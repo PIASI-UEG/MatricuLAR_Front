@@ -159,17 +159,24 @@ export class FormFuncionarioComponent implements OnInit {
     }
   }
 
-  confirmarAcao(usuarioDto: UsuarioDto, acao: string) {
-    const dialogRef = this.dialog.open(ConfirmationDialog, {
-      data: {
-        titulo: 'Cadastro!',
-        mensagem: `Ação de ${acao} dados: ${usuarioDto.pessoaNome} realizada com sucesso!`,
-        textoBotoes: {
-          ok: 'Confirmar',
-        },
-      },
-    });
-  }
+    confirmarAcao(usuarioDto: UsuarioDto, acao: string) {
+        let titulo = 'Cadastro!';
+        if (acao === this.ACAO_INCLUIR) {
+            titulo = 'Cadastro realizado!';
+        } else if (acao === this.ACAO_EDITAR) {
+            titulo = 'Edição realizada!';
+        }
+
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: titulo,
+                mensagem: `Ação de ${acao} dados: ${usuarioDto.pessoaNome} realizada com sucesso!`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                },
+            },
+        });
+    }
 
   private realizarEdicao(){
     this.atribuirUsuarioForm();
