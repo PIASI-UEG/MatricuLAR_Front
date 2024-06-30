@@ -89,7 +89,7 @@ export class FormMinhaContaComponent {
       pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
       cargo: [null, Validators.required],
       email: [null, [Validators.required, this.validacoes.validarEmail]],
-      pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+      pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
         senhaAntiga: [null,[Validators.required]],
       senha: [null, [Validators.required,
         Validators.minLength(6),

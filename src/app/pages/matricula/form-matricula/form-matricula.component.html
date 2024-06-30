@@ -56,7 +56,8 @@
                             <mat-label>Nome da criança</mat-label>
                             <input matInput formControlName="nomeCrianca" placeholder="Digite o nome da criança" maxlength="200" mask="S*"  [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('nomeCrianca', 'required')">Campo Obrigatório</mat-error>
-                          <mat-error *ngIf="handleError('nomeCrianca', 'maxlength')">Limete 200 caracteres</mat-error>
+                            <mat-error *ngIf="handleError('nomeCrianca', 'campoEmBranco')">Campo em branco</mat-error>
+                          <mat-error *ngIf="handleError('nomeCrianca', 'maxlength')">Limite 200 caracteres</mat-error>
                         </mat-form-field>
 
                         <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
@@ -94,6 +95,7 @@
                                                placeholder="EX: alergia, medicamentos, alimentação" mask="S*" maxlength="50"  [patterns]="validacoes.customPatterns">
                                         <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('campoNaoPreenchido')"> Desmarque ou preencha para continuar</mat-error>
                                       <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError('maxlength')"> Limite 50 caracteres</mat-error>
+                                      <mat-error *ngIf="getNecessidadeEspecialControl(i)?.hasError( 'campoEmBranco')">Campo em branco</mat-error>
                                     </mat-form-field>
 
                                     <button mat-icon-button (click)="removerCampoNecessidade(i)">
@@ -121,6 +123,7 @@
                                 <input matInput formControlName="cidade" placeholder="Digite o nome da cidade" maxlength="250" mask="S*" [patterns]="validacoes.customPatterns">
                                 <mat-error *ngIf="handleError('cidade', 'required')">Campo Obrigatório</mat-error>
                               <mat-error *ngIf="handleError('cidade', 'maxlength')">Limite 250 caracteres</mat-error>
+                              <mat-error *ngIf="handleError('cidade', 'campoEmBranco')">Campo em branco</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -129,6 +132,7 @@
                             <input matInput formControlName="bairro" placeholder="Digite o nome do bairro" maxlength="250" mask="A*" [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('bairro', 'required')">Campo Obrigatório</mat-error>
                             <mat-error *ngIf="handleError('bairro', 'maxlength')">Limite 250 caracteres</mat-error>
+                          <mat-error *ngIf="handleError('bairro', 'campoEmBranco')">Campo em branco</mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
@@ -136,6 +140,7 @@
                             <input matInput formControlName="logradouro" placeholder="Digite o nome da rua" maxlength="250" mask="A*" [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('logradouro', 'required')">Campo Obrigatório</mat-error>
                           <mat-error *ngIf="handleError('logradouro', 'maxlength')">Limite 250 caracteres</mat-error>
+                          <mat-error *ngIf="handleError('logradouro', 'campoEmBranco')">Campo em branco</mat-error>
                         </mat-form-field>
 
                         <mat-form-field>
@@ -143,6 +148,7 @@
                             <input matInput formControlName="complemento" placeholder="N.º da rua, quadra, lote, apartamento...." maxlength="250" mask="A*" [patterns]="validacoes.customPatterns">
                             <mat-error *ngIf="handleError('complemento', 'required')">Campo Obrigatório</mat-error>
                           <mat-error *ngIf="handleError('complemento', 'maxlength')">Limite 250 caracteres</mat-error>
+                          <mat-error *ngIf="handleError('complemento', 'campoEmBranco')">Campo em branco</mat-error>
                         </mat-form-field>
                         <!-- Campos da primeira etapa -->
 
@@ -182,7 +188,8 @@
                                     <mat-label>Nome do Responsável</mat-label>
                                     <input matInput formControlName="nomeTutor" placeholder="Digite o nome do  responsável legal da criança" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
                                     <mat-error *ngIf="handleErrorTutor('nomeTutor', 'required', i)">Campo Obrigatório</mat-error>
-                                  <mat-error *ngIf="handleErrorTutor('nomeTutor', 'maxlength', i)">Limete 200 caracteres</mat-error>
+                                  <mat-error *ngIf="handleErrorTutor('nomeTutor', 'maxlength', i)">Limite 200 caracteres</mat-error>
+                                  <mat-error *ngIf="handleErrorTutor('nomeTutor', 'campoEmBranco', i)">Campo em branco</mat-error>
                                 </mat-form-field>
 
                                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
@@ -240,13 +247,15 @@
 
                                 <div fxLayout="center" class="linha-horizontal"></div>
                                 <h2> Dados da empresa </h2>
-                                <p> Caso nenhum dos Responsáveis Legais não tenham emprego a criança não poderá ser matricular na associação sagrada familia.</p>
+                                <p> Caso nenhum dos Responsáveis Legais tenha emprego, a criança não poderá ser matriculada na Associação Sagrada Família.</p>
+                                <p> Para pais que são autônomos, não é necessário informar o CNPJ da empresa, como no caso da profissão de diarista.</p>
 
                                 <mat-form-field>
                                     <mat-label>Nome da empresa</mat-label>
-                                    <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa" maxlength="100" mask="S*" [patterns]="validacoes.customPatterns">
+                                    <input matInput formControlName="empresaNome" placeholder="Digite o nome da empresa" maxlength="100">
                                     <mat-error *ngIf="handleErrorTutor('empresaNome', 'required', i)">Campo Obrigatório</mat-error>
                                   <mat-error *ngIf="handleErrorTutor('empresaNome', 'maxlength', i)">Limite 100 caracteres</mat-error>
+                                  <mat-error *ngIf="handleErrorTutor('empresaNome', 'campoEmBranco', i)">Campo em branco</mat-error>
                                 </mat-form-field>
 
                                 <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center">
@@ -256,6 +265,7 @@
                                         <mat-error *ngIf="handleErrorTutor('profissao', 'required', i)">Campo Obrigatório
                                       </mat-error>
                                       <mat-error *ngIf="handleErrorTutor('profissao', 'maxlength', i)">Limite 50 caracteres</mat-error>
+                                      <mat-error *ngIf="handleErrorTutor('profissao', 'campoEmBranco', i)">Campo em branco</mat-error>
                                     </mat-form-field>
 
                                     <mat-form-field>
@@ -347,6 +357,7 @@
                                 <input matInput formControlName="razaoSaida" placeholder="Informe detalhes" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
                                 <mat-error *ngIf="handleError('razaoSaida','informeRazaoSaida')">Informe a razão da saída</mat-error>
                               <mat-error *ngIf="handleError('razaoSaida', 'maxlength')">Limite 200 caracteres</mat-error>
+                              <mat-error *ngIf="handleError('razaoSaida', 'campoEmBranco')">Campo em branco</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -367,7 +378,7 @@
                                 <span class="simbolo-dinheiro">R$</span>
                                 <input matInput formControlName="valorAluguel" mask="separator.2" decimalSeparator="," placeholder="0,00" maxlength="10">
                             </div>
-                            <mat-error *ngIf="handleErrorForm('informeValorAluguel')">Informe o valor do Aluguel</mat-error>
+                            <mat-error *ngIf="handleError('valorAluguel', 'informeValorAluguel')">Informe o valor do aluguel</mat-error>
                           <mat-error *ngIf="handleError('valorAluguel', 'maxLength')">Valor máximo de R$ 999.999,00</mat-error>
                         </mat-form-field>
 
@@ -389,7 +400,7 @@
                                     <input matInput formControlName="valorBeneficio" mask="separator.2" decimalSeparator=","
                                            placeholder="0,00" maxlength="10">
                                 </div>
-                                <mat-error *ngIf="handleError('valorBeneficio','informeValorBeneficio')">Informe o valor do Benefício</mat-error>
+                                <mat-error *ngIf="handleError('valorBeneficio','informeValorBeneficio')">Informe o valor do benefício</mat-error>
                               <mat-error *ngIf="handleError('valorBeneficio', 'maxLength')">Valor máximo de R$ 999.999,00</mat-error>
                             </mat-form-field>
                         </div>
@@ -481,7 +492,7 @@
                             </mat-error>
                             <div fxLayout="center" class="linha-horizontal-docs"></div>
 
-                            <mat-label class="titulo-doc"><strong>CPF da criança:</strong> <br></mat-label>
+                            <mat-label class="titulo-doc"><strong>CPF da criança: documento opcional, desde que a criança já o possua registrado na certidão de nascimento.</strong> <br></mat-label>
                             <app-upload-arquivo class="espaco-docs"
                                                 [idBotaoInputImagem]="'cpfCriancaID'"
                                                 [idBotaoInputImagemPreview]="'cpfCriancaIDPreview'"
