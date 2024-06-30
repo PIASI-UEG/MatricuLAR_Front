@@ -9,6 +9,7 @@ import {TurmaControllerService} from "../../../api/services/turma-controller.ser
 import {DateAdapter} from "@angular/material/core";
 import {TurmaDto} from "../../../api/models/turma-dto";
 import {Validacoes} from "../../../../Validacoes";
+import {UsuarioDto} from "../../../api/models/usuario-dto";
 
 @Component({
   selector: 'app-form-turma',
@@ -122,17 +123,24 @@ export class FormTurmaComponent {
 
   }
 
-  confirmarAcao(turma: TurmaDto, nome: String) {
-    const dialogRef = this.dialog.open(ConfirmationDialog, {
-      data: {
-        titulo: 'Cadastro!!',
-        mensagem: `Nome turma: ${turma.titulo} (ID: ${turma.id}). Cadastro realizada com sucesso!`,
-        textoBotoes: {
-          ok: 'Confirmar',
-        },
-      },
-    });
-  }
+    confirmarAcao(turmaDTO: TurmaDto, nome: string) {
+        let titulo = 'Cadastro!';
+        if (nome === this.ACAO_INCLUIR) {
+            titulo = 'Cadastro realizado!';
+        } else if (nome === this.ACAO_EDITAR) {
+            titulo = 'Edição realizada!';
+        }
+
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: titulo,
+                mensagem: `Ação de ${nome} dados: ${turmaDTO.titulo} realizada com sucesso!`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                },
+            },
+        });
+    }
 
   limparFormulario() {
     this.formGroup.reset(); // limpa os campos do formulario.
