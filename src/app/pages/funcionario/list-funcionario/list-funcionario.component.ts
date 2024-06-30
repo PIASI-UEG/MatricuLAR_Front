@@ -65,7 +65,7 @@ export class ListFuncionarioComponent implements OnInit {
 
     remover(usuarioDto: UsuarioDto) {
         const currentUser = this.securityService.credential.user;
-        const isPermissao = this.securityService.hasRoles(['ROLE_A', 'ROLE_D']);
+        const isPermissao = this.securityService.hasRoles(['ROLE_A']);
 
         if (!isPermissao && currentUser && usuarioDto.pessoaCpf !== currentUser.login) {
             this.mensagens.confirmarErro("Excluir", "Você não pode excluir outro usuário.");
