@@ -181,6 +181,7 @@ export class FormMatriculaComponent implements OnInit {
       idadeInvalida: "A criança precisa ter entre 1 e 5 anos.",
       cepInvalido: "O CEP é inválido.",
       campoNaoPreenchido: "Desmarque a opção possui necessidades especiais ou preencha o campo para continuar.",
+      campoEmBranco: "Campo em branco"
     },{
       formName: this.NOME_GUIA_TAB_TUTOR,
       required: "Campo obrigatório.",
@@ -189,7 +190,8 @@ export class FormMatriculaComponent implements OnInit {
       cpfsIguais: "O CPF já foi utilizado.",
       telefoneInvalido: "O telefone informado é inválido.",
       cnpjInvalido: "O CNPJ da empresa informado é inválido.",
-      informeUmTelefoneEmpresarial: "Informe pelo menos um número de contato empresarial em responsável legal e(ou) cônjuge"
+      informeUmTelefoneEmpresarial: "Informe pelo menos um número de contato empresarial em responsável legal e(ou) cônjuge.",
+      campoEmBranco: "Campo em branco."
     },{
       formName: this.NOME_GUIA_TAB_PERGUNTAS,
       required: "Campo obrigatório.",
@@ -200,7 +202,8 @@ export class FormMatriculaComponent implements OnInit {
       informeValorBeneficioGoverno: "Marque uma opção em recebe benefício do governo.",
       informePossuiVeiculoProprio: "Marque uma opção em possui veículo próprio.",
       informePossuiCRAS: "Marque uma opção em possui encaminhamento do CRAS.",
-      maxlength: "Valor máximo de R$ 999.999,00"
+      maxlength: "Valor máximo de R$ 999.999,00.",
+      campoEmBranco: "Campo em branco."
     },{
       formName: this.NOME_GUIA_TAB_DOCUMENTOS,
       marqueLieConcordo: "Aceite os termos para finalizar.",
@@ -265,21 +268,21 @@ export class FormMatriculaComponent implements OnInit {
         //Dados da Criança
         this.formGroup = this.formBuilder.group({
             aceiteInformacoes: [false, Validators.required],
-            nomeCrianca: [null, [Validators.required, Validators.maxLength(200)]],
+            nomeCrianca: [null, [Validators.required, Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
             cpfCrianca: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
             dataNascimento: [null, [Validators.required, this.validacoes.validarIdadeCrianca]],
             possuiNecessidadeEspecial: [false],
             necessidadesEspeciais: this.formBuilder.array<NecessidadeEspecialDto>([]),
             cep: [null, [Validators.required, this.validacoes.validarCep, Validators.maxLength(8)]],
-            cidade: [null, [Validators.required, Validators.maxLength(250)]],
-            bairro: [null, [Validators.required, Validators.maxLength(250)]],
-            logradouro: [null, [Validators.required, Validators.maxLength(250)]],
-            complemento: [null, [Validators.required, Validators.maxLength(250)]],
+            cidade: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
+            bairro: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
+            logradouro: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
+            complemento: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
             //Dados Tutor - Etapa2
             tutor: this.formBuilder.array<TutorDto>([]),
             //Perguntas culturais - Etapa 3
             frequentouOutraCreche: [null],
-            razaoSaida: [null,[Validators.maxLength(200)]],
+            razaoSaida: [null,[Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
             tipoResidencia: [null, Validators.required],
             valorAluguel: [null, Validators.maxLength(8)],
             possuiBeneficiosDoGoverno: [null],
@@ -310,15 +313,15 @@ export class FormMatriculaComponent implements OnInit {
         if(conjugue != null)
         {
             return this.formBuilder.group({
-                nomeTutor: [conjugue.nomeTutor, [Validators.required, Validators.maxLength(200)]],
+                nomeTutor: [conjugue.nomeTutor, [Validators.required, Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
                 //colocar
                 dataNascimento: [conjugue.dataNascimento, Validators.required],
                 cpf: [conjugue.cpf, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
                 vinculo: [conjugue.vinculo, Validators.required],
                 pessoaTelefone: [conjugue.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
                 telefoneReserva: [conjugue.telefoneReserva, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
-                profissao: [conjugue.profissao, [Validators.required, Validators.maxLength(50)]],
-                empresaNome: [conjugue.empresaNome, [Validators.required, Validators.maxLength(100)]],
+                profissao: [conjugue.profissao, [Validators.required, Validators.maxLength(50), this.validacoes.validarCampoEmBranco]],
+                empresaNome: [conjugue.empresaNome, [Validators.required, Validators.maxLength(100), this.validacoes.validarCampoEmBranco]],
                 empresaCnpj: [conjugue.empresaCnpj, [this.validacoes.validarCnpj, Validators.maxLength(14)]],
                 telefoneCelularEmpresarial: [conjugue.telefoneCelularEmpresarial, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
                 //colocar
@@ -328,15 +331,15 @@ export class FormMatriculaComponent implements OnInit {
             }, {validator: this.validacoes.validarTelefonesEmpresariais})
         }else {
             return this.formBuilder.group({
-                nomeTutor: [null, [Validators.required, Validators.maxLength(200)]],
+                nomeTutor: [null, [Validators.required, Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
                 //colocar
                 dataNascimento: [null, Validators.required],
                 cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
                 vinculo: [null, Validators.required],
                 pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
                 telefoneReserva: [null, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
-                profissao: [null, [Validators.required, Validators.maxLength(50)]],
-                empresaNome: [null, [Validators.required, Validators.maxLength(100)]],
+                profissao: [null, [Validators.required, Validators.maxLength(50), this.validacoes.validarCampoEmBranco]],
+                empresaNome: [null, [Validators.required, Validators.maxLength(100), this.validacoes.validarCampoEmBranco]],
                 empresaCnpj: [null, [this.validacoes.validarCnpj, Validators.maxLength(14)]],
                 telefoneCelularEmpresarial: [null, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
                 //colocar
@@ -1029,13 +1032,13 @@ export class FormMatriculaComponent implements OnInit {
 
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
-      titulo: [null, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50)]]
+      titulo: [null, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50), this.validacoes.validarCampoEmBranco]]
     });
   }
 
   adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
     return this.formBuilder.group({
-      titulo: [necessidade.titulo, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50)]]
+      titulo: [necessidade.titulo, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50), this.validacoes.validarCampoEmBranco]]
     });
   }
 

@@ -8,8 +8,10 @@
     <h2>{{acao}}  Turma</h2>
     <mat-form-field>
       <mat-label>Nome da turma</mat-label>
-      <input matInput formControlName="titulo" placeholder="Digite o nome da turma">
+      <input matInput formControlName="titulo" placeholder="Digite o nome da turma" maxlength="100" mask="S*"  [patterns]="validacoes.customPatterns">
       <mat-error *ngIf="handleError('titulo', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('titulo', 'campoEmBranco')">Campo em branco</mat-error>
+      <mat-error *ngIf="handleError('titulo', 'maxlength')">Limite 100 caracteres</mat-error>
     </mat-form-field>
 
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
@@ -25,8 +27,9 @@
 
     <mat-form-field>
       <mat-label>Ano</mat-label>
-      <input matInput formControlName="ano" placeholder="Digite o ano">
+      <input matInput formControlName="ano" placeholder="Digite o ano" maxlength="4" pattern="[0-9]{4}">
       <mat-error *ngIf="handleError('ano', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('ano', 'pattern')">Ano possui 4 números (2024)</mat-error>
     </mat-form-field>
     </div>
 
@@ -35,19 +38,25 @@
       <mat-label>Horário de início da aula</mat-label>
       <input matInput formControlName="horaInicio" mask="00:00" placeholder="00:00">
       <mat-error *ngIf="handleError('horaInicio', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('horaInicio', 'maxlength')">Limite 4 números</mat-error>
+      <mat-error *ngIf="handleError('horaInicio', 'minlength')">Digite 4 números (00:00)</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Horário de fim da aula</mat-label>
       <input matInput formControlName="horaFim" mask="00:00" placeholder="00:00">
       <mat-error *ngIf="handleError('horaFim', 'required')">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="handleError('horaFim', 'maxlength')">Limite 4 números</mat-error>
+      <mat-error *ngIf="handleError('horaFim', 'minlength')">Digite 4 números (00:00)</mat-error>
     </mat-form-field>
     </div>
     <mat-form-field>
       <mat-label>Nome da professora</mat-label>
-      <input matInput formControlName="nomeProfessor" placeholder="Digite o nome do professor(a)" pattern="[a-zA-Z\s]*">
+      <input matInput formControlName="nomeProfessor" placeholder="Digite o nome do professor(a)" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
       <mat-error *ngIf="handleError('nomeProfessor', 'required')">Campo Obrigatório</mat-error>
         <mat-error *ngIf="handleError('nomeProfessor', 'pattern')">Digite apenas letras</mat-error>
+      <mat-error *ngIf="handleError('nomeProfessor', 'campoEmBranco')">Campo em branco</mat-error>
+      <mat-error *ngIf="handleError('nomeProfessor', 'maxlength')">Limite 200 caracteres</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -55,12 +64,19 @@
       <input matInput mask="(00) 0 0000-0000" formControlName="telefoneProfessor" placeholder="(00) 0 0000-0000">
       <mat-error *ngIf="handleError('telefoneProfessor', 'required')">Campo Obrigatório</mat-error>
       <mat-error *ngIf="handleError('telefoneProfessor', 'telefoneInvalido')">Telefone Inválido</mat-error>
+      <mat-error *ngIf="handleError('telefoneProfessor', 'maxlength')">Limite 11 números</mat-error>
     </mat-form-field>
 
-    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" >
+    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="!this.verificarAlinhar()">
       <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
       <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
       <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+    </div>
+
+    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+      <button mat-raised-button color="primary" type="submit" class="button  botao-cadastro">Confirmar</button>
+      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
     </div>
   </form>
 </div>

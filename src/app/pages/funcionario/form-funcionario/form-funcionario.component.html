@@ -9,9 +9,11 @@
     <h2>{{acao}}  Funcionário</h2>
     <mat-form-field>
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário" pattern="[a-zA-Z\s]*">
+      <input matInput formControlName="pessoaNome" placeholder="Digite o nome do funcionário" maxlength="200" mask="S*" [patterns]="validacoes.customPatterns">
       <mat-error *ngIf="handleError('pessoaNome', 'required')">Campo Obrigatório</mat-error>
-        <mat-error *ngIf="handleError('pessoaNome', 'pattern')">Digite apenas letras</mat-error>
+      <mat-error *ngIf="handleError('pessoaNome', 'pattern')">Digite apenas letras</mat-error>
+      <mat-error *ngIf="handleError('pessoaNome', 'campoEmBranco')">Campo em branco</mat-error>
+      <mat-error *ngIf="handleError('pessoaNome', 'maxlength')">Limite 200 caracteres</mat-error>
     </mat-form-field>
 
       <mat-form-field>
@@ -19,13 +21,15 @@
         <input matInput formControlName="pessoaCpf" mask="000.000.000-00" placeholder="000.000.000-00">
         <mat-error *ngIf="handleError('pessoaCpf', 'required')">Campo Obrigatório</mat-error>
         <mat-error *ngIf="handleError('pessoaCpf', 'cpfInvalido')">CPF Inválido</mat-error>
+        <mat-error *ngIf="handleError('pessoaCpf', 'maxlength')">Limite de 11 números</mat-error>
       </mat-form-field>
 
     <mat-form-field>
       <mat-label>E-mail</mat-label>
-      <input matInput formControlName="email" placeholder="exemplo@exemplo.com">
+      <input matInput formControlName="email" placeholder="exemplo@exemplo.com" maxlength="100" type="email">
       <mat-error *ngIf="handleError('email', 'required')">Campo Obrigatório</mat-error>
       <mat-error *ngIf="handleError('email', 'emailInvalido')">E-mail Inválido</mat-error>
+      <mat-error *ngIf="handleError('email', 'maxlength')">Limite de 100 caracteres</mat-error>
     </mat-form-field>
 
     <div [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-evenly center" >
@@ -44,6 +48,7 @@
       <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone" placeholder="(00) 0 0000-0000">
       <mat-error *ngIf="handleError('pessoaTelefone', 'required')">Campo Obrigatório</mat-error>
       <mat-error *ngIf="handleError('pessoaTelefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
+      <mat-error *ngIf="handleError('pessoaTelefone', 'maxlength')">Limite de 11 caracteres</mat-error>
     </mat-form-field>
     </div>
 
@@ -73,10 +78,16 @@
 
     </div>
 
-    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}">
+    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" [ngStyle]="!verificarAlinhar() ? getErrorClass('senha') : {}" *ngIf="!this.verificarAlinhar()">
       <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
       <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
       <button mat-raised-button color="primary" type="submit" class="button botao-cadastro">Confirmar</button>
+    </div>
+
+    <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center" *ngIf="this.verificarAlinhar()">
+      <button mat-raised-button color="primary" type="submit" class="button botao-cadastro">Confirmar</button>
+      <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()" class="button botao-cancelar">Cancelar</button>
+      <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
     </div>
   </form>
 </div>

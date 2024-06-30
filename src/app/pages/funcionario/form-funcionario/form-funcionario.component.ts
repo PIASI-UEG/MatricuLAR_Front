@@ -79,22 +79,22 @@ export class FormFuncionarioComponent implements OnInit {
     if(this.acao == "Editar"){
       this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
-          pessoaNome: [retorno.pessoaNome, Validators.required],
-          pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf]],
+          pessoaNome: [retorno.pessoaNome, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
+          pessoaCpf: [retorno.pessoaCpf, [Validators.required, this.validacoes.validarCpf, Validators.maxLength(11)]],
           cargo: [retorno.cargo, Validators.required],
-          email: [retorno.email, [Validators.required, this.validacoes.validarEmail]],
-          pessoaTelefone: [retorno.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone]],
+          email: [retorno.email, [Validators.required, this.validacoes.validarEmail, Validators.maxLength(100)]],
+          pessoaTelefone: [retorno.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
           idUsuarioRequisicao: [this.securityService.getUserId()]
         }));
     }
     else {
     }
       this.formGroup = this.formBuilder.group({
-          pessoaNome: [null, Validators.required],
-          pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf]],
+          pessoaNome: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
+          pessoaCpf: [null, [Validators.required, this.validacoes.validarCpf, Validators.maxLength(11)]],
           cargo: [null, Validators.required],
-          email: [null, [Validators.required, this.validacoes.validarEmail]],
-          pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone]],
+          email: [null, [Validators.required, this.validacoes.validarEmail, Validators.maxLength(100)]],
+          pessoaTelefone: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
           senha: [null, [Validators.required,
             Validators.minLength(6),
             this.validacoes.validarCaracterEspecial,

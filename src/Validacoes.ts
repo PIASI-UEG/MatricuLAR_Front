@@ -15,6 +15,7 @@ export class Validacoes {
       'A': { pattern: new RegExp('[a-zA-Z0-9À-ÖØ-öø-ÿ ]') },
       'N': { pattern: new RegExp('[0-9]') }
   };
+
   validarIdadeCrianca(control: AbstractControl): { [key: string]: any } | null {
     const dataNascimento: Date = control.value;
 
@@ -138,7 +139,7 @@ export class Validacoes {
 
   validarCaracterEspecial(control: AbstractControl): { [key: string]: any } | null {
     const senha: string = control.value;
-    const temCaracterEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
+    const temCaracterEspecial = /[!@#$%^&*(),.?":{}|<>\s]/.test(senha);
 
     if (senha == '' || temCaracterEspecial || senha == null) {
       return null;
@@ -190,11 +191,24 @@ export class Validacoes {
 
   // form de pereguntas validacao de razao saida
   validarRazaoSaida(formGroup: FormGroup) {
-    if (formGroup.get('frequentouOutraCreche')?.value === "sim" && !formGroup.get('razaoSaida')?.value) {
-      formGroup.get('razaoSaida')?.setErrors({'informeRazaoSaida': true});
-    } else {
-      formGroup.get('razaoSaida')?.setErrors(null);
+    const frequentouOutraCreche = formGroup.get('frequentouOutraCreche')?.value;
+    const razaoSaidaControl = formGroup.get('razaoSaida');
+
+    if (razaoSaidaControl) {
+      if (frequentouOutraCreche === 'sim' && (!razaoSaidaControl.value || razaoSaidaControl.value.trim() === '')) {
+        if (!razaoSaidaControl.errors || Object.keys(razaoSaidaControl.errors).length === 0) {
+          razaoSaidaControl.setErrors({ 'informeRazaoSaida': true });
+        }
+      } else {
+        if (razaoSaidaControl.hasError('informeRazaoSaida')) {
+          const errors = { ...razaoSaidaControl.errors };
+          delete errors['informeRazaoSaida'];
+          razaoSaidaControl.setErrors(Object.keys(errors).length ? errors : null);
+        }
+      }
     }
+
+    return null;
   }
 
   // form de perguntas validacao de preco aluguel
@@ -674,4 +688,16 @@ export class Validacoes {
 
     return null;
   };
+
+  validarCampoEmBranco (control: AbstractControl): { [key: string]: any } | null {
+    const valor: string = control.value;
+
+    const isWhitespace = /^\s*$/.test(valor);
+
+    if (!isWhitespace || valor == '' || valor == null) {
+      return null;
+    }
+
+    return { 'campoEmBranco': true };
+  }
 }

@@ -40,6 +40,7 @@
         <input matInput mask="(00) 0 0000-0000" formControlName="pessoaTelefone" placeholder="(00) 0 0000-0000">
         <mat-error *ngIf="handleError('pessoaTelefone', 'required')">Campo Obrigatório</mat-error>
         <mat-error *ngIf="handleError('pessoaTelefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
+        <mat-error *ngIf="handleError('pessoaTelefone', 'maxlength')">Limite de 11 números</mat-error>
       </mat-form-field>
 
     <mat-checkbox formControlName="alterarSenha" color="primary">

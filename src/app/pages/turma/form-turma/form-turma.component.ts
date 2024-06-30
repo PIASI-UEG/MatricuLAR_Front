@@ -68,24 +68,24 @@ export class FormTurmaComponent {
     if(this.acao == "Editar"){
       this.turmaservice.turmaControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
-          titulo: [retorno.titulo, Validators.required],
+          titulo: [retorno.titulo, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(100)]],
           turno: [retorno.turno, Validators.required],
-          ano: [retorno.ano, Validators.required],
-          horaInicio: [retorno.horaInicio, Validators.required],
-          horaFim: [retorno.horaFim, Validators.required],
-          nomeProfessor: [retorno.nomeProfessor, Validators.required],
-          telefoneProfessor: [retorno.telefoneProfessor, [Validators.required, this.validacoes.validarTelefone]]
+          ano: [retorno.ano, [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+          horaInicio: [retorno.horaInicio, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
+          horaFim: [retorno.horaFim, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
+          nomeProfessor: [retorno.nomeProfessor, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
+          telefoneProfessor: [retorno.telefoneProfessor, [Validators.required, this.validacoes.validarTelefone , Validators.maxLength(11)]]
         }));
     }
     else{
       this.formGroup = this.formBuilder.group({
-        titulo: [null, Validators.required],
+        titulo: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(100)]],
         turno: [null, Validators.required],
-        ano: [null, Validators.required],
-        horaInicio: [null, Validators.required],
-        horaFim: [null, Validators.required],
-        nomeProfessor: [null, Validators.required],
-        telefoneProfessor: [null, [Validators.required, this.validacoes.validarTelefone]]
+        ano: [null, [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+        horaInicio: [null, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
+        horaFim: [null, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
+        nomeProfessor: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
+        telefoneProfessor: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]]
       })
     }
 
@@ -173,6 +173,13 @@ export class FormTurmaComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.innerWidth = window.innerWidth;
+  }
+
+  verificarAlinhar() {
+    if (this.flexDivAlinhar == "column") {
+      return true;
+    }
+    return false;
   }
 
 }
