@@ -57,6 +57,7 @@ export class FormFuncionarioComponent implements OnInit {
     this.createForm();
     this._adapter.setLocale('pt-br');
     this.prepararEdicao();
+    this.cdr.detectChanges();
   }
 
   validarSenhas() {
@@ -152,6 +153,7 @@ export class FormFuncionarioComponent implements OnInit {
           this.acao = this.ACAO_EDITAR;
           this.codigo = retorno.id || -1;
           this.formGroup.patchValue(retorno);
+            this.cdr.detectChanges();
         },error => {
           this.mensagens.confirmarErro(this.ACAO_EDITAR, error.message)
         }
@@ -179,6 +181,7 @@ export class FormFuncionarioComponent implements OnInit {
     }
 
   private realizarEdicao(){
+
     this.atribuirUsuarioForm();
     console.log("Dados:", this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;

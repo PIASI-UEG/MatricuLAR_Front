@@ -1,2 +1,5 @@
 @import '../../../../StyleForms.css';
 
+.form-submitted .mat-form-field-invalid {
+  border-color: red;
+}
