@@ -131,6 +131,10 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 this.dialog.open(InfoMatriculaDialogComponent, {
                     data: { id: this.matriculaId }
                 });
+            }else{
+                this.dialog.open(InfoMatriculaDialogComponent,{
+                    data: {id: this.matriculaId}
+                });
             }
         });
     }
@@ -145,6 +149,10 @@ export class InfoMatriculaDialogComponent implements OnInit {
             if (result) {
                 this.dialog.open(InfoMatriculaDialogComponent, {
                     data: { id: this.matriculaId }
+                });
+            }else{
+                this.dialog.open(InfoMatriculaDialogComponent,{
+                    data: {id: this.matriculaId}
                 });
             }
         });

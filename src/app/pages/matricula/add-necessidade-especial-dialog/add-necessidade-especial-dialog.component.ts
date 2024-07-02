@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SecurityService } from "../../../arquitetura/security/security.service";
 import { ConfirmationDialog } from "../../../core/confirmation-dialog/confirmation-dialog.component";
+import {InfoMatriculaDialogComponent} from "../info-matricula-dialog/info-matricula-dialog.component";
 
 @Component({
     selector: 'app-add-necessidade-especial-dialog',
