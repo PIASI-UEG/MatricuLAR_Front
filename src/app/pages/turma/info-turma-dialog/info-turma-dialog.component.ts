@@ -103,6 +103,7 @@ export class InfoTurmaDialogComponent {
                     }).subscribe(
                         (data) => {
                             this.alunosDataSource.data = this.alunosDataSource.data.filter(a => a.nroMatricula !== alunoId);
+                            this.snackBar.open('Aluno removido com sucesso', 'Fechar', { duration: 3000 });
                         },
                         (error) => {
                             this.snackBar.open('Erro ao remover aluno', 'Fechar', { duration: 3000 });
