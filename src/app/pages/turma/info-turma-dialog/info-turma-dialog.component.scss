@@ -17,3 +17,11 @@ mat-card {
 mat-card.mat-card-expanded {
   width: 500px; /* Ajuste o valor de acordo com a sua necessidade */
 }
+
+.mat-coluna-nroMatriclula, .mat-coluna-acoes{
+  width: 20%;
+}
+
+.mat-coluna-nomeAluno{
+  width:60%;
+}

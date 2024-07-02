@@ -8,6 +8,11 @@ import {TurmaControllerService} from "../../../api/services/turma-controller.ser
 import {MatriculaControllerService} from "../../../api/services/matricula-controller.service";
 import {MatriculaListagemDto} from "../../../api/models/matricula-listagem-dto";
 import {MatTableDataSource} from "@angular/material/table";
+import {UsuarioDto} from "../../../api/models/usuario-dto";
+import {
+    ConfirmationDialog,
+    ConfirmationDialogResult
+} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-info-turma-dialog',
@@ -77,20 +82,37 @@ export class InfoTurmaDialogComponent {
 
     removerAluno(aluno: MatriculaListagemDto): void {
         const alunoId = aluno.nroMatricula;
-        this.turmaService.turmaControllerRemoveAlunosTurma({
-            idTurma: this.turmaID,
-            body: []
-        }).subscribe(
-            (data) => {
-                this.alunosDataSource.data = this.alunosDataSource.data.filter(a => a.nroMatricula !== alunoId);
-                this.snackBar.open('Aluno removido com sucesso', 'Fechar', { duration: 3000 });
-            },
-            (error) => {
-                this.snackBar.open('Erro ao remover aluno', 'Fechar', { duration: 3000 });
-                console.error('Erro ao remover aluno:', error);
-            }
-        );
+        if (alunoId !== undefined) {
+            const dialogRef = this.dialog.open(ConfirmationDialog, {
+                data: {
+                    titulo: 'Confirmar?',
+                    mensagem: `Deseja excluir o aluno: ${aluno.nomeAluno} da turma?`,
+                    textoBotoes: {
+                        ok: 'Confirmar',
+                        cancel: 'Cancelar',
+                    },
+                    dado: aluno
+                },
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this.turmaService.turmaControllerRemoveAlunosTurma({
+                        idTurma: this.turmaID,
+                        body: [alunoId]
+                    }).subscribe(
+                        (data) => {
+                            this.alunosDataSource.data = this.alunosDataSource.data.filter(a => a.nroMatricula !== alunoId);
+                        },
+                        (error) => {
+                            this.snackBar.open('Erro ao remover aluno', 'Fechar', { duration: 3000 });
+                        }
+                    );
+                }
+            });
+        }
     }
+
 
 
 

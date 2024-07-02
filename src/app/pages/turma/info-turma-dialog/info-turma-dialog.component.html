@@ -19,15 +19,15 @@
 
         <mat-card-content>
           <mat-table [dataSource]="alunosDataSource">
-            <ng-container matColumnDef="nroMatricula">
+            <ng-container matColumnDef="nroMatricula" class="mat-coluna-nroMatriclula">
               <mat-header-cell *matHeaderCellDef> Matrícula </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.nroMatricula}} </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="nomeAluno">
+            <ng-container matColumnDef="nomeAluno" class="mat-coluna-nomeAluno">
               <mat-header-cell *matHeaderCellDef> Criança </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.nomeAluno}} </mat-cell>
             </ng-container>
-              <ng-container matColumnDef="acoes">
+              <ng-container matColumnDef="acoes" class="mat-coluna-acoes">
                   <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                       <button mat-icon-button color="warn" (click)="removerAluno(row)">
