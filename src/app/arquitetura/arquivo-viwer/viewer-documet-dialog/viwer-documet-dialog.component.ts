@@ -101,7 +101,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
             this.fileSRC = this.makeURLFile(file);
 
           }, error => {
-            this.mensagens.confirmarErro("Obter o documento", error);
+            this.mensagens.confirmarErro("Obter o documento", error.message);
           });
       }
 
@@ -155,7 +155,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
           this.closeDialog();
           this.confirmarAcao(response, "Salvar documento");
         }, error => {
-          this.mensagens.confirmarErro("Salvar documento", error);
+          this.mensagens.confirmarErro("Salvar documento", error.message);
         });
       }
     }else {
@@ -170,7 +170,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
         this.closeDialog();
         this.confirmarAcao(response, "Salvar documento");
       }, error => {
-        this.mensagens.confirmarErro("Salvar documento", error);
+        this.mensagens.confirmarErro("Salvar documento", error.message);
       });
 
       }

@@ -493,7 +493,7 @@ export class FormMatriculaComponent implements OnInit {
                 }
                 this.confirmarAcao(retorno, this.tipoDeFormulario);
             }, error => {
-                this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+                this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
             });
     }
 
@@ -530,8 +530,8 @@ export class FormMatriculaComponent implements OnInit {
       }
       this.confirmarAcao(retorno, this.FORM_EDITAR);
     }, error => {
-      this.mensagens.confirmarErro(this.tipoDeFormulario, error);
-      console.log("erro", error)
+      this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+      console.log("erro", error.message)
       this.mudouForm = false
     });
 
@@ -705,7 +705,7 @@ export class FormMatriculaComponent implements OnInit {
                 },
                 error => {
                     this.mensagens.confirmarErro(this.FORM_EDITAR, error.message);
-                    console.log("erro", error);
+                    console.log("erro", error.message);
                 }
             );
         }
@@ -1521,7 +1521,7 @@ export class FormMatriculaComponent implements OnInit {
       }
       )
     }, error => {
-      this.mensagens.confirmarErro(this.tipoDeFormulario, error);
+      this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
     });
 
   }

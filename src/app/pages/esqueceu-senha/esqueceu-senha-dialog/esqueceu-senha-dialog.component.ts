@@ -82,7 +82,7 @@ export class EsqueceuSenhaDialogComponent implements OnInit {
             this.mostrarMensagem('A senha foi enviada para o seu e-mail.', 'success', 5000);
             this.router.navigate(["/acesso/login"]);
         }, error => {
-            this.mostrarMensagem('CPF ou E-mail não cadastrado no sistema. Por favor, verifique o CPF e E-mail e informe novamente', 'error');
+            this.mostrarMensagem('CPF ou E-mail não cadastrado no sistema. Por favor, verifique o CPF e E-mail e informe novamente', error.message);
         });
     }
 

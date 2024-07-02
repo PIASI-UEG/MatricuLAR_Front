@@ -107,7 +107,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 reader.readAsDataURL(response);
             },
             (error) => {
-                console.error('Erro ao obter o caminho da imagem:', error);
+                console.error('Erro ao obter o caminho da imagem:', error.message);
             }
         );
     }

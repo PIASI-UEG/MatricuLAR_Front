@@ -64,7 +64,7 @@ export class AddAdvertenciaDialogComponent {
         this.confirmarAcao(retorno);
         this.router.navigate(["/matricula"]);
       }, erro =>{
-        console.log("Erro:"+erro);
+        console.log("Erro:"+erro.message);
         //this.mensagens.confirmarErro(erro.message)
       })
   }

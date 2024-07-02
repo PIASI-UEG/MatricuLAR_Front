@@ -100,7 +100,7 @@ export class AddNecessidadeEspecialDialogComponent {
                     console.log("Retorno:", retorno);
                     this.confirmarAcao(retorno);
                 }, erro => {
-                    console.log("Erro:", erro);
+                    console.log("Erro:", erro.message);
                 });
         });
 
