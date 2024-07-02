@@ -27,6 +27,14 @@
               <mat-header-cell *matHeaderCellDef> Criança </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.nomeAluno}} </mat-cell>
             </ng-container>
+              <ng-container matColumnDef="acoes">
+                  <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                      <button mat-icon-button color="warn" (click)="removerAluno(row)">
+                          <mat-icon>remove_circle</mat-icon>
+                      </button>
+                  </mat-cell>
+              </ng-container>
             <mat-header-row *matHeaderRowDef="colunas"></mat-header-row>
             <mat-row *matRowDef="let row; columns: colunas;"></mat-row>
           </mat-table>

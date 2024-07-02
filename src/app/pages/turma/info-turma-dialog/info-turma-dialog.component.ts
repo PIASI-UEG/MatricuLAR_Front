@@ -19,7 +19,7 @@ export class InfoTurmaDialogComponent {
   turmaID: number;
   alunosNaTurma: Array<MatriculaListagemDto> | undefined = [];
   alunosDataSource : MatTableDataSource<MatriculaListagemDto> = new MatTableDataSource<MatriculaListagemDto>([]);
-  colunas: string[] = ['nroMatricula','nomeAluno'];
+  colunas: string[] = ['nroMatricula','nomeAluno', 'acoes'];
 
   constructor(
     public turmaService: TurmaControllerService,
@@ -56,6 +56,7 @@ export class InfoTurmaDialogComponent {
     this.dialogRef.close();
   }
 
+
   onSubmit() {
     // Lógica de envio do formulário, se necessário
   }
@@ -73,6 +74,24 @@ export class InfoTurmaDialogComponent {
       return horaString;
     }
   }
+
+    removerAluno(aluno: MatriculaListagemDto): void {
+        const alunoId = aluno.nroMatricula;
+        this.turmaService.turmaControllerRemoveAlunosTurma({
+            idTurma: this.turmaID,
+            body: []
+        }).subscribe(
+            (data) => {
+                this.alunosDataSource.data = this.alunosDataSource.data.filter(a => a.nroMatricula !== alunoId);
+                this.snackBar.open('Aluno removido com sucesso', 'Fechar', { duration: 3000 });
+            },
+            (error) => {
+                this.snackBar.open('Erro ao remover aluno', 'Fechar', { duration: 3000 });
+                console.error('Erro ao remover aluno:', error);
+            }
+        );
+    }
+
 
 
 }
