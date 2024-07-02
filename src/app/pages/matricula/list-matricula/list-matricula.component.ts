@@ -194,34 +194,20 @@ export class ListMatriculaComponent implements OnInit{
         )
     }
 
-    // openDialogAdvertencia(matriculaDto: MatriculaDto) {
-    //     console.log(matriculaDto);
-    //     const dialogRef = this.dialog.open(AddAdvertenciaDialogComponent,
-    //         {
-    //             data:
-    //                 {
-    //                     id: matriculaDto.id
-    //                 }
-    //         })
-    //     dialogRef.afterClosed().subscribe(() => {
-    //             this.buscarDados()
-    //         }
-    //     )
-    // }
-    public gerarPdfDados(id: number){
-        this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data=>{
-            this.matricula = data;
-            console.log(data);
-            const caminhoTermo = this.matricula.id+"_Dados-Matricula.pdf";
-            this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
-                .subscribe(response =>{
-                    let blob:Blob = response
-                    let downloadLink = document.createElement('a');
-                    downloadLink.href = window.URL.createObjectURL(blob);
-                    downloadLink.download = caminhoTermo;
-                    downloadLink.click()
-                });
-        })
+
+    public gerarPdfDados(id: number): void {
+        this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data => {
+            const caminhoTermo = `${id}_Dados-Matricula.pdf`;
+            this.matriculaService.matriculaControllerGetTermo({caminhodoc: caminhoTermo}).subscribe(response => {
+                let blob: Blob = response as Blob;
+                let downloadLink = document.createElement('a');
+                downloadLink.href = window.URL.createObjectURL(blob);
+                downloadLink.download = caminhoTermo;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            });
+        });
     }
 
     private tipoListagem() {
