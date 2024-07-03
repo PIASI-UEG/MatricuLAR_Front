@@ -173,47 +173,90 @@ export class InfoMatriculaDialogComponent implements OnInit {
     }
 
     deleteNecessidade(necessidade: NecessidadeEspecialDto): void {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Confirmar?',
+                mensagem: `Deseja excluir a necessidade especial: ${necessidade.titulo}?`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                    cancel: 'Cancelar',
+                },
+                dado: necessidade
+            },
+        });
 
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (this.matriculaVisualiza && necessidade.id !== undefined) {
+                    this.necessidadeEspecialService.necessidadeEspecialControllerRemover({ id: necessidade.id }).subscribe(
+                        () => {
+
+                            if (this.matriculaVisualiza && this.matriculaVisualiza.necessidades) {
+                                this.matriculaVisualiza.necessidades = this.matriculaVisualiza.necessidades.filter(nec => nec.id !== necessidade.id);
+                                this.matriculaDataSource.data = [this.matriculaVisualiza];
+                            } else {
+
+                                console.error('MatriculaVisualiza or its necessities are undefined.');
+                            }
+                            this.snackBar.open('Necessidade especial removida com sucesso', 'Fechar', { duration: 3000 });
+                        },
+                        (error) => {
+                            this.snackBar.open('Erro ao remover necessidade especial', 'Fechar', { duration: 3000 });
+                        }
+                    );
+                } else {
+                    this.snackBar.open('Erro ao remover necessidade especial. ID inválido.', 'Fechar', { duration: 3000 });
+                }
+            }
+        });
     }
 
-    editAdvertencia(advertencia: AdvertenciaDto): void {
+
+    editAdvertencia(advertencia: MatriculaVisualizarDto): void {
 
     }
 
     deleteAdvertencia(advertencia: AdvertenciaDto): void {
-        const advertenciaId = advertencia.numero;
-
-        if (advertenciaId !== undefined) {
-            const dialogRef = this.dialog.open(ConfirmationDialog, {
-                data: {
-                    titulo: 'Confirmar?',
-                    mensagem: `Deseja excluir a advertência: ${advertencia.titulo}?`,
-                    textoBotoes: {
-                        ok: 'Confirmar',
-                        cancel: 'Cancelar',
-                    },
-                    dado: advertencia
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Confirmar?',
+                mensagem: `Deseja excluir a advertência: ${advertencia.titulo}?`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                    cancel: 'Cancelar',
                 },
-            });
+                dado: advertencia
+            },
+        });
 
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    const pkAdvertencia: PkAdvertencia = { numero: advertenciaId };
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (this.matriculaVisualiza && advertencia.idMatricula !== undefined && advertencia.numero !== undefined) {
+                    const advertenciasAtuais = this.matriculaVisualiza.advertencias || [];
+                    const advertenciasFiltradas = advertenciasAtuais.filter(ad => ad.numero !== advertencia.numero);
 
-                    this.advertenciaService.advertenciaControllerRemover({ id: pkAdvertencia }).subscribe(
-                        (data) => {
-                            // Atualize sua fonte de dados após remover a advertência
-                            // Exemplo:
-                            // this.atualizarFonteDeDados();
+                    // Atualiza a lista de advertências apenas se houver alterações
+                    if (advertenciasFiltradas.length !== advertenciasAtuais.length) {
+                        this.matriculaVisualiza.advertencias = advertenciasFiltradas;
+                        this.matriculaDataSource.data = [this.matriculaVisualiza]; // Se matriculaVisualiza for um único objeto
+                    }
+
+                    this.advertenciaService.advertenciaControllerRemoverAdvertencia({
+                        'id-matricula': advertencia.idMatricula,
+                        'numero-advertencia': advertencia.numero
+                    }).subscribe(
+                        () => {
                             this.snackBar.open('Advertência removida com sucesso', 'Fechar', { duration: 3000 });
                         },
                         (error) => {
                             this.snackBar.open('Erro ao remover advertência', 'Fechar', { duration: 3000 });
                         }
                     );
+                } else {
+                    this.snackBar.open('Erro ao remover advertência. ID ou número inválidos.', 'Fechar', { duration: 3000 });
                 }
-            });
-        }
+            }
+        });
     }
 
 
