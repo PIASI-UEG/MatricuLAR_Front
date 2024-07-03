@@ -32,7 +32,6 @@ export class AddPessoaAutorizadaComponent implements OnInit {
         this.formGroup = this.formBuilder.group({
             nomeResponsavel: [null, Validators.required],
             vinculo: [null, Validators.required],
-            cpfResponsavel: [null]  // Add cpfResponsavel as an optional field
         });
         this.buscarDados();
     }
