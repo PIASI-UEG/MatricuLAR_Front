@@ -98,7 +98,7 @@ export class AddNecessidadeEspecialDialogComponent {
         necessidadesEspeciais.forEach(necessidadeEspecialDto => {
             this.necessidadeService.necessidadeEspecialControllerIncluir({ body: necessidadeEspecialDto })
                 .subscribe(retorno => {
-                    console.log("Retorno:", retorno);
+                    // console.log("Retorno:", retorno);
                     this.confirmarAcao(retorno);
                 }, erro => {
                     console.log("Erro:", erro.message);

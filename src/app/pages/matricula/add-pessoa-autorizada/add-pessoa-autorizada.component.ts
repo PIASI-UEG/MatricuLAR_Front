@@ -6,6 +6,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { ResponsavelControllerService } from "../../../api/services/responsavel-controller.service";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
 import { ResponsavelDto } from '../../../api/models/responsavel-dto';
+import {Validacoes} from "../../../../Validacoes";
 
 @Component({
     selector: 'app-add-pessoa-autorizada',
@@ -16,7 +17,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
     formGroup!: FormGroup;
     alunoID: number;
     aluno?: MatriculaDto;
-
+    validacoes: Validacoes = new Validacoes();
     constructor(
         private formBuilder: FormBuilder,
         public responsavelService: ResponsavelControllerService,
@@ -30,7 +31,9 @@ export class AddPessoaAutorizadaComponent implements OnInit {
 
     ngOnInit(): void {
         this.formGroup = this.formBuilder.group({
-            nomeResponsavel: [null, Validators.required]
+            cpfResponsavel: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]], // Validador para CPF
+            nomeResponsavel: [null, Validators.required],
+            vinculo: [null, Validators.required],
         });
         this.buscarDados();
     }
@@ -43,12 +46,15 @@ export class AddPessoaAutorizadaComponent implements OnInit {
 
     private realizarInclusao() {
         if (this.formGroup.valid) {
+
             const responsavel: ResponsavelDto = {
+                idMatricula: this.alunoID,
+                cpfResponsavel: this.formGroup.get('cpfResponsavel')?.value,
                 nomeResponsavel: this.formGroup.get('nomeResponsavel')?.value,
-                idMatricula: this.alunoID
+                vinculo: this.formGroup.get('vinculo')?.value,
             };
 
-            this.responsavelService.responsavelControllerIncluir({ body: responsavel }).subscribe(
+            this.responsavelService.responsavelControllerIncluirResponsavel({ body: responsavel }).subscribe(
                 data => {
                     this.snackBar.open('Responsável adicionado com sucesso', 'Fechar', {
                         duration: 3000,
@@ -80,4 +86,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
     limparFormulario() {
         this.formGroup.reset();
     }
+    public handleError = (controlName: string, errorName: string) => {
+        return this.formGroup.controls[controlName].hasError(errorName);
+    };
 }

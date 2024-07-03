@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormMatriculaComponent } from './form-matricula/form-matricula.component';
+
 import { HomeMatriculaComponent } from './home-matricula/home-matricula.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { ListMatriculaComponent } from './list-matricula/list-matricula.component';
@@ -35,6 +35,7 @@ import {MatListModule} from "@angular/material/list";
 import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-advertencia-dialog.component';
 import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especial-dialog/add-necessidade-especial-dialog.component';
 import {AddPessoaAutorizadaComponent} from "./add-pessoa-autorizada/add-pessoa-autorizada.component";
+import {FormMatriculaComponent} from "./form-matricula/form-matricula.component";
 
 
 @NgModule({
