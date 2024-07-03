@@ -1,5 +1,31 @@
 <div class="">
   <h1 align="center">Informações do Sistema</h1>
+  <!-- Infos sobre turmas -->
+  <mat-card class="painel">
+    <mat-card-header>
+      <mat-card-title>Ações</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="painel">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>Controle Pré-Matricula</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="numero">
+          <mat-slide-toggle (change)="controlePreMatricula($event)">Ligar/Desligar</mat-slide-toggle>
+        </mat-card-content>
+      </mat-card>
+
+<!--      <mat-card class="card">-->
+<!--        <mat-card-header>-->
+<!--          <mat-card-title>Controle Re-Matricula</mat-card-title>-->
+<!--        </mat-card-header>-->
+<!--        <mat-card-content class="numero">-->
+<!--          <mat-slide-toggle (change)="controleReMatricula($event)">Ligar/Desligar</mat-slide-toggle>-->
+<!--        </mat-card-content>-->
+<!--      </mat-card>-->
+    </mat-card-content>
+  </mat-card>
+
   <!-- Infos sobre matriculas -->
   <mat-card class="painel">
     <mat-card-header>
@@ -40,6 +66,7 @@
       </mat-card>
     </mat-card-content>
   </mat-card>
+
   <!-- Infos sobre turmas -->
   <mat-card class="painel">
     <mat-card-header>

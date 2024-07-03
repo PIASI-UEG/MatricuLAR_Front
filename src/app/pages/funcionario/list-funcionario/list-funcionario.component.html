@@ -52,7 +52,7 @@
               <button mat-menu-item [routerLink]="['/funcionario',element.id]">
                 <mat-icon>edit</mat-icon>Editar
               </button>
-              <button mat-menu-item (click)="confirmarExcluir(element)">
+              <button *ngIf="!estaLogado(element.id)" mat-menu-item (click)="confirmarExcluir(element)">
                 <mat-icon>delete_forever</mat-icon>Excluir
               </button>
             </mat-menu>
