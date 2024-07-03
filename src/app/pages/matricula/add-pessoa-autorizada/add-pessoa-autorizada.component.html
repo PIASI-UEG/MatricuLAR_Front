@@ -17,7 +17,17 @@
                     [formGroup]="formGroup"
                     (ngSubmit)="onSubmit()"
                     class="form" fxFlex="1 1 auto"
+
             >
+                <div fxLayout="row" fxLayoutAlign="center">
+                    <mat-form-field>
+                        <mat-label>CPF do Responsável</mat-label>
+                        <input matInput formControlName="cpfResponsavel" placeholder="Digite o CPF do responsável">
+                        <mat-error *ngIf="formGroup.get('cpfResponsavel')?.invalid && formGroup.get('cpfResponsavel')?.touched">
+                            CPF inválido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
                 <div fxLayout="row" fxLayoutAlign="center">
                     <mat-form-field>
                         <mat-label>Responsável Autorizado</mat-label>
