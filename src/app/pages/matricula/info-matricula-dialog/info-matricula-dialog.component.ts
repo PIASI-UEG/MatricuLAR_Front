@@ -24,6 +24,7 @@ import {
 } from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
 import {ResponsavelDto} from "../../../api/models/responsavel-dto";
 import {PkAdvertencia} from "../../../api/models/pk-advertencia";
+import {ResponsavelControllerService} from "../../../api/services/responsavel-controller.service";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -55,6 +56,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         private snackBar: MatSnackBar,
         private securityService: SecurityService,
         private necessidadeEspecialService: NecessidadeEspecialControllerService,
+        private responsavelAutorizadoService: ResponsavelControllerService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
@@ -160,17 +162,11 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    editResponsavel(responsavelAutorizado: ResponsavelDto): void {
-
-    }
 
     deleteResponsavel(responsavelAutorizado: ResponsavelDto): void {
-
+        
     }
 
-    editNecessidade(necessidade: NecessidadeEspecialDto): void {
-
-    }
 
     deleteNecessidade(necessidade: NecessidadeEspecialDto): void {
         const dialogRef = this.dialog.open(ConfirmationDialog, {
@@ -211,11 +207,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
         });
     }
 
-
-    editAdvertencia(advertencia: MatriculaVisualizarDto): void {
-
-    }
-
     deleteAdvertencia(advertencia: AdvertenciaDto): void {
         const dialogRef = this.dialog.open(ConfirmationDialog, {
             data: {
@@ -235,10 +226,10 @@ export class InfoMatriculaDialogComponent implements OnInit {
                     const advertenciasAtuais = this.matriculaVisualiza.advertencias || [];
                     const advertenciasFiltradas = advertenciasAtuais.filter(ad => ad.numero !== advertencia.numero);
 
-                    // Atualiza a lista de advertências apenas se houver alterações
+
                     if (advertenciasFiltradas.length !== advertenciasAtuais.length) {
                         this.matriculaVisualiza.advertencias = advertenciasFiltradas;
-                        this.matriculaDataSource.data = [this.matriculaVisualiza]; // Se matriculaVisualiza for um único objeto
+                        this.matriculaDataSource.data = [this.matriculaVisualiza];
                     }
 
                     this.advertenciaService.advertenciaControllerRemoverAdvertencia({
@@ -258,6 +249,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         });
     }
+
 
 
     openDialogResponsavel() {

@@ -46,14 +46,9 @@
                     <mat-cell *matCellDef="let element"> {{ element.responsaveisNome.join(', ') }} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="acoes">
-                    <mat-header-cell *matHeaderCellDef>
+                    <mat-cell *matCellDef="let element">
                         <button mat-icon-button (click)="openDialogResponsavel()">
                             <mat-icon>add</mat-icon>
-                        </button>
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        <button mat-icon-button (click)="editResponsavel(element)">
-                            <mat-icon>edit</mat-icon>
                         </button>
                         <button mat-icon-button (click)="deleteResponsavel(element)">
                             <mat-icon>remove_circle</mat-icon>
@@ -77,9 +72,6 @@
                         </button>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let necessidades">
-                        <button mat-icon-button (click)="editNecessidade(necessidades)">
-                            <mat-icon>edit</mat-icon>
-                        </button>
                         <button mat-icon-button (click)="deleteNecessidade(necessidades)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>
@@ -106,9 +98,6 @@
                         </button>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let advertencia">
-                        <button mat-icon-button (click)="editAdvertencia(advertencia)">
-                            <mat-icon>edit</mat-icon>
-                        </button>
                         <button mat-icon-button (click)="deleteAdvertencia(advertencia)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>
