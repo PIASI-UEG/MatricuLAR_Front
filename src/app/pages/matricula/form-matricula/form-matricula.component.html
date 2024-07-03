@@ -187,6 +187,9 @@
               <button mat-raised-button color="warn" type="button" (click)="this.mensagens.acaoCancelar()"
                       class="button botao-cancelar">Cancelar
               </button>
+<!--              <button *ngIf="tipoDeFormulario == 'Validar'" mat-raised-button-->
+<!--                      type="button" class="button botao-recusar" (click)="this.recusar()">Recusar-->
+<!--              </button>-->
               <button *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'" mat-raised-button
                       type="submit" class="button botao-salvar">Salvar
               </button>
@@ -930,7 +933,7 @@
 
               <ng-container *ngIf="this.tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
                 <mat-header-cell *matHeaderCellDef class="aceite-column">Aceitar</mat-header-cell>
-                <mat-cell *matCellDef="let element" class="aceite-column"> {{element.aceito}}
+                <mat-cell *matCellDef="let element" class="aceite-column">
                   <mat-checkbox color="primary" [checked]="element.aceito"
                                 (change)="onAceitoChange(element)"></mat-checkbox>
                 </mat-cell>
