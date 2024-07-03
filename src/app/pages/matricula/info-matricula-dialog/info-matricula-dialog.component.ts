@@ -25,6 +25,7 @@ import {
 import {ResponsavelDto} from "../../../api/models/responsavel-dto";
 import {PkAdvertencia} from "../../../api/models/pk-advertencia";
 import {ResponsavelControllerService} from "../../../api/services/responsavel-controller.service";
+import {AddPessoaAutorizadaComponent} from "../add-pessoa-autorizada/add-pessoa-autorizada.component";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -157,6 +158,24 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         });
     }
+    openDialogResponsavel() {
+        this.dialogRef.close();
+        const dialogRefPessoaAutroizada =this.dialog.open(AddPessoaAutorizadaComponent,{
+            data: {id: this.matriculaId}
+
+        });
+        dialogRefPessoaAutroizada.afterClosed().subscribe(result => {
+            if (result) {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
+            } else {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
+            }
+        });
+    }
 
     fechar(): void {
         this.dialogRef.close();
@@ -245,12 +264,5 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 this.snackBar.open('Erro ao remover advertência. Informações inválidas.', 'Fechar', { duration: 3000 });
             }
         });
-    }
-
-
-
-
-    openDialogResponsavel() {
-
     }
 }
