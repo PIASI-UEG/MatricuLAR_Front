@@ -52,6 +52,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
                 cpfResponsavel: this.formGroup.get('cpfResponsavel')?.value,
                 nomeResponsavel: this.formGroup.get('nomeResponsavel')?.value,
                 vinculo: this.formGroup.get('vinculo')?.value,
+                tutor: false,
             };
 
             this.responsavelService.responsavelControllerIncluirResponsavel({ body: responsavel }).subscribe(

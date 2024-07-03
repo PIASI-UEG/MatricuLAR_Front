@@ -77,7 +77,7 @@ export class FormFuncionarioComponent implements OnInit {
   }
 
   private createForm() {
-    if(this.acao == "Editar"){
+    if(this.acao == "Editar" && this.codigo != null){
       this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
           pessoaNome: [retorno.pessoaNome, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
@@ -111,18 +111,17 @@ export class FormFuncionarioComponent implements OnInit {
   };
 
   onSubmit() {
-    this.submitFormulario = true;
-    if (this.codigo == null && !this.validarSenhas()) {
-      return;
-    }
+      this.submitFormulario = true;
 
-    if (this.codigo != null || this.formGroup.valid) {
-      if(!this.codigo){
-        this.realizarInclusao();
-      }else{
-        this.realizarEdicao();
+      if (this.formGroup.invalid) {
+          return;
       }
-    }
+
+      if (!this.codigo) {
+          this.realizarInclusao();
+      } else {
+          this.realizarEdicao();
+      }
   }
 
   private realizarInclusao(){

@@ -27,7 +27,7 @@
 
     <mat-form-field>
       <mat-label>Ano</mat-label>
-      <input matInput formControlName="ano" placeholder="Digite o ano" maxlength="4" pattern="[0-9]{4}">
+      <input matInput formControlName="ano" placeholder="Digite o ano" maxlength="4" minlength="4" pattern="[0-9]{4}">
       <mat-error *ngIf="handleError('ano', 'required')">Campo Obrigatório</mat-error>
       <mat-error *ngIf="handleError('ano', 'pattern')">Ano possui 4 números (2024)</mat-error>
     </mat-form-field>
