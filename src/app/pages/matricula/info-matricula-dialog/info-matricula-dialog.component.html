@@ -46,10 +46,12 @@
                     <mat-cell *matCellDef="let element"> {{ element.responsaveisNome.join(', ') }} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="acoes">
-                    <mat-cell *matCellDef="let element">
+                    <mat-header-cell *matHeaderCellDef>
                         <button mat-icon-button (click)="openDialogResponsavel()">
                             <mat-icon>add</mat-icon>
                         </button>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
                         <button mat-icon-button (click)="deleteResponsavel(element)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>
