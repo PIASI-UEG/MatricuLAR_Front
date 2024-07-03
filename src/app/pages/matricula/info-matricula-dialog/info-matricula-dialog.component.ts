@@ -223,20 +223,15 @@ export class InfoMatriculaDialogComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result && this.matriculaVisualiza) {
                 if (advertencia.idMatricula !== undefined && advertencia.numero !== undefined) {
-                    const advertenciasAtuais = this.matriculaVisualiza.advertencias || [];
-                    const advertenciasFiltradas = advertenciasAtuais.filter(ad => ad.numero !== advertencia.numero);
-
-                    // Atualiza a lista de advertências apenas se houver alterações
-                    if (advertenciasFiltradas.length !== advertenciasAtuais.length) {
-                        this.matriculaVisualiza.advertencias = advertenciasFiltradas;
-                        this.matriculaDataSource.data = [this.matriculaVisualiza];
-                    }
 
                     this.advertenciaService.advertenciaControllerRemoverAdvertencia({
                         'id-matricula': advertencia.idMatricula,
                         'numero-advertencia': advertencia.numero
                     }).subscribe(
                         () => {
+                            if (this.matriculaVisualiza?.advertencias) {
+                                this.matriculaVisualiza.advertencias = this.matriculaVisualiza.advertencias.filter(ad => ad.numero !== advertencia.numero);
+                            }
                             this.snackBar.open('Advertência removida com sucesso', 'Fechar', { duration: 3000 });
                         },
                         (error) => {
@@ -251,6 +246,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         });
     }
+
 
 
 
