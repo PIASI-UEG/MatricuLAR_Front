@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatriculaControllerService } from "../../../api/services/matricula-controller.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ResponsavelControllerService } from "../../../api/services/responsavel-controller.service";
 import { MatriculaDto } from "../../../api/models/matricula-dto";
 import { ResponsavelDto } from '../../../api/models/responsavel-dto';
-import {PkResponsavel} from "../../../api/models/pk-responsavel";
 
 @Component({
     selector: 'app-add-pessoa-autorizada',
@@ -17,11 +16,10 @@ export class AddPessoaAutorizadaComponent implements OnInit {
     formGroup!: FormGroup;
     alunoID: number;
     aluno?: MatriculaDto;
-    responsavel?: ResponsavelDto;
 
     constructor(
         private formBuilder: FormBuilder,
-        public pessoaAutorizadaService: ResponsavelControllerService,
+        public responsavelService: ResponsavelControllerService,
         public matriculaService: MatriculaControllerService,
         private dialogRef: MatDialogRef<AddPessoaAutorizadaComponent>,
         private snackBar: MatSnackBar,
@@ -32,7 +30,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
 
     ngOnInit(): void {
         this.formGroup = this.formBuilder.group({
-            titulo: ['']
+            nomeResponsavel: [null, Validators.required]
         });
         this.buscarDados();
     }
@@ -41,15 +39,34 @@ export class AddPessoaAutorizadaComponent implements OnInit {
         this.matriculaService.matriculaControllerObterPorId({ id: this.alunoID }).subscribe(data => {
             this.aluno = data;
         });
-        const responsavelId: PkResponsavel = { matricula: this.alunoID };
+    }
 
-        this.pessoaAutorizadaService.responsavelControllerObterPorId({ id: responsavelId }).subscribe(data => {
-            this.responsavel = data;
+    private realizarInclusao() {
+        if (this.formGroup.valid) {
+            const responsavel: ResponsavelDto = {
+                nomeResponsavel: this.formGroup.get('nomeResponsavel')?.value,
+                idMatricula: this.alunoID
+            };
 
-            this.formGroup.patchValue({
-                titulo: this.responsavel?.nomeResponsavel || ''
+            this.responsavelService.responsavelControllerIncluir({ body: responsavel }).subscribe(
+                data => {
+                    this.snackBar.open('Responsável adicionado com sucesso', 'Fechar', {
+                        duration: 3000,
+                    });
+                    this.dialogRef.close(data);
+                },
+                error => {
+                    console.error('Erro ao adicionar responsável:', error);
+                    this.snackBar.open('Erro ao adicionar responsável: ' + error.message, 'Fechar', {
+                        duration: 3000,
+                    });
+                }
+            );
+        } else {
+            this.snackBar.open('Formulário inválido. Por favor, preencha os campos obrigatórios.', 'Fechar', {
+                duration: 3000,
             });
-        });
+        }
     }
 
     fechar(): void {
@@ -57,11 +74,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.formGroup.valid) {
-            const formValue = this.formGroup.value;
-            console.log(formValue);
-            this.dialogRef.close(formValue);
-        }
+        this.realizarInclusao();
     }
 
     limparFormulario() {
