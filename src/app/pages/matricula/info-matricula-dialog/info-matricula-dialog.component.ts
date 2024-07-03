@@ -22,6 +22,8 @@ import { MatriculaControllerGetDocumentoMatricula$Params } from "../../../api/fn
 import {
     AddNecessidadeEspecialDialogComponent
 } from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
+import {ResponsavelDto} from "../../../api/models/responsavel-dto";
+import {PkAdvertencia} from "../../../api/models/pk-advertencia";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -39,8 +41,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
     colunasResponsaveis: string[] = ['responsaveisNome'];
     colunasNecessidadesEspeciais: string[] = ['titulo'];
     colunasAdvertencia: string[] = ['titulo', 'descricao'];
-
     caminhoDocumento!: string;
+
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
@@ -69,7 +71,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
             (data: MatriculaVisualizarDto) => {
                 this.matriculaVisualiza = data;
 
-                // Verifica se há caminho de imagem definido
                 if (data.caminhoImagem) {
                     this.buscarCaminhoImagem(data.caminhoImagem);
                 }
@@ -95,8 +96,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
         );
     }
 
-
-
     private buscarCaminhoImagem(caminhoImagem: string) {
         this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: { idMatricula: this.matriculaId, tipoDocumento: EnumDoc.FOTO_CRIANCA } }).subscribe(
             (response: Blob) => {
@@ -111,7 +110,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         );
     }
-
 
     createForm() {
         this.formGroup = this.formBuilder.group({
@@ -131,28 +129,28 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 this.dialog.open(InfoMatriculaDialogComponent, {
                     data: { id: this.matriculaId }
                 });
-            }else{
-                this.dialog.open(InfoMatriculaDialogComponent,{
-                    data: {id: this.matriculaId}
+            } else {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
                 });
             }
         });
     }
 
-    openDialogNecessidade(){
+    openDialogNecessidade() {
         this.dialogRef.close();
-        const dialogRefAdvertencia = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
+        const dialogRefNecessidade = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
             data: { id: this.matriculaId }
         });
 
-        dialogRefAdvertencia.afterClosed().subscribe(result => {
+        dialogRefNecessidade.afterClosed().subscribe(result => {
             if (result) {
                 this.dialog.open(InfoMatriculaDialogComponent, {
                     data: { id: this.matriculaId }
                 });
-            }else{
-                this.dialog.open(InfoMatriculaDialogComponent,{
-                    data: {id: this.matriculaId}
+            } else {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
                 });
             }
         });
@@ -162,5 +160,64 @@ export class InfoMatriculaDialogComponent implements OnInit {
         this.dialogRef.close();
     }
 
+    editResponsavel(responsavelAutorizado: ResponsavelDto): void {
 
+    }
+
+    deleteResponsavel(responsavelAutorizado: ResponsavelDto): void {
+
+    }
+
+    editNecessidade(necessidade: NecessidadeEspecialDto): void {
+
+    }
+
+    deleteNecessidade(necessidade: NecessidadeEspecialDto): void {
+
+    }
+
+    editAdvertencia(advertencia: AdvertenciaDto): void {
+
+    }
+
+    deleteAdvertencia(advertencia: AdvertenciaDto): void {
+        const advertenciaId = advertencia.numero;
+
+        if (advertenciaId !== undefined) {
+            const dialogRef = this.dialog.open(ConfirmationDialog, {
+                data: {
+                    titulo: 'Confirmar?',
+                    mensagem: `Deseja excluir a advertência: ${advertencia.titulo}?`,
+                    textoBotoes: {
+                        ok: 'Confirmar',
+                        cancel: 'Cancelar',
+                    },
+                    dado: advertencia
+                },
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    const pkAdvertencia: PkAdvertencia = { numero: advertenciaId };
+
+                    this.advertenciaService.advertenciaControllerRemover({ id: pkAdvertencia }).subscribe(
+                        (data) => {
+                            // Atualize sua fonte de dados após remover a advertência
+                            // Exemplo:
+                            // this.atualizarFonteDeDados();
+                            this.snackBar.open('Advertência removida com sucesso', 'Fechar', { duration: 3000 });
+                        },
+                        (error) => {
+                            this.snackBar.open('Erro ao remover advertência', 'Fechar', { duration: 3000 });
+                        }
+                    );
+                }
+            });
+        }
+    }
+
+
+    openDialogResponsavel() {
+
+    }
 }
