@@ -54,46 +54,51 @@ export class FormTurmaComponent {
   };
 
 
-  onSubmit() {
-    this.submitFormulario = true;
-    if (this.codigo != null || this.formGroup.valid) {
-      if(!this.codigo){
-        this.realizarInclusao();
-      }else{
-        this.realizarEdicao();
-      }
-    }
-  }
+    onSubmit() {
+        this.submitFormulario = true;
 
-  createForm() {
-    if(this.acao == "Editar"){
-      this.turmaservice.turmaControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
-        this.formGroup = this.formBuilder.group({
-          titulo: [retorno.titulo, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(100)]],
-          turno: [retorno.turno, Validators.required],
-          ano: [retorno.ano, [Validators.required, Validators.pattern('^[0-9]{4}$')]],
-          horaInicio: [retorno.horaInicio, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
-          horaFim: [retorno.horaFim, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
-          nomeProfessor: [retorno.nomeProfessor, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
-          telefoneProfessor: [retorno.telefoneProfessor, [Validators.required, this.validacoes.validarTelefone , Validators.maxLength(11)]]
-        }));
-    }
-    else{
-      this.formGroup = this.formBuilder.group({
-        titulo: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(100)]],
-        turno: [null, Validators.required],
-        ano: [null, [Validators.required, Validators.pattern('^[0-9]{4}$')]],
-        horaInicio: [null, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
-        horaFim: [null, [Validators.required, Validators.maxLength(4),Validators.minLength(4)]],
-        nomeProfessor: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
-        telefoneProfessor: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]]
-      })
+        if (this.formGroup.invalid) {
+            return;
+        }
+
+        if (!this.codigo) {
+            this.realizarInclusao();
+        } else {
+            this.realizarEdicao();
+        }
     }
 
-  }
 
 
-  private realizarInclusao() {
+
+    createForm() {
+        if (this.acao === "Editar" && this.codigo != null) {
+            this.turmaservice.turmaControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
+                this.formGroup = this.formBuilder.group({
+                    titulo: [retorno.titulo, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(100)]],
+                    turno: [retorno.turno, Validators.required],
+                    ano: [retorno.ano, [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+                    horaInicio: [retorno.horaInicio, [Validators.required, Validators.maxLength(4), Validators.minLength(4)]],
+                    horaFim: [retorno.horaFim, [Validators.required, Validators.maxLength(4), Validators.minLength(4)]],
+                    nomeProfessor: [retorno.nomeProfessor, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
+                    telefoneProfessor: [retorno.telefoneProfessor, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]]
+                }));
+        } else {
+            this.formGroup = this.formBuilder.group({
+                titulo: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(100)]],
+                turno: [null, Validators.required],
+                ano: [null, [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+                horaInicio: [null, [Validators.required, Validators.maxLength(4), Validators.minLength(4)]],
+                horaFim: [null, [Validators.required, Validators.maxLength(4), Validators.minLength(4)]],
+                nomeProfessor: [null, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
+                telefoneProfessor: [null, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]]
+            });
+        }
+    }
+
+
+
+    private realizarInclusao() {
     console.log("Dados:",this.formGroup.value);
     const turma: TurmaDto = this.formGroup.value;
     this.turmaservice.turmaControllerIncluir({body: turma})
