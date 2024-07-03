@@ -490,6 +490,63 @@ export class ResponsavelControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation responsavelControllerIncluirResponsavel
+   */
+  static readonly ResponsavelControllerIncluirResponsavelPath = '/api/v1/responsavel/incluir-responsavel';
+
+  /**
+   * Adiciona responsavel
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `responsavelControllerIncluirResponsavel()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  responsavelControllerIncluirResponsavel$Response(params: {
+    body: ResponsavelDto
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<ResponsavelDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerIncluirResponsavelPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ResponsavelDto>;
+      })
+    );
+  }
+
+  /**
+   * Adiciona responsavel
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `responsavelControllerIncluirResponsavel$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  responsavelControllerIncluirResponsavel(params: {
+    body: ResponsavelDto
+  },
+  context?: HttpContext
+
+): Observable<ResponsavelDto> {
+
+    return this.responsavelControllerIncluirResponsavel$Response(params,context).pipe(
+      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
+    );
+  }
+
+  /**
    * Path part for operation responsavelControllerListAllPage
    */
   static readonly ResponsavelControllerListAllPagePath = '/api/v1/responsavel/page';
@@ -543,6 +600,66 @@ export class ResponsavelControllerService extends BaseService {
 
     return this.responsavelControllerListAllPage$Response(params,context).pipe(
       map((r: StrictHttpResponse<PageResponsavelDto>) => r.body as PageResponsavelDto)
+    );
+  }
+
+  /**
+   * Path part for operation responsavelControllerRemoverResponsavel
+   */
+  static readonly ResponsavelControllerRemoverResponsavelPath = '/api/v1/responsavel/remover-responsavel/{id-matricula}/{cpf-responsavel}';
+
+  /**
+   * Remove responsavel
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `responsavelControllerRemoverResponsavel()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  responsavelControllerRemoverResponsavel$Response(params: {
+    'id-matricula': number;
+    'cpf-responsavel': string;
+  },
+  context?: HttpContext
+
+): Observable<StrictHttpResponse<ResponsavelDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ResponsavelControllerService.ResponsavelControllerRemoverResponsavelPath, 'delete');
+    if (params) {
+      rb.path('id-matricula', params['id-matricula'], {});
+      rb.path('cpf-responsavel', params['cpf-responsavel'], {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ResponsavelDto>;
+      })
+    );
+  }
+
+  /**
+   * Remove responsavel
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `responsavelControllerRemoverResponsavel$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  responsavelControllerRemoverResponsavel(params: {
+    'id-matricula': number;
+    'cpf-responsavel': string;
+  },
+  context?: HttpContext
+
+): Observable<ResponsavelDto> {
+
+    return this.responsavelControllerRemoverResponsavel$Response(params,context).pipe(
+      map((r: StrictHttpResponse<ResponsavelDto>) => r.body as ResponsavelDto)
     );
   }
 

@@ -24,6 +24,16 @@
                         <input matInput formControlName="nomeResponsavel" placeholder="Digite o nome da pessoa autorizada">
                     </mat-form-field>
                 </div>
+                <div fxLayout="row" fxLayoutAlign="center">
+                    <mat-form-field>
+                        <mat-label>Tipo de Responsável</mat-label>
+                        <mat-select formControlName="vinculo">
+                            <mat-option *ngFor="let tipo of ['PAI', 'MAE', 'TIO', 'VIZINHO', 'AVO', 'TIA', 'BISAVO', 'PRIMO']" [value]="tipo">
+                                {{ tipo }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
                     <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
                     <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
