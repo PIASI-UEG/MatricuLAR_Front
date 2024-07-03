@@ -39,15 +39,26 @@
                 <mat-header-row *matHeaderRowDef="colunasTutores"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: colunasTutores;"></mat-row>
             </mat-table>
-
             <h3><b>Informações dos Responsáveis Autorizados</b></h3>
             <mat-table [dataSource]="matriculaDataSource" class="autorizados-table mat-elevation-z8">
                 <ng-container matColumnDef="responsaveisNome">
                     <mat-header-cell *matHeaderCellDef> Responsáveis Autorizados</mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{ element.responsaveisNome.join(', ') }} </mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="colunasResponsaveis"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: colunasResponsaveis;"></mat-row>
+                <ng-container matColumnDef="acoes">
+                    <mat-header-cell *matHeaderCellDef>
+                        <button mat-icon-button (click)="openDialogResponsavel()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <button mat-icon-button (click)="deleteResponsavel(element)">
+                            <mat-icon>remove_circle</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="colunasResponsaveis.concat('acoes')"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: colunasResponsaveis.concat('acoes');"></mat-row>
             </mat-table>
 
             <h3><b>Informações das Necessidades</b></h3>
@@ -56,9 +67,21 @@
                     <mat-header-cell *matHeaderCellDef> Necessidade Especial</mat-header-cell>
                     <mat-cell *matCellDef="let necessidades"> {{ necessidades.titulo }} </mat-cell>
                 </ng-container>
+                <ng-container matColumnDef="acoes">
+                    <mat-header-cell *matHeaderCellDef>
+                        <button mat-icon-button (click)="openDialogNecessidade()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let necessidades">
 
-                <mat-header-row *matHeaderRowDef="colunasNecessidadesEspeciais"></mat-header-row>
-                <mat-row *matRowDef="let necessidade; columns: colunasNecessidadesEspeciais;"></mat-row>
+                        <button mat-icon-button (click)="deleteNecessidade(necessidades)">
+                            <mat-icon>remove_circle</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="colunasNecessidadesEspeciais.concat('acoes')"></mat-header-row>
+                <mat-row *matRowDef="let necessidade; columns: colunasNecessidadesEspeciais.concat('acoes');"></mat-row>
             </mat-table>
 
             <h3><b>Informações das Advertências</b></h3>
@@ -67,22 +90,29 @@
                     <mat-header-cell *matHeaderCellDef> Título da Advertência </mat-header-cell>
                     <mat-cell *matCellDef="let advertencia"> {{ advertencia.titulo }} </mat-cell>
                 </ng-container>
-
                 <ng-container matColumnDef="descricao">
                     <mat-header-cell *matHeaderCellDef> Descrição da Advertência </mat-header-cell>
                     <mat-cell *matCellDef="let advertencia"> {{ advertencia.descricao }} </mat-cell>
                 </ng-container>
-
-                <mat-header-row *matHeaderRowDef="colunasAdvertencia"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: colunasAdvertencia;"></mat-row>
+                <ng-container matColumnDef="acoes">
+                    <mat-header-cell *matHeaderCellDef>
+                        <button mat-icon-button (click)="openDialogAdvertencia()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let advertencia">
+                        <button mat-icon-button (click)="deleteAdvertencia(advertencia)">
+                            <mat-icon>remove_circle</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="colunasAdvertencia.concat('acoes')"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: colunasAdvertencia.concat('acoes');"></mat-row>
             </mat-table>
-        </div>
 
-
-        <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
-            <button mat-raised-button type="button" class="button botao-advertencia" (click)="openDialogAdvertencia()"> +Advertência</button>
-            <button mat-raised-button type="button" class="button botao-necessidade" (click)="openDialogNecessidade()"> +Necessidades<br>Especiais</button>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
+            </div>
         </div>
     </form>
 </div>

@@ -1,0 +1,35 @@
+<div class="formMov">
+    <ng-container>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>DADOS DA CRIANÇA</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Aluno: {{ aluno?.nome }}</p>
+                <p>Data de nascimento: {{ aluno?.nascimento }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Pessoa Autorizada a Buscar a Criança</mat-card-title>
+            </mat-card-header>
+            <form
+                    [formGroup]="formGroup"
+                    (ngSubmit)="onSubmit()"
+                    class="form" fxFlex="1 1 auto"
+            >
+                <div fxLayout="row" fxLayoutAlign="center">
+                    <mat-form-field>
+                        <mat-label>Responsável Autorizado</mat-label>
+                        <input matInput formControlName="nomeResponsavel" placeholder="Digite o nome da pessoa autorizada">
+                    </mat-form-field>
+                </div>
+                <div class="btn-mov" fxLayout="row" fxLayoutAlign="space-between center">
+                    <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Cancelar</button>
+                    <button mat-raised-button color="warn" type="button" (click)="limparFormulario()" class="button botao-limpar">Limpar</button>
+                    <button mat-raised-button color="primary" type="submit" class="button botao-salvar">Salvar</button>
+                </div>
+            </form>
+        </mat-card>
+    </ng-container>
+</div>

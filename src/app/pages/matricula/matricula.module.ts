@@ -34,6 +34,8 @@ import {ArquivoViewerModule} from "../../arquitetura/arquivo-viwer/arquivo-viewe
 import {MatListModule} from "@angular/material/list";
 import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-advertencia-dialog.component';
 import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especial-dialog/add-necessidade-especial-dialog.component';
+import {AddPessoaAutorizadaComponent} from "./add-pessoa-autorizada/add-pessoa-autorizada.component";
+
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especia
     ListMatriculaComponent,
     InfoMatriculaDialogComponent,
     AddAdvertenciaDialogComponent,
-    AddNecessidadeEspecialDialogComponent
+    AddNecessidadeEspecialDialogComponent,
+    AddPessoaAutorizadaComponent
   ],
     imports: [
         CommonModule,

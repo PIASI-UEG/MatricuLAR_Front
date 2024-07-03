@@ -77,13 +77,11 @@ export class ListTurmaComponent implements OnInit{
   }
 
   remover(turma: TurmaDto) {
-    console.log("Removido", turma.titulo);
     this.turmaService.turmaControllerRemover({ id: turma.id || 0})
       .subscribe(
         retorno => {
           this.buscarDados();
           this.mensagens.showMensagemSimples("Excluído com sucesso!");
-          console.log("Exclusão:", retorno);
         },error => {
           this.mensagens.confirmarErro("Excluir", error.message)
         }

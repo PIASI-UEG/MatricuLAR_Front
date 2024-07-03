@@ -22,6 +22,10 @@ import { MatriculaControllerGetDocumentoMatricula$Params } from "../../../api/fn
 import {
     AddNecessidadeEspecialDialogComponent
 } from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
+import {ResponsavelDto} from "../../../api/models/responsavel-dto";
+import {PkAdvertencia} from "../../../api/models/pk-advertencia";
+import {ResponsavelControllerService} from "../../../api/services/responsavel-controller.service";
+import {AddPessoaAutorizadaComponent} from "../add-pessoa-autorizada/add-pessoa-autorizada.component";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -39,8 +43,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
     colunasResponsaveis: string[] = ['responsaveisNome'];
     colunasNecessidadesEspeciais: string[] = ['titulo'];
     colunasAdvertencia: string[] = ['titulo', 'descricao'];
-
     caminhoDocumento!: string;
+
     constructor(
         private formBuilder: FormBuilder,
         private _adapter: DateAdapter<any>,
@@ -53,6 +57,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
         private snackBar: MatSnackBar,
         private securityService: SecurityService,
         private necessidadeEspecialService: NecessidadeEspecialControllerService,
+        private responsavelAutorizadoService: ResponsavelControllerService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this._adapter.setLocale('pt-br');
@@ -69,7 +74,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
             (data: MatriculaVisualizarDto) => {
                 this.matriculaVisualiza = data;
 
-                // Verifica se há caminho de imagem definido
                 if (data.caminhoImagem) {
                     this.buscarCaminhoImagem(data.caminhoImagem);
                 }
@@ -95,8 +99,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
         );
     }
 
-
-
     private buscarCaminhoImagem(caminhoImagem: string) {
         this.matriculaService.matriculaControllerObterDocumentoMatricula({ body: { idMatricula: this.matriculaId, tipoDocumento: EnumDoc.FOTO_CRIANCA } }).subscribe(
             (response: Blob) => {
@@ -111,7 +113,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
             }
         );
     }
-
 
     createForm() {
         this.formGroup = this.formBuilder.group({
@@ -131,18 +132,44 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 this.dialog.open(InfoMatriculaDialogComponent, {
                     data: { id: this.matriculaId }
                 });
+            } else {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
             }
         });
     }
 
-    openDialogNecessidade(){
+    openDialogNecessidade() {
         this.dialogRef.close();
-        const dialogRefAdvertencia = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
+        const dialogRefNecessidade = this.dialog.open(AddNecessidadeEspecialDialogComponent, {
             data: { id: this.matriculaId }
         });
 
-        dialogRefAdvertencia.afterClosed().subscribe(result => {
+        dialogRefNecessidade.afterClosed().subscribe(result => {
             if (result) {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
+            } else {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
+            }
+        });
+    }
+    openDialogResponsavel() {
+        this.dialogRef.close();
+        const dialogRefPessoaAutroizada =this.dialog.open(AddPessoaAutorizadaComponent,{
+            data: {id: this.matriculaId}
+
+        });
+        dialogRefPessoaAutroizada.afterClosed().subscribe(result => {
+            if (result) {
+                this.dialog.open(InfoMatriculaDialogComponent, {
+                    data: { id: this.matriculaId }
+                });
+            } else {
                 this.dialog.open(InfoMatriculaDialogComponent, {
                     data: { id: this.matriculaId }
                 });
@@ -155,4 +182,87 @@ export class InfoMatriculaDialogComponent implements OnInit {
     }
 
 
+    deleteResponsavel(responsavelAutorizado: ResponsavelDto): void {
+
+    }
+
+
+    deleteNecessidade(necessidade: NecessidadeEspecialDto): void {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Confirmar?',
+                mensagem: `Deseja excluir a necessidade especial: ${necessidade.titulo}?`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                    cancel: 'Cancelar',
+                },
+                dado: necessidade
+            },
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (this.matriculaVisualiza && necessidade.id !== undefined) {
+                    this.necessidadeEspecialService.necessidadeEspecialControllerRemover({ id: necessidade.id }).subscribe(
+                        () => {
+
+                            if (this.matriculaVisualiza && this.matriculaVisualiza.necessidades) {
+                                this.matriculaVisualiza.necessidades = this.matriculaVisualiza.necessidades.filter(nec => nec.id !== necessidade.id);
+                                this.matriculaDataSource.data = [this.matriculaVisualiza];
+                            } else {
+
+                                console.error('MatriculaVisualiza or its necessities are undefined.');
+                            }
+                            this.snackBar.open('Necessidade especial removida com sucesso', 'Fechar', { duration: 3000 });
+                        },
+                        (error) => {
+                            this.snackBar.open('Erro ao remover necessidade especial', 'Fechar', { duration: 3000 });
+                        }
+                    );
+                } else {
+                    this.snackBar.open('Erro ao remover necessidade especial. ID inválido.', 'Fechar', { duration: 3000 });
+                }
+            }
+        });
+    }
+
+    deleteAdvertencia(advertencia: AdvertenciaDto): void {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Confirmar?',
+                mensagem: `Deseja excluir a advertência: ${advertencia.titulo}?`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                    cancel: 'Cancelar',
+                },
+                dado: advertencia
+            },
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && this.matriculaVisualiza) {
+                if (advertencia.idMatricula !== undefined && advertencia.numero !== undefined) {
+
+                    this.advertenciaService.advertenciaControllerRemoverAdvertencia({
+                        'id-matricula': advertencia.idMatricula,
+                        'numero-advertencia': advertencia.numero
+                    }).subscribe(
+                        () => {
+                            if (this.matriculaVisualiza?.advertencias) {
+                                this.matriculaVisualiza.advertencias = this.matriculaVisualiza.advertencias.filter(ad => ad.numero !== advertencia.numero);
+                            }
+                            this.snackBar.open('Advertência removida com sucesso', 'Fechar', { duration: 3000 });
+                        },
+                        (error) => {
+                            this.snackBar.open('Erro ao remover advertência', 'Fechar', { duration: 3000 });
+                        }
+                    );
+                } else {
+                    this.snackBar.open('Erro ao remover advertência. ID ou número inválidos.', 'Fechar', { duration: 3000 });
+                }
+            } else {
+                this.snackBar.open('Erro ao remover advertência. Informações inválidas.', 'Fechar', { duration: 3000 });
+            }
+        });
+    }
 }
