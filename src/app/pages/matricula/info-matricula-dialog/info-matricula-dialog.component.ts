@@ -221,11 +221,12 @@ export class InfoMatriculaDialogComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                if (this.matriculaVisualiza && advertencia.idMatricula !== undefined && advertencia.numero !== undefined) {
+            if (result && this.matriculaVisualiza) {
+                if (advertencia.idMatricula !== undefined && advertencia.numero !== undefined) {
                     const advertenciasAtuais = this.matriculaVisualiza.advertencias || [];
                     const advertenciasFiltradas = advertenciasAtuais.filter(ad => ad.numero !== advertencia.numero);
 
+                    // Atualiza a lista de advertências apenas se houver alterações
                     if (advertenciasFiltradas.length !== advertenciasAtuais.length) {
                         this.matriculaVisualiza.advertencias = advertenciasFiltradas;
                         this.matriculaDataSource.data = [this.matriculaVisualiza];
@@ -245,6 +246,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 } else {
                     this.snackBar.open('Erro ao remover advertência. ID ou número inválidos.', 'Fechar', { duration: 3000 });
                 }
+            } else {
+                this.snackBar.open('Erro ao remover advertência. Informações inválidas.', 'Fechar', { duration: 3000 });
             }
         });
     }
