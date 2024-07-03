@@ -50,6 +50,14 @@ export class ListFuncionarioComponent implements OnInit {
     })
   }
 
+  estaLogado(id: number){
+    if(this.securityService.getUserId() == id){
+      return true
+    }
+    else{
+      return false;
+    }
+  }
 
   private buscarDados() {
     this.usuarioService.usuarioControllerListAllPage({page: {page: 0, size: 5, sort:["pessoaCpf"]}}).subscribe(data => {

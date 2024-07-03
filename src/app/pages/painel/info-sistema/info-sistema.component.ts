@@ -7,6 +7,9 @@ import {SecurityService} from "../../../arquitetura/security/security.service";
 import {TurmaControllerService} from "../../../api/services/turma-controller.service";
 import DevExpress from "devextreme";
 import data = DevExpress.data;
+import {
+  ControlePeriodoMatriculaControllerService
+} from "../../../api/services/controle-periodo-matricula-controller.service";
 
 @Component({
   selector: 'app-info-sistema',
@@ -25,6 +28,7 @@ export class InfoSistemaComponent implements OnInit{
   constructor(
     public matriculaService: MatriculaControllerService,
     public turmaService: TurmaControllerService,
+    public controlePeriodoMatriculaService: ControlePeriodoMatriculaControllerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
@@ -66,6 +70,32 @@ export class InfoSistemaComponent implements OnInit{
     subscribe(data =>{
       this.totalTurmas = data;
     })
+  }
+
+
+
+  controlePreMatricula(event: any) {
+    if (event.checked) {
+      this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerAtivaPeriodoMatricula(
+        {aceitandoCadastroMatricula: true}, undefined
+      ).subscribe(
+        data => {console.log(data)}
+      )
+      console.log('O botão está ligado');
+    } else {
+      this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerAtivaPeriodoMatricula(
+        {aceitandoCadastroMatricula: false}, undefined
+      )
+      console.log('O botão está desligado');
+    }
+  }
+
+  controleReMatricula(event: any) {
+    if (event.checked) {
+      console.log('O botão está ligado');
+    } else {
+      console.log('O botão está desligado');
+    }
   }
 
 
