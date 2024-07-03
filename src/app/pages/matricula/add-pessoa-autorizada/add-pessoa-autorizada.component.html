@@ -19,15 +19,13 @@
                     class="form" fxFlex="1 1 auto"
 
             >
-                <div fxLayout="row" fxLayoutAlign="center">
-                    <mat-form-field>
-                        <mat-label>CPF do Responsável</mat-label>
-                        <input matInput formControlName="cpfResponsavel" placeholder="Digite o CPF do responsável">
-                        <mat-error *ngIf="formGroup.get('cpfResponsavel')?.invalid && formGroup.get('cpfResponsavel')?.touched">
-                            CPF inválido
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field>
+                    <mat-label>CPF</mat-label>
+                    <input matInput formControlName="cpfResponsavel" mask="000.000.000-00" placeholder="000.000.000-00">
+                    <mat-error *ngIf="handleError('cpfResponsavel', 'required')">Campo Obrigatório</mat-error>
+                    <mat-error *ngIf="handleError('cpfResponsavel', 'cpfInvalido')">CPF Inválido</mat-error>
+                    <mat-error *ngIf="handleError('cpfResponsavel', 'maxlength')">Limite de 11 números</mat-error>
+                </mat-form-field>
                 <div fxLayout="row" fxLayoutAlign="center">
                     <mat-form-field>
                         <mat-label>Responsável Autorizado</mat-label>

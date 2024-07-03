@@ -48,6 +48,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
         if (this.formGroup.valid) {
 
             const responsavel: ResponsavelDto = {
+                idMatricula: this.alunoID,
                 cpfResponsavel: this.formGroup.get('cpfResponsavel')?.value,
                 nomeResponsavel: this.formGroup.get('nomeResponsavel')?.value,
                 vinculo: this.formGroup.get('vinculo')?.value,
@@ -85,4 +86,7 @@ export class AddPessoaAutorizadaComponent implements OnInit {
     limparFormulario() {
         this.formGroup.reset();
     }
+    public handleError = (controlName: string, errorName: string) => {
+        return this.formGroup.controls[controlName].hasError(errorName);
+    };
 }
