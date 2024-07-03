@@ -30,7 +30,8 @@ export class AddPessoaAutorizadaComponent implements OnInit {
 
     ngOnInit(): void {
         this.formGroup = this.formBuilder.group({
-            nomeResponsavel: [null, Validators.required]
+            nomeResponsavel: [null, Validators.required],
+            vinculo: [null, Validators.required],
         });
         this.buscarDados();
     }
@@ -43,12 +44,14 @@ export class AddPessoaAutorizadaComponent implements OnInit {
 
     private realizarInclusao() {
         if (this.formGroup.valid) {
+
             const responsavel: ResponsavelDto = {
+                idMatricula: this.alunoID,
                 nomeResponsavel: this.formGroup.get('nomeResponsavel')?.value,
-                idMatricula: this.alunoID
+                vinculo: this.formGroup.get('vinculo')?.value,
             };
 
-            this.responsavelService.responsavelControllerIncluir({ body: responsavel }).subscribe(
+            this.responsavelService.responsavelControllerIncluirResponsavel({ body: responsavel }).subscribe(
                 data => {
                     this.snackBar.open('Responsável adicionado com sucesso', 'Fechar', {
                         duration: 3000,
