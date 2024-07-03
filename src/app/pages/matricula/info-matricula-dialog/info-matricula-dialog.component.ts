@@ -164,7 +164,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
 
     deleteResponsavel(responsavelAutorizado: ResponsavelDto): void {
-        
+
     }
 
 
@@ -225,7 +225,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 if (this.matriculaVisualiza && advertencia.idMatricula !== undefined && advertencia.numero !== undefined) {
                     const advertenciasAtuais = this.matriculaVisualiza.advertencias || [];
                     const advertenciasFiltradas = advertenciasAtuais.filter(ad => ad.numero !== advertencia.numero);
-
 
                     if (advertenciasFiltradas.length !== advertenciasAtuais.length) {
                         this.matriculaVisualiza.advertencias = advertenciasFiltradas;
