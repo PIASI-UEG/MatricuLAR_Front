@@ -621,7 +621,7 @@ export class FormMatriculaComponent implements OnInit {
       };
     }
 
-    if(this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar"){
+    if(this.tipoDeFormulario === "Validar"){
       const listaDocumentos: DocumentoMatriculaDto[] = [];
 
       this.listaDocumentosEditareValidar.forEach(item => {
@@ -630,11 +630,9 @@ export class FormMatriculaComponent implements OnInit {
         }
       });
 
-
-
       matriculaDtoPreenchido.documentoMatricula = listaDocumentos;
     }
-
+    console.log("make matricula", matriculaDtoPreenchido)
     return matriculaDtoPreenchido;
   }
 
@@ -700,8 +698,8 @@ export class FormMatriculaComponent implements OnInit {
                             oculto: false
                         }));
                         this.ordenarLista();
-                        console.log(this.listaDocumentosEditareValidar);
                     }
+
                 },
                 error => {
                     this.mensagens.confirmarErro(this.FORM_EDITAR, error.message);
@@ -1502,27 +1500,51 @@ export class FormMatriculaComponent implements OnInit {
     const matriculaDTO = this.makeDTOMatricula();
     console.log("COMPLETO", matriculaDTO)
     console.log(matriculaDTO.documentoMatricula)
-    this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
-      const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
-        {
-          data:
-            {
-              id: retorno.id,
-            }
-        })
-      dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
-          if(confirmed){
-            this.confirmarAcao(retorno, "Incluir na turma e validar")
-          }
-          else{
-            this.confirmarAcao(retorno, this.tipoDeFormulario)
-          }
-          this.router.navigate(['/matricula/validar']);
-      }
-      )
-    }, error => {
-      this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+
+    const dialogConfirmacao = this.dialog.open(ConfirmationDialog, {
+      data: {
+        titulo: 'INCLUIR NA TURMA!',
+        mensagem: `Deseja incluir a criança em uma turma ?`,
+        textoBotoes: {
+          ok: 'Sim',
+          cancel: 'Não',
+        },
+      },
     });
+
+      dialogConfirmacao.afterClosed().subscribe(result => {
+        if (result) {
+          this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
+          const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
+            {
+              data:
+                {
+                  id: retorno.id,
+                }
+            })
+          dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
+              if(confirmed){
+                this.confirmarAcao(retorno, "Incluir na turma e validar")
+              }
+              else{
+                this.confirmarAcao(retorno, this.tipoDeFormulario)
+              }
+              this.router.navigate(['/matricula/validar']);
+            }
+          )
+          }, error => {
+            this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+          });
+        }
+        else{
+          this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
+            this.confirmarAcao(retorno, this.tipoDeFormulario);
+            this.router.navigate(['/matricula/validar']);
+          }, error => {
+            this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+          });
+        }
+      });
 
   }
 
