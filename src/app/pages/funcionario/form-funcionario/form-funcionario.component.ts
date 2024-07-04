@@ -113,9 +113,7 @@ export class FormFuncionarioComponent implements OnInit {
   onSubmit() {
       this.submitFormulario = true;
 
-      if (this.formGroup.invalid) {
-          return;
-      }
+     
 
       if (!this.codigo) {
           this.realizarInclusao();
