@@ -9,6 +9,8 @@ import { config, IConfig } from './config';
 import {
   ControlePeriodoMatriculaControllerService
 } from "../../api/services/controle-periodo-matricula-controller.service";
+import {LoaderService} from "../loader/loader.service";
+import {finalize} from "rxjs/operators";
 
 /**
  * Implementação que garante a segurança das rotas permitindo o acesso apenas se o 'Usuário' estiver autenticado
@@ -18,6 +20,7 @@ import {
  */
 @Injectable()
 export class SecurityMatriculaGuard implements CanActivate, OnInit{
+    valid = false;
     /**
      * Construtor da classe.
      *
@@ -29,6 +32,7 @@ export class SecurityMatriculaGuard implements CanActivate, OnInit{
       private router: Router,
       private securityService: SecurityService,
       private controlePeriodoMatriculaService: ControlePeriodoMatriculaControllerService,
+      private loaderService: LoaderService,
       @Inject(config) private config: IConfig) { }
 
     /**
@@ -41,28 +45,34 @@ export class SecurityMatriculaGuard implements CanActivate, OnInit{
     ngOnInit(): void {
 
     }
+
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        //console.log('canActive');
-        let valid = false;
-        this.obterStatus().then(r => valid = r);
-        if (valid || this.securityService.isValid()) {
-            valid = true;
+        if (this.securityService.isValid()) {
+            return true;
         } else {
-            this.securityService.onForbidden.emit(this.securityService.credential);
-            this.router.navigate(['/']);
+            console.log('loading...');
+            return new Observable<boolean>((observer) => {
+              this.obterStatus();
+              setTimeout(() => {
+                console.log('done!');
+                if (!this.valid) {
+                  this.securityService.onForbidden.emit(this.securityService.credential);
+                  this.router.navigate(['/']);
+                }
+                observer.next(this.valid);
+                observer.complete();
+              }, 500);
+            });
         }
-        return valid;
     }
 
-  async obterStatus(): Promise<boolean> {
-    var dados = false;
-    await this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerOberStatus().subscribe(
-      data => {
-        console.log(data);
-        dados = data;
-      }
-    );
-    return dados;
-  }
+    obterStatus() {
+      this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerOberStatus().subscribe(
+        data => {
+          console.log(data);
+          this.valid = data;
+        }
+      );
+    }
 
 }
