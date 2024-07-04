@@ -516,22 +516,25 @@ export class FormMatriculaComponent implements OnInit {
 
   private realizarEdicao() {
     const matricula: MatriculaDto = this.makeDTOMatricula();
-    console.log(matricula)
+    console.log("MATRICULA", matricula)
     this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno => {
       if (this.verificarClickDocs) {
         this.verificarClickDocs = false;
       } else if (this.tipoDeFormulario == 'Editar') {
         this.router.navigate(["/matricula"]);
+        this.listaDocumentosEditareValidar = [];
       } else if (this.tipoDeFormulario == 'Validar') {
         this.router.navigate(["/matricula/validar"]);
+        this.listaDocumentosEditareValidar = [];
       }
       this.confirmarAcao(retorno, this.FORM_EDITAR);
     }, error => {
       this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+      this.listaDocumentosEditareValidar = [];
       console.log("erro", error.message)
       this.mudouForm = false
     });
-
+    console.log("MATRICULA DEPPOIS", matricula)
   }
 
   private makeDTOMatricula(): MatriculaDto {
@@ -616,7 +619,7 @@ export class FormMatriculaComponent implements OnInit {
       };
     }
 
-    if (this.tipoDeFormulario === "Validar") {
+    if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
       const listaDocumentos: DocumentoMatriculaDto[] = [];
 
       this.listaDocumentosEditareValidar.forEach(item => {
@@ -708,7 +711,7 @@ export class FormMatriculaComponent implements OnInit {
   confirmarAcao(matricula: MatriculaDto, acao: string) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
-        titulo: 'Cadastro!',
+        titulo: `${acao}`,
         mensagem: `Ação de ${acao} Nome: ${matricula.nome} (ID: ${matricula.id}) realizada com sucesso!`,
         textoBotoes: {
           ok: 'Confirmar',
@@ -1368,6 +1371,7 @@ export class FormMatriculaComponent implements OnInit {
   }
 
   openDialogPreviewExpanded(element: DocumentoMatriculaDto) {
+    console.log("element", element)
     const config: MatDialogConfig = {
       data: {
         documentoEditarValidar: element,
@@ -1517,15 +1521,20 @@ export class FormMatriculaComponent implements OnInit {
               this.router.navigate(['/matricula/validar']);
             }
           )
+          this.listaDocumentosEditareValidar = [];
         }, error => {
           this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+          this.listaDocumentosEditareValidar = [];
         });
+
       } else {
         this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
           this.confirmarAcao(retorno, this.tipoDeFormulario);
           this.router.navigate(['/matricula/validar']);
+          this.listaDocumentosEditareValidar = [];
         }, error => {
           this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+          this.listaDocumentosEditareValidar = [];
         });
       }
     });
@@ -1549,8 +1558,10 @@ export class FormMatriculaComponent implements OnInit {
         this.matriculaService.matriculaControllerRemover({id: this.codigo}).subscribe(retorno => {
           this.confirmarAcao(retorno, "Recusar");
           this.router.navigate(['/matricula/validar']);
+          this.listaDocumentosEditareValidar = [];
         }, error => {
           this.mensagens.confirmarErro("Recusar", error.message);
+          this.listaDocumentosEditareValidar = [];
         });
       }
     })

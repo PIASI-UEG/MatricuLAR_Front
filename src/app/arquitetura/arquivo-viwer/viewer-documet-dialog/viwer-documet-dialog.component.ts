@@ -69,11 +69,11 @@ export class ViwerDocumetDialogComponent implements OnInit {
       this.naoTemArq = false;
     } else {
 
-      if (!this.documentoEditarValidar) {
+      if (!this.documentoEditarValidar.caminhoDocumento) {
         this.mensagens.confirmarErro("Visualizar documento", "Esse documeno não existe na lista");
         this.naoTemArq = true;
         return;
-      } else if(!this.documentoEditarValidar.caminhoDocumento){
+      } else if(!this.documentoEditarValidar){
         this.naoTemArq = true;
         return;
       } else {
@@ -101,6 +101,7 @@ export class ViwerDocumetDialogComponent implements OnInit {
             this.fileSRC = this.makeURLFile(file);
 
           }, error => {
+            this.naoTemArq = true;
             this.mensagens.confirmarErro("Obter o documento", error.message);
           });
       }

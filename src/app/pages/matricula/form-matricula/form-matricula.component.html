@@ -949,7 +949,7 @@
               <ng-container *ngIf="this.tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
                 <mat-header-cell *matHeaderCellDef class="aceite-column">Aceitar</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="aceite-column">
-                  <mat-checkbox color="primary" [checked]="element.aceito"
+                  <mat-checkbox color="primary" [checked]="element.documentoMatricula.aceito"
                                 (change)="onAceitoChange(element)"></mat-checkbox>
                 </mat-cell>
               </ng-container>
