@@ -5,6 +5,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { SecurityGuard } from './security.guard';
 import { SecurityService } from './security.service';
 import { config, INITIAL_CONFIG, initialConfig, NEW_CONFIG, optionsConfig } from './config';
+import {SecurityMatriculaGuard} from "./security.matricula.guard";
 
 /**
  * Modulo responsável por encapsular os mecanismos de 'Segurança' necessários na aplicação.
@@ -17,6 +18,7 @@ import { config, INITIAL_CONFIG, initialConfig, NEW_CONFIG, optionsConfig } from
   ],
   providers: [
     SecurityGuard,
+    SecurityMatriculaGuard,
     SecurityService
   ],
   declarations: []

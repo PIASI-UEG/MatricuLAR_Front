@@ -9,6 +9,9 @@ import {SecurityService} from "../../arquitetura/security/security.service";
 
 import {MatDialog} from "@angular/material/dialog";
 import {MensagensUniversais} from "../../../MensagensUniversais";
+import {
+  ControlePeriodoMatriculaControllerService
+} from "../../api/services/controle-periodo-matricula-controller.service";
 
 
 @UntilDestroy()
@@ -28,12 +31,14 @@ export class HomeComponent implements OnInit {
       securityService: this.securityService
   })
     route!: string;
+  statusControlePreMat: boolean = false;
 
   constructor(
     private observer: BreakpointObserver,
     private router: Router,
     private dialog: MatDialog,
     protected securityService: SecurityService,
+    private controlePeriodoMatriculaService: ControlePeriodoMatriculaControllerService,
     ) {
       this.router.events.subscribe(event =>{
           if(event instanceof NavigationEnd) {
@@ -57,6 +62,16 @@ export class HomeComponent implements OnInit {
       /*if (!this.securityService.isValid())
         this.router.navigate(['/acesso']);
     }*/
+    this.obterStatusControleMat();
+  }
+
+  obterStatusControleMat(){
+    this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerOberStatus().subscribe(
+      data => {
+        console.log(data);
+        this.statusControlePreMat = data;
+      }
+    );
   }
 
   usuarioLogado(): number {

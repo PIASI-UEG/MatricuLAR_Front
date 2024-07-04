@@ -11,7 +11,7 @@
           <mat-card-title>Controle Pré-Matricula</mat-card-title>
         </mat-card-header>
         <mat-card-content class="numero">
-          <mat-slide-toggle (change)="controlePreMatricula($event)">Ligar/Desligar</mat-slide-toggle>
+          <mat-slide-toggle [ngModel]="status" (change)="controlePreMatricula($event)">Ligar/Desligar</mat-slide-toggle>
         </mat-card-content>
       </mat-card>
 

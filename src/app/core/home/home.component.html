@@ -16,7 +16,7 @@
         <button *ngIf="!securityService.isValid()" title="Home"  mat-button class="menu-button" routerLink="" [ngClass]="{'active-link': isActive('/')}" > Pagina Inicial
             <mat-icon>home</mat-icon>
         </button>
-        <button *ngIf="!securityService.isValid()" title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']" [ngClass]="{'active-link': isActive('/matricula/novo')}" > Pré-Matrícula
+        <button *ngIf="!securityService.isValid() && statusControlePreMat" title="Matricular"  mat-button class="menu-button" [routerLink]="['/matricula','novo']" [ngClass]="{'active-link': isActive('/matricula/novo')}" > Pré-Matrícula
             <mat-icon>assignment</mat-icon>
         </button>
         <button *ngIf="securityService.isValid()" title="Painel"  mat-button class="menu-button" routerLink="/painel" [ngClass]="{'active-link': isActive('/painel')}"> Painel

@@ -5,6 +5,8 @@ import {ListMatriculaComponent} from "./list-matricula/list-matricula.component"
 import {FormMatriculaComponent} from "./form-matricula/form-matricula.component";
 import {ImprimirTermoComponent} from "../imprimir-termo/imprimir-matricula/imprimir-termo.component";
 import {SecurityGuard} from "../../arquitetura/security/security.guard";
+import {ControlePeriodoMatriculaControllerService} from "../../api/services";
+import {SecurityMatriculaGuard} from "../../arquitetura/security/security.matricula.guard";
 
 
 export const matriculaRoutes: Routes = [
@@ -26,7 +28,8 @@ export const matriculaRoutes: Routes = [
       },
       {
         path: "novo",
-        component: FormMatriculaComponent
+        component: FormMatriculaComponent,
+        canActivate: [SecurityMatriculaGuard]
       },
       {
         path: ":id",

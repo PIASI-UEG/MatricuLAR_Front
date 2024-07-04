@@ -24,6 +24,7 @@ export class InfoSistemaComponent implements OnInit{
   qtdMatriculasAtivas: number = 0;
   qtdMatriculasParaRenovar: number = 0;
   innerWidth: number = window.innerWidth;
+  status: boolean = false;
 
   constructor(
     public matriculaService: MatriculaControllerService,
@@ -40,6 +41,7 @@ export class InfoSistemaComponent implements OnInit{
   ngOnInit(): void {
     this.innerWidth = window.innerWidth;
     this.buscarDados();
+    this.obterStatus();
   }
 
 
@@ -85,9 +87,20 @@ export class InfoSistemaComponent implements OnInit{
     } else {
       this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerAtivaPeriodoMatricula(
         {aceitandoCadastroMatricula: false}, undefined
-      )
+      ).subscribe(
+        data => {console.log(data)}
+    )
       console.log('O botão está desligado');
     }
+  }
+
+  obterStatus(){
+    this.controlePeriodoMatriculaService.controlePeriodoMatriculaControllerOberStatus().subscribe(
+      data => {
+        console.log(data);
+        this.status = data;
+      }
+    );
   }
 
   controleReMatricula(event: any) {

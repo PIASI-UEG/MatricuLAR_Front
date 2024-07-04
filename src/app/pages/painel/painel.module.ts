@@ -9,6 +9,7 @@ import {HomePainelComponent} from "./home-painel/home-painel.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { InfoSistemaComponent } from './info-sistema/info-sistema.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
         RouterOutlet,
         RouterLink,
         MatGridListModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        FormsModule
     ]
 })
 export class PainelModule { }
