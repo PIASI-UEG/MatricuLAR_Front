@@ -1,7 +1,7 @@
 @import '../../../../StyleForms.css';
 
 .imagem-card {
-  width:100%;
+  width: 100%;
   margin-bottom: 10px;
   border-radius: 10px;
   border: 3px solid #B2DFFF;
@@ -13,8 +13,7 @@
 
 .content-container {
   width: 100%;
-  margin-right:0;
-
+  margin-right: 0;
 }
 
 .card-container {
@@ -31,11 +30,6 @@
 
 .btn-mov {
   margin-top: 20px;
-}
-
-.botao-advertencia {
-  padding: 0 28px;
-  font-size: 14px;
 }
 
 @media (max-width: 999px) {
@@ -77,6 +71,7 @@
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
+    font-size: 10px;
   }
 
   .mat-header-cell {
@@ -86,6 +81,7 @@
   .mat-cell {
     border-top: 1px solid rgba(0, 0, 0, 0.12);
   }
+
   .imagem-card,
   .content-container {
     width: 100%;
@@ -95,13 +91,12 @@
   .imagem-card {
     margin-bottom: 10px;
   }
-  .botao-advertencia, .botao-necessidade, .botao-cancelar{
+
+  .botao-cancelar {
     padding: 0 20px;
     font-size: 8px;
   }
-
 }
-
 
 @media (min-width: 768px) {
   .card-container {
@@ -119,13 +114,26 @@
     width: 65%;
     margin-right: 0;
   }
-  .botao-advertencia, .botao-necessidade, .botao-cancelar {
+
+   .botao-cancelar {
     padding: 0 26px;
     font-size: 12px;
   }
 }
 
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-img{
+.fechar-icone {
+  margin-left: auto;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+
+img {
   border-radius: 7.5px;
 }

@@ -1,6 +1,13 @@
 <div class="formMov">
     <form [formGroup]="formGroup" class="form" fxFlex="1 1 auto">
-        <h1><strong>Dados da Matrícula</strong></h1>
+        <div class="dialog-header">
+            <button mat-icon-button color="warn"  (click)="fechar()" class="fechar-icone">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div>
+            <h1><strong>Dados da Matrícula</strong></h1>
+        </div>
         <div class="card-container">
             <div *ngIf="matriculaVisualiza && matriculaVisualiza.caminhoImagem" class="imagem-card">
                 <img [src]="caminhoDocumento" alt="Foto da criança">
@@ -42,17 +49,21 @@
             <h3><b>Informações dos Responsáveis Autorizados</b></h3>
             <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.responsaveis" [dataSource]="matriculaVisualiza.responsaveis" class="autorizados-table mat-elevation-z8">
                 <ng-container matColumnDef="responsaveis">
-                    <mat-header-cell *matHeaderCellDef> Responsáveis Autorizados</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef> Nome do Responsável Autorizado</mat-header-cell>
                     <mat-cell *matCellDef="let responsaveis"> {{ responsaveis.nomeResponsavel}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="vinculo">
+                    <mat-header-cell *matHeaderCellDef> Vínculo</mat-header-cell>
+                    <mat-cell *matCellDef="let responsaveis"> {{ responsaveis.vinculo}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="acoes">
                     <mat-header-cell *matHeaderCellDef>
-                        <button mat-icon-button (click)="openDialogResponsavel()">
+                        <button mat-icon-button color="primary" (click)="openDialogResponsavel()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let element">
-                        <button mat-icon-button (click)="deleteResponsavel(element)">
+                        <button mat-icon-button color="warn" (click)="deleteResponsavel(element)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>
                     </mat-cell>
@@ -69,13 +80,13 @@
                 </ng-container>
                 <ng-container matColumnDef="acoes">
                     <mat-header-cell *matHeaderCellDef>
-                        <button mat-icon-button (click)="openDialogNecessidade()">
+                        <button mat-icon-button color="primary" (click)="openDialogNecessidade()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let necessidades">
 
-                        <button mat-icon-button (click)="deleteNecessidade(necessidades)">
+                        <button mat-icon-button color="warn" (click)="deleteNecessidade(necessidades)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>
                     </mat-cell>
@@ -96,12 +107,12 @@
                 </ng-container>
                 <ng-container matColumnDef="acoes">
                     <mat-header-cell *matHeaderCellDef>
-                        <button mat-icon-button (click)="openDialogAdvertencia()">
+                        <button mat-icon-button color="primary" (click)="openDialogAdvertencia()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let advertencia">
-                        <button mat-icon-button (click)="deleteAdvertencia(advertencia)">
+                        <button mat-icon-button color="warn" (click)="deleteAdvertencia(advertencia)">
                             <mat-icon>remove_circle</mat-icon>
                         </button>
                     </mat-cell>

@@ -40,7 +40,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
     matricula!: MatriculaDto;
     matriculaDataSource: MatTableDataSource<MatriculaVisualizarDto> = new MatTableDataSource<MatriculaVisualizarDto>([])
     colunasTutores: string[] = ['tutoresNomes', 'tutoresTelefone'];
-    colunasResponsaveis: string[] = ['responsaveis'];
+    colunasResponsaveis: string[] = ['responsaveis', 'vinculo'];
     colunasNecessidadesEspeciais: string[] = ['titulo'];
     colunasAdvertencia: string[] = ['titulo', 'descricao'];
     caminhoDocumento!: string;
