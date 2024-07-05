@@ -40,10 +40,10 @@
                 <mat-row *matRowDef="let row; columns: colunasTutores;"></mat-row>
             </mat-table>
             <h3><b>Informações dos Responsáveis Autorizados</b></h3>
-            <mat-table [dataSource]="matriculaDataSource" class="autorizados-table mat-elevation-z8">
-                <ng-container matColumnDef="responsaveisNome">
+            <mat-table *ngIf="matriculaVisualiza && matriculaVisualiza.responsaveis" [dataSource]="matriculaVisualiza.responsaveis" class="autorizados-table mat-elevation-z8">
+                <ng-container matColumnDef="responsaveis">
                     <mat-header-cell *matHeaderCellDef> Responsáveis Autorizados</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.responsaveisNome.join(', ') }} </mat-cell>
+                    <mat-cell *matCellDef="let responsaveis"> {{ responsaveis.nomeResponsavel}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="acoes">
                     <mat-header-cell *matHeaderCellDef>

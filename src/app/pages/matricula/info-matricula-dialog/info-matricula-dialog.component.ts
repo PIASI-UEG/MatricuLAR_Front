@@ -40,7 +40,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
     matricula!: MatriculaDto;
     matriculaDataSource: MatTableDataSource<MatriculaVisualizarDto> = new MatTableDataSource<MatriculaVisualizarDto>([])
     colunasTutores: string[] = ['tutoresNomes', 'tutoresTelefone'];
-    colunasResponsaveis: string[] = ['responsaveisNome'];
+    colunasResponsaveis: string[] = ['responsaveis'];
     colunasNecessidadesEspeciais: string[] = ['titulo'];
     colunasAdvertencia: string[] = ['titulo', 'descricao'];
     caminhoDocumento!: string;
@@ -80,14 +80,15 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
                 const tutoresNomesArray = data.tutoresNomes || [];
                 const tutoresTelefoneArray = data.tutoresTelefone || [];
-                const responsaveisAutorizadosNomeArray = data.responsaveisNome || [];
+                const responsaveisAutorizadosNomeArray = data.responsaveis || [];
                 const necessidadeEspecialArray = data.necessidades || [];
                 const advertenciasArray = data.advertencias || [];
 
                 this.matriculaDataSource.data = [{
                     tutoresNomes: tutoresNomesArray,
                     tutoresTelefone: tutoresTelefoneArray,
-                    responsaveisNome: responsaveisAutorizadosNomeArray,
+                    responsaveis: responsaveisAutorizadosNomeArray,
+                    necessidades: necessidadeEspecialArray,
                     advertencias: advertenciasArray
                 }];
 
