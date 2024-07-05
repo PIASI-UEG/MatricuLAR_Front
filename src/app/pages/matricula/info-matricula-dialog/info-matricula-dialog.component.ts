@@ -207,8 +207,6 @@ export class InfoMatriculaDialogComponent implements OnInit {
                             if (this.matriculaVisualiza && this.matriculaVisualiza.responsaveis) {
                                 this.matriculaVisualiza.responsaveis = this.matriculaVisualiza.responsaveis.filter(resp => resp.cpfResponsavel !== responsavelAutorizado.cpfResponsavel);
                                 this.matriculaDataSource.data = [this.matriculaVisualiza];
-                            } else {
-                                console.error('MatriculaVisualiza or its responsaveis are undefined.');
                             }
                             this.snackBar.open('Responsável removido com sucesso', 'Fechar', { duration: 3000 });
                         },

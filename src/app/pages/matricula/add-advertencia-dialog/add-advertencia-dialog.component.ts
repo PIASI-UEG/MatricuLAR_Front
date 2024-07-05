@@ -55,16 +55,13 @@ export class AddAdvertenciaDialogComponent {
   }
 
   private realizarInclusao() {
-    console.log("Dados:",this.formGroup.value);
     let advertenciaDto: AdvertenciaDto = this.formGroup.value;
     advertenciaDto.idMatricula = this.aluno?.id;
     this.advertenciaService.advertenciaControllerIncluir({body: advertenciaDto})
       .subscribe( retorno =>{
-        console.log("Retorno:",retorno);
         this.confirmarAcao(retorno);
         this.router.navigate(["/matricula"]);
       }, erro =>{
-        console.log("Erro:"+erro.message);
         //this.mensagens.confirmarErro(erro.message)
       })
   }
