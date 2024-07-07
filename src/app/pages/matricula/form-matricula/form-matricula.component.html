@@ -12,7 +12,7 @@
     <div class="mat-tab-titulos">
       <mat-tab-group dynamicHeight (selectedIndexChange)="this.alterarGuiaAtiva($event)"
                      (selectedTabChange)="onTabClick($event)">
-        <!-- Etapa 0  -->
+        <!-- Etapa 0  - Informacoes Gerais-->
         <mat-tab class="mat-tab-color" label="Informações Gerais"
                  *ngIf="tipoDeFormulario === FORM_INCLUIR && !securityServiceisValid()"
                  [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 0">
@@ -61,7 +61,7 @@
           </div>
         </mat-tab>
 
-        <!-- Etapa 1 -->
+        <!-- Etapa 1 - Dados da crianca-->
         <mat-tab class="mat-tab-color" label="Criança"
                  [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 1 && !securityServiceisValid()">
           <div class="conteudo-mat-tab">
@@ -231,8 +231,7 @@
 
         </mat-tab>
 
-
-        <!-- Etapa 2 -->
+        <!-- Etapa 2 - Responsaveis Legais-->
         <mat-tab label="Responsável Legal"
                  [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 2  && !securityServiceisValid()">
           <div class="conteudo-mat-tab">
@@ -441,8 +440,7 @@
           </div>
         </mat-tab>
 
-        <!-- Etapa 3 -->
-
+        <!-- Etapa 3 - Perguntas Culturais-->
         <mat-tab label="Perguntas"
                  [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 3  && !securityServiceisValid()">
           <div class="conteudo-mat-tab">
@@ -603,7 +601,7 @@
           </div>
         </mat-tab>
 
-        <!-- Etapa 4 -->
+        <!-- Etapa 4 - Documentos-->
         <mat-tab label="Documentos"
                  [disabled]="tipoDeFormulario === 'Cadastrar' && guiaAtiva !== 4  && !securityServiceisValid()">
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Cadastrar'">
@@ -908,7 +906,7 @@
               Declaro que li e concordo
             </mat-checkbox>
 
-
+<!--botoes inclusao-->
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" fxLayoutAlign="space-between center"
                  *ngIf="!this.verificarAlinhar()">
               <button mat-raised-button type="button"
@@ -943,13 +941,14 @@
 
           </div>
 
+<!--tabela de validacao e edicao de documentos-->
           <div class="conteudo-mat-tab" *ngIf="tipoDeFormulario == 'Editar' || tipoDeFormulario == 'Validar'">
             <mat-table *ngIf="show" [dataSource]="listaDocumentosEditareValidar" class="tabela">
 
               <ng-container *ngIf="this.tipoDeFormulario == 'Validar'" matColumnDef="Aceite">
                 <mat-header-cell *matHeaderCellDef class="aceite-column">Aceitar</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="aceite-column">
-                  <mat-checkbox color="primary" [checked]="element.documentoMatricula.aceito"
+                  <mat-checkbox color="primary" [checked]="element.aceito"
                                 (change)="onAceitoChange(element)"></mat-checkbox>
                 </mat-cell>
               </ng-container>
@@ -957,18 +956,18 @@
               <ng-container matColumnDef="Tipo">
                 <mat-header-cell *matHeaderCellDef> Documentos</mat-header-cell>
                 <mat-cell mat-cell *matCellDef="let element"
-                          (click)="openDialogPreviewExpanded(element.documentoMatricula)"> {{getEnumNames(element.documentoMatricula.tipoDocumento)}} </mat-cell>
+                          (click)="openDialogPreviewExpanded(element)"> {{getEnumNames(element.tipoDocumento)}} </mat-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="colunasMostrar; sticky: true"></mat-header-row>
               <mat-row
                 *matRowDef="let row; columns: colunasMostrar;"
-                [ngClass]="{'selected-row': isSelected(row.documentoMatricula)}"
-                [class.hidden]="row.oculto"
+                [ngClass]="{'selected-row': isSelected(row)}"
               ></mat-row>
 
             </mat-table>
 
+<!--botoes edicao e validacao -->
             <div class="divBotoes" [fxLayout]="mudarAlinhar()" *ngIf="!this.verificarAlinhar()"
                  fxLayoutAlign="space-between center">
               <button mat-raised-button type="button" class="button botao-voltar" (click)="goToPreviousStep(2)">Etapa
@@ -1007,8 +1006,6 @@
               </button>
             </div>
           </div>
-
-
         </mat-tab>
       </mat-tab-group>
     </div>
@@ -1017,7 +1014,7 @@
 </div>
 
 
-
+<!--botao do whatsapp ao fazer pre matricula deslogado do sistema-->
 <a *ngIf="!securityServiceisValid()" href="https://wa.me/6230996423?text=Estava%20fazendo%20a%20matrícula%20do%20meu%20filho%20e%20tenho%20duvidas." class="whatsapp-button" target="_blank">
   <img src="/assets/foto_zap/duvidas.png" alt="WhatsApp">
 </a>

@@ -28,8 +28,6 @@ import {EnderecoDto} from "../../../api/models/endereco-dto";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {Subscription} from "rxjs";
-import {DocumentoMatricula} from "./DocumentoMatricula";
-
 import {ErrosDialogComponent} from "../../../core/erros-dialog/erros-dialog.component";
 import {
   necessidadeEspecialControllerAlterar
@@ -51,54 +49,95 @@ export class FormMatriculaComponent implements OnInit {
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
   @ViewChild('aceiteInformacoes') aceiteInformacoes!: MatCheckbox;
 
+  // form de campos e de documentos
   formGroup!: FormGroup;
   formDocumentos!: FormGroup;
-  currentStep: number = 1; // Controla a etapa atual
+
+  // Controla as etapas da guia
+  currentStep: number = 1;
+  guiaAtiva = 0;
+
+  // recebe o id no momento da edicao e validacao
   codigo!: number;
+
+  // classe criada para exibir mensagens globais
   mensagens: MensagensUniversais = new MensagensUniversais({
     dialog: this.dialog,
     router: this.router,
     telaAtual: 'matricula',
     securityService: this.securityService
   })
+
+  // classe criada para validacoes globais
   validacoes: Validacoes = new Validacoes();
-  minDate = new Date(1900, 0, 1);
+
+  // variaveis para personalizar o campo de data do datepicker
   today = new Date();
+  minDate = new Date(1900, 0, 1);
   maxDate = new Date(this.today.getFullYear() - 18, this.today.getMonth(), this.today.getDate());
   minDateCrianca = new Date(this.today.getFullYear() - 5, this.today.getMonth(), this.today.getDate());
   maxDateCrianca = new Date(this.today.getFullYear() - 1, this.today.getMonth(), this.today.getDate());
+
+  // variaveis que controlam a responsividade
   flexDivAlinhar: string = 'row';
   flexDivAlinharElementosGrandes: string = 'row';
   innerWidth: number = window.innerWidth;
-  hide = true;
-  parentescos: string[] = ['PAI', 'MAE', 'AVO', 'BISAVO', 'TIO', 'TIA']; // Lista de opções de parentesco
+
+  // Lista de opções de parentesco
+  parentescos: string[] = ['PAI', 'MAE', 'AVO', 'BISAVO', 'TIO', 'TIA'];
+
+  // variavel que recebe o nome da crianaca e coloca em tempo de execucao na tela
   nomeTitulo: string = "";
-  guiaAtiva = 0;
+
+  // variavel que controla se a pessoa clicou que a crianca possui necessidade especial
   botaoNecessidadeClicado: boolean = false;
+
+  // variavel que controla se foi dado submit no formulario
   enviado: boolean = false;
-  marcado: boolean = false;
-  // docs: File[] = [];
+
+  // variavel que controla se a pessoa clicou que tem conjugue e se mora com ele
   temConjugue: boolean = false;
+
+  // variavel que salva o conjugue na edicao para nao apagar ao desmarcar
   conjugue: TutorDto | null = null;
+
+  // variaveis que controlam o tipo de formulario
   public readonly FORM_INCLUIR = "Cadastrar";
   public readonly FORM_VALIDACACAO = "Validar";
   public readonly FORM_EDITAR = "Editar";
   tipoDeFormulario: string = this.FORM_INCLUIR;
+
+  // variavel que controla a tabela de documentos em edicao e validacao
   colunasMostrar!: string[];
+
+  // variavel que recebe o enum de documentos
   protected readonly EnumDoc = EnumDoc;
+
+  // variavel para o controle se a pessoa recebe beneficio do governo
   recebeBeneficio: string = "nao";
-  listaDocumentosEditareValidar: DocumentoMatricula[] = [];
+
+  // variavel que controla a lista de documentos no ediar e validar no front
+  listaDocumentosEditareValidar: Array<DocumentoMatriculaDto> = [];
+
+  // variavel utilizada para alterar a abela de documentos em editar e validar
   show: boolean = true;
+
+  // salva os documentos que foram editados ou salvados em editar e validar para pessoal saber qual alterou
   documentosSelecionados: DocumentoMatriculaDto[] = [];
-  mudouForm: boolean = true;
+
+  // variaveis para monitorar mudancas no formulario em editar e validar
   formChangesSubscription!: Subscription;
   verificarClickDocs: boolean = false;
+  mudouForm: boolean = true;
+
+  // Variaveis para o nome das guias em matricula editar/validar/incluir
   public readonly NOME_GUIA_TAB_INFORMACOES = "Informações Gerais";
   public readonly NOME_GUIA_TAB_CRIANCA = "Dados da Criança";
   public readonly NOME_GUIA_TAB_TUTOR = "Dados dos Responsáveis Legais";
   public readonly NOME_GUIA_TAB_PERGUNTAS = "Perguntas Culturais";
   public readonly NOME_GUIA_TAB_DOCUMENTOS = "Anexar documentos";
 
+  // Controle de campos para exibir dialog com erros
   trnaslationFields: TranslationField[] = [
     {
       formName: this.NOME_GUIA_TAB_CRIANCA,
@@ -167,6 +206,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   ]
 
+  // Controle de erros para exibir dialog dos erros por campo
   translationErros: TranslationError[] = [
     {
       formName: this.NOME_GUIA_TAB_INFORMACOES,
@@ -227,9 +267,11 @@ export class FormMatriculaComponent implements OnInit {
     }
   ]
 
+  // variavel que recebe o retorno da validacao e confirma que a validacao funcionou
+  private validou !: MatriculaDto;
+
   constructor(
     private formBuilder: FormBuilder,
-    private formBuilderDocs: FormBuilder,
     private _adapter: DateAdapter<any>,
     private router: Router,
     private route: ActivatedRoute,
@@ -241,11 +283,13 @@ export class FormMatriculaComponent implements OnInit {
     this._adapter.setLocale('pt-br');
   }
 
+  // classe executada assim que a tela e criada
   ngOnInit() {
+    // para responsividade
     this.innerWidth = window.innerWidth;
     this._adapter.setLocale('pt-br');
 
-
+    // criar formularios e preparar tela
     this.createFormListaDocs();
     this.createForm();
     this.adicionarCampoTutor();
@@ -253,17 +297,19 @@ export class FormMatriculaComponent implements OnInit {
     this.prepararEdicao();
     this.alterarNomeTitulo(0);
 
-
+    // a instancia de validacoes recebe alguns atributos para controle simultaneo
     this.validacoes.formGroupMatricula = this.formGroup;
     this.validacoes.formGroupDocsList = this.formDocumentos;
     this.validacoes.tipoform = this.tipoDeFormulario;
     this.validacoes.securityservice = this.securityService;
 
+    // um pequeno atraso para eniciar o monitorar mudancas
     setTimeout(() => {
       this.monitorarMudancas()
     }, 500);
   }
 
+  //  criacao dos formularios de campos
   private createForm() {
     //Dados da Criança
     this.formGroup = this.formBuilder.group({
@@ -278,9 +324,9 @@ export class FormMatriculaComponent implements OnInit {
       bairro: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
       logradouro: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
       complemento: [null, [Validators.required, Validators.maxLength(250), this.validacoes.validarCampoEmBranco]],
-      //Dados Tutor - Etapa2
+      //Dados Tutor
       tutor: this.formBuilder.array<TutorDto>([]),
-      //Perguntas culturais - Etapa 3
+      //Perguntas culturais
       frequentouOutraCreche: [null],
       razaoSaida: [null, [Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
       tipoResidencia: [null, Validators.required],
@@ -290,9 +336,6 @@ export class FormMatriculaComponent implements OnInit {
       possuiCRAS: [null],
       valorBeneficio: [null, Validators.maxLength(8)],
       rendaFamiliar: [null, [Validators.required, Validators.maxLength(8)]],
-      //Documentos - Etapa 4
-      // implementar anexar documentos no form
-      // declaro que li e concordo
       declaroLieConcordo: false
     }, {
       validator: [
@@ -313,7 +356,6 @@ export class FormMatriculaComponent implements OnInit {
     if (conjugue != null) {
       return this.formBuilder.group({
         nomeTutor: [conjugue.nomeTutor, [Validators.required, Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
-        //colocar
         dataNascimento: [conjugue.dataNascimento, Validators.required],
         cpf: [conjugue.cpf, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
         vinculo: [conjugue.vinculo, Validators.required],
@@ -323,7 +365,6 @@ export class FormMatriculaComponent implements OnInit {
         empresaNome: [conjugue.empresaNome, [Validators.required, Validators.maxLength(100), this.validacoes.validarCampoEmBranco]],
         empresaCnpj: [conjugue.empresaCnpj, [this.validacoes.validarCnpj, Validators.maxLength(14)]],
         telefoneCelularEmpresarial: [conjugue.telefoneCelularEmpresarial, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
-        //colocar
         telefoneFixoEmpresarial: [conjugue.telefoneFixoEmpresarial, [this.validacoes.validarTelefoneFixo, Validators.maxLength(10)]],
         casado: conjugue.casado,
         moraComConjuge: conjugue.moraComConjuge,
@@ -331,7 +372,6 @@ export class FormMatriculaComponent implements OnInit {
     } else {
       return this.formBuilder.group({
         nomeTutor: [null, [Validators.required, Validators.maxLength(200), this.validacoes.validarCampoEmBranco]],
-        //colocar
         dataNascimento: [null, Validators.required],
         cpf: [null, [Validators.required, this.validacoes.validarCpf, this.validacoes.validarIgualdadeCpf, Validators.maxLength(11)]],
         vinculo: [null, Validators.required],
@@ -341,7 +381,6 @@ export class FormMatriculaComponent implements OnInit {
         empresaNome: [null, [Validators.required, Validators.maxLength(100), this.validacoes.validarCampoEmBranco]],
         empresaCnpj: [null, [this.validacoes.validarCnpj, Validators.maxLength(14)]],
         telefoneCelularEmpresarial: [null, [this.validacoes.validarTelefone, Validators.maxLength(11)]],
-        //colocar
         telefoneFixoEmpresarial: [null, [this.validacoes.validarTelefoneFixo, Validators.maxLength(10)]],
         casado: false,
         moraComConjuge: false,
@@ -349,6 +388,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  //  criacao dos formularios de documentos para controle, principalmente de erros
   private createFormListaDocs() {
 
     this.formDocumentos = this.formBuilder.group({
@@ -379,30 +419,36 @@ export class FormMatriculaComponent implements OnInit {
     })
   }
 
+  // para exibir erros de campos
   public handleError = (controlName: string, errorName: string) => {
     return this.formGroup.controls[controlName].hasError(errorName);
   };
+
+  // para exibir erros dno formulario padrao
   public handleErrorForm = (errorName: string) => {
     const formGroup = this.formGroup;
     return formGroup.hasError(errorName);
   };
 
+  // para exibir erros do formulario de documentos
   public handleErrorFormDocs = (errorName: string) => {
     const formGroup = this.formDocumentos;
     return formGroup.hasError(errorName);
   };
 
+  // para exibir erros nos campos do formulario de tutor que esta dentro do form padrao
   public handleErrorTutor = (controlName: string, errorName: string, index: number) => {
     const formGroupTutor = this.getTutorForm(index)
     return formGroupTutor.controls[controlName].hasError(errorName);
   };
 
+  // para exibir erros do formulario de tutor que esta dentro do form padrao
   public handleErrorFormTutor = (errorName: string, index: number) => {
     const formGroupTutor = this.getTutorForm(index);
     return formGroupTutor.hasError(errorName);
   };
 
-
+  // chamado ao enviar o formulario
   onSubmit() {
     this.enviado = true;
 
@@ -414,6 +460,7 @@ export class FormMatriculaComponent implements OnInit {
         this.atribuirConjugueRelacionamento();
         this.realizarEdicao();
       } else {
+        // pega todos os erros dos formularios
         const errosControls = this.getAllErrorsInControls();
         const errosFormsAll = this.getAllErrosInForms();
 
@@ -440,11 +487,14 @@ export class FormMatriculaComponent implements OnInit {
           trnaslationerror: this.translationErros,
         }
       };
+
+      // exibe os erros
       const dialogRef = this.dialog.open(ErrosDialogComponent, config);
 
     }
   }
 
+  // pega os erros de todos os formularios de froma recursiva
   private getAllErrosInForms() {
     let errosFormsDocumentos: ErrosForm[] = [];
     const errosFormsGeral = this.getFormFieldValidationErrors(this.formGroup);
@@ -463,11 +513,13 @@ export class FormMatriculaComponent implements OnInit {
     return errosFormsAll;
   }
 
+  // pega os erros dos campos dos formularios
   private getAllErrorsInControls() {
     const errosControls = this.getControlValidationErrors(this.formGroup);
     return errosControls;
   }
 
+  // envia os documentos e os dados simultaneamente para o back
   uploadFiles(dto: any, files: File[]) {
     const formData: FormData = new FormData();
 
@@ -496,6 +548,7 @@ export class FormMatriculaComponent implements OnInit {
       });
   }
 
+  // faz a inclusao de uma nova matricula
   private realizarInclusao() {
     const docs = this.formDocumentos.get('listaDocumentos');
     const copiaDocs = docs?.value.slice();
@@ -507,16 +560,12 @@ export class FormMatriculaComponent implements OnInit {
       }
     }
 
-    // console.log("Matricula:", matricula);
-    // console.log("Dados:",this.formGroup.value);
-    // console.log("doc", copiaDocs)
-
     this.uploadFiles(matricula, copiaDocs);
   }
 
+  // envia os dados para edicao, apenas envia os campos do formulario os documentos sao tratados no dialog viwer-document na pasta arquitetura
   private realizarEdicao() {
     const matricula: MatriculaDto = this.makeDTOMatricula();
-    console.log("MATRICULA", matricula)
     this.matriculaService.matriculaControllerAlterar({id: this.codigo, body: matricula}).subscribe(retorno => {
       if (this.verificarClickDocs) {
         this.verificarClickDocs = false;
@@ -531,12 +580,11 @@ export class FormMatriculaComponent implements OnInit {
     }, error => {
       this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
       this.listaDocumentosEditareValidar = [];
-      console.log("erro", error.message)
       this.mudouForm = false
     });
-    console.log("MATRICULA DEPPOIS", matricula)
   }
 
+  // mapeia o dto de matricula que vai ser enviado para o back
   private makeDTOMatricula(): MatriculaDto {
 
     const necessidadesEspeciaisArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
@@ -620,20 +668,13 @@ export class FormMatriculaComponent implements OnInit {
     }
 
     if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
-      const listaDocumentos: DocumentoMatriculaDto[] = [];
-
-      this.listaDocumentosEditareValidar.forEach(item => {
-        if (!item.oculto) {
-          listaDocumentos.push(item.documentoMatricula);
-        }
-      });
-
-      matriculaDtoPreenchido.documentoMatricula = listaDocumentos;
+      matriculaDtoPreenchido.documentoMatricula = this.listaDocumentosEditareValidar;
     }
-    console.log("make matricula", matriculaDtoPreenchido)
+
     return matriculaDtoPreenchido;
   }
 
+  //recebe o DTO do back na edicao e validacao e coloca os dados na tela
   private prepararEdicao() {
     const paramId = this.route.snapshot.paramMap.get('id');
     if (paramId) {
@@ -682,7 +723,6 @@ export class FormMatriculaComponent implements OnInit {
               tutor.dataNascimento = new Date(tutor.dataNascimento + "T00:00")
               const tutorControl = this.getTutorForm(index);
               tutorControl.patchValue(tutor);
-              console.log("TuTOR 1", tutor);
             } else if (index === 1 && retorno.responsaveis) {
               tutor.vinculo = retorno.responsaveis[index].vinculo;
               this.conjugue = tutor;
@@ -690,24 +730,22 @@ export class FormMatriculaComponent implements OnInit {
             }
           });
 
-          if (retorno.documentoMatricula) {
-            this.listaDocumentosEditareValidar = retorno.documentoMatricula.map((documento: DocumentoMatriculaDto) => ({
-              documentoMatricula: documento,
-              oculto: false
-            }));
-            this.ordenarLista();
+          if(retorno.documentoMatricula)
+          {
+            this.listaDocumentosEditareValidar = retorno.documentoMatricula;
           }
+
+
 
         },
         error => {
           this.mensagens.confirmarErro(this.FORM_EDITAR, error.message);
-          console.log("erro", error.message);
         }
       );
     }
   }
 
-
+  // dialog para exibir acao executada com sucesso
   confirmarAcao(matricula: MatriculaDto, acao: string) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
@@ -720,6 +758,7 @@ export class FormMatriculaComponent implements OnInit {
     });
   }
 
+  // funcao para mudar orientacao do flex e deixar responsivo
   mudarAlinhar() {
 
     if (innerWidth < 1000) {
@@ -733,6 +772,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
+  // funcao para mudar orientacao do flex e deixar responsivo
   mudarAlinharElementosGrandes() {
 
     if (innerWidth < 1400) {
@@ -742,6 +782,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
+  // funcao para mudar orientacao do flex e deixar responsivo
   verificarAlinhar() {
     if (this.flexDivAlinhar == "column") {
       return true;
@@ -749,15 +790,18 @@ export class FormMatriculaComponent implements OnInit {
     return false;
   }
 
+  // funcao para mudar orientacao do flex e deixar responsivo
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.innerWidth = window.innerWidth;
   }
 
+  // funcao para verificar se a pessoa esta logada no sistema
   securityServiceisValid() {
     return this.securityService.isValid()
   }
 
+  // funcao para alterar o nome das guias
   alterarNomeTitulo(indice: number): void {
     if (this.tipoDeFormulario === 'Cadastrar' && !this.securityService.isValid()) {
       // Mapeamento para o modo "Cadastrar"
@@ -786,10 +830,12 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // funcao  para alterar a guia que esta ativa no momento
   alterarGuiaAtiva(indice: number): void {
     this.guiaAtiva = indice;
   }
 
+  // funcao para controlar a edicao de documentos ao mudar algo no formulario
   onTabClick(event: MatTabChangeEvent): void {
     if ((event.index === 3 && this.mudouForm) && (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar")) {
       this.confirmarMudancas();
@@ -797,13 +843,8 @@ export class FormMatriculaComponent implements OnInit {
     this.alterarNomeTitulo(event.index);
   }
 
-  goToStep(step: number) {
-    // Método para navegar para uma etapa específica
-    this.currentStep = step;
-  }
-
+  //avanca para proxima guia
   goToNextStep(indice: number) {
-
 
     if (this.nomeTitulo == this.NOME_GUIA_TAB_INFORMACOES && this.formGroup.get("aceiteInformacoes")?.value === false && !this.securityService.isValid()) {
       const errosControls = this.getAllErrorsInControls();
@@ -892,8 +933,6 @@ export class FormMatriculaComponent implements OnInit {
 
       return;
     }
-    console.log("TIPO FORM", this.tipoDeFormulario);
-    console.log("MUDOU FORM", this.mudouForm);
     if ((indice === 3 && this.mudouForm) && (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar")) {
       this.confirmarMudancas();
     } else {
@@ -905,6 +944,7 @@ export class FormMatriculaComponent implements OnInit {
     this.alterarNomeTitulo(indice)
   }
 
+  // verifica se existe erros no formulario de tutor
   private verificarErrosEmFormArrayTutor() {
     const formGroup = this.getTutorForm(0);
     let temErro = false;
@@ -938,6 +978,7 @@ export class FormMatriculaComponent implements OnInit {
     return temErro;
   }
 
+  // verifica se existe erros no formulario de necessidade especial
   private verificaErroNecessidadeEspecial() {
     const controls = this.getNecessidadesEspeciaisControls();
     let temErrosNecessidade = false;
@@ -949,6 +990,7 @@ export class FormMatriculaComponent implements OnInit {
     return temErrosNecessidade;
   }
 
+  // funcao para voltar uma etapa ao clicar no botao proxima etapa
   goToPreviousStep(indice: number) {
 
     if (indice >= 0 && indice < this.tabGroup._tabs.length) {
@@ -957,6 +999,7 @@ export class FormMatriculaComponent implements OnInit {
     this.alterarNomeTitulo(indice)
   }
 
+  // funcao para monitorar as mudancas no formulario no momento da edicao e validacao
   monitorarMudancas(): void {
 
     if (this.tipoDeFormulario === "Editar" || this.tipoDeFormulario === "Validar") {
@@ -977,10 +1020,12 @@ export class FormMatriculaComponent implements OnInit {
     this.mudouForm = false;
   }
 
+  // funcao para verificar se os formularios sao iguais
   areFormsEqual(form1: any, form2: any): boolean {
     return JSON.stringify(form1) === JSON.stringify(form2);
   }
 
+  // funcao que bloqueia a edicao de documentos quando alera algum campo no momento da edicao e validacao
   confirmarMudancas() {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
@@ -999,6 +1044,7 @@ export class FormMatriculaComponent implements OnInit {
           this.verificarClickDocs = true;
           this.realizarEdicao();
           this.monitorarMudancas();
+          this.tabGroup.selectedIndex = 3;
         } else {
           const errosControls = this.getAllErrorsInControls();
           const errosFormsAll = this.getAllErrosInForms();
@@ -1021,18 +1067,21 @@ export class FormMatriculaComponent implements OnInit {
     });
   }
 
+  // adicona um form de necessidade ao array
   criarCampoNecessidadeEspecial(): FormGroup {
     return this.formBuilder.group({
       titulo: [null, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50), this.validacoes.validarCampoEmBranco]]
     });
   }
 
+  //coloca os dados que recebemos do back na edicao e validacao
   adicionarNecessidadePreenchido(necessidade: NecessidadeEspecialDto): FormGroup {
     return this.formBuilder.group({
       titulo: [necessidade.titulo, [this.validacoes.validarNecessidadeEspecial, Validators.maxLength(50), this.validacoes.validarCampoEmBranco]]
     });
   }
 
+  // controla o primeiro click em necessidades
   firstClickNecessidades(): boolean {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     const possuiNecessidadeEspecial = this.formGroup.get('possuiNecessidadeEspecial')?.value;
@@ -1056,6 +1105,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
+  // apaga odas necessidades ao desmarcar
   clearNecessidadeEspecialError(index: number): void {
     const control = this.getNecessidadeEspecialControl(index);
     if (control) {
@@ -1063,7 +1113,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-
+  // adiciona um index a lista de necessidades
   adicionarCampoNecessidade(necessidade: NecessidadeEspecialDto | null): void {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     if (necessidade != null) {
@@ -1073,46 +1123,55 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // apaga o index do array de necessidades
   removerCampoNecessidade(index: number): void {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     formArray.removeAt(index);
   }
 
+  // pega o controle do campo de necessidade especial
   getNecessidadesEspeciaisControls(): AbstractControl[] {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     return formArray.controls;
   }
 
+  // pega os campos de necessidade especial pelo index
   getNecessidadeEspecialControl(index: number): AbstractControl {
     const formArray = this.formGroup.get('necessidadesEspeciais') as FormArray;
     return formArray.at(index)?.get('titulo') as AbstractControl;
   }
 
+  // adiciona um index no array de tutores
   adicionarCampoTutor(): void {
     const formArray = this.formGroup.get('tutor') as FormArray;
     formArray.push(this.createTutorFormGroup(null));
   }
 
+  // na edicao os dados nao se perdem eles ficam salvos e ao clicar que e casado novamente os dados sao preenchidos
   adicionarCampoTutorPreenchido(tutor: TutorDto): void {
     const formArray = this.formGroup.get('tutor') as FormArray;
     formArray.push(this.createTutorFormGroup(tutor));
   }
 
+  // apaga o index passado da lisa de tutores
   removerCampoTutor(index: number): void {
     const formArray = this.formGroup.get('tutor') as FormArray;
     formArray.removeAt(index);
   }
 
+  // pega os campos do formulario de utor
   getTutoresControls(): AbstractControl[] {
     const formArray = this.formGroup.get('tutor') as FormArray;
     return formArray.controls;
   }
 
+  // pega o form de tutor pelo index no formulario padrao
   getTutorForm(index: number): FormGroup {
     const formArray = this.formGroup.get('tutor') as FormArray;
     return formArray.at(index) as FormGroup;
   }
 
+  // controle quando a pessoa clica se tem conjugue e se mora com ele
   adicionarConjugue(index: number, conjugue: TutorDto | null) {
     const formGroupTutor: FormGroup = this.getTutorForm(index);
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
@@ -1160,6 +1219,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
+  // atualiza as lisas de documentos ao clicar em sim
   atribuirRecebeBeneficioAoListDocsSim() {
     this.recebeBeneficio = "sim";
     if (this.tipoDeFormulario == "Cadastrar") {
@@ -1171,6 +1231,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // atualiza as lisas de documentos ao clicar em sim
   atribuirRecebeBeneficioAoListDocsNao() {
     this.recebeBeneficio = "nao";
     if (this.tipoDeFormulario == "Cadastrar") {
@@ -1182,6 +1243,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // atualiza as lisas de documentos ao clicar em sim
   atribuirVeiculoAoListDocsSim() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
@@ -1192,6 +1254,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // atualiza as lisas de documentos ao clicar em sim
   atribuirVeiculoAoListDocsNao() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
@@ -1202,6 +1265,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // atualiza as lisas de documentos ao clicar em sim
   atribuirCRASAoListDocsSim() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
@@ -1212,6 +1276,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // atualiza as lisas de documentos ao clicar em sim
   atribuirCRASAoListDocsNao() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
@@ -1222,6 +1287,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // cria o documento para adicionar a lisa
   private criarDocumentoList(tipo: EnumDoc) {
     const documento: DocumentoMatriculaDto = {
       tipoDocumento: tipo,
@@ -1229,42 +1295,29 @@ export class FormMatriculaComponent implements OnInit {
       aceito: false,
     };
 
-    const documentoMatricula: DocumentoMatricula = {
-      documentoMatricula: documento,
-      oculto: false
-    }
-
-    return documentoMatricula;
+    return documento;
   }
 
+  //adiciona o documento da tabela quando clica em sim em documento do veiculo do cras e se recebe algo do governo
   atualizarTabela(tipo: EnumDoc) {
     this.show = false;
 
-    const documentoExistenteIndex = this.listaDocumentosEditareValidar.findIndex(documento => documento.documentoMatricula.tipoDocumento === tipo);
+    const novoDocumento = this.criarDocumentoList(tipo);
+    this.listaDocumentosEditareValidar.push(novoDocumento);
 
-    if (documentoExistenteIndex !== -1) {
-      this.listaDocumentosEditareValidar[documentoExistenteIndex].oculto = false;
-    } else {
-      const novoDocumento = this.criarDocumentoList(tipo);
-      this.listaDocumentosEditareValidar.push(novoDocumento);
-    }
-    console.log(this.listaDocumentosEditareValidar)
     setTimeout(() => {
       this.ordenarLista();
       this.show = true;
     }, 150);
   }
 
+  //remove o documento da tabela quando clica em nao em documento do veiculo do cras e se recebe algo do governo
   removerDaTabela(tipo: string) {
     this.show = false;
 
-    this.listaDocumentosEditareValidar.forEach(documento => {
-      if (documento.documentoMatricula.tipoDocumento === tipo) {
-        documento.oculto = true;
-      }
+    this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar.filter(documento => {
+      return documento.tipoDocumento !== tipo;
     });
-
-    console.log(this.listaDocumentosEditareValidar)
 
     setTimeout(() => {
       this.ordenarLista();
@@ -1272,6 +1325,7 @@ export class FormMatriculaComponent implements OnInit {
     }, 150);
   }
 
+  // pega os campos casado e mora com o conjugue em responsavel legal (tutor) e seta dentro de conjugue
   atribuirConjugueRelacionamento() {
     const formGroupTutor: FormGroup = this.getTutorForm(0);
     const tutorFormArray = this.formGroup.get('tutor') as FormArray;
@@ -1285,7 +1339,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  //lista de documentos que vem do outro componente
+  //lista de documentos que vem do outro componente qeu esta na arquitetura: o upload-arquivo
   receberDadosDoFilho(dados: { doc: File, tipoDocumento: EnumDoc }) {
     const docs = this.formDocumentos.get('listaDocumentos');
     if (dados.doc && docs) {
@@ -1356,12 +1410,12 @@ export class FormMatriculaComponent implements OnInit {
           break;
         default:
       }
-      console.log(novosDocs)
+
       this.formDocumentos.get('listaDocumentos')?.setValue(novosDocs);
     }
   }
 
-
+  // funcao para receber o tipo de formulario validar
   private tipoFormulario() {
     const param = this.route.snapshot.url.at(0)?.path;
     if (param == "validar") {
@@ -1370,8 +1424,9 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
+  // funcao que abre o dialog de edicao de documentos em ediar e validar
   openDialogPreviewExpanded(element: DocumentoMatriculaDto) {
-    console.log("element", element)
+
     const config: MatDialogConfig = {
       data: {
         documentoEditarValidar: element,
@@ -1389,28 +1444,33 @@ export class FormMatriculaComponent implements OnInit {
     });
   }
 
+  // funcao para marcar de verde os documentos alterados e salvos em edicao e validacao
   isSelected(element: any): boolean {
     return this.documentosSelecionados.includes(element);
   }
 
+  // funcao para pegar o nome dos enums traduzido
   getEnumNames(docName: string): string | undefined {
     const enumKey = EnumDoc[docName as keyof typeof EnumDoc];
     return EnumDocDescriptions[enumKey];
   }
 
+  //funcao para ordenar a lista de documentos em ordem alfabetica
   ordenarLista(): void {
     this.listaDocumentosEditareValidar = this.listaDocumentosEditareValidar
-      .filter(doc => doc.documentoMatricula.tipoDocumento !== undefined)
-      .sort((a, b) => a.documentoMatricula.tipoDocumento!.localeCompare(b.documentoMatricula.tipoDocumento!));
+      .filter(doc => doc.tipoDocumento !== undefined)
+      .sort((a, b) => a.tipoDocumento!.localeCompare(b.tipoDocumento!));
   }
 
+  // funcao para marcar documento como aceito no validar
   onAceitoChange(element: any) {
-    const documento = this.listaDocumentosEditareValidar.find(doc => doc.documentoMatricula.tipoDocumento === element.documentoMatricula.tipoDocumento);
+    const documento = this.listaDocumentosEditareValidar.find(doc => doc.tipoDocumento === element.tipoDocumento);
     if (documento) {
-      documento.documentoMatricula.aceito = !documento.documentoMatricula.aceito;
+      documento.aceito = !documento.aceito;
     }
   }
 
+  // funcao bara bsucar cep e preencher campos de enedereco
   buscarCEP(cep: string) {
     this.http.get<any>(`https://brasilapi.com.br/api/cep/v1/${cep}`)
       .subscribe(
@@ -1424,15 +1484,16 @@ export class FormMatriculaComponent implements OnInit {
             bairroControl.setValue(data.neighborhood);
             logradouroControl.setValue(data.street);
           } else {
-            console.error('Um ou mais controles do formulário são nulos.');
+            // console.error('Um ou mais controles do formulário são nulos.');
           }
         },
         (error) => {
-          console.error('Erro ao buscar CEP:', error);
+          // console.error('Erro ao buscar CEP:', error);
         }
       );
   }
 
+  // pega os erros de todos os campos dos formularios de froma recursiva
   getControlValidationErrors(form: FormGroup): ErrosControl[] {
     const result: ErrosControl[] = [];
 
@@ -1472,7 +1533,7 @@ export class FormMatriculaComponent implements OnInit {
     return result;
   }
 
-
+  // pega os erros do formulario passado
   getFormFieldValidationErrors(form: FormGroup): ErrosForm[] {
     const result: ErrosForm[] = [];
     const formErrors = form.errors;
@@ -1486,10 +1547,9 @@ export class FormMatriculaComponent implements OnInit {
     return result;
   }
 
+  // acao para aceitar a crianca na creche
   validar() {
     const matriculaDTO = this.makeDTOMatricula();
-    console.log("COMPLETO", matriculaDTO)
-    console.log(matriculaDTO.documentoMatricula)
 
     const dialogConfirmacao = this.dialog.open(ConfirmationDialog, {
       data: {
@@ -1505,27 +1565,31 @@ export class FormMatriculaComponent implements OnInit {
     dialogConfirmacao.afterClosed().subscribe(result => {
       if (result) {
         this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
-          const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
-            {
-              data:
-                {
-                  id: retorno.id,
-                }
-            })
-          dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
-              if (confirmed) {
-                this.confirmarAcao(retorno, "Incluir na turma e validar")
-              } else {
-                this.confirmarAcao(retorno, this.tipoDeFormulario)
-              }
-              this.router.navigate(['/matricula/validar']);
-            }
-          )
-          this.listaDocumentosEditareValidar = [];
+          this.validou = retorno;
         }, error => {
           this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
           this.listaDocumentosEditareValidar = [];
         });
+
+        if (this.validou){
+          const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
+            {
+              data:
+                {
+                  id: this.validou.id,
+                }
+            })
+        dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
+            if (confirmed) {
+              this.confirmarAcao(this.validou, "Incluir na turma e validar")
+            } else {
+              this.confirmarAcao(this.validou, this.tipoDeFormulario)
+            }
+            this.router.navigate(['/matricula/validar']);
+          }
+        )
+        this.listaDocumentosEditareValidar = [];
+      }
 
       } else {
         this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
@@ -1541,6 +1605,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
+  // acao para apagar maricula e recusar a crianaca na associacao
   recusar() {
     const dialogConfirmacao = this.dialog.open(ConfirmationDialog, {
       data: {

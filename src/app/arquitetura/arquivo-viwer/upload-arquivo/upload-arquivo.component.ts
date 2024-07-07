@@ -105,22 +105,5 @@ export class UploadArquivoComponent{
     };
     this.dialog.open(ViwerDocumetDialogComponent, config);
   }
-
-  // pegaDoc() {
-  //
-  //   this.matriculaService.matriculaControllerGetDocumentoMatricula({caminhodoc: "Amostra.pdf"})
-  //     .subscribe((response: Blob) => {
-  //       this.isFileDocument = true;
-  //       const fileName = "Amostra.pdf";
-  //       const file = new File([response], fileName, { type: response.type });
-  //
-  //       // Agora você tem o arquivo, você pode fazer o que precisar com ele
-  //       this.selectedFile = this.makeURLFile(file); // Se selectedFile for um atributo da sua classe
-  //
-  //
-  //       console.log("Arquivo:", file);
-  //     });
-  //
-  // };
 }
 

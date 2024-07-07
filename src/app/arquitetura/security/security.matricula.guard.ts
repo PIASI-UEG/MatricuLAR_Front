@@ -6,11 +6,12 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 
 import { SecurityService } from './security.service';
 import { config, IConfig } from './config';
+
+import {LoaderService} from "../loader/loader.service";
+import {finalize} from "rxjs/operators";
 import {
   ControlePeriodoMatriculaControllerService
 } from "../../api/services/controle-periodo-matricula-controller.service";
-import {LoaderService} from "../loader/loader.service";
-import {finalize} from "rxjs/operators";
 
 /**
  * Implementação que garante a segurança das rotas permitindo o acesso apenas se o 'Usuário' estiver autenticado

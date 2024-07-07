@@ -24,8 +24,9 @@ import {
 } from "../add-necessidade-especial-dialog/add-necessidade-especial-dialog.component";
 import {ResponsavelDto} from "../../../api/models/responsavel-dto";
 import {PkAdvertencia} from "../../../api/models/pk-advertencia";
-import {ResponsavelControllerService} from "../../../api/services/responsavel-controller.service";
+
 import {AddPessoaAutorizadaComponent} from "../add-pessoa-autorizada/add-pessoa-autorizada.component";
+import {ResponsavelControllerService} from "../../../api/services/responsavel-controller.service";
 
 @Component({
     selector: 'app-info-matricula-dialog',
@@ -80,14 +81,13 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
                 const tutoresNomesArray = data.tutoresNomes || [];
                 const tutoresTelefoneArray = data.tutoresTelefone || [];
-                const responsaveisAutorizadosNomeArray = data.responsaveisNome || [];
+                const responsaveisAutorizadosNomeArray = data.responsaveis || [];
                 const necessidadeEspecialArray = data.necessidades || [];
                 const advertenciasArray = data.advertencias || [];
 
                 this.matriculaDataSource.data = [{
                     tutoresNomes: tutoresNomesArray,
                     tutoresTelefone: tutoresTelefoneArray,
-                    responsaveisNome: responsaveisAutorizadosNomeArray,
                     advertencias: advertenciasArray
                 }];
 
