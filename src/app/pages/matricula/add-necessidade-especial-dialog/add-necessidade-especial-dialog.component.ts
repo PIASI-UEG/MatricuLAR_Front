@@ -98,27 +98,21 @@ export class AddNecessidadeEspecialDialogComponent {
         necessidadesEspeciais.forEach(necessidadeEspecialDto => {
             this.necessidadeService.necessidadeEspecialControllerIncluir({ body: necessidadeEspecialDto })
                 .subscribe(retorno => {
-                    // console.log("Retorno:", retorno);
-                    this.confirmarAcao(retorno);
+                    this.snackBar.open('Necessidade Especial incluida com sucesso', 'Fechar', {
+                        duration: 3000,
+                    });
+                    this.dialogRef.close(retorno);
                 }, erro => {
-                    console.log("Erro:", erro.message);
+                    this.snackBar.open('Erro ao adicionar necessidade especial: ' + erro.message, 'Fechar', {
+                        duration: 3000,
+                    });
+
                 });
         });
 
         this.router.navigate(["/matricula"]);
     }
 
-    confirmarAcao(necessidadeEspecial: NecessidadeEspecialDto) {
-        this.dialog.open(ConfirmationDialog, {
-            data: {
-                titulo: 'Necessidade Especial Registrada!',
-                mensagem: `Necessidade Especial: ${necessidadeEspecial.titulo}. Ação realizada com sucesso!`,
-                textoBotoes: {
-                    ok: 'Confirmar',
-                },
-            },
-        });
-    }
 
     fechar(): void {
         this.dialogRef.close();

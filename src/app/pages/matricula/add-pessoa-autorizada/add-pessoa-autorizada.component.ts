@@ -63,7 +63,6 @@ export class AddPessoaAutorizadaComponent implements OnInit {
                     this.dialogRef.close(data);
                 },
                 error => {
-                    console.error('Erro ao adicionar responsável:', error);
                     this.snackBar.open('Erro ao adicionar responsável: ' + error.message, 'Fechar', {
                         duration: 3000,
                     });

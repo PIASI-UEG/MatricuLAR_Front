@@ -59,10 +59,14 @@ export class AddAdvertenciaDialogComponent {
     advertenciaDto.idMatricula = this.aluno?.id;
     this.advertenciaService.advertenciaControllerIncluir({body: advertenciaDto})
       .subscribe( retorno =>{
-        this.confirmarAcao(retorno);
-        this.router.navigate(["/matricula"]);
+          this.snackBar.open('Advertência da criança incluida com sucesso', 'Fechar', {
+              duration: 3000,
+          });
+          this.dialogRef.close(retorno);
       }, erro =>{
-        //this.mensagens.confirmarErro(erro.message)
+          this.snackBar.open('Erro ao adicionar advertência: ' + erro.message, 'Fechar', {
+              duration: 3000,
+          });
       })
   }
 

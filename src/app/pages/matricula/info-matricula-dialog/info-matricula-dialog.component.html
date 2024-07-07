@@ -10,7 +10,7 @@
         </div>
         <div class="card-container">
             <div *ngIf="matriculaVisualiza && matriculaVisualiza.caminhoImagem" class="imagem-card">
-                <img [src]="caminhoDocumento" alt="Foto da criança">
+                <img [src]="caminhoDocumento || 'assets/logo/foto-crianca.png'" alt="Foto da criança">
             </div>
             <div class="content-container">
                 <mat-card class="matricula-card">
@@ -120,8 +120,8 @@
                 <mat-header-row *matHeaderRowDef="colunasAdvertencia.concat('acoes')"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: colunasAdvertencia.concat('acoes');"></mat-row>
             </mat-table>
-
-            <div fxLayout="row" fxLayoutAlign="center center">
+            <br>
+            <div  fxLayout="row" fxLayoutAlign="space-between center">
                 <button mat-raised-button (click)="fechar()" class="button botao-cancelar">Fechar</button>
             </div>
         </div>
