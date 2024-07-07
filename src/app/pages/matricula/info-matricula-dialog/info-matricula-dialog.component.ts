@@ -41,7 +41,7 @@ export class InfoMatriculaDialogComponent implements OnInit {
     matricula!: MatriculaDto;
     matriculaDataSource: MatTableDataSource<MatriculaVisualizarDto> = new MatTableDataSource<MatriculaVisualizarDto>([])
     colunasTutores: string[] = ['tutoresNomes', 'tutoresTelefone'];
-    colunasResponsaveis: string[] = ['responsaveisNome'];
+    colunasResponsaveis: string[] = ['responsaveis', 'vinculo'];
     colunasNecessidadesEspeciais: string[] = ['titulo'];
     colunasAdvertencia: string[] = ['titulo', 'descricao'];
     caminhoDocumento!: string;
@@ -88,6 +88,8 @@ export class InfoMatriculaDialogComponent implements OnInit {
                 this.matriculaDataSource.data = [{
                     tutoresNomes: tutoresNomesArray,
                     tutoresTelefone: tutoresTelefoneArray,
+                    responsaveis: responsaveisAutorizadosNomeArray,
+                    necessidades: necessidadeEspecialArray,
                     advertencias: advertenciasArray
                 }];
 
@@ -183,7 +185,41 @@ export class InfoMatriculaDialogComponent implements OnInit {
 
 
     deleteResponsavel(responsavelAutorizado: ResponsavelDto): void {
+        const dialogRef = this.dialog.open(ConfirmationDialog, {
+            data: {
+                titulo: 'Confirmar?',
+                mensagem: `Deseja excluir o responsável: ${responsavelAutorizado.nomeResponsavel}?`,
+                textoBotoes: {
+                    ok: 'Confirmar',
+                    cancel: 'Cancelar',
+                },
+                dado: responsavelAutorizado
+            },
+        });
 
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (this.matriculaVisualiza && responsavelAutorizado.cpfResponsavel !== undefined) {
+                    this.responsavelAutorizadoService.responsavelControllerRemoverResponsavel({
+                        'id-matricula': this.matriculaId,
+                        'cpf-responsavel': responsavelAutorizado.cpfResponsavel
+                    }).subscribe(
+                        () => {
+                            if (this.matriculaVisualiza && this.matriculaVisualiza.responsaveis) {
+                                this.matriculaVisualiza.responsaveis = this.matriculaVisualiza.responsaveis.filter(resp => resp.cpfResponsavel !== responsavelAutorizado.cpfResponsavel);
+                                this.matriculaDataSource.data = [this.matriculaVisualiza];
+                            }
+                            this.snackBar.open('Responsável removido com sucesso', 'Fechar', { duration: 3000 });
+                        },
+                        (error) => {
+                            this.snackBar.open('Erro ao remover responsável', 'Fechar', { duration: 3000 });
+                        }
+                    );
+                } else {
+                    this.snackBar.open('Erro ao remover responsável. CPF inválido.', 'Fechar', { duration: 3000 });
+                }
+            }
+        });
     }
 
 

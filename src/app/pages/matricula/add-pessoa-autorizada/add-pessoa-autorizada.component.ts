@@ -69,10 +69,6 @@ export class AddPessoaAutorizadaComponent implements OnInit {
                     });
                 }
             );
-        } else {
-            this.snackBar.open('Formulário inválido. Por favor, preencha os campos obrigatórios.', 'Fechar', {
-                duration: 3000,
-            });
         }
     }
 
