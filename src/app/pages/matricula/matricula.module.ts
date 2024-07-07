@@ -36,6 +36,10 @@ import { AddAdvertenciaDialogComponent } from './add-advertencia-dialog/add-adve
 import { AddNecessidadeEspecialDialogComponent } from './add-necessidade-especial-dialog/add-necessidade-especial-dialog.component';
 import {AddPessoaAutorizadaComponent} from "./add-pessoa-autorizada/add-pessoa-autorizada.component";
 import {FormMatriculaComponent} from "./form-matricula/form-matricula.component";
+import {
+  TutorialPreMariculaDialogComponent
+} from "./tutorial-pre-maricula-dialog/tutorial-pre-maricula-dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -46,41 +50,43 @@ import {FormMatriculaComponent} from "./form-matricula/form-matricula.component"
     InfoMatriculaDialogComponent,
     AddAdvertenciaDialogComponent,
     AddNecessidadeEspecialDialogComponent,
-    AddPessoaAutorizadaComponent
+    AddPessoaAutorizadaComponent,
+    TutorialPreMariculaDialogComponent
   ],
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        RouterOutlet,
-        RouterLink,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatMenuModule,
-        MatTableModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        SearchModule,
-        FlexModule,
-        NgxMaskDirective,
-        BrowserModule,
-        MatNativeDateModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatTabsModule,
-        HttpClientModule,
-        NgxDocViewerModule,
-        NgxExtendedPdfViewerModule,
-        PdfViewerModule,
-        ArquivoViewerModule,
-        MatListModule,
-        FormsModule,
-        NgxMaskPipe,
-    ],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterOutlet,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatMenuModule,
+    MatTableModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    SearchModule,
+    FlexModule,
+    NgxMaskDirective,
+    BrowserModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatTabsModule,
+    HttpClientModule,
+    NgxDocViewerModule,
+    NgxExtendedPdfViewerModule,
+    PdfViewerModule,
+    ArquivoViewerModule,
+    MatListModule,
+    FormsModule,
+    NgxMaskPipe,
+    MatDialogModule,
+  ],
 })
 export class MatriculaModule { }

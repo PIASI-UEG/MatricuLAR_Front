@@ -37,6 +37,9 @@ import {TranslationError} from "../../../core/erros-dialog/TranslationErros";
 import {ErrosForm} from "../../../core/erros-dialog/ErrosForm";
 import {ErrosControl} from "../../../core/erros-dialog/ErrosControls";
 import {AddAlunoTurmaDialogComponent} from "../../turma/add-aluno-turma-dialog/add-aluno-turma-dialog.component";
+import {
+    TutorialPreMariculaDialogComponent
+} from "../tutorial-pre-maricula-dialog/tutorial-pre-maricula-dialog.component";
 
 @Component({
   selector: 'app-form-matricula',
@@ -296,6 +299,7 @@ export class FormMatriculaComponent implements OnInit {
     this.tipoFormulario();
     this.prepararEdicao();
     this.alterarNomeTitulo(0);
+    this.openDialogTutorial();
 
     // a instancia de validacoes recebe alguns atributos para controle simultaneo
     this.validacoes.formGroupMatricula = this.formGroup;
@@ -308,6 +312,14 @@ export class FormMatriculaComponent implements OnInit {
       this.monitorarMudancas()
     }, 500);
   }
+
+  //dialog para abrir o tutorial ao clicar em pre matricula
+    openDialogTutorial(){
+      if(!this.securityService.isValid())
+      {
+        this.dialog.open(TutorialPreMariculaDialogComponent);
+      }
+    }
 
   //  criacao dos formularios de campos
   private createForm() {
@@ -396,7 +408,7 @@ export class FormMatriculaComponent implements OnInit {
       temconjugue: false,
       recebeBeneficio: null,
       veiculoProprio: null,
-      CRAS: null
+      cras: null
     }, {
       validator:
         [this.validacoes.validarFotoCrianca,
@@ -1219,7 +1231,7 @@ export class FormMatriculaComponent implements OnInit {
 
   }
 
-  // atualiza as lisas de documentos ao clicar em sim
+  // atualiza as listas de documentos ao clicar em sim
   atribuirRecebeBeneficioAoListDocsSim() {
     this.recebeBeneficio = "sim";
     if (this.tipoDeFormulario == "Cadastrar") {
@@ -1231,7 +1243,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  // atualiza as lisas de documentos ao clicar em sim
+  // atualiza as listas de documentos ao clicar em sim
   atribuirRecebeBeneficioAoListDocsNao() {
     this.recebeBeneficio = "nao";
     if (this.tipoDeFormulario == "Cadastrar") {
@@ -1243,7 +1255,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  // atualiza as lisas de documentos ao clicar em sim
+  // atualiza as listas de documentos ao clicar em sim
   atribuirVeiculoAoListDocsSim() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
@@ -1254,7 +1266,7 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  // atualiza as lisas de documentos ao clicar em sim
+  // atualiza as listas de documentos ao clicar em sim
   atribuirVeiculoAoListDocsNao() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
@@ -1265,22 +1277,22 @@ export class FormMatriculaComponent implements OnInit {
     }
   }
 
-  // atualiza as lisas de documentos ao clicar em sim
+  // atualiza as listas de documentos ao clicar em sim
   atribuirCRASAoListDocsSim() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
-        CRAS: "sim"
+        cras: "sim"
       });
     } else {
       this.atualizarTabela(EnumDoc.ENCAMINHAMENTO_CRAS);
     }
   }
 
-  // atualiza as lisas de documentos ao clicar em sim
+  // atualiza as listas de documentos ao clicar em sim
   atribuirCRASAoListDocsNao() {
     if (this.tipoDeFormulario == "Cadastrar") {
       this.formDocumentos.patchValue({
-        CRAS: "nao"
+        cras: "nao"
       });
     } else {
       this.removerDaTabela(EnumDoc.ENCAMINHAMENTO_CRAS);

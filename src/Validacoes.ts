@@ -581,20 +581,25 @@ export class Validacoes {
     const copiaDocs = docs?.value.slice();
     const currentErrors = formGroup.errors || {};
 
-    if (!copiaDocs[6] && formGroup.get('recebeBeneficio')?.value === 'sim') {
-      currentErrors['recebeBeneficioGoverno'] = true;
-      formGroup.setErrors(currentErrors);
-      return {'recebeBeneficioGoverno': true};
+    if (formGroup.get('recebeBeneficio')?.value === 'sim') {
+      if (!copiaDocs[6]) {
+        currentErrors['recebeBeneficioGoverno'] = true;
+        formGroup.setErrors(currentErrors);
+        return { 'recebeBeneficioGoverno': true };
+      } else {
+        delete currentErrors['recebeBeneficioGoverno'];
+      }
     } else {
       delete currentErrors['recebeBeneficioGoverno'];
-
-      if (Object.keys(currentErrors).length === 0) {
-        formGroup.setErrors(null);
-      } else {
-        formGroup.setErrors(currentErrors);
-      }
-      return null;
     }
+
+    if (Object.keys(currentErrors).length === 0) {
+      formGroup.setErrors(null);
+    } else {
+      formGroup.setErrors(currentErrors);
+    }
+
+    return null;
   }
 
   //validar se inseriu ComprovanteBeneficio
@@ -603,21 +608,25 @@ export class Validacoes {
     const copiaDocs = docs?.value.slice();
     const currentErrors = formGroup.errors || {};
 
-    if (!copiaDocs[3] && formGroup.get('veiculoProprio')?.value === 'sim') {
-      currentErrors['possuiVeiculoProprio'] = true;
-      formGroup.setErrors(currentErrors);
-      return {'possuiVeiculoProprio': true};
+    if (formGroup.get('veiculoProprio')?.value === 'sim') {
+      if (!copiaDocs[3]) {
+        currentErrors['possuiVeiculoProprio'] = true;
+        formGroup.setErrors(currentErrors);
+        return { 'possuiVeiculoProprio': true };
+      } else {
+        delete currentErrors['possuiVeiculoProprio'];
+      }
     } else {
       delete currentErrors['possuiVeiculoProprio'];
-
-      if (Object.keys(currentErrors).length === 0) {
-        formGroup.setErrors(null);
-      } else {
-        formGroup.setErrors(currentErrors);
-      }
-
-      return null;
     }
+
+    if (Object.keys(currentErrors).length === 0) {
+      formGroup.setErrors(null);
+    } else {
+      formGroup.setErrors(currentErrors);
+    }
+
+    return null;
   }
 
   validarCRASDocs(formGroup: FormGroup): { [key: string]: any } | null {
@@ -625,20 +634,25 @@ export class Validacoes {
     const copiaDocs = docs?.value.slice();
     const currentErrors = formGroup.errors || {};
 
-    if (!copiaDocs[7] && formGroup.get('CRAS')?.value === 'sim') {
-      currentErrors['possuiCRAS'] = true;
-      formGroup.setErrors(currentErrors);
-      return {'possuiCRAS': true};
+    if (formGroup.get('cras')?.value === 'sim') {
+      if (!copiaDocs[7]) {
+        currentErrors['possuiCRAS'] = true;
+        formGroup.setErrors(currentErrors);
+        return { 'possuiCRAS': true };
+      } else {
+        delete currentErrors['possuiCRAS'];
+      }
     } else {
       delete currentErrors['possuiCRAS'];
-
-      if (Object.keys(currentErrors).length === 0) {
-        formGroup.setErrors(null);
-      } else {
-        formGroup.setErrors(currentErrors);
-      }
-      return null;
     }
+
+    if (Object.keys(currentErrors).length === 0) {
+      formGroup.setErrors(null);
+    } else {
+      formGroup.setErrors(currentErrors);
+    }
+
+    return null;
   }
 
   //validar se os cpfs nao sao iguais
