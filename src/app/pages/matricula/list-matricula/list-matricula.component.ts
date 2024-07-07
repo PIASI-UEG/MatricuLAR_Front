@@ -148,21 +148,45 @@ export class ListMatriculaComponent implements OnInit{
 
     }
 
-    imprimirTermodaMatricula(id: number, nomeTutor: string){
-        this.matriculaService.matriculaControllerGerarTermo({id: id, nomeTutor: nomeTutor}).subscribe(data=>{
+    imprimirTermodaMatricula(id: number, nomeTutor: string) {
+        this.matriculaService.matriculaControllerGerarTermo({ id: id, nomeTutor: nomeTutor }).subscribe(data => {
             this.matricula = data;
             console.log(data);
-            const caminhoTermo = "Termos-"+this.matricula.cpf+".pdf";
-            this.matriculaService.matriculaControllerGetTermo({caminhodoc:caminhoTermo})
-                .subscribe(response =>{
-                    let blob:Blob = response
-                    let downloadLink = document.createElement('a');
-                    downloadLink.href = window.URL.createObjectURL(blob);
+            const caminhoTermo = "Termos-" + this.matricula.cpf + ".pdf";
+            this.matriculaService.matriculaControllerGetTermo({ caminhodoc: caminhoTermo }).subscribe(response => {
+                let blob: Blob = new Blob([response], { type: 'application/pdf' });
+                let downloadLink = document.createElement('a');
+
+                const nav = window.navigator as any;
+
+                if (nav.msSaveOrOpenBlob) {
+                    // Para IE
+                    nav.msSaveOrOpenBlob(blob, caminhoTermo);
+                } else {
+                    // Para outros navegadores
+                    let url = window.URL.createObjectURL(blob);
+                    downloadLink.href = url;
                     downloadLink.download = caminhoTermo;
-                    downloadLink.click()
-                });
-        })
+
+                    // Para dispositivos móveis
+                    if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+                        downloadLink.target = '_blank';
+                    }
+
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+
+                    // Limpeza do objeto URL
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                }
+            });
+        });
     }
+
+
 
     openDialog(matriculaDto: MatriculaListagemDto) {
         console.log(matriculaDto);
@@ -196,19 +220,42 @@ export class ListMatriculaComponent implements OnInit{
 
 
     public gerarPdfDados(id: number): void {
-        this.matriculaService.matriculaControllerGerarPdfDados({id: id}).subscribe(data => {
+        this.matriculaService.matriculaControllerGerarPdfDados({ id: id }).subscribe(data => {
             const caminhoTermo = `${id}_Dados-Matricula.pdf`;
-            this.matriculaService.matriculaControllerGetTermo({caminhodoc: caminhoTermo}).subscribe(response => {
-                let blob: Blob = response as Blob;
+            this.matriculaService.matriculaControllerGetTermo({ caminhodoc: caminhoTermo }).subscribe(response => {
+                let blob: Blob = new Blob([response], { type: 'application/pdf' });
                 let downloadLink = document.createElement('a');
-                downloadLink.href = window.URL.createObjectURL(blob);
-                downloadLink.download = caminhoTermo;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
+
+                const nav = window.navigator as any;
+
+                if (nav && nav.msSaveOrOpenBlob) {
+                    // Para IE
+                    nav.msSaveOrOpenBlob(blob, caminhoTermo);
+                } else {
+                    // Para outros navegadores
+                    let url = window.URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                    downloadLink.download = caminhoTermo;
+
+                    // Para dispositivos móveis
+                    if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+                        downloadLink.target = '_blank';
+                    }
+
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+
+                    // Limpeza do objeto URL
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                }
             });
         });
     }
+
+
 
     private tipoListagem() {
         const param = this.route.snapshot.url.at(0)?.path;
