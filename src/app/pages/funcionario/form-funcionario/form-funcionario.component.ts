@@ -60,24 +60,8 @@ export class FormFuncionarioComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  validarSenhas() {
-    // Obtém os valores das senhas
-    const senha = this.formGroup.get('senha')?.value;
-    const confirmarSenha = this.formGroup.get('confirmarSenha')?.value;
-    // Verifica se as senhas são iguais
-
-    if (senha !== confirmarSenha && confirmarSenha && confirmarSenha !== '') {
-      // Adiciona um erro personalizado ao formulário
-      this.formGroup.get('confirmarSenha')?.setErrors({ 'naoConfere': true });
-      // Retorna falso
-      return false;
-    }
-    // Retorna verdadeiro
-    return true;
-  }
-
   private createForm() {
-    if(this.acao == "Editar" && this.codigo != null){
+    if(this.acao == "Editar"){
       this.usuarioService.usuarioControllerObterPorId({id: this.codigo as number}).subscribe(retorno =>
         this.formGroup = this.formBuilder.group({
           pessoaNome: [retorno.pessoaNome, [Validators.required, this.validacoes.validarCampoEmBranco, Validators.maxLength(200)]],
@@ -85,7 +69,10 @@ export class FormFuncionarioComponent implements OnInit {
           cargo: [retorno.cargo, Validators.required],
           email: [retorno.email, [Validators.required, this.validacoes.validarEmail, Validators.maxLength(100)]],
           pessoaTelefone: [retorno.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
-          idUsuarioRequisicao: [this.securityService.getUserId()]
+            senha: [null],
+            confirmarSenha: [null],
+            idUsuarioRequisicao: [this.securityService.getUserId()]
+
         }));
     }
     else {
@@ -110,8 +97,8 @@ export class FormFuncionarioComponent implements OnInit {
     return this.formGroup.controls[controlName].hasError(errorName);
   };
 
-  onSubmit() {
-      this.submitFormulario = true;
+  onSubmit(){
+
       if (!this.codigo) {
           this.realizarInclusao();
       } else {
@@ -122,16 +109,14 @@ export class FormFuncionarioComponent implements OnInit {
   private realizarInclusao(){
     this.atribuirUsuarioForm();
     const usuario: UsuarioDto = this.formGroup.value;
-    if(this.formGroup.valid){
-      this.usuarioService.usuarioControllerIncluir({body: usuario})
-        .subscribe( retorno =>{
-          console.log("Retorno:",retorno);
-          this.confirmarAcao(retorno, this.ACAO_INCLUIR);
-          this.router.navigate(["/funcionario"]);
-        }, erro =>{
-          this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
-        })
-    }
+    this.usuarioService.usuarioControllerIncluir({body: usuario})
+      .subscribe( retorno =>{
+        console.log("Retorno:",retorno);
+        this.confirmarAcao(retorno, this.ACAO_INCLUIR);
+        this.router.navigate(["/funcionario"]);
+      }, erro =>{
+        this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
+      })
   }
 
 
@@ -177,22 +162,21 @@ export class FormFuncionarioComponent implements OnInit {
     }
 
   private realizarEdicao(){
+
     this.atribuirUsuarioForm();
     console.log("Dados:", this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
     usuario.id = this.codigo;
-    if(this.formGroup.valid){
-      this.usuarioService.usuarioControllerNovoAlterar( {id: this.codigo, body: usuario})
-        .subscribe(retorno => {
-          console.log("Retorno:", retorno);
-          this.confirmarAcao(retorno, this.ACAO_EDITAR);
-          this.router.navigate(["/funcionario"]);
-        }, erro => {
-          console.log("Erro:", erro.error);
-          this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)
-          //this.showError(erro.error, this.ACAO_EDITAR);
-        })
-    }
+    this.usuarioService.usuarioControllerNovoAlterar( {id: this.codigo, body: usuario})
+      .subscribe(retorno => {
+        console.log("Retorno:", retorno);
+        this.confirmarAcao(retorno, this.ACAO_EDITAR);
+        this.router.navigate(["/funcionario"]);
+      }, erro => {
+        console.log("Erro:", erro.error);
+        this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)
+        //this.showError(erro.error, this.ACAO_EDITAR);
+      })
   }
 
   private atribuirUsuarioForm() {
