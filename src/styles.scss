@@ -202,5 +202,19 @@ html {
   color: #4b9fcf !important;
 }
 
+.mat-mdc-slide-toggle.mat-accent {
+  /* --mdc-switch-selected-focus-state-layer-color: #d81b60; */
+  --mdc-switch-selected-handle-color: #4b9fcf !important;
+  --mdc-switch-selected-hover-state-layer-color: #4b9fcf !important;
+  --mdc-switch-selected-pressed-state-layer-color: #4b9fcf !important;
+  --mdc-switch-selected-focus-handle-color: #2986b8 !important;
+  --mdc-switch-selected-hover-handle-color: #2986b8 !important;
+  --mdc-switch-selected-pressed-handle-color: #2986b8 !important;
+  --mdc-switch-selected-focus-track-color: #5cb3e6 !important;
+  --mdc-switch-selected-hover-track-color: #5cb3e6 !important;
+  --mdc-switch-selected-pressed-track-color: #5cb3e6 !important;
+  --mdc-switch-selected-track-color: #5cb3e6 !important;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
