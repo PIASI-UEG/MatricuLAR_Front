@@ -112,9 +112,6 @@ export class FormFuncionarioComponent implements OnInit {
 
   onSubmit() {
       this.submitFormulario = true;
-
-     
-
       if (!this.codigo) {
           this.realizarInclusao();
       } else {
@@ -125,14 +122,16 @@ export class FormFuncionarioComponent implements OnInit {
   private realizarInclusao(){
     this.atribuirUsuarioForm();
     const usuario: UsuarioDto = this.formGroup.value;
-    this.usuarioService.usuarioControllerIncluir({body: usuario})
-      .subscribe( retorno =>{
-        console.log("Retorno:",retorno);
-        this.confirmarAcao(retorno, this.ACAO_INCLUIR);
-        this.router.navigate(["/funcionario"]);
-      }, erro =>{
-        this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
-      })
+    if(this.formGroup.valid){
+      this.usuarioService.usuarioControllerIncluir({body: usuario})
+        .subscribe( retorno =>{
+          console.log("Retorno:",retorno);
+          this.confirmarAcao(retorno, this.ACAO_INCLUIR);
+          this.router.navigate(["/funcionario"]);
+        }, erro =>{
+          this.mensagens.confirmarErro(this.ACAO_INCLUIR, erro.message)
+        })
+    }
   }
 
 
@@ -178,21 +177,22 @@ export class FormFuncionarioComponent implements OnInit {
     }
 
   private realizarEdicao(){
-
     this.atribuirUsuarioForm();
     console.log("Dados:", this.formGroup.value);
     const usuario: UsuarioDto = this.formGroup.value;
     usuario.id = this.codigo;
-    this.usuarioService.usuarioControllerNovoAlterar( {id: this.codigo, body: usuario})
-      .subscribe(retorno => {
-        console.log("Retorno:", retorno);
-        this.confirmarAcao(retorno, this.ACAO_EDITAR);
-        this.router.navigate(["/funcionario"]);
-      }, erro => {
-        console.log("Erro:", erro.error);
-        this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)
-        //this.showError(erro.error, this.ACAO_EDITAR);
-      })
+    if(this.formGroup.valid){
+      this.usuarioService.usuarioControllerNovoAlterar( {id: this.codigo, body: usuario})
+        .subscribe(retorno => {
+          console.log("Retorno:", retorno);
+          this.confirmarAcao(retorno, this.ACAO_EDITAR);
+          this.router.navigate(["/funcionario"]);
+        }, erro => {
+          console.log("Erro:", erro.error);
+          this.mensagens.confirmarErro(this.ACAO_EDITAR, erro.message)
+          //this.showError(erro.error, this.ACAO_EDITAR);
+        })
+    }
   }
 
   private atribuirUsuarioForm() {
