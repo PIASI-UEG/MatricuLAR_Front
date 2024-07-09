@@ -7,6 +7,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {ConfirmationDialog} from "../../../core/confirmation-dialog/confirmation-dialog.component";
 import {TurmaDto} from "../../../api/models/turma-dto";
+import {Validacoes} from "../../../../Validacoes";
 
 @Component({
   selector: 'app-form-turma-dialog',
@@ -20,7 +21,7 @@ export class FormTurmaDialogComponent implements OnInit {
   acao: string = this.ACAO_INCLUIR;
   turma?: TurmaDto;
   mensagens: MensagensUniversais = new MensagensUniversais({dialog: this.dialog, router: this.router, telaAtual: 'turma'});
-
+  validacoes: Validacoes = new Validacoes();
   public constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<FormTurmaDialogComponent>,
@@ -35,7 +36,6 @@ export class FormTurmaDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    console.log(this.turma);
     this.prepararEdicao();
   }
 
@@ -68,7 +68,7 @@ export class FormTurmaDialogComponent implements OnInit {
         horaInicio: ["aaaaaa", Validators.required],
         horaFim: ["aaaaaa", Validators.required],
         nomeProfessor: ["aaaaaa"],
-        telefoneProfessor: ["aaaaaa" ]
+        telefoneProfessor: ["aaaaaa",[Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)] ]
       })
     }
     else{
@@ -79,7 +79,7 @@ export class FormTurmaDialogComponent implements OnInit {
         horaInicio: [null, Validators.required],
         horaFim: [null, Validators.required],
         nomeProfessor: [null],
-        telefoneProfessor: [null]
+        telefoneProfessor: [null,[Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]]
       })
     }
 

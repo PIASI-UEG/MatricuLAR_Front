@@ -38,7 +38,10 @@
 
     <mat-form-field>
       <mat-label>Telefone da professora</mat-label>
-      <input matInput formControlName="telefoneProfessor" >
+        <input matInput mask="(00) 0 0000-0000" formControlName="telefoneProfessor" placeholder="(00) 0 0000-0000">
+        <mat-error *ngIf="handleError('pessoaTelefone', 'required')">Campo Obrigatório</mat-error>
+        <mat-error *ngIf="handleError('pessoaTelefone', 'telefoneInvalido')">Telefone Inválido</mat-error>
+        <mat-error *ngIf="handleError('pessoaTelefone', 'maxlength')">Limite de 11 caracteres</mat-error>
     </mat-form-field>
 
 
