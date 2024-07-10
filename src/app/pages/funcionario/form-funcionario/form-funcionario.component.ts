@@ -14,9 +14,10 @@ import {MensagensUniversais} from "../../../../MensagensUniversais";
 import {DateAdapter} from "@angular/material/core";
 import {UsuarioControllerService} from "../../../api/services/usuario-controller.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {SecurityService} from "../../../arquitetura/security/security.service";
 import {Validacoes} from "../../../../Validacoes";
+import {ErrosDialogComponent} from "../../../core/erros-dialog/erros-dialog.component";
 
 
 @Component({
@@ -39,6 +40,8 @@ export class FormFuncionarioComponent implements OnInit {
   innerWidth: number = window.innerWidth;
   hide = true;
   submitFormulario!: boolean;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private _adapter: DateAdapter<any>,
@@ -69,9 +72,9 @@ export class FormFuncionarioComponent implements OnInit {
           cargo: [retorno.cargo, Validators.required],
           email: [retorno.email, [Validators.required, this.validacoes.validarEmail, Validators.maxLength(100)]],
           pessoaTelefone: [retorno.pessoaTelefone, [Validators.required, this.validacoes.validarTelefone, Validators.maxLength(11)]],
-            senha: [null],
-            confirmarSenha: [null],
-            idUsuarioRequisicao: [this.securityService.getUserId()]
+          senha: [null],
+          confirmarSenha: [null],
+          idUsuarioRequisicao: [this.securityService.getUserId()]
 
         }));
     }
@@ -99,11 +102,25 @@ export class FormFuncionarioComponent implements OnInit {
 
   onSubmit(){
 
-      if (!this.codigo) {
-          this.realizarInclusao();
-      } else {
-          this.realizarEdicao();
+    if (this.formGroup.valid) {
+      this.realizarInclusao();
+    } else if (this.codigo) {
+      const controlSenha = this.formGroup.get('senha');
+      if (controlSenha) {
+        controlSenha.setErrors(null);
       }
+      const controlConfirmSenha = this.formGroup.get('confirmarSenha');
+      if (controlConfirmSenha) {
+        controlConfirmSenha.setErrors(null);
+      }
+      if (this.formGroup.valid) {
+        this.realizarEdicao();
+      } else {
+        this.mensagens.confirmarErro(this.ACAO_EDITAR, "O formulário contém erros!")
+      }
+    } else {
+      this.mensagens.confirmarErro(this.ACAO_INCLUIR, "O formulário contém erros!")
+    }
   }
 
   private realizarInclusao(){
@@ -134,7 +151,7 @@ export class FormFuncionarioComponent implements OnInit {
           this.acao = this.ACAO_EDITAR;
           this.codigo = retorno.id || -1;
           this.formGroup.patchValue(retorno);
-            this.cdr.detectChanges();
+          this.cdr.detectChanges();
         },error => {
           this.mensagens.confirmarErro(this.ACAO_EDITAR, error.message)
         }

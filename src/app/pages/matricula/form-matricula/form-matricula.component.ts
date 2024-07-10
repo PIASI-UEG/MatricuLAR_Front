@@ -77,7 +77,7 @@ export class FormMatriculaComponent implements OnInit {
   // variaveis para personalizar o campo de data do datepicker
   today = new Date();
   minDate = new Date(1900, 0, 1);
-  maxDate = new Date(this.today.getFullYear() - 18, this.today.getMonth(), this.today.getDate());
+  maxDate = new Date(this.today.getFullYear() - 14, this.today.getMonth(), this.today.getDate());
   minDateCrianca = new Date(this.today.getFullYear() - 5, this.today.getMonth(), this.today.getDate());
   maxDateCrianca = new Date(this.today.getFullYear() - 1, this.today.getMonth(), this.today.getDate());
 
@@ -269,9 +269,6 @@ export class FormMatriculaComponent implements OnInit {
       possuiCRAS: "Informar o encaminhamento do CRAS.",
     }
   ]
-
-  // variavel que recebe o retorno da validacao e confirma que a validacao funcionou
-  private validou !: MatriculaDto;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1323,7 +1320,7 @@ export class FormMatriculaComponent implements OnInit {
     }, 150);
   }
 
-  //remove o documento da tabela quando clica em nao em documento do veiculo do cras e se recebe algo do governo
+  //remove o documento da tabela e da lisa quando clica em nao em documento do veiculo do cras e se recebe algo do governo
   removerDaTabela(tipo: string) {
     this.show = false;
 
@@ -1562,7 +1559,9 @@ export class FormMatriculaComponent implements OnInit {
   // acao para aceitar a crianca na creche
   validar() {
     const matriculaDTO = this.makeDTOMatricula();
+    const todosVerdadeiros = this.listaDocumentosEditareValidar.every(elemento => Boolean(elemento.aceito));
 
+    if (todosVerdadeiros) {
     const dialogConfirmacao = this.dialog.open(ConfirmationDialog, {
       data: {
         titulo: 'INCLUIR NA TURMA!',
@@ -1574,47 +1573,55 @@ export class FormMatriculaComponent implements OnInit {
       },
     });
 
-    dialogConfirmacao.afterClosed().subscribe(result => {
-      if (result) {
-        this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
-          this.validou = retorno;
-        }, error => {
-          this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
-          this.listaDocumentosEditareValidar = [];
-        });
-
-        if (this.validou){
-          const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent,
-            {
-              data:
-                {
-                  id: this.validou.id,
-                }
-            })
-        dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
-            if (confirmed) {
-              this.confirmarAcao(this.validou, "Incluir na turma e validar")
-            } else {
-              this.confirmarAcao(this.validou, this.tipoDeFormulario)
+      dialogConfirmacao.afterClosed().subscribe(result => {
+        if (result) {
+          this.matriculaService.matriculaControllerValidaMatricula({ body: matriculaDTO }).subscribe(
+            retorno => {
+              if (retorno) {
+                const dialogRef = this.dialog.open(AddAlunoTurmaDialogComponent, {
+                  data: {
+                    id: retorno.id,
+                  },
+                });
+                dialogRef.afterClosed().subscribe((confirmed: AddAlunoTurmaDialogComponent) => {
+                  if (confirmed) {
+                    this.confirmarAcao(retorno, "Incluir na turma e validar");
+                    this.router.navigate(['/matricula/validar']);
+                    this.listaDocumentosEditareValidar = [];
+                  }
+                });
+              }
+            },
+            error => {
+              this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+              this.listaDocumentosEditareValidar = [];
             }
-            this.router.navigate(['/matricula/validar']);
-          }
-        )
-        this.listaDocumentosEditareValidar = [];
-      }
-
-      } else {
-        this.matriculaService.matriculaControllerValidaMatricula({body: matriculaDTO}).subscribe(retorno => {
-          this.confirmarAcao(retorno, this.tipoDeFormulario);
-          this.router.navigate(['/matricula/validar']);
-          this.listaDocumentosEditareValidar = [];
-        }, error => {
-          this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
-          this.listaDocumentosEditareValidar = [];
-        });
-      }
-    });
-
+          );
+        } else {
+          this.matriculaService.matriculaControllerValidaMatricula({ body: matriculaDTO }).subscribe(
+            retorno => {
+              this.confirmarAcao(retorno, this.tipoDeFormulario);
+              this.router.navigate(['/matricula/validar']);
+              this.listaDocumentosEditareValidar = [];
+            },
+            error => {
+              this.mensagens.confirmarErro(this.tipoDeFormulario, error.message);
+              this.listaDocumentosEditareValidar = [];
+            }
+          );
+        }
+      });
+    } else {
+      const dialogErro = this.dialog.open(ConfirmationDialog, {
+        data: {
+          titulo: 'ERRO!',
+          mensagem: `Todos os documentos precisam estar marcados como aceito, para que seja feita a validação.`,
+          textoBotoes: {
+            ok: 'Ok',
+          },
+        },
+      });
+    }
   }
 
   // acao para apagar maricula e recusar a crianaca na associacao
