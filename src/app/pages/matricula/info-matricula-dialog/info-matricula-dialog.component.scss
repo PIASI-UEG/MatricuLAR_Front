@@ -1,12 +1,13 @@
 @import '../../../../StyleForms.css';
 
 .imagem-card {
-  width: 200px;
   height: 200px;
-  margin-bottom: 10px;
-  border-radius: 10px;
+  width: 200px;
+  display: block;
+  margin: 0 auto;
   border: 3px solid #B2DFFF;
-  object-fit: cover;
+  border-radius: 5px;
+  user-select: none;
 }
 
 .imagem-card img {

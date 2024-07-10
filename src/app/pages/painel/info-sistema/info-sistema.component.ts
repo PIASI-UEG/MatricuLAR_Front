@@ -162,7 +162,7 @@ export class InfoSistemaComponent implements OnInit{
       dialogConfirmacao.afterClosed().subscribe(result => {
         if (result) {
           this.matriculaService.matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao().subscribe(retorno => {
-              this.mensagens.showMensagemSimples(retorno);
+              this.mensagens.showMensagemSimples(result);
           }, error => {
               this.mensagens.showMensagemSimples(error);
           });
