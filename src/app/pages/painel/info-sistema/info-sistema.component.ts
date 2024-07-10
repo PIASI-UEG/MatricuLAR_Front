@@ -21,6 +21,8 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
 })
 export class InfoSistemaComponent implements OnInit{
   @ViewChild('slideTogglePreMatricula') slideTogglePreMatricula!: MatSlideToggle;
+  @ViewChild('slideToggleRenovacaoMatricula') slideToggleRenovacaoMatricula!: MatSlideToggle;
+
   totalMatriculas: number = 0;
   totalTurmas: number = 0;
   qtdMatriculasPendente: number = 0;
@@ -151,7 +153,7 @@ export class InfoSistemaComponent implements OnInit{
       const dialogConfirmacao = this.dialog.open(ConfirmationDialog, {
         data: {
           titulo: 'ATENÇÃO!!!',
-          mensagem: `Todas as martrículas ativas, serão alteradas para o status de re-matrícula. Tem cereza dessa ação ?`,
+          mensagem: `Todas as martrículas ativas, serão alteradas para o status de ré-matrícula. Tem certeza dessa ação ?`,
           textoBotoes: {
             ok: 'Sim',
             cancel: 'Não',
@@ -162,10 +164,17 @@ export class InfoSistemaComponent implements OnInit{
       dialogConfirmacao.afterClosed().subscribe(result => {
         if (result) {
           this.matriculaService.matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao().subscribe(retorno => {
-              this.mensagens.showMensagemSimples(retorno);
+            this.mensagens.showMensagemSimples(retorno);
           }, error => {
-              this.mensagens.showMensagemSimples(error);
+            this.mensagens.showMensagemSimples("Erro ao atualizar status para ré-matricula" + error);
+            if (this.slideToggleRenovacaoMatricula) {
+              this.slideToggleRenovacaoMatricula.checked = false;
+            }
           });
+        } else {
+          if (this.slideToggleRenovacaoMatricula) {
+            this.slideToggleRenovacaoMatricula.checked = false;
+          }
         }
       })
 
