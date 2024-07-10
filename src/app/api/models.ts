@@ -28,6 +28,7 @@ export { PageTurmaDto } from './models/page-turma-dto';
 export { PageResponsavelDto } from './models/page-responsavel-dto';
 export { PagePessoaDto } from './models/page-pessoa-dto';
 export { PageNecessidadeEspecialDto } from './models/page-necessidade-especial-dto';
+export { RetornoString } from './models/retorno-string';
 export { PageMatriculaDto } from './models/page-matricula-dto';
 export { PageInformacoesMatriculaDto } from './models/page-informacoes-matricula-dto';
 export { PageEnderecoDto } from './models/page-endereco-dto';

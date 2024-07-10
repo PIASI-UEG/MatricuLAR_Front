@@ -164,7 +164,10 @@ export class InfoSistemaComponent implements OnInit{
       dialogConfirmacao.afterClosed().subscribe(result => {
         if (result) {
           this.matriculaService.matriculaControllerMudaStatusTodasMatriculasAguardandoRenovacao().subscribe(retorno => {
-            this.mensagens.showMensagemSimples(retorno);
+            if(retorno.mensagem)
+            {
+              this.mensagens.showMensagemSimples(retorno.mensagem);
+            }
           }, error => {
             this.mensagens.showMensagemSimples("Erro ao atualizar status para ré-matricula" + error);
             if (this.slideToggleRenovacaoMatricula) {
